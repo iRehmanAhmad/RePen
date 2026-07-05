@@ -148,3 +148,64 @@ body {
   background: rgba(255, 255, 255, 0.85);
   transform: scaleX(1.15);
 }
+
+.board-pattern-group, .board-color-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pattern-btn.active {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.board-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  padding: 0;
+}
+
+.board-swatch:hover {
+  transform: scale(1.15);
+  border-color: #ffffff;
+}
+
+.board-swatch.active {
+  transform: scale(1.15);
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.5);
+}
+
+.board-color-picker-label {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #e2e8f0;
+  border-radius: 50%;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.board-color-picker-label:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+.board-color-picker-label input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+

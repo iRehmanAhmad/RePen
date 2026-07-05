@@ -55,5 +55,6 @@
   "53": "Fix broken tools after feature updates",
   "54": "verify-js-syntax.js",
   "55": "Separate whiteboard and transparent annotations",
-  "56": "verify-scene-store-separation.js"
+  "56": "verify-scene-store-separation.js",
+  "57": "Task: Board Toolbar Reorganization & Overlay Navigation"
 }

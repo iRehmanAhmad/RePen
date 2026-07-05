@@ -224,7 +224,14 @@ function updatePills() {
     }
   }
   if (elements.whiteboardBtn) {
-    elements.whiteboardBtn.classList.toggle('active', appState.backgroundMode && appState.backgroundMode !== 'transparent');
+    const isBoard = appState.backgroundMode && appState.backgroundMode !== 'transparent';
+    elements.whiteboardBtn.classList.toggle('active', isBoard);
+    elements.whiteboardBtn.title = isBoard ? 'Return to Transparent Desktop' : 'Whiteboard / Digital Paper';
+    if (isBoard) {
+      elements.whiteboardBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><line x1="3" y1="3" x2="21" y2="17"/></svg>`;
+    } else {
+      elements.whiteboardBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M3 17h18"/><path d="M12 17v4"/><path d="M8 21h8"/></svg><span class="group-indicator" aria-hidden="true"></span>`;
+    }
   }
   if (elements.clickHaloButton) {
     elements.clickHaloButton.textContent = appState.clickHalo ? 'Click Halo: On' : 'Click Halo: Off';
@@ -725,9 +732,12 @@ if (elements.sizePopoverButtons) {
 
 // 10. Whiteboard Button & Popover
 if (elements.whiteboardBtn) {
-  elements.whiteboardBtn.addEventListener('click', (event) => {
+  elements.whiteboardBtn.addEventListener('click', async (event) => {
     event.stopPropagation();
-    if (elements.whiteboardPopover) {
+    if (appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+      closeAllPopovers();
+      await window.appBridge.setBackgroundMode('transparent');
+    } else if (elements.whiteboardPopover) {
       const wasShow = elements.whiteboardPopover.classList.contains('show');
       closeAllPopovers();
       elements.whiteboardPopover.classList.toggle('show', !wasShow);

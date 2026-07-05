@@ -680,6 +680,8 @@ function setBackgroundMode(mode) {
   syncPageStore();
 
   state.backgroundMode = newMode;
+  if (newMode === 'whiteboard') state.boardColor = '#ffffff';
+  if (newMode === 'blackboard') state.boardColor = '#18181c';
 
   if (newMode === 'transparent') {
     annotations = desktopPage.annotations || [];
@@ -704,6 +706,13 @@ function cycleBackgroundMode() {
   const modes = ['transparent', 'whiteboard', 'blackboard', 'grid', 'ruled', 'staff'];
   const nextIdx = (modes.indexOf(state.backgroundMode || 'transparent') + 1) % modes.length;
   setBackgroundMode(modes[nextIdx]);
+}
+
+function setBoardColor(color) {
+  if (!color) return;
+  state.boardColor = color;
+  broadcastState();
+  broadcastScene();
 }
 
 function setClickHalo(enabled) {
@@ -1585,6 +1594,11 @@ ipcMain.handle('app:set-color', (_, color) => {
 
 ipcMain.handle('app:set-background-mode', (_, mode) => {
   setBackgroundMode(mode);
+  return getAppState();
+});
+
+ipcMain.handle('app:set-board-color', (_, color) => {
+  setBoardColor(color);
   return getAppState();
 });
 

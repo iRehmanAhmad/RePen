@@ -403,6 +403,7 @@ Suggested initial model:
 - One default page for transparent desktop overlay annotations (`desktopPage`).
 - An array of pages (`pages[]`) for non-transparent board modes (Whiteboard, Blackboard, Grid, Ruled, Staff).
 - Strict layer isolation enforced during mode switching (`setBackgroundMode`) and startup (`loadState`) so transparent screen notes never bleed onto whiteboard pages and vice versa.
+- UI separation of board selection: the main toolbar popover provides quick entry into Whiteboard or Blackboard (and acts as a return toggle when inside board mode), while advanced pattern selection (Plain, Grid, Ruled, Staff) and color customization (swatches and custom picker) are hosted within the overlay's `#boardNav` toolbar.
 - One default layer per page with hidden internal support for more.
 
 ## 10. State Management

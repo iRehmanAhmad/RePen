@@ -72,6 +72,40 @@ function setupBoardNav() {
     });
   }
 
+  const patternBtns = document.querySelectorAll('.board-pattern-group .pattern-btn');
+  patternBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const pattern = btn.dataset.pattern;
+      if (pattern) {
+        window.appBridge?.setBackgroundMode?.(pattern);
+      }
+    });
+  });
+
+  const colorSwatches = document.querySelectorAll('.board-color-group .board-swatch');
+  colorSwatches.forEach((swatch) => {
+    swatch.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const color = swatch.dataset.boardColor;
+      if (color) {
+        window.appBridge?.setBoardColor?.(color);
+      }
+    });
+  });
+
+  const customColorPicker = document.getElementById('boardCustomColorPicker');
+  if (customColorPicker) {
+    customColorPicker.addEventListener('input', (e) => {
+      e.stopPropagation();
+      window.appBridge?.setBoardColor?.(e.target.value);
+    });
+    customColorPicker.addEventListener('change', (e) => {
+      e.stopPropagation();
+      window.appBridge?.setBoardColor?.(e.target.value);
+    });
+  }
+
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
       const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
@@ -185,6 +219,24 @@ function updateBoardNav() {
   if (prevBtn && appState) {
     const current = typeof appState.currentPageIndex === 'number' ? appState.currentPageIndex : 0;
     prevBtn.disabled = current <= 0;
+  }
+
+  if (appState) {
+    const currentMode = appState.backgroundMode || 'transparent';
+    const patternBtns = document.querySelectorAll('.board-pattern-group .pattern-btn');
+    patternBtns.forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.pattern === currentMode);
+    });
+
+    const currentColor = appState.boardColor || (currentMode === 'blackboard' ? '#18181c' : '#ffffff');
+    const colorSwatches = document.querySelectorAll('.board-color-group .board-swatch');
+    colorSwatches.forEach((swatch) => {
+      swatch.classList.toggle('active', swatch.dataset.boardColor.toLowerCase() === currentColor.toLowerCase());
+    });
+    const customColorPicker = document.getElementById('boardCustomColorPicker');
+    if (customColorPicker) {
+      customColorPicker.value = currentColor;
+    }
   }
 }
 
@@ -575,6 +627,16 @@ function drawPreviewStroke(targetCtx = ctx) {
   drawStroke(currentStroke, targetCtx);
 }
 
+function isColorDark(hexColor) {
+  if (!hexColor) return false;
+  let c = String(hexColor).replace('#', '');
+  if (c.length === 3) c = c.split('').map(x => x + x).join('');
+  const r = parseInt(c.substr(0, 2), 16) || 0;
+  const g = parseInt(c.substr(2, 2), 16) || 0;
+  const b = parseInt(c.substr(4, 2), 16) || 0;
+  return (r * 0.299 + g * 0.587 + b * 0.114) < 130;
+}
+
 function render() {
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -586,16 +648,13 @@ function render() {
 
   if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
     ctx.save();
-    if (appState.backgroundMode === 'whiteboard') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, width, height);
-    } else if (appState.backgroundMode === 'blackboard') {
-      ctx.fillStyle = '#18181c';
-      ctx.fillRect(0, 0, width, height);
-    } else if (appState.backgroundMode === 'grid') {
-      ctx.fillStyle = '#f4f4f6';
-      ctx.fillRect(0, 0, width, height);
-      ctx.strokeStyle = '#e0e0e8';
+    const bg = appState.boardColor || (appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff');
+    const isDark = isColorDark(bg);
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, width, height);
+
+    if (appState.backgroundMode === 'grid') {
+      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : '#e0e0e8';
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let x = 0; x < width; x += 28) {
@@ -606,9 +665,7 @@ function render() {
       }
       ctx.stroke();
     } else if (appState.backgroundMode === 'ruled') {
-      ctx.fillStyle = '#fefef8';
-      ctx.fillRect(0, 0, width, height);
-      ctx.strokeStyle = '#e2e8f0';
+      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : '#e2e8f0';
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let y = 40; y < height; y += 32) {
@@ -620,9 +677,7 @@ function render() {
       ctx.moveTo(80, 0); ctx.lineTo(80, height);
       ctx.stroke();
     } else if (appState.backgroundMode === 'staff') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, width, height);
-      ctx.strokeStyle = '#cbd5e1';
+      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.25)' : '#cbd5e1';
       ctx.lineWidth = 1.5;
       for (let y = 60; y < height; y += 140) {
         ctx.beginPath();
@@ -810,7 +865,7 @@ function render() {
         ctx.restore();
       }
     } else {
-      ctx.fillStyle = appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff';
+      ctx.fillStyle = appState.boardColor || (appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff');
       ctx.fillRect(currentMousePos.x - r, currentMousePos.y - r, r * 2, r * 2);
 
       ctx.save();
@@ -1810,16 +1865,9 @@ async function bootstrapApp() {
           img.src = bgDataUrl;
         });
       } else if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
-        if (appState.backgroundMode === 'whiteboard' || appState.backgroundMode === 'staff' || appState.backgroundMode === 'ruled') {
-          exportCtx.fillStyle = '#ffffff';
-          exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
-        } else if (appState.backgroundMode === 'blackboard') {
-          exportCtx.fillStyle = '#18181c';
-          exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
-        } else if (appState.backgroundMode === 'grid') {
-          exportCtx.fillStyle = '#f4f4f6';
-          exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
-        }
+        const bg = appState.boardColor || (appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff');
+        exportCtx.fillStyle = bg;
+        exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
       }
       
       if (canvas) {

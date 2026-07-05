@@ -17,6 +17,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   setToolbarOrientation: (orientation) => ipcRenderer.invoke('app:set-toolbar-orientation', orientation),
   setPassThrough: (enabled) => ipcRenderer.invoke('app:set-pass-through', enabled),
   setBackgroundMode: (mode) => ipcRenderer.invoke('app:set-background-mode', mode),
+  setBoardColor: (color) => ipcRenderer.invoke('app:set-board-color', color),
   setClickHalo: (enabled) => ipcRenderer.invoke('app:set-click-halo', enabled),
   setExportBg: (enabled) => ipcRenderer.invoke('app:set-export-bg', enabled),
   toggleVisibility: (forceValue) => ipcRenderer.invoke('app:toggle-visibility', forceValue),

@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783248322.515841,
-    "ast_hash": "65de3ea841030983b764d9d7cc5ea888",
+    "mtime": 1783249771.1275566,
+    "ast_hash": "ee6e415e0327fca022371cdcf7d977ae",
     "semantic_hash": ""
   },
   "package.json": {
@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783246775.3723574,
-    "ast_hash": "4d5a098d3d8c4af84db5364c88a83827",
+    "mtime": 1783249748.5880575,
+    "ast_hash": "28f0147c5e80d0253fe0f4e50d55a9f3",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783247226.4847698,
-    "ast_hash": "5f833478fbaaa21c3002e152e6037423",
+    "mtime": 1783249974.27701,
+    "ast_hash": "7d8ac62a15c411512106cb7d04b7ee7a",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783244640.6312969,
-    "ast_hash": "091bebf80ec00d928d20cd9615ff3f80",
+    "mtime": 1783249673.2656507,
+    "ast_hash": "55a80307a315343b9913b708fec72842",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -165,18 +165,18 @@
     "semantic_hash": ""
   },
   "docs/qa-checklist.md": {
-    "mtime": 1783245401.1227186,
-    "ast_hash": "701c662f6144607d13f137cdb6106a7b",
+    "mtime": 1783248981.596988,
+    "ast_hash": "5a7d30a2121347ee5e8af83e07de6f49",
     "semantic_hash": ""
   },
   "docs/technical-architecture.md": {
-    "mtime": 1783245380.7933235,
-    "ast_hash": "4c00a680013a4e9cf9adb1201283bb74",
+    "mtime": 1783249037.6349277,
+    "ast_hash": "67cb6901df410bb19b81cb2075d8d076",
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783247004.7389967,
-    "ast_hash": "e3ce2e5627b57c598cb7c090ccf19ce4",
+    "mtime": 1783249719.4846175,
+    "ast_hash": "fbf281517ee9a021a0fa9bb13a188b1c",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783244011.3209498,
-    "ast_hash": "34c2211523857b792085cb0fdc10497a",
+    "mtime": 1783249648.9477916,
+    "ast_hash": "df97c0261e7759b165882c88ba23651f",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -220,8 +220,13 @@
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-104424-separate-whiteboard-and-transparent-annotations.md": {
-    "mtime": 1783248370.5411675,
-    "ast_hash": "ee45efa320901a9bf456abb4b1fa0d1a",
+    "mtime": 1783249051.564595,
+    "ast_hash": "227be3e2dfbc032d0a625659c6675690",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260705-111000-board-toolbar-reorganization.md": {
+    "mtime": 1783250030.5319264,
+    "ast_hash": "bfeb69b887bb4b96e6f25f7e4f1e4746",
     "semantic_hash": ""
   }
 }
