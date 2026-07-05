@@ -400,9 +400,10 @@ Reason:
 
 Suggested initial model:
 
-- One default page
-- One default layer
-- Hidden internal support for more
+- One default page for transparent desktop overlay annotations (`desktopPage`).
+- An array of pages (`pages[]`) for non-transparent board modes (Whiteboard, Blackboard, Grid, Ruled, Staff).
+- Strict layer isolation enforced during mode switching (`setBackgroundMode`) and startup (`loadState`) so transparent screen notes never bleed onto whiteboard pages and vice versa.
+- One default layer per page with hidden internal support for more.
 
 ## 10. State Management
 

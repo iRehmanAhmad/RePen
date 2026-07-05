@@ -40,5 +40,5 @@ Use this structured 7-step manual testing checklist before releasing any new bui
 - [ ] Open the saved file in an image viewer. Verify the output format matches settings (PNG or JPEG) and desktop background is included if configured.
 
 ## 8. 🤖 Automated Knowledge Graph & Git Verification
-- [ ] Run automated tests via `npm test` and verify all DOM IDs, IPC contracts, and tool states pass.
+- [ ] Run automated tests via `npm test` and verify all DOM IDs, IPC contracts, tool states, and scene store separation (`scripts/verify-scene-store-separation.js`) pass.
 - [ ] Commit or push code via `git commit` / `git push`. Verify Git hooks (`.githooks/pre-commit` and `.githooks/pre-push`) automatically trigger `graphify update .` and stage/commit updated `.md` reports (`GRAPH_REPORT.md`, `.agents/rules/graphify.md`).

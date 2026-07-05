@@ -56,6 +56,7 @@ Fix annotation leakage between non-transparent whiteboard pages and transparent 
 
 ## Handoff Notes
 
-- Root cause: `loadState()` could restore the active scene from a non-transparent board page and then force `state.backgroundMode = 'transparent'`, leaving board annotations visible on the normal desktop.
-- Fix: after forcing transparent startup, `main.js` now also rebinds `annotations`, `undoStack`, and `redoStack` to `desktopPage`.
-- Manual QA: draw on transparent desktop, switch to board/grid and draw different marks, switch back to transparent and confirm only desktop marks show; relaunch after board use and confirm transparent starts with desktop marks only.
+- Root cause 1: `loadState()` could restore the active scene from a non-transparent board page and then force `state.backgroundMode = 'transparent'`, leaving board annotations visible on the normal desktop.
+- Root cause 2: `setBackgroundMode(mode)` called `broadcastScene()` before updating `state.backgroundMode = newMode`, causing `syncPageStore()` to execute against the old background mode while referencing the newly switched annotation array, resulting in both `desktopPage.annotations` and `pages[currentPageIndex].annotations` pointing to the same array object in memory.
+- Fix: after forcing transparent startup, `main.js` now rebinds `annotations`, `undoStack`, and `redoStack` to `desktopPage`. In `setBackgroundMode(mode)`, `syncPageStore()` is called first before switching mode state and array references.
+- Manual QA & Verification: `npm test` passed. Verified switching between transparent desktop and whiteboard/blackboard modes preserves complete layer isolation without annotation bleed.

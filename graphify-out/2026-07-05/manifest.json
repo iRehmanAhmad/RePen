@@ -1,17 +1,17 @@
 {
   ".agent-hub/state/tasks.json": {
-    "mtime": 1783244681.0361352,
-    "ast_hash": "d9a426ad7b8560724f26f5455598f3b1",
+    "mtime": 1783248357.2658007,
+    "ast_hash": "946ebd961d9258789a007ed254101bdd",
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783247986.7758956,
-    "ast_hash": "5cf8fc00a9a4a74849c738f2c7bfb280",
+    "mtime": 1783248322.515841,
+    "ast_hash": "65de3ea841030983b764d9d7cc5ea888",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783245331.8770483,
-    "ast_hash": "d6198665841b6c8d751027a77ed7aa15",
+    "mtime": 1783248322.5267115,
+    "ast_hash": "152ea41d8c70015e352b1b8a1a96169d",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -212,6 +212,16 @@
   ".agent-hub/tasks/20260705-094117-fix-broken-tools-after-feature-updates.md": {
     "mtime": 1783244713.535159,
     "ast_hash": "516c238ecbfe3d2fbb2cda2c43f48ac6",
+    "semantic_hash": ""
+  },
+  "scripts/verify-scene-store-separation.js": {
+    "mtime": 1783248322.5225978,
+    "ast_hash": "6ac4e768da5f38738496f4f0e5a64472",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260705-104424-separate-whiteboard-and-transparent-annotations.md": {
+    "mtime": 1783248370.5411675,
+    "ast_hash": "ee45efa320901a9bf456abb4b1fa0d1a",
     "semantic_hash": ""
   }
 }

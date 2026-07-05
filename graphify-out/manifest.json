@@ -165,13 +165,13 @@
     "semantic_hash": ""
   },
   "docs/qa-checklist.md": {
-    "mtime": 1783245401.1227186,
-    "ast_hash": "701c662f6144607d13f137cdb6106a7b",
+    "mtime": 1783248981.596988,
+    "ast_hash": "5a7d30a2121347ee5e8af83e07de6f49",
     "semantic_hash": ""
   },
   "docs/technical-architecture.md": {
-    "mtime": 1783245380.7933235,
-    "ast_hash": "4c00a680013a4e9cf9adb1201283bb74",
+    "mtime": 1783249037.6349277,
+    "ast_hash": "67cb6901df410bb19b81cb2075d8d076",
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
@@ -220,8 +220,8 @@
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-104424-separate-whiteboard-and-transparent-annotations.md": {
-    "mtime": 1783248370.5411675,
-    "ast_hash": "ee45efa320901a9bf456abb4b1fa0d1a",
+    "mtime": 1783249051.564595,
+    "ast_hash": "227be3e2dfbc032d0a625659c6675690",
     "semantic_hash": ""
   }
 }
