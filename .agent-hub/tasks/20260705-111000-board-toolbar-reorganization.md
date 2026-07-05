@@ -16,7 +16,7 @@ Reorganize the Whiteboard/Background UI to separate the simple board entry (Whit
 ## Implementation Details
 - `src/renderer/toolbar.html`: Removed `transparent`, `grid`, `ruled`, and `staff` buttons from `#whiteboardPopover`.
 - `src/renderer/toolbar.js`: Updated `#whiteboardBtn` icon rendering in `updateUi()` to show a transparent desktop icon when in board mode. Modified click listener to execute `setBackgroundMode('transparent')` when already in board mode.
-- `src/renderer/overlay.html` & `src/renderer/overlay.css`: Added `.board-pattern-group` and `.board-color-group` with custom styling inside `#boardNav`.
+- `src/renderer/overlay.html` & `src/renderer/overlay.css`: Added `.board-pattern-group` and `.board-color-group` with custom styling inside `#boardNav`. Removed redundant `#pasteImgBtn` since Ctrl+V / Cmd+V is the standard clipboard paste shortcut.
 - `src/preload.js` & `main.js`: Added `setBoardColor` IPC handler (`app:set-board-color`) and updated `state.boardColor` handling.
 - `src/renderer/overlay.js`: Attached event listeners for pattern buttons and color swatches in `setupBoardNav()`. Added `isColorDark()` helper to dynamically adjust grid/ruled/staff line contrast based on `appState.boardColor` during rendering and export.
 

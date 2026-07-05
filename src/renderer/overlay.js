@@ -64,13 +64,6 @@ function setupBoardNav() {
       window.appBridge?.loadSession?.();
     });
   }
-  const pasteBtn = document.getElementById('pasteImgBtn');
-  if (pasteBtn) {
-    pasteBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      window.appBridge?.pasteImage?.();
-    });
-  }
 
   const patternBtns = document.querySelectorAll('.board-pattern-group .pattern-btn');
   patternBtns.forEach((btn) => {

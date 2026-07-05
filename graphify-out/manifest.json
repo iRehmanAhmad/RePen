@@ -40,8 +40,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783249974.27701,
-    "ast_hash": "7d8ac62a15c411512106cb7d04b7ee7a",
+    "mtime": 1783251463.9315298,
+    "ast_hash": "712e58aed45a1767a01fcc121091f753",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783249719.4846175,
-    "ast_hash": "fbf281517ee9a021a0fa9bb13a188b1c",
+    "mtime": 1783251403.887352,
+    "ast_hash": "1b40750d888f11447492a784293e94ba",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-111000-board-toolbar-reorganization.md": {
-    "mtime": 1783250030.5319264,
-    "ast_hash": "bfeb69b887bb4b96e6f25f7e4f1e4746",
+    "mtime": 1783251516.8326058,
+    "ast_hash": "78b06a2a287ced41ef7617517c009f34",
     "semantic_hash": ""
   }
 }
