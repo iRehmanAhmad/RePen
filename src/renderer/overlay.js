@@ -37,8 +37,10 @@ function showPageToast(msg) {
 function setupBoardNav() {
   const prevBtn = document.getElementById('prevPageButton');
   const nextBtn = document.getElementById('nextPageButton');
+  const newBtn = document.getElementById('newBoardButton');
   const saveBtn = document.getElementById('saveSessionButton');
   const loadBtn = document.getElementById('loadSessionButton');
+  const exportPdfBtn = document.getElementById('exportPdfButton');
 
   if (prevBtn) {
     prevBtn.addEventListener('click', (e) => {
@@ -52,6 +54,12 @@ function setupBoardNav() {
       window.appBridge?.nextPage?.();
     });
   }
+  if (newBtn) {
+    newBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.newSession?.();
+    });
+  }
   if (saveBtn) {
     saveBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -62,6 +70,12 @@ function setupBoardNav() {
     loadBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       window.appBridge?.loadSession?.();
+    });
+  }
+  if (exportPdfBtn) {
+    exportPdfBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.exportPdf?.();
     });
   }
 

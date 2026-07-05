@@ -466,9 +466,20 @@ function createOverlayWindow(display) {
 
   win.loadURL(windowUrl('overlay.html', { displayId: display.id }));
   win.setIgnoreMouseEvents(state.passThrough, { forward: true });
-  win.setFocusable((state.activeTool === 'text' || state.activeTool === 'select') && !state.passThrough);
+  const isBoard = state.backgroundMode && state.backgroundMode !== 'transparent';
+  win.setFocusable((isBoard || state.activeTool === 'text' || state.activeTool === 'select') && !state.passThrough);
   win.setAlwaysOnTop(true, 'pop-up-menu');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.type === 'keyDown' && (input.control || input.meta) && input.key.toLowerCase() === 'v') {
+      const boardActive = state.backgroundMode && state.backgroundMode !== 'transparent';
+      if (boardActive || !state.passThrough) {
+        pasteClipboardImage();
+        event.preventDefault();
+      }
+    }
+  });
 
   win.on('focus', () => {
     if (toolbarWindow && !toolbarWindow.isDestroyed()) {
@@ -522,6 +533,16 @@ function createToolbarWindow() {
   toolbarWindow.loadURL(windowUrl('toolbar.html'));
   toolbarWindow.setAlwaysOnTop(true, 'screen-saver');
   toolbarWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+  toolbarWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.type === 'keyDown' && (input.control || input.meta) && input.key.toLowerCase() === 'v') {
+      const boardActive = state.backgroundMode && state.backgroundMode !== 'transparent';
+      if (boardActive || !state.passThrough) {
+        pasteClipboardImage();
+        event.preventDefault();
+      }
+    }
+  });
 
   toolbarWindow.on('close', (event) => {
     if (!app.isQuitting) {
@@ -663,7 +684,8 @@ function setPassThrough(enabled) {
       } else {
         win.setIgnoreMouseEvents(false);
       }
-      win.setFocusable((state.activeTool === 'text' || state.activeTool === 'select') && !enabled);
+      const isBoard = state.backgroundMode && state.backgroundMode !== 'transparent';
+      win.setFocusable((isBoard || state.activeTool === 'text' || state.activeTool === 'select') && !enabled);
     }
   }
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
@@ -1085,6 +1107,54 @@ async function loadSession() {
     return { ok: true };
   } catch (err) {
     console.error('Failed to load session:', err);
+    return { ok: false, error: err.message };
+  }
+}
+
+function newSession() {
+  pages = [{ annotations: [], undoStack: [], redoStack: [] }];
+  currentPageIndex = 0;
+  if (state.backgroundMode === 'transparent') {
+    desktopPage = { annotations: [], undoStack: [], redoStack: [] };
+    annotations = desktopPage.annotations;
+    undoStack = desktopPage.undoStack;
+    redoStack = desktopPage.redoStack;
+  } else {
+    annotations = pages[0].annotations;
+    undoStack = pages[0].undoStack;
+    redoStack = pages[0].redoStack;
+  }
+  broadcastScene();
+  broadcastState();
+  return { ok: true };
+}
+
+async function exportPdf() {
+  const win = overlayWindows.values().next().value;
+  if (!win || win.isDestroyed()) {
+    return { ok: false, error: 'No active window to export' };
+  }
+
+  const { filePath, canceled } = await showModalDialog('save', {
+    title: 'Export Document as PDF',
+    defaultPath: path.join(app.getPath('documents'), `RePen_Document_${Date.now()}.pdf`),
+    filters: [
+      { name: 'PDF Document (*.pdf)', extensions: ['pdf'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  });
+  if (canceled || !filePath) return { ok: false };
+
+  try {
+    const pdfData = await win.webContents.printToPDF({
+      printBackground: true,
+      pageSize: 'A4',
+      landscape: true
+    });
+    fs.writeFileSync(filePath, pdfData);
+    return { ok: true, filePath };
+  } catch (err) {
+    console.error('Failed to export PDF:', err);
     return { ok: false, error: err.message };
   }
 }
@@ -1695,6 +1765,8 @@ ipcMain.handle('scene:revert-auto-shape', () => {
 
 ipcMain.handle('session:save', () => saveSession());
 ipcMain.handle('session:load', () => loadSession());
+ipcMain.handle('session:new', () => newSession());
+ipcMain.handle('session:export-pdf', () => exportPdf());
 ipcMain.handle('session:prev-page', () => prevPage());
 ipcMain.handle('session:next-page', () => nextPage());
 ipcMain.handle('session:set-page', (_, idx) => setPage(idx));

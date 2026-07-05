@@ -43,6 +43,8 @@ contextBridge.exposeInMainWorld('appBridge', {
   selectDirectory: () => ipcRenderer.invoke('app:select-directory'),
   saveSession: () => ipcRenderer.invoke('session:save'),
   loadSession: () => ipcRenderer.invoke('session:load'),
+  newSession: () => ipcRenderer.invoke('session:new'),
+  exportPdf: () => ipcRenderer.invoke('session:export-pdf'),
   prevPage: () => ipcRenderer.invoke('session:prev-page'),
   nextPage: () => ipcRenderer.invoke('session:next-page'),
   setPage: (idx) => ipcRenderer.invoke('session:set-page', idx),

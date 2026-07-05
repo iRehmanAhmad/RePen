@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783249771.1275566,
-    "ast_hash": "ee6e415e0327fca022371cdcf7d977ae",
+    "mtime": 1783264221.4170187,
+    "ast_hash": "59a40c2e143c9da1ee51116a005ed3ef",
     "semantic_hash": ""
   },
   "package.json": {
@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783249748.5880575,
-    "ast_hash": "28f0147c5e80d0253fe0f4e50d55a9f3",
+    "mtime": 1783252296.4602785,
+    "ast_hash": "ecebeb174c89b288495b0666a3b0faa1",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783251463.9315298,
-    "ast_hash": "712e58aed45a1767a01fcc121091f753",
+    "mtime": 1783252281.597361,
+    "ast_hash": "bb2363aa1d39fb05d7ba70a29e10423b",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783251403.887352,
-    "ast_hash": "1b40750d888f11447492a784293e94ba",
+    "mtime": 1783252261.8726878,
+    "ast_hash": "caa760d915bcd8049fd38efe8868ac5c",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-111000-board-toolbar-reorganization.md": {
-    "mtime": 1783251516.8326058,
-    "ast_hash": "78b06a2a287ced41ef7617517c009f34",
+    "mtime": 1783264315.337485,
+    "ast_hash": "1a657b5e582ee880e3e15b0bf5b5269b",
     "semantic_hash": ""
   }
 }

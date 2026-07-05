@@ -209,3 +209,9 @@ body {
   pointer-events: none;
 }
 
+@media print {
+  #boardNav, .board-nav {
+    display: none !important;
+  }
+}
+

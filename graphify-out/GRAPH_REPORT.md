@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-05)
 
 ## Corpus Check
-- 43 files · ~32,462 words
+- 43 files · ~32,930 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 607 nodes · 817 edges · 58 communities (55 shown, 3 thin omitted)
+- 609 nodes · 824 edges · 58 communities (55 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e2b895a1`
+- Built from commit: `b7000175`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -75,10 +75,10 @@
 - [[_COMMUNITY_Task Board Toolbar Reorganization & Overlay Navigation|Task: Board Toolbar Reorganization & Overlay Navigation]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `broadcastState()` - 25 edges
+1. `broadcastState()` - 26 edges
 2. `Screen Annotation App Technical Architecture` - 25 edges
 3. `getShortcutActions()` - 18 edges
-4. `broadcastScene()` - 13 edges
+4. `broadcastScene()` - 14 edges
 5. `deepClone()` - 12 edges
 6. `updateTrayMenu()` - 11 edges
 7. `Set up multi-agent collaboration system` - 11 edges
@@ -96,7 +96,7 @@
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
-Nodes (81): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+73 more)
+Nodes (83): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+75 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.13
@@ -331,7 +331,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
   _353 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.05903866248693835 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.058177278401997504 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.12878787878787878 - nodes in this community are weakly interconnected._
 - **Should `agent-hub.js` be split into smaller, more focused modules?**
