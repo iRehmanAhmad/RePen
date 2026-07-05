@@ -1,0 +1,24 @@
+{
+  "name": "repen",
+  "version": "1.0.0",
+  "description": "Windows-first screen annotation overlay and presenter tool",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js"
+  },
+  "keywords": [
+    "annotation",
+    "screen",
+    "overlay",
+    "presenter",
+    "whiteboard"
+  ],
+  "author": "Rehman Ahmad",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^42.5.0"
+  }
+}

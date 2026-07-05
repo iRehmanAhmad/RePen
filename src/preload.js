@@ -1,0 +1,48 @@
+const { contextBridge, ipcRenderer } = require('electron');
+
+function on(channel, callback) {
+  const handler = (_, payload) => callback(payload);
+  ipcRenderer.on(channel, handler);
+  return () => ipcRenderer.removeListener(channel, handler);
+}
+
+contextBridge.exposeInMainWorld('appBridge', {
+  getBootstrap: () => ipcRenderer.invoke('bootstrap:get'),
+  getSettings: () => ipcRenderer.invoke('settings:get'),
+  onStateChanged: (callback) => on('app:state-changed', callback),
+  onSceneChanged: (callback) => on('scene:changed', callback),
+  setTool: (tool) => ipcRenderer.invoke('app:set-tool', tool),
+  setShapeType: (shapeType) => ipcRenderer.invoke('app:set-shape-type', shapeType),
+  setTextMode: (mode) => ipcRenderer.invoke('app:set-text-mode', mode),
+  setToolbarOrientation: (orientation) => ipcRenderer.invoke('app:set-toolbar-orientation', orientation),
+  setPassThrough: (enabled) => ipcRenderer.invoke('app:set-pass-through', enabled),
+  setBackgroundMode: (mode) => ipcRenderer.invoke('app:set-background-mode', mode),
+  setClickHalo: (enabled) => ipcRenderer.invoke('app:set-click-halo', enabled),
+  setExportBg: (enabled) => ipcRenderer.invoke('app:set-export-bg', enabled),
+  toggleVisibility: (forceValue) => ipcRenderer.invoke('app:toggle-visibility', forceValue),
+  setColor: (color) => ipcRenderer.invoke('app:set-color', color),
+  setWidth: (width) => ipcRenderer.invoke('app:set-width', width),
+  setOpacity: (opacity) => ipcRenderer.invoke('app:set-opacity', opacity),
+  setSpotlight: (payload) => ipcRenderer.invoke('app:set-spotlight', payload),
+  addStroke: (stroke) => ipcRenderer.invoke('scene:add-stroke', stroke),
+  updateAnnotation: (updated) => ipcRenderer.invoke('scene:update-annotation', updated),
+  updateAnnotations: (updatedList) => ipcRenderer.invoke('scene:update-annotations', updatedList),
+  deleteAnnotations: (ids) => ipcRenderer.invoke('scene:delete-annotations', ids),
+  erasePath: (payload) => ipcRenderer.invoke('scene:erase-path', payload),
+  revertAutoShape: () => ipcRenderer.invoke('scene:revert-auto-shape'),
+  clearScene: () => ipcRenderer.invoke('scene:clear'),
+  undo: () => ipcRenderer.invoke('scene:undo'),
+  redo: () => ipcRenderer.invoke('scene:redo'),
+  saveSettings: (payload) => ipcRenderer.invoke('settings:save', payload),
+  resetSettings: () => ipcRenderer.invoke('settings:reset'),
+  openSettings: () => ipcRenderer.invoke('settings:open'),
+  takeScreenshot: () => ipcRenderer.invoke('app:take-screenshot'),
+  renderExport: (payload) => ipcRenderer.invoke('app:render-export', payload),
+  onRequestExport: (callback) => on('scene:request-export', callback),
+  selectDirectory: () => ipcRenderer.invoke('app:select-directory'),
+  saveSession: () => ipcRenderer.invoke('session:save'),
+  loadSession: () => ipcRenderer.invoke('session:load'),
+  prevPage: () => ipcRenderer.invoke('session:prev-page'),
+  nextPage: () => ipcRenderer.invoke('session:next-page'),
+  setPage: (idx) => ipcRenderer.invoke('session:set-page', idx),
+});

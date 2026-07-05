@@ -1,0 +1,1732 @@
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+
+let bootstrap = null;
+let appState = null;
+let scene = { annotations: [] };
+let displayBounds = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
+let currentStroke = null;
+let renderQueued = false;
+let currentDevicePixelRatio = window.devicePixelRatio || 1;
+let laserPoints = [];
+let clickRipples = [];
+let selectedIds = [];
+let isDraggingSelection = false;
+let isResizingSelection = null;
+let isDraggingText = null;
+let marqueeBox = null;
+let dragStartX = 0;
+let dragStartY = 0;
+let currentMousePos = null;
+let magnifierImg = null;
+let lastMagnifierUrl = null;
+let lastAutoAdvanceTime = 0;
+let pageToastTimer = null;
+
+function showPageToast(msg) {
+  const toast = document.getElementById('pageToast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  if (pageToastTimer) clearTimeout(pageToastTimer);
+  pageToastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2500);
+}
+
+function setupBoardNav() {
+  const prevBtn = document.getElementById('prevPageButton');
+  const nextBtn = document.getElementById('nextPageButton');
+  const saveBtn = document.getElementById('saveSessionButton');
+  const loadBtn = document.getElementById('loadSessionButton');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.prevPage?.();
+    });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.nextPage?.();
+    });
+  }
+  if (saveBtn) {
+    saveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.saveSession?.();
+    });
+  }
+  if (loadBtn) {
+    loadBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.loadSession?.();
+    });
+  }
+}
+
+function updateBoardNav() {
+  const nav = document.getElementById('boardNav');
+  const indicator = document.getElementById('pageIndicator');
+  const prevBtn = document.getElementById('prevPageButton');
+  if (!nav) return;
+
+  const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
+  if (isBoard) {
+    nav.classList.add('show');
+  } else {
+    nav.classList.remove('show');
+  }
+
+  if (indicator && appState) {
+    const current = (typeof appState.currentPageIndex === 'number' ? appState.currentPageIndex : 0) + 1;
+    const total = typeof appState.totalPages === 'number' ? appState.totalPages : 1;
+    indicator.textContent = `Page ${current} / ${total}`;
+  }
+  if (prevBtn && appState) {
+    const current = typeof appState.currentPageIndex === 'number' ? appState.currentPageIndex : 0;
+    prevBtn.disabled = current <= 0;
+  }
+}
+
+function updateMagnifierImg() {
+  const dispId = bootstrap?.display?.id;
+  const url = appState?.magnifierBgUrls?.[dispId] || Object.values(appState?.magnifierBgUrls || {})[0];
+  if (url && url !== lastMagnifierUrl) {
+    lastMagnifierUrl = url;
+    const img = new Image();
+    img.onload = () => {
+      magnifierImg = img;
+      scheduleRender();
+    };
+    img.src = url;
+  } else if (!url) {
+    lastMagnifierUrl = null;
+    magnifierImg = null;
+  }
+}
+
+function hexToRgba(hex, alpha) {
+  const value = hex.replace('#', '');
+  const normalized = value.length === 3
+    ? value.split('').map((char) => char + char).join('')
+    : value.padEnd(6, '0').slice(0, 6);
+
+  const numeric = Number.parseInt(normalized, 16);
+  const r = (numeric >> 16) & 255;
+  const g = (numeric >> 8) & 255;
+  const b = numeric & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+function scheduleRender() {
+  if (renderQueued) {
+    return;
+  }
+  renderQueued = true;
+  requestAnimationFrame(() => {
+    renderQueued = false;
+    render();
+  });
+}
+
+function resizeCanvas() {
+  currentDevicePixelRatio = window.devicePixelRatio || 1;
+  const width = Math.max(1, Math.round(window.innerWidth * currentDevicePixelRatio));
+  const height = Math.max(1, Math.round(window.innerHeight * currentDevicePixelRatio));
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
+  ctx.setTransform(currentDevicePixelRatio, 0, 0, currentDevicePixelRatio, 0, 0);
+  scheduleRender();
+}
+
+function globalToLocal(point) {
+  return {
+    x: point.x - displayBounds.x,
+    y: point.y - displayBounds.y,
+  };
+}
+
+function localToGlobal(point) {
+  return {
+    x: point.x + displayBounds.x,
+    y: point.y + displayBounds.y,
+  };
+}
+
+function getBrushStyle() {
+  if (!appState) {
+    return {
+      color: '#ff5a5f',
+      width: 4,
+      opacity: 1,
+    };
+  }
+
+  if (appState.activeTool === 'highlighter') {
+    return {
+      color: appState.brushDefaults.highlighter.color,
+      width: appState.brushDefaults.highlighter.width,
+      opacity: appState.brushDefaults.highlighter.opacity,
+    };
+  }
+
+  if (appState.activeTool === 'eraser') {
+    return {
+      color: '#ffffff',
+      width: appState.brushDefaults.eraser.radius,
+      opacity: 0.55,
+    };
+  }
+
+  return {
+    color: appState.brushDefaults.pen.color,
+    width: appState.brushDefaults.pen.width,
+    opacity: appState.brushDefaults.pen.opacity,
+  };
+}
+
+function createTextEditor(x, y, existingStroke = null) {
+  const brush = getBrushStyle();
+  const textarea = document.createElement('textarea');
+  textarea.style.position = 'fixed';
+
+  let left = x;
+  let top = y;
+  if (existingStroke) {
+    const spt = globalToLocal({ x: existingStroke.x, y: existingStroke.y });
+    left = spt.x;
+    top = spt.y;
+    textarea.value = existingStroke.text || '';
+    textarea.style.width = `${existingStroke.width || 200}px`;
+    textarea.style.height = `${existingStroke.height || 80}px`;
+  } else {
+    textarea.style.left = `${left}px`;
+    textarea.style.top = `${top}px`;
+  }
+
+  const mode = existingStroke?.textMode || appState.textMode || 'plain';
+  textarea.style.left = `${left}px`;
+  textarea.style.top = `${top}px`;
+  textarea.style.color = existingStroke?.color || brush.color;
+  textarea.style.font = existingStroke?.font || 'bold 22px sans-serif';
+  if (mode === 'sticky') {
+    textarea.style.background = 'rgba(255, 255, 220, 0.95)';
+    textarea.style.border = '2px dashed #666';
+    textarea.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+    textarea.style.borderRadius = '0px';
+    textarea.style.padding = '8px';
+  } else {
+    textarea.style.background = 'transparent';
+    textarea.style.border = 'none';
+    textarea.style.boxShadow = 'none';
+    textarea.style.borderRadius = '0px';
+    textarea.style.padding = '0px';
+    textarea.style.textShadow = '0 1px 4px rgba(0, 0, 0, 0.8)';
+  }
+  textarea.style.outline = 'none';
+  textarea.style.resize = 'both';
+  textarea.style.whiteSpace = 'pre-wrap';
+  textarea.style.wordWrap = 'break-word';
+  textarea.style.overflowWrap = 'break-word';
+  textarea.style.minWidth = '180px';
+  textarea.style.minHeight = '70px';
+  textarea.style.zIndex = '99999';
+  document.body.appendChild(textarea);
+  textarea.focus();
+
+  let isJustCreated = true;
+  setTimeout(() => {
+    isJustCreated = false;
+  }, 350);
+
+  textarea.addEventListener('pointerdown', (e) => e.stopPropagation());
+  textarea.addEventListener('pointerup', (e) => e.stopPropagation());
+  textarea.addEventListener('click', (e) => e.stopPropagation());
+
+  const commit = async () => {
+    if (isJustCreated) {
+      setTimeout(() => {
+        if (textarea.parentNode) textarea.focus();
+      }, 10);
+      return;
+    }
+    const text = textarea.value.trim();
+    if (existingStroke) {
+      if (!text) {
+        if (window.appBridge.deleteAnnotations) {
+          await window.appBridge.deleteAnnotations([existingStroke.id]);
+        }
+      } else {
+        const updated = {
+          ...existingStroke,
+          text: text,
+          textMode: existingStroke.textMode || appState.textMode || 'plain',
+          width: Math.max(180, textarea.offsetWidth),
+          height: Math.max(70, textarea.offsetHeight)
+        };
+        if (window.appBridge.updateAnnotation) {
+          await window.appBridge.updateAnnotation(updated);
+        }
+      }
+    } else if (text) {
+      const globalPt = localToGlobal({ x: left, y: top });
+      await window.appBridge.addStroke({
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        tool: 'text',
+        textMode: appState.textMode || 'plain',
+        color: brush.color,
+        font: 'bold 22px sans-serif',
+        text: text,
+        x: globalPt.x,
+        y: globalPt.y,
+        width: Math.max(180, textarea.offsetWidth),
+        height: Math.max(70, textarea.offsetHeight)
+      });
+    }
+    if (textarea.parentNode) textarea.parentNode.removeChild(textarea);
+  };
+
+  textarea.addEventListener('blur', commit);
+  textarea.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || (e.key === 'Enter' && (e.ctrlKey || e.metaKey || e.shiftKey))) {
+      e.preventDefault();
+      isJustCreated = false;
+      textarea.blur();
+    }
+  });
+}
+
+function drawStroke(stroke, targetCtx = ctx) {
+  if (stroke.tool === 'text' && stroke.text) {
+    const pt = globalToLocal({ x: stroke.x, y: stroke.y });
+    targetCtx.save();
+    const boxW = stroke.width || 200;
+    const boxH = stroke.height || 80;
+    const mode = stroke.textMode || appState.textMode || 'plain';
+    if (mode === 'sticky') {
+      targetCtx.fillStyle = 'rgba(255, 255, 220, 0.95)';
+      targetCtx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+      targetCtx.shadowBlur = 8;
+      targetCtx.shadowOffsetY = 4;
+      targetCtx.fillRect(pt.x, pt.y, boxW, boxH);
+      targetCtx.shadowColor = 'transparent';
+      targetCtx.strokeStyle = '#e0e0b0';
+      targetCtx.lineWidth = 1;
+      targetCtx.strokeRect(pt.x, pt.y, boxW, boxH);
+    } else {
+      targetCtx.shadowColor = 'rgba(0, 0, 0, 0.75)';
+      targetCtx.shadowBlur = 5;
+      targetCtx.shadowOffsetX = 1;
+      targetCtx.shadowOffsetY = 1;
+    }
+
+    targetCtx.fillStyle = stroke.color || '#333';
+    targetCtx.font = stroke.font || 'bold 22px sans-serif';
+    targetCtx.textBaseline = 'top';
+    const paddingX = mode === 'sticky' ? 10 : 4;
+    const paddingY = mode === 'sticky' ? 10 : 4;
+    const maxLineWidth = Math.max(50, boxW - paddingX * 2);
+    const rawLines = stroke.text.split('\n');
+    let lineY = pt.y + paddingY;
+    for (const rawLine of rawLines) {
+      if (!rawLine) {
+        lineY += 26;
+        continue;
+      }
+      const words = rawLine.split(' ');
+      let currentLine = words[0];
+      for (let i = 1; i < words.length; i += 1) {
+        const word = words[i];
+        const testLine = `${currentLine} ${word}`;
+        const metrics = targetCtx.measureText(testLine);
+        if (metrics.width > maxLineWidth && currentLine.length > 0) {
+          targetCtx.fillText(currentLine, pt.x + paddingX, lineY);
+          lineY += 26;
+          currentLine = word;
+        } else {
+          currentLine = testLine;
+        }
+      }
+      targetCtx.fillText(currentLine, pt.x + paddingX, lineY);
+      lineY += 26;
+    }
+    targetCtx.restore();
+    return;
+  }
+
+  if (stroke.tool === 'shapes') {
+    const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
+    const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
+    const shapeType = stroke.shapeType || 'rectangle';
+
+    targetCtx.save();
+    targetCtx.globalCompositeOperation = 'source-over';
+    targetCtx.strokeStyle = hexToRgba(stroke.color || '#ff5a5f', stroke.opacity || 1);
+    targetCtx.lineWidth = stroke.width || 4;
+    targetCtx.lineCap = 'round';
+    targetCtx.lineJoin = 'round';
+
+    targetCtx.beginPath();
+    if (shapeType === 'rectangle') {
+      const x = Math.min(pStart.x, pEnd.x);
+      const y = Math.min(pStart.y, pEnd.y);
+      const w = Math.abs(pEnd.x - pStart.x);
+      const h = Math.abs(pEnd.y - pStart.y);
+      targetCtx.strokeRect(x, y, w, h);
+    } else if (shapeType === 'circle') {
+      const cx = (pStart.x + pEnd.x) / 2;
+      const cy = (pStart.y + pEnd.y) / 2;
+      const rx = Math.abs(pEnd.x - pStart.x) / 2;
+      const ry = Math.abs(pEnd.y - pStart.y) / 2;
+      targetCtx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      targetCtx.stroke();
+    } else if (shapeType === 'triangle') {
+      const topX = (pStart.x + pEnd.x) / 2;
+      const topY = Math.min(pStart.y, pEnd.y);
+      const bottomY = Math.max(pStart.y, pEnd.y);
+      targetCtx.moveTo(topX, topY);
+      targetCtx.lineTo(pEnd.x, bottomY);
+      targetCtx.lineTo(pStart.x, bottomY);
+      targetCtx.closePath();
+      targetCtx.stroke();
+    } else if (shapeType === 'line') {
+      targetCtx.moveTo(pStart.x, pStart.y);
+      targetCtx.lineTo(pEnd.x, pEnd.y);
+      targetCtx.stroke();
+    } else if (shapeType === 'arrow') {
+      targetCtx.moveTo(pStart.x, pStart.y);
+      targetCtx.lineTo(pEnd.x, pEnd.y);
+      targetCtx.stroke();
+
+      const angle = Math.atan2(pEnd.y - pStart.y, pEnd.x - pStart.x);
+      const headLen = Math.max(12, (stroke.width || 4) * 3);
+      targetCtx.beginPath();
+      targetCtx.moveTo(pEnd.x, pEnd.y);
+      targetCtx.lineTo(pEnd.x - headLen * Math.cos(angle - Math.PI / 6), pEnd.y - headLen * Math.sin(angle - Math.PI / 6));
+      targetCtx.moveTo(pEnd.x, pEnd.y);
+      targetCtx.lineTo(pEnd.x - headLen * Math.cos(angle + Math.PI / 6), pEnd.y - headLen * Math.sin(angle + Math.PI / 6));
+      targetCtx.stroke();
+    }
+    targetCtx.restore();
+    return;
+  }
+
+  if (!stroke.points || stroke.points.length === 0) {
+    return;
+  }
+
+  const points = stroke.points.map(globalToLocal);
+  targetCtx.save();
+  targetCtx.globalCompositeOperation = stroke.tool === 'eraser' ? 'destination-out' : 'source-over';
+  targetCtx.strokeStyle = hexToRgba(stroke.color, stroke.opacity);
+  targetCtx.fillStyle = hexToRgba(stroke.color, stroke.opacity);
+  targetCtx.lineWidth = stroke.width;
+  targetCtx.lineCap = 'round';
+  targetCtx.lineJoin = 'round';
+
+  if (points.length === 1) {
+    const point = points[0];
+    targetCtx.beginPath();
+    targetCtx.arc(point.x, point.y, stroke.width / 2, 0, Math.PI * 2);
+    targetCtx.fill();
+    targetCtx.restore();
+    return;
+  }
+
+  targetCtx.beginPath();
+  targetCtx.moveTo(points[0].x, points[0].y);
+  for (let i = 1; i < points.length; i += 1) {
+    targetCtx.lineTo(points[i].x, points[i].y);
+  }
+  targetCtx.stroke();
+  targetCtx.restore();
+}
+
+function drawPreviewStroke(targetCtx = ctx) {
+  if (!currentStroke) {
+    return;
+  }
+
+  drawStroke(currentStroke, targetCtx);
+}
+
+function render() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  ctx.clearRect(0, 0, width, height);
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, width, height);
+  ctx.clip();
+
+  if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+    ctx.save();
+    if (appState.backgroundMode === 'whiteboard') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+    } else if (appState.backgroundMode === 'blackboard') {
+      ctx.fillStyle = '#18181c';
+      ctx.fillRect(0, 0, width, height);
+    } else if (appState.backgroundMode === 'grid') {
+      ctx.fillStyle = '#f4f4f6';
+      ctx.fillRect(0, 0, width, height);
+      ctx.strokeStyle = '#e0e0e8';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let x = 0; x < width; x += 28) {
+        ctx.moveTo(x, 0); ctx.lineTo(x, height);
+      }
+      for (let y = 0; y < height; y += 28) {
+        ctx.moveTo(0, y); ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+    } else if (appState.backgroundMode === 'ruled') {
+      ctx.fillStyle = '#fefef8';
+      ctx.fillRect(0, 0, width, height);
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let y = 40; y < height; y += 32) {
+        ctx.moveTo(0, y); ctx.lineTo(width, y);
+      }
+      ctx.stroke();
+      ctx.strokeStyle = '#f87171';
+      ctx.beginPath();
+      ctx.moveTo(80, 0); ctx.lineTo(80, height);
+      ctx.stroke();
+    } else if (appState.backgroundMode === 'staff') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 1.5;
+      for (let y = 60; y < height; y += 140) {
+        ctx.beginPath();
+        for (let i = 0; i < 5; i++) {
+          const sy = y + i * 14;
+          ctx.moveTo(0, sy); ctx.lineTo(width, sy);
+        }
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  const highlighterStrokes = [];
+  const normalStrokes = [];
+  for (const stroke of scene.annotations) {
+    if (stroke.tool === 'highlighter' || stroke.origTool === 'highlighter') {
+      highlighterStrokes.push(stroke);
+    } else {
+      normalStrokes.push(stroke);
+    }
+  }
+
+  for (const stroke of normalStrokes) {
+    drawStroke(stroke);
+  }
+
+  const isPreviewHighlighter = currentStroke && (currentStroke.tool === 'highlighter' || currentStroke.origTool === 'highlighter');
+  if (highlighterStrokes.length > 0 || isPreviewHighlighter) {
+    if (!window.hlCanvas) {
+      window.hlCanvas = document.createElement('canvas');
+      window.hlCtx = window.hlCanvas.getContext('2d');
+    }
+    if (window.hlCanvas.width !== width || window.hlCanvas.height !== height) {
+      window.hlCanvas.width = width;
+      window.hlCanvas.height = height;
+    } else {
+      window.hlCtx.clearRect(0, 0, width, height);
+    }
+    for (const stroke of highlighterStrokes) {
+      const origOpacity = stroke.opacity;
+      stroke.opacity = 1;
+      drawStroke(stroke, window.hlCtx);
+      stroke.opacity = origOpacity;
+    }
+    if (isPreviewHighlighter) {
+      const origOpacity = currentStroke.opacity;
+      currentStroke.opacity = 1;
+      drawPreviewStroke(window.hlCtx);
+      currentStroke.opacity = origOpacity;
+    }
+
+    ctx.save();
+    const hlAlpha = (highlighterStrokes[0] && highlighterStrokes[0].opacity) || (currentStroke && currentStroke.opacity) || (appState && appState.brushDefaults && appState.brushDefaults.highlighter && appState.brushDefaults.highlighter.opacity) || 0.35;
+    ctx.globalAlpha = hlAlpha;
+    ctx.drawImage(window.hlCanvas, 0, 0);
+    ctx.restore();
+  }
+
+  if (currentStroke && !isPreviewHighlighter) {
+    drawPreviewStroke();
+  }
+
+  if (laserPoints.length > 0) {
+    laserPoints = laserPoints.filter((p) => Date.now() - p.time < 350);
+    if (laserPoints.length > 0) {
+      ctx.save();
+      for (let i = 1; i < laserPoints.length; i++) {
+        const p1 = globalToLocal(laserPoints[i - 1]);
+        const p2 = globalToLocal(laserPoints[i]);
+        const age = Date.now() - laserPoints[i].time;
+        const alpha = Math.max(0, 1 - age / 350);
+        ctx.strokeStyle = `rgba(255, 30, 30, ${alpha})`;
+        ctx.lineWidth = 6 * alpha + 2;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+      const head = globalToLocal(laserPoints[laserPoints.length - 1]);
+      ctx.fillStyle = '#ff1e1e';
+      ctx.beginPath();
+      ctx.arc(head.x, head.y, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+      scheduleRender();
+    }
+  }
+
+  if (clickRipples.length > 0) {
+    clickRipples = clickRipples.filter((r) => Date.now() - r.time < 400);
+    if (clickRipples.length > 0) {
+      ctx.save();
+      for (const r of clickRipples) {
+        const pt = globalToLocal(r);
+        const progress = (Date.now() - r.time) / 400;
+        const alpha = Math.max(0, 1 - progress);
+        const radius = 10 + progress * 35;
+        ctx.strokeStyle = `rgba(255, 230, 50, ${alpha})`;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = `rgba(255, 230, 50, ${alpha * 0.3})`;
+        ctx.fill();
+      }
+      ctx.restore();
+      scheduleRender();
+    }
+  }
+
+  if (selectedIds.length > 0) {
+    const box = getSelectionBoundingBox(selectedIds);
+    if (box) {
+      ctx.save();
+      ctx.strokeStyle = '#007afd';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 6]);
+      ctx.strokeRect(box.minX, box.minY, box.width, box.height);
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#007afd';
+      ctx.fillRect(box.minX - 5, box.minY - 5, 10, 10);
+      ctx.fillRect(box.maxX - 5, box.minY - 5, 10, 10);
+      ctx.fillRect(box.maxX - 5, box.maxY - 5, 10, 10);
+      ctx.fillRect(box.minX - 5, box.maxY - 5, 10, 10);
+      ctx.restore();
+    }
+  }
+
+  if (marqueeBox) {
+    ctx.save();
+    const x = Math.min(marqueeBox.startX, marqueeBox.currentX);
+    const y = Math.min(marqueeBox.startY, marqueeBox.currentY);
+    const w = Math.abs(marqueeBox.currentX - marqueeBox.startX);
+    const h = Math.abs(marqueeBox.currentY - marqueeBox.startY);
+    ctx.fillStyle = 'rgba(0, 122, 253, 0.15)';
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = '#007afd';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.strokeRect(x, y, w, h);
+    ctx.restore();
+  }
+
+  if (appState && appState.activeTool === 'spotlight' && currentMousePos) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.beginPath();
+    ctx.rect(0, 0, width, height);
+    ctx.arc(currentMousePos.x, currentMousePos.y, 150, 0, Math.PI * 2, true);
+    ctx.fill('evenodd');
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(currentMousePos.x, currentMousePos.y, 150, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  if (appState && appState.activeTool === 'magnifier' && currentMousePos) {
+    const r = 130;
+    const zoom = 2.5;
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(currentMousePos.x, currentMousePos.y, r, 0, Math.PI * 2);
+    ctx.clip();
+
+    if (appState.backgroundMode === 'transparent') {
+      if (magnifierImg && magnifierImg.complete && magnifierImg.naturalWidth > 0) {
+        ctx.save();
+        ctx.translate(currentMousePos.x, currentMousePos.y);
+        ctx.scale(zoom, zoom);
+        ctx.translate(-currentMousePos.x, -currentMousePos.y);
+        ctx.drawImage(magnifierImg, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+      } else {
+        ctx.save();
+        ctx.translate(currentMousePos.x, currentMousePos.y);
+        ctx.scale(zoom, zoom);
+        ctx.translate(-currentMousePos.x, -currentMousePos.y);
+        for (const stroke of scene.annotations) {
+          drawStroke(stroke);
+        }
+        ctx.restore();
+      }
+    } else {
+      ctx.fillStyle = appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff';
+      ctx.fillRect(currentMousePos.x - r, currentMousePos.y - r, r * 2, r * 2);
+
+      ctx.save();
+      ctx.translate(currentMousePos.x, currentMousePos.y);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-currentMousePos.x, -currentMousePos.y);
+
+      for (const stroke of scene.annotations) {
+        drawStroke(stroke);
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(currentMousePos.x, currentMousePos.y, r, 0, Math.PI * 2);
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = '#3b82f6';
+    ctx.stroke();
+
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(59, 130, 246, 0.5)';
+    ctx.beginPath();
+    ctx.moveTo(currentMousePos.x - 15, currentMousePos.y);
+    ctx.lineTo(currentMousePos.x + 15, currentMousePos.y);
+    ctx.moveTo(currentMousePos.x, currentMousePos.y - 15);
+    ctx.lineTo(currentMousePos.x, currentMousePos.y + 15);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+    ctx.save();
+    const zoneY = height - 40;
+    const isHovered = currentMousePos && currentMousePos.y >= zoneY && canDraw();
+    ctx.fillStyle = isHovered ? 'rgba(59, 130, 246, 0.15)' : 'rgba(128, 128, 128, 0.05)';
+    ctx.fillRect(0, zoneY, width, 40);
+    ctx.strokeStyle = isHovered ? '#3b82f6' : 'rgba(128, 128, 128, 0.25)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.moveTo(0, zoneY);
+    ctx.lineTo(width, zoneY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = isHovered ? '#3b82f6' : 'rgba(128, 128, 128, 0.4)';
+    ctx.font = '11px Segoe UI, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(isHovered ? 'Release to Create New Page' : '+ New Page Bottom Zone', width / 2, zoneY + 24);
+    ctx.restore();
+  }
+
+  ctx.restore();
+}
+
+function canDraw() {
+  return appState && !appState.passThrough;
+}
+
+function getSelectionBoundingBox(ids) {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const stroke of scene.annotations) {
+    if (ids.includes(stroke.id)) {
+      if (stroke.tool === 'text') {
+        const pt = globalToLocal({ x: stroke.x, y: stroke.y });
+        minX = Math.min(minX, pt.x - 4);
+        minY = Math.min(minY, pt.y - 4);
+        maxX = Math.max(maxX, pt.x + (stroke.width || 200) + 4);
+        maxY = Math.max(maxY, pt.y + (stroke.height || 80) + 4);
+      } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+        const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
+        const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
+        minX = Math.min(minX, pStart.x - 10, pEnd.x - 10);
+        minY = Math.min(minY, pStart.y - 10, pEnd.y - 10);
+        maxX = Math.max(maxX, pStart.x + 10, pEnd.x + 10);
+        maxY = Math.max(maxY, pStart.y + 10, pEnd.y + 10);
+      } else if (stroke.points) {
+        for (const p of stroke.points) {
+          const pt = globalToLocal(p);
+          if (pt.x < minX) minX = pt.x;
+          if (pt.x > maxX) maxX = pt.x;
+          if (pt.y < minY) minY = pt.y;
+          if (pt.y > maxY) maxY = pt.y;
+        }
+        minX -= 10; minY -= 10; maxX += 10; maxY += 10;
+      }
+    }
+  }
+  if (minX === Infinity) return null;
+  return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
+}
+
+function addPointToStroke(stroke, point) {
+  const lastPoint = stroke.points[stroke.points.length - 1];
+  const distance = Math.hypot(point.x - lastPoint.x, point.y - lastPoint.y);
+  if (distance >= 0.75) {
+    stroke.points.push(point);
+  }
+}
+
+function createStrokeFromEvent(event) {
+  const brush = getBrushStyle();
+  const globalPoint = localToGlobal({ x: event.offsetX, y: event.offsetY });
+
+  if (appState.activeTool === 'shapes') {
+    return {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      tool: 'shapes',
+      shapeType: appState.activeShapeType || 'rectangle',
+      color: brush.color,
+      width: brush.width,
+      opacity: brush.opacity,
+      start: { ...globalPoint },
+      end: { ...globalPoint },
+    };
+  }
+
+  return {
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    tool: appState.activeTool,
+    color: brush.color,
+    width: brush.width,
+    opacity: brush.opacity,
+    points: [globalPoint],
+  };
+}
+
+function perpendicularDistance(point, lineStart, lineEnd) {
+  const dx = lineEnd.x - lineStart.x;
+  const dy = lineEnd.y - lineStart.y;
+  const mag = Math.hypot(dx, dy);
+  if (mag === 0) return Math.hypot(point.x - lineStart.x, point.y - lineStart.y);
+  const u = ((point.x - lineStart.x) * dx + (point.y - lineStart.y) * dy) / (mag * mag);
+  const ix = lineStart.x + u * dx;
+  const iy = lineStart.y + u * dy;
+  return Math.hypot(point.x - ix, point.y - iy);
+}
+
+function simplifyPath(points, epsilon) {
+  if (points.length <= 2) return points;
+  let dmax = 0;
+  let index = 0;
+  const end = points.length - 1;
+  for (let i = 1; i < end; i++) {
+    const d = perpendicularDistance(points[i], points[0], points[end]);
+    if (d > dmax) {
+      index = i;
+      dmax = d;
+    }
+  }
+  if (dmax > epsilon) {
+    const recResults1 = simplifyPath(points.slice(0, index + 1), epsilon);
+    const recResults2 = simplifyPath(points.slice(index), epsilon);
+    return recResults1.slice(0, recResults1.length - 1).concat(recResults2);
+  } else {
+    return [points[0], points[end]];
+  }
+}
+
+function recognizeAndSnapShape(stroke) {
+  const pts = stroke.points;
+  if (!pts || pts.length < 5) return;
+
+  let minX = pts[0].x, maxX = pts[0].x, minY = pts[0].y, maxY = pts[0].y;
+  let pathLen = 0;
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[i];
+    if (p.x < minX) minX = p.x;
+    if (p.x > maxX) maxX = p.x;
+    if (p.y < minY) minY = p.y;
+    if (p.y > maxY) maxY = p.y;
+    if (i > 0) {
+      pathLen += Math.hypot(p.x - pts[i - 1].x, p.y - pts[i - 1].y);
+    }
+  }
+
+  const width = maxX - minX;
+  const height = maxY - minY;
+  const diag = Math.hypot(width, height);
+  if (diag < 15) return;
+
+  const pStart = pts[0];
+  const pEnd = pts[pts.length - 1];
+  const endDist = Math.hypot(pEnd.x - pStart.x, pEnd.y - pStart.y);
+
+  const isClosed = (endDist < 0.3 * diag) || (endDist < 0.25 * pathLen);
+
+  if (isClosed) {
+    let cx = 0, cy = 0;
+    for (const p of pts) { cx += p.x; cy += p.y; }
+    cx /= pts.length;
+    cy /= pts.length;
+
+    let avgR = 0;
+    const radii = [];
+    for (const p of pts) {
+      const r = Math.hypot(p.x - cx, p.y - cy);
+      radii.push(r);
+      avgR += r;
+    }
+    avgR /= pts.length;
+
+    let variance = 0;
+    for (const r of radii) {
+      variance += Math.pow(r - avgR, 2);
+    }
+    const stdDev = Math.sqrt(variance / pts.length);
+    const cv = stdDev / (avgR || 1);
+
+    if (cv < 0.25) {
+      const aspectRatio = Math.min(width, height) / (Math.max(width, height) || 1);
+      const newPoints = [];
+      const steps = 60;
+      if (aspectRatio > 0.7) {
+        const radius = (width + height) / 4;
+        for (let i = 0; i <= steps; i++) {
+          const angle = (i / steps) * Math.PI * 2;
+          newPoints.push({
+            x: Math.round(cx + radius * Math.cos(angle)),
+            y: Math.round(cy + radius * Math.sin(angle))
+          });
+        }
+      } else {
+        const rx = width / 2;
+        const ry = height / 2;
+        for (let i = 0; i <= steps; i++) {
+          const angle = (i / steps) * Math.PI * 2;
+          newPoints.push({
+            x: Math.round(cx + rx * Math.cos(angle)),
+            y: Math.round(cy + ry * Math.sin(angle))
+          });
+        }
+      }
+      stroke.points = newPoints;
+      return;
+    }
+
+    const simplified = simplifyPath(pts, 0.08 * diag);
+    if (simplified.length >= 4 && simplified.length <= 6) {
+      if (simplified.length === 5) {
+        stroke.points = [
+          { x: minX, y: minY },
+          { x: maxX, y: minY },
+          { x: maxX, y: maxY },
+          { x: minX, y: maxY },
+          { x: minX, y: minY }
+        ];
+        return;
+      }
+      if (simplified.length === 4) {
+        stroke.points = simplified;
+        return;
+      }
+    }
+
+    stroke.points = [
+      { x: minX, y: minY },
+      { x: maxX, y: minY },
+      { x: maxX, y: maxY },
+      { x: minX, y: maxY },
+      { x: minX, y: minY }
+    ];
+    return;
+  }
+
+  const linearity = endDist / (pathLen || 1);
+  if (linearity > 0.82) {
+    stroke.points = [pStart, pEnd];
+    return;
+  }
+}
+
+function recognizeShape(stroke) {
+  if (!stroke || !stroke.points || stroke.points.length < 6) {
+    return null;
+  }
+
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let totalPathLen = 0;
+
+  for (let i = 0; i < stroke.points.length; i++) {
+    const p = stroke.points[i];
+    minX = Math.min(minX, p.x);
+    minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x);
+    maxY = Math.max(maxY, p.y);
+    if (i > 0) {
+      totalPathLen += Math.hypot(p.x - stroke.points[i - 1].x, p.y - stroke.points[i - 1].y);
+    }
+  }
+
+  const width = maxX - minX;
+  const height = maxY - minY;
+  const diag = Math.hypot(width, height);
+  if (diag < 15) {
+    return null;
+  }
+
+  const pStart = stroke.points[0];
+  const pEnd = stroke.points[stroke.points.length - 1];
+  const closedDist = Math.hypot(pEnd.x - pStart.x, pEnd.y - pStart.y);
+
+  const isMagicShape = stroke.tool === 'shapes';
+
+  // Check simple line first: if end-to-end distance is very close to total path length
+  const lineThreshold = isMagicShape ? 0.88 : 0.96;
+  const lineMinDist = isMagicShape ? 25 : 50;
+  if (totalPathLen > 0 && (closedDist / totalPathLen) > lineThreshold && closedDist > lineMinDist) {
+    return { shapeType: 'line', start: { ...pStart }, end: { ...pEnd } };
+  }
+
+  const isClosed = isMagicShape ? (closedDist < diag * 0.50 || closedDist < 75) : (closedDist < diag * 0.35);
+
+  if (isClosed) {
+    const cx = (minX + maxX) / 2;
+    const cy = (minY + maxY) / 2;
+    const rx = width / 2;
+    const ry = height / 2;
+    if (rx < 2 || ry < 2) return null;
+
+    let sumCircleErr = 0;
+    let sumRectErr = 0;
+    let sumTriErr = 0;
+
+    const vTop = { x: cx, y: minY };
+    const vBottomRight = { x: maxX, y: maxY };
+    const vBottomLeft = { x: minX, y: maxY };
+
+    function distToSeg(p, a, b) {
+      const l2 = Math.hypot(b.x - a.x, b.y - a.y) ** 2;
+      if (l2 === 0) return Math.hypot(p.x - a.x, p.y - a.y);
+      let t = ((p.x - a.x) * (b.x - a.x) + (p.y - a.y) * (b.y - a.y)) / l2;
+      t = Math.max(0, Math.min(1, t));
+      return Math.hypot(p.x - (a.x + t * (b.x - a.x)), p.y - (a.y + t * (b.y - a.y)));
+    }
+
+    for (const p of stroke.points) {
+      const dx = (p.x - cx) / rx;
+      const dy = (p.y - cy) / ry;
+      const distFromCenter = Math.hypot(dx, dy);
+      sumCircleErr += Math.abs(distFromCenter - 1.0);
+
+      const dLeft = Math.abs(p.x - minX);
+      const dRight = Math.abs(p.x - maxX);
+      const dTop = Math.abs(p.y - minY);
+      const dBottom = Math.abs(p.y - maxY);
+      const minEdgeDist = Math.min(dLeft, dRight, dTop, dBottom);
+      sumRectErr += minEdgeDist / (diag / 2);
+
+      const d1 = distToSeg(p, vTop, vBottomRight);
+      const d2 = distToSeg(p, vBottomRight, vBottomLeft);
+      const d3 = distToSeg(p, vBottomLeft, vTop);
+      sumTriErr += Math.min(d1, d2, d3) / (diag / 2);
+    }
+
+    const avgCircleErr = sumCircleErr / stroke.points.length;
+    const avgRectErr = sumRectErr / stroke.points.length;
+    const avgTriErr = sumTriErr / stroke.points.length;
+
+    const triThresh = isMagicShape ? 0.35 : 0.20;
+    const circleThresh = isMagicShape ? 0.32 : 0.18;
+    const rectThresh = isMagicShape ? 0.32 : 0.18;
+
+    if (avgTriErr < triThresh && avgTriErr < avgCircleErr && avgTriErr < avgRectErr) {
+      return { shapeType: 'triangle', start: { x: minX, y: minY }, end: { x: maxX, y: maxY } };
+    }
+
+    if (avgCircleErr < circleThresh && avgCircleErr <= avgRectErr) {
+      const aspect = Math.min(width, height) / Math.max(width, height);
+      if (aspect > 0.65) {
+        const r = Math.max(rx, ry);
+        return { shapeType: 'circle', start: { x: cx - r, y: cy - r }, end: { x: cx + r, y: cy + r } };
+      }
+      return { shapeType: 'circle', start: { x: minX, y: minY }, end: { x: maxX, y: maxY } };
+    }
+
+    if (avgRectErr < rectThresh) {
+      return { shapeType: 'rectangle', start: { x: minX, y: minY }, end: { x: maxX, y: maxY } };
+    }
+  }
+
+  let maxDist = 0;
+  let pMax = stroke.points[stroke.points.length - 1];
+  let maxIdx = stroke.points.length - 1;
+  for (let i = 0; i < stroke.points.length; i++) {
+    const p = stroke.points[i];
+    const d = Math.hypot(p.x - pStart.x, p.y - pStart.y);
+    if (d > maxDist) {
+      maxDist = d;
+      pMax = p;
+      maxIdx = i;
+    }
+  }
+
+  const lineLen = maxDist;
+  if (lineLen < 20) {
+    return null;
+  }
+
+  let sumLineDist = 0;
+  for (const p of stroke.points) {
+    const d = Math.abs((pMax.y - pStart.y) * p.x - (pMax.x - pStart.x) * p.y + pMax.x * pStart.y - pMax.y * pStart.x) / lineLen;
+    sumLineDist += d;
+  }
+  const avgLineErr = sumLineDist / stroke.points.length;
+
+  let sumShaftDist = 0;
+  let shaftCount = 0;
+  for (let i = 0; i <= maxIdx; i++) {
+    const p = stroke.points[i];
+    const d = Math.abs((pMax.y - pStart.y) * p.x - (pMax.x - pStart.x) * p.y + pMax.x * pStart.y - pMax.y * pStart.x) / lineLen;
+    sumShaftDist += d;
+    shaftCount++;
+  }
+  const avgShaftErr = shaftCount > 0 ? sumShaftDist / shaftCount : avgLineErr;
+
+  const arrowThresh = isMagicShape ? 0.30 : 0.15;
+  const lineErrThresh = isMagicShape ? 0.28 : 0.15;
+
+  if (avgShaftErr < arrowThresh) {
+    let hasBarb = false;
+    if (maxIdx < stroke.points.length - 2) {
+      for (let i = maxIdx + 1; i < stroke.points.length; i++) {
+        const p = stroke.points[i];
+        const d = Math.abs((pMax.y - pStart.y) * p.x - (pMax.x - pStart.x) * p.y + pMax.x * pStart.y - pMax.y * pStart.x) / lineLen;
+        const distToStart = Math.hypot(p.x - pStart.x, p.y - pStart.y);
+        if (d > 5 || distToStart < lineLen - 8) {
+          hasBarb = true;
+          break;
+        }
+      }
+    }
+
+    if (hasBarb) {
+      return { shapeType: 'arrow', start: { ...pStart }, end: { ...pMax } };
+    } else if (avgLineErr < lineErrThresh) {
+      return { shapeType: 'line', start: { ...pStart }, end: { ...pMax } };
+    }
+  }
+
+  return null;
+}
+
+async function checkAutoAdvance(stroke) {
+  if (!appState || !appState.backgroundMode || appState.backgroundMode === 'transparent') return;
+  if (!stroke || ['eraser', 'laser', 'select', 'spotlight', 'magnifier'].includes(stroke.tool)) return;
+
+  let hitBottom = false;
+  const threshY = window.innerHeight - 50;
+  if (stroke.points && stroke.points.length > 0) {
+    for (const p of stroke.points) {
+      if (globalToLocal(p).y >= threshY) {
+        hitBottom = true;
+        break;
+      }
+    }
+  } else if (stroke.start || stroke.end) {
+    const sy = stroke.start ? globalToLocal(stroke.start).y : 0;
+    const ey = stroke.end ? globalToLocal(stroke.end).y : 0;
+    if (Math.max(sy, ey) >= threshY) hitBottom = true;
+  }
+
+  if (hitBottom && Date.now() - lastAutoAdvanceTime > 1500) {
+    lastAutoAdvanceTime = Date.now();
+    if (window.appBridge && window.appBridge.nextPage) {
+      const nextState = await window.appBridge.nextPage();
+      if (nextState && typeof nextState.currentPageIndex === 'number') {
+        showPageToast(`Page ${nextState.currentPageIndex + 1} created`);
+      } else {
+        showPageToast(`New page created`);
+      }
+    }
+  }
+}
+
+async function finalizeStroke() {
+  if (!currentStroke) {
+    return;
+  }
+
+  const stroke = currentStroke;
+  currentStroke = null;
+
+  if (stroke.tool === 'shapes') {
+    if (stroke.start && stroke.end && Math.hypot(stroke.end.x - stroke.start.x, stroke.end.y - stroke.start.y) >= 4) {
+      await window.appBridge.addStroke(stroke);
+      await checkAutoAdvance(stroke);
+    }
+    return;
+  }
+
+  if (stroke.tool === 'eraser') {
+    await window.appBridge.erasePath({
+      points: stroke.points,
+      radius: appState.brushDefaults.eraser.radius,
+    });
+  } else {
+    const recognized = (stroke.tool === 'shapes' || stroke.tool === 'pen') ? recognizeShape(stroke) : null;
+    if (recognized) {
+      stroke.isAutoShape = true;
+      stroke.origTool = stroke.tool;
+      stroke.origPoints = stroke.points ? stroke.points.map(point => ({ x: point.x, y: point.y })) : null;
+      stroke.origShapeType = recognized.shapeType;
+      stroke.origStart = { ...recognized.start };
+      stroke.origEnd = { ...recognized.end };
+
+      stroke.tool = 'shapes';
+      stroke.shapeType = recognized.shapeType;
+      stroke.start = { ...recognized.start };
+      stroke.end = { ...recognized.end };
+    }
+    await window.appBridge.addStroke(stroke);
+    await checkAutoAdvance(stroke);
+  }
+}
+
+canvas.addEventListener('pointerdown', (event) => {
+  if (appState && appState.clickHalo) {
+    const globalPt = localToGlobal({ x: event.offsetX, y: event.offsetY });
+    clickRipples.push({ x: globalPt.x, y: globalPt.y, time: Date.now() });
+    scheduleRender();
+  }
+
+  if (!canDraw()) {
+    return;
+  }
+
+  if (appState.activeTool === 'laser' || appState.activeTool === 'spotlight' || appState.activeTool === 'magnifier') {
+    return;
+  }
+
+  if (appState.activeTool === 'text') {
+    const pt = { x: event.offsetX, y: event.offsetY };
+    for (let i = scene.annotations.length - 1; i >= 0; i--) {
+      const stroke = scene.annotations[i];
+      if (stroke.tool === 'text') {
+        const spt = globalToLocal({ x: stroke.x, y: stroke.y });
+        const w = stroke.width || 200;
+        const h = stroke.height || 80;
+        if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
+          isDraggingText = {
+            stroke: stroke,
+            startX: event.offsetX,
+            startY: event.offsetY,
+            clientX: event.clientX,
+            clientY: event.clientY,
+            hasMoved: false
+          };
+          canvas.style.cursor = 'grabbing';
+          canvas.setPointerCapture(event.pointerId);
+          return;
+        }
+      }
+    }
+    createTextEditor(event.clientX, event.clientY);
+    return;
+  }
+
+  if (appState.activeTool === 'select') {
+    const pt = { x: event.offsetX, y: event.offsetY };
+
+    if (selectedIds.length > 0) {
+      const box = getSelectionBoundingBox(selectedIds);
+      if (box) {
+        const handles = [
+          { name: 'tl', x: box.minX, y: box.minY },
+          { name: 'tr', x: box.maxX, y: box.minY },
+          { name: 'br', x: box.maxX, y: box.maxY },
+          { name: 'bl', x: box.minX, y: box.maxY }
+        ];
+        for (const h of handles) {
+          if (Math.hypot(pt.x - h.x, pt.y - h.y) <= 12) {
+            isResizingSelection = {
+              handle: h.name,
+              origBox: { ...box },
+              origStrokes: JSON.parse(JSON.stringify(scene.annotations.filter((a) => selectedIds.includes(a.id)))),
+              startPt: { ...pt }
+            };
+            canvas.setPointerCapture(event.pointerId);
+            scheduleRender();
+            return;
+          }
+        }
+      }
+    }
+
+    let clickedId = null;
+    for (let i = scene.annotations.length - 1; i >= 0; i--) {
+      const stroke = scene.annotations[i];
+      if (stroke.tool === 'text') {
+        const spt = globalToLocal({ x: stroke.x, y: stroke.y });
+        const w = stroke.width || 200;
+        const h = stroke.height || 80;
+        if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
+          clickedId = stroke.id;
+          break;
+        }
+      } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+        const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
+        const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
+        const minX = Math.min(pStart.x, pEnd.x) - 10;
+        const maxX = Math.max(pStart.x, pEnd.x) + 10;
+        const minY = Math.min(pStart.y, pEnd.y) - 10;
+        const maxY = Math.max(pStart.y, pEnd.y) + 10;
+        if (pt.x >= minX && pt.x <= maxX && pt.y >= minY && pt.y <= maxY) {
+          clickedId = stroke.id;
+          break;
+        }
+      } else if (stroke.points) {
+        for (const p of stroke.points) {
+          const spt = globalToLocal(p);
+          if (Math.hypot(pt.x - spt.x, pt.y - spt.y) <= 15) {
+            clickedId = stroke.id;
+            break;
+          }
+        }
+        if (clickedId) break;
+      }
+    }
+
+    if (clickedId) {
+      if (!selectedIds.includes(clickedId)) {
+        selectedIds = [clickedId];
+      }
+      isDraggingSelection = true;
+      dragStartX = pt.x;
+      dragStartY = pt.y;
+      canvas.setPointerCapture(event.pointerId);
+      scheduleRender();
+    } else {
+      selectedIds = [];
+      marqueeBox = { startX: pt.x, startY: pt.y, currentX: pt.x, currentY: pt.y };
+      canvas.setPointerCapture(event.pointerId);
+      scheduleRender();
+    }
+    return;
+  }
+
+  canvas.setPointerCapture(event.pointerId);
+  currentStroke = createStrokeFromEvent(event);
+  scheduleRender();
+});
+
+canvas.addEventListener('pointermove', (event) => {
+  currentMousePos = { x: event.offsetX, y: event.offsetY };
+  if (appState && (appState.activeTool === 'spotlight' || appState.activeTool === 'magnifier')) {
+    scheduleRender();
+  }
+
+  if (appState && appState.activeTool === 'laser') {
+    const globalPt = localToGlobal({ x: event.offsetX, y: event.offsetY });
+    laserPoints.push({ x: globalPt.x, y: globalPt.y, time: Date.now() });
+    scheduleRender();
+    return;
+  }
+
+  if (marqueeBox) {
+    marqueeBox.currentX = event.offsetX;
+    marqueeBox.currentY = event.offsetY;
+    scheduleRender();
+    return;
+  }
+
+  if (isResizingSelection && selectedIds.length > 0) {
+    const dx = event.offsetX - isResizingSelection.startPt.x;
+    const dy = event.offsetY - isResizingSelection.startPt.y;
+    const box = isResizingSelection.origBox;
+    const handle = isResizingSelection.handle;
+
+    let anchor = { x: box.minX, y: box.minY };
+    let movingCorner = { x: box.maxX, y: box.maxY };
+    if (handle === 'tl') { anchor = { x: box.maxX, y: box.maxY }; movingCorner = { x: box.minX, y: box.minY }; }
+    else if (handle === 'tr') { anchor = { x: box.minX, y: box.maxY }; movingCorner = { x: box.maxX, y: box.minY }; }
+    else if (handle === 'bl') { anchor = { x: box.maxX, y: box.minY }; movingCorner = { x: box.minX, y: box.maxY }; }
+
+    const origW = movingCorner.x - anchor.x;
+    const origH = movingCorner.y - anchor.y;
+    if (Math.abs(origW) < 1 || Math.abs(origH) < 1) return;
+
+    let scaleX = (origW + dx) / origW;
+    let scaleY = (origH + dy) / origH;
+    if (Math.abs(scaleX) < 0.1) scaleX = 0.1 * Math.sign(scaleX || 1);
+    if (Math.abs(scaleY) < 0.1) scaleY = 0.1 * Math.sign(scaleY || 1);
+
+    const gAnchor = localToGlobal(anchor);
+
+    for (const stroke of scene.annotations) {
+      if (selectedIds.includes(stroke.id)) {
+        const orig = isResizingSelection.origStrokes.find((a) => a.id === stroke.id);
+        if (!orig) continue;
+        if (stroke.tool === 'text') {
+          stroke.x = gAnchor.x + (orig.x - gAnchor.x) * scaleX;
+          stroke.y = gAnchor.y + (orig.y - gAnchor.y) * scaleY;
+          stroke.width = Math.max(50, Math.round((orig.width || 200) * Math.abs(scaleX)));
+          stroke.height = Math.max(30, Math.round((orig.height || 80) * Math.abs(scaleY)));
+        } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+          if (orig.start) stroke.start = { x: gAnchor.x + (orig.start.x - gAnchor.x) * scaleX, y: gAnchor.y + (orig.start.y - gAnchor.y) * scaleY };
+          if (orig.end) stroke.end = { x: gAnchor.x + (orig.end.x - gAnchor.x) * scaleX, y: gAnchor.y + (orig.end.y - gAnchor.y) * scaleY };
+          if (orig.points) stroke.points = orig.points.map((p) => ({ x: gAnchor.x + (p.x - gAnchor.x) * scaleX, y: gAnchor.y + (p.y - gAnchor.y) * scaleY }));
+        } else if (orig.points) {
+          stroke.points = orig.points.map((p) => ({
+            x: gAnchor.x + (p.x - gAnchor.x) * scaleX,
+            y: gAnchor.y + (p.y - gAnchor.y) * scaleY
+          }));
+        }
+      }
+    }
+    scheduleRender();
+    return;
+  }
+
+  if (isDraggingSelection && selectedIds.length > 0) {
+    const dx = event.offsetX - dragStartX;
+    const dy = event.offsetY - dragStartY;
+    for (const stroke of scene.annotations) {
+      if (selectedIds.includes(stroke.id)) {
+        if (stroke.tool === 'text') {
+          stroke.x += dx;
+          stroke.y += dy;
+        } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+          if (stroke.start) { stroke.start.x += dx; stroke.start.y += dy; }
+          if (stroke.end) { stroke.end.x += dx; stroke.end.y += dy; }
+          if (stroke.points) {
+            for (const p of stroke.points) { p.x += dx; p.y += dy; }
+          }
+        } else if (stroke.points) {
+          for (const p of stroke.points) {
+            p.x += dx;
+            p.y += dy;
+          }
+        }
+      }
+    }
+    dragStartX = event.offsetX;
+    dragStartY = event.offsetY;
+    scheduleRender();
+    return;
+  }
+
+  if (isDraggingText) {
+    const dx = event.offsetX - isDraggingText.startX;
+    const dy = event.offsetY - isDraggingText.startY;
+    if (Math.hypot(dx, dy) > 3 || isDraggingText.hasMoved) {
+      isDraggingText.hasMoved = true;
+      isDraggingText.stroke.x += dx;
+      isDraggingText.stroke.y += dy;
+      isDraggingText.startX = event.offsetX;
+      isDraggingText.startY = event.offsetY;
+      canvas.style.cursor = 'grabbing';
+      scheduleRender();
+    }
+    return;
+  }
+
+  if (!currentStroke) {
+    if (!isDraggingSelection && !isResizingSelection && !marqueeBox && (appState.activeTool === 'text' || appState.activeTool === 'select')) {
+      let overText = false;
+      for (const stroke of scene.annotations) {
+        if (stroke.tool === 'text') {
+          const spt = globalToLocal({ x: stroke.x, y: stroke.y });
+          const w = stroke.width || 200;
+          const h = stroke.height || 80;
+          if (event.offsetX >= spt.x && event.offsetX <= spt.x + w && event.offsetY >= spt.y && event.offsetY <= spt.y + h) {
+            overText = true;
+            break;
+          }
+        }
+      }
+      canvas.style.cursor = overText ? 'grab' : (appState.activeTool === 'select' ? 'default' : 'text');
+    }
+    return;
+  }
+
+  if (currentStroke.tool === 'shapes') {
+    currentStroke.end = localToGlobal({ x: event.offsetX, y: event.offsetY });
+    scheduleRender();
+    return;
+  }
+
+  const globalPoint = localToGlobal({ x: event.offsetX, y: event.offsetY });
+  addPointToStroke(currentStroke, globalPoint);
+  scheduleRender();
+});
+
+canvas.addEventListener('pointerup', async (event) => {
+  if (isResizingSelection) {
+    isResizingSelection = null;
+    const updatedStrokes = scene.annotations.filter((stroke) => selectedIds.includes(stroke.id));
+    if (updatedStrokes.length > 0) {
+      if (window.appBridge.updateAnnotations) {
+        await window.appBridge.updateAnnotations(updatedStrokes);
+      } else {
+        for (const stroke of updatedStrokes) {
+          await window.appBridge.updateAnnotation(stroke);
+        }
+      }
+    }
+    scheduleRender();
+    return;
+  }
+
+  if (marqueeBox) {
+    const minX = Math.min(marqueeBox.startX, marqueeBox.currentX);
+    const maxX = Math.max(marqueeBox.startX, marqueeBox.currentX);
+    const minY = Math.min(marqueeBox.startY, marqueeBox.currentY);
+    const maxY = Math.max(marqueeBox.startY, marqueeBox.currentY);
+    marqueeBox = null;
+
+    const newSelected = [];
+    if (Math.hypot(maxX - minX, maxY - minY) > 5) {
+      for (const stroke of scene.annotations) {
+        let box = null;
+        if (stroke.tool === 'text') {
+          const pt = globalToLocal({ x: stroke.x, y: stroke.y });
+          box = { minX: pt.x, minY: pt.y, maxX: pt.x + (stroke.width || 200), maxY: pt.y + (stroke.height || 80) };
+        } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+          const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
+          const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
+          box = { minX: Math.min(pStart.x, pEnd.x), minY: Math.min(pStart.y, pEnd.y), maxX: Math.max(pStart.x, pEnd.x), maxY: Math.max(pStart.y, pEnd.y) };
+        } else if (stroke.points && stroke.points.length > 0) {
+          let sMinX = Infinity, sMinY = Infinity, sMaxX = -Infinity, sMaxY = -Infinity;
+          for (const p of stroke.points) {
+            const pt = globalToLocal(p);
+            if (pt.x < sMinX) sMinX = pt.x;
+            if (pt.x > sMaxX) sMaxX = pt.x;
+            if (pt.y < sMinY) sMinY = pt.y;
+            if (pt.y > sMaxY) sMaxY = pt.y;
+          }
+          box = { minX: sMinX, minY: sMinY, maxX: sMaxX, maxY: sMaxY };
+        }
+        if (box && !(box.maxX < minX || box.minX > maxX || box.maxY < minY || box.minY > maxY)) {
+          newSelected.push(stroke.id);
+        }
+      }
+    }
+    selectedIds = newSelected;
+    scheduleRender();
+    return;
+  }
+
+  if (isDraggingSelection) {
+    isDraggingSelection = false;
+    const updatedStrokes = scene.annotations.filter((stroke) => selectedIds.includes(stroke.id));
+    if (updatedStrokes.length > 0) {
+      if (window.appBridge.updateAnnotations) {
+        await window.appBridge.updateAnnotations(updatedStrokes);
+      } else {
+        for (const stroke of updatedStrokes) {
+          await window.appBridge.updateAnnotation(stroke);
+        }
+      }
+    }
+    scheduleRender();
+    return;
+  }
+
+  if (isDraggingText) {
+    const dragObj = isDraggingText;
+    isDraggingText = null;
+    canvas.style.cursor = 'grab';
+    if (dragObj.hasMoved) {
+      if (window.appBridge.updateAnnotation) {
+        await window.appBridge.updateAnnotation(dragObj.stroke);
+      }
+      scheduleRender();
+    } else {
+      createTextEditor(dragObj.clientX, dragObj.clientY, dragObj.stroke);
+    }
+    return;
+  }
+
+  if (!currentStroke) {
+    if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+      if (event.offsetY >= window.innerHeight - 50 && Date.now() - lastAutoAdvanceTime > 1500) {
+        lastAutoAdvanceTime = Date.now();
+        if (window.appBridge && window.appBridge.nextPage) {
+          const nextState = await window.appBridge.nextPage();
+          if (nextState && typeof nextState.currentPageIndex === 'number') {
+            showPageToast(`Page ${nextState.currentPageIndex + 1} created`);
+          } else {
+            showPageToast(`New page created`);
+          }
+        }
+      }
+    }
+    return;
+  }
+
+  try {
+    await finalizeStroke(event);
+  } finally {
+    scheduleRender();
+  }
+});
+
+canvas.addEventListener('pointercancel', () => {
+  currentStroke = null;
+  isDraggingSelection = false;
+  isResizingSelection = null;
+  isDraggingText = null;
+  marqueeBox = null;
+  scheduleRender();
+});
+
+canvas.addEventListener('dblclick', (event) => {
+  if (!canDraw()) return;
+  const pt = { x: event.offsetX, y: event.offsetY };
+  for (let i = scene.annotations.length - 1; i >= 0; i--) {
+    const stroke = scene.annotations[i];
+    if (stroke.tool === 'text') {
+      const spt = globalToLocal({ x: stroke.x, y: stroke.y });
+      const w = stroke.width || 200;
+      const h = stroke.height || 80;
+      if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
+        createTextEditor(event.clientX, event.clientY, stroke);
+        break;
+      }
+    }
+  }
+});
+
+window.addEventListener('keydown', async (event) => {
+  if (event.key === 'Escape') {
+    currentStroke = null;
+    scheduleRender();
+  }
+
+  if ((event.key === 'Delete' || event.key === 'Backspace') && selectedIds.length > 0 && (!document.activeElement || document.activeElement.tagName !== 'TEXTAREA')) {
+    event.preventDefault();
+    await window.appBridge.deleteAnnotations(selectedIds);
+    selectedIds = [];
+    scheduleRender();
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'z') {
+    await window.appBridge.undo();
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key.toLowerCase() === 'y') {
+    await window.appBridge.redo();
+  }
+
+  if ((event.key.toLowerCase() === 'r' || event.key.toLowerCase() === 'c') && (!document.activeElement || document.activeElement.tagName !== 'TEXTAREA')) {
+    event.preventDefault();
+    await window.appBridge.revertAutoShape();
+  }
+});
+
+async function bootstrapApp() {
+  bootstrap = await window.appBridge.getBootstrap();
+  appState = bootstrap.appState;
+  scene = bootstrap.scene;
+  displayBounds = bootstrap.display?.bounds || displayBounds;
+  resizeCanvas();
+  setupBoardNav();
+  updateBoardNav();
+
+  window.appBridge.onStateChanged((nextState) => {
+    appState = nextState;
+    updateMagnifierImg();
+    updateBoardNav();
+    if (currentStroke && currentStroke.tool !== appState.activeTool) {
+      currentStroke = null;
+    }
+    scheduleRender();
+  });
+
+  window.appBridge.onSceneChanged((nextScene) => {
+    scene = nextScene;
+    updateBoardNav();
+    scheduleRender();
+  });
+
+  if (window.appBridge.onRequestExport) {
+    window.appBridge.onRequestExport(async (payload) => {
+      const { bgDataUrl, format = 'png', quality = 0.9, width, height, copyToClipboard, autoSavePath } = payload;
+      
+      const exportCanvas = document.createElement('canvas');
+      exportCanvas.width = width || window.innerWidth;
+      exportCanvas.height = height || window.innerHeight;
+      const exportCtx = exportCanvas.getContext('2d');
+      
+      if (bgDataUrl) {
+        await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            exportCtx.drawImage(img, 0, 0, exportCanvas.width, exportCanvas.height);
+            resolve();
+          };
+          img.onerror = resolve;
+          img.src = bgDataUrl;
+        });
+      } else if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+        if (appState.backgroundMode === 'whiteboard' || appState.backgroundMode === 'staff' || appState.backgroundMode === 'ruled') {
+          exportCtx.fillStyle = '#ffffff';
+          exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        } else if (appState.backgroundMode === 'blackboard') {
+          exportCtx.fillStyle = '#18181c';
+          exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        } else if (appState.backgroundMode === 'grid') {
+          exportCtx.fillStyle = '#f4f4f6';
+          exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        }
+      }
+      
+      if (canvas) {
+        exportCtx.drawImage(canvas, 0, 0, exportCanvas.width, exportCanvas.height);
+      }
+      
+      let mimeType = 'image/png';
+      if (format === 'jpeg' || format === 'jpg') mimeType = 'image/jpeg';
+      else if (format === 'webp') mimeType = 'image/webp';
+      
+      const dataUrl = exportCanvas.toDataURL(mimeType, quality);
+      window.appBridge.renderExport({
+        dataUrl,
+        format,
+        copyToClipboard,
+        autoSavePath
+      });
+    });
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('pointerleave', () => {
+    if (currentStroke) {
+      scheduleRender();
+    }
+  });
+}
+
+bootstrapApp().then(() => {
+  updateMagnifierImg();
+}).catch((error) => {
+  console.error('Failed to bootstrap overlay:', error);
+});

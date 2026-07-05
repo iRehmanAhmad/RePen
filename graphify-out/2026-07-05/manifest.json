@@ -1,0 +1,197 @@
+{
+  ".agent-hub/state/tasks.json": {
+    "mtime": 1783179747.360775,
+    "ast_hash": "a7bc10da32d8b69152f44b22ad85a6ba",
+    "semantic_hash": ""
+  },
+  "main.js": {
+    "mtime": 1783243222.788613,
+    "ast_hash": "31bb47fd7d348b85b3f3de11fe43c747",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1783242122.659793,
+    "ast_hash": "c2277a94b135ad9660df9b1fa05c3283",
+    "semantic_hash": ""
+  },
+  "scripts/agent-hub.js": {
+    "mtime": 1783096988.9293082,
+    "ast_hash": "49b4f2e46b58430af9262f4f20cf61c2",
+    "semantic_hash": ""
+  },
+  "scripts/verify-dom-ids.js": {
+    "mtime": 1783181050.0713522,
+    "ast_hash": "d30b1b97d23a670e84598ffcc75d099a",
+    "semantic_hash": ""
+  },
+  "scripts/verify-ipc-contract.js": {
+    "mtime": 1783181112.075477,
+    "ast_hash": "0d01f95e51efefeb3f78e937ce793c4c",
+    "semantic_hash": ""
+  },
+  "scripts/verify-tool-state.js": {
+    "mtime": 1783181195.8959155,
+    "ast_hash": "4bb1f0064f65491412269a9f77bc350b",
+    "semantic_hash": ""
+  },
+  "src/preload.js": {
+    "mtime": 1783182747.0355737,
+    "ast_hash": "c3a12f29ce75a8221234f25254ed5778",
+    "semantic_hash": ""
+  },
+  "src/renderer/overlay.js": {
+    "mtime": 1783243495.2471416,
+    "ast_hash": "34dcaee59c1de29dd5e2f837b95123e6",
+    "semantic_hash": ""
+  },
+  "src/renderer/settings.js": {
+    "mtime": 1783243252.9771347,
+    "ast_hash": "0d64f05b7f2937b1401b87b9f09b942f",
+    "semantic_hash": ""
+  },
+  "src/renderer/toolbar.js": {
+    "mtime": 1783243087.57609,
+    "ast_hash": "edc7c1cdc8b1486b730a9c856c197f7a",
+    "semantic_hash": ""
+  },
+  ".agent-hub/README.md": {
+    "mtime": 1783096929.7731965,
+    "ast_hash": "7c8d8bd72b399f821d3704528e0e3053",
+    "semantic_hash": ""
+  },
+  ".agent-hub/protocol.md": {
+    "mtime": 1783096929.7731965,
+    "ast_hash": "79a46ef7e509a0921712c9ca9f3786b8",
+    "semantic_hash": ""
+  },
+  ".agent-hub/roles/antigravity-implementer.md": {
+    "mtime": 1783096929.780457,
+    "ast_hash": "176dad2093d6bb3bce56dc050e9b2c13",
+    "semantic_hash": ""
+  },
+  ".agent-hub/roles/codex-planner.md": {
+    "mtime": 1783096929.7731965,
+    "ast_hash": "d8af898e2912e4010fa7ae3ccc2a5070",
+    "semantic_hash": ""
+  },
+  ".agent-hub/roles/generic-agent.md": {
+    "mtime": 1783096929.780457,
+    "ast_hash": "bac9c4f92036d9928ecaacfe05b1244c",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260703-164328-set-up-multi-agent-collaboration-system.md": {
+    "mtime": 1783097041.1666086,
+    "ast_hash": "59b5f50de18a1b423a17eb20ae94303b",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260703-172631-sprint-1-and-2-features-complete.md": {
+    "mtime": 1783099598.9942007,
+    "ast_hash": "0789831ca4ceffb802582f38258fb1be",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260703-173117-epic-pen-ui-redesign.md": {
+    "mtime": 1783100256.960333,
+    "ast_hash": "a2fae8f0d5ed190fc5599857cffb59c1",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-012858-color-picker-and-orientation-toggle.md": {
+    "mtime": 1783128561.3032632,
+    "ast_hash": "245e456b4d1f258ac88c9f942382a0d6",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-024317-compact-ui-and-modern-icons.md": {
+    "mtime": 1783133584.1766927,
+    "ast_hash": "52d3481a9b599d7d0d39be5ecee3893a",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-031826-refinement-sprint-bugs-and-persistence.md": {
+    "mtime": 1783135745.8877635,
+    "ast_hash": "7cdfbfd86fc926544e861e6e060b8883",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-034226-responsive-docking-and-sidebar-cutoff-fix.md": {
+    "mtime": 1783136552.3850293,
+    "ast_hash": "0db35d5767cb88af8a5a0c91e023ac29",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-080937-epic-pen-scale-toolbar-and-icon-audit.md": {
+    "mtime": 1783153100.218976,
+    "ast_hash": "b297ba38b43d14870e6e0953c873b021",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-093000-auto-shape-recognition.md": {
+    "mtime": 1783139296.397902,
+    "ast_hash": "3a9fb01aed1741b1757cfac6bad9668c",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-100000-magnifier-shapes-highlighter.md": {
+    "mtime": 1783140751.6291564,
+    "ast_hash": "4e7558dee6a433e1b0246cadcff6cf5d",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-121600-compact-toolbar-grouped-tools-scrble-whiteboard.md": {
+    "mtime": 1783149728.911169,
+    "ast_hash": "e2aa9585d31cfe955a9fab0f6b391f00",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-123800-compact-square-toolbar-interaction-fixes.md": {
+    "mtime": 1783151061.2275007,
+    "ast_hash": "f91eae89593f8df995e5f7c69095c938",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260704-154029-audit-broken-tools-and-correction-plan.md": {
+    "mtime": 1783179747.360775,
+    "ast_hash": "347e371bcdd0e078bd4e17af659a8fc9",
+    "semantic_hash": ""
+  },
+  ".agent-hub/templates/task.md": {
+    "mtime": 1783096929.782465,
+    "ast_hash": "07c851cdcb2f22b53d8c717724f5d715",
+    "semantic_hash": ""
+  },
+  ".agents/rules/graphify.md": {
+    "mtime": 1783188235.0564468,
+    "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/graphify.md": {
+    "mtime": 1783188235.0636117,
+    "ast_hash": "637776aa6f7496d069afe7520c845c8a",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1783242260.0570672,
+    "ast_hash": "8a5decbc1fbadb82ca5623794909e549",
+    "semantic_hash": ""
+  },
+  "docs/qa-checklist.md": {
+    "mtime": 1783242284.3018374,
+    "ast_hash": "e8ad5da44598bd3d0a4b95103cbe7784",
+    "semantic_hash": ""
+  },
+  "docs/technical-architecture.md": {
+    "mtime": 1783096339.0763009,
+    "ast_hash": "61cd5c5c4e4c8dc35f54a68cab029545",
+    "semantic_hash": ""
+  },
+  "src/renderer/overlay.html": {
+    "mtime": 1783243379.5369115,
+    "ast_hash": "55f40c6e87e50a7bb4f8b70c87ee28b1",
+    "semantic_hash": ""
+  },
+  "src/renderer/settings.html": {
+    "mtime": 1783242243.80111,
+    "ast_hash": "732d53f81b7fcc4fa61297b4801cf160",
+    "semantic_hash": ""
+  },
+  "src/renderer/toolbar.html": {
+    "mtime": 1783243052.6813002,
+    "ast_hash": "f887db8c8d8bd24dbb416138aa5f8ffe",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
+    "mtime": 1783243023.3297677,
+    "ast_hash": "4db25e7c54bd0ff42baae6b6ddbc01e8",
+    "semantic_hash": ""
+  }
+}

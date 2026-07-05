@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RePen - Presenter Overlay Palette</title>
+    <link rel="stylesheet" href="./toolbar.css" />
+  </head>
+  <body>
+    <div class="app-container" id="appContainer">
+      <!-- Primary Vertical Palette (The Pen Bar) -->
+      <nav class="pen-bar" id="penBar" aria-label="Main Toolbar">
+        <!-- Draggable Brand Grip & Collapse Toggle -->
+        <div class="drag-header" id="dragHeader" title="Drag to reposition">
+          <div class="mark-mini">RP</div>
+          <div class="header-actions">
+            <button class="collapse-btn" id="orientationBtn" title="Toggle Horizontal / Vertical Orientation">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 3l4 4-4 4"/><path d="M20 7H4"/><path d="M8 21l-4-4 4-4"/><path d="M4 17h16"/></svg>
+            </button>
+            <button class="collapse-btn" id="collapseBtn" title="Minimize / Expand">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Unified Compact Tool Stack -->
+        <div class="tool-column" aria-label="Drawing & Presentation Tools">
+          <!-- 1. Cursor / Pass-through Mode -->
+          <button class="tool-button icon-tool" id="togglePassThrough" title="Cursor / Pass-through Mode (Ctrl+Shift+P)" aria-label="Cursor / pass-through mode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg>
+          </button>
+
+          <!-- 1b. Select & View Group (Hand + Hide/Show Overlay) -->
+          <div class="grouped-tool-container" id="selectGroupContainer">
+            <button class="tool-button icon-tool grouped-main-btn" id="selectButton" data-tool="select" title="Select & Move / View Tools (Ctrl+Shift+S)" aria-label="Select and move annotations">
+              <svg id="selectGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.9-2.3L2.4 15a2 2 0 0 1 2.8-2.8l1.8 1.8V13a2 2 0 0 1 4 0"/></svg>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="selectGroupPopover">
+              <button class="popover-btn active" data-subtool="select" title="Select & Move Annotations (Ctrl+Shift+S)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.9-2.3L2.4 15a2 2 0 0 1 2.8-2.8l1.8 1.8V13a2 2 0 0 1 4 0"/></svg>
+              </button>
+              <button class="popover-btn" id="toggleOverlayBtn" title="Hide Overlay (Ctrl+Alt+H)" aria-label="Toggle overlay visibility">
+                <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- 2. Inking Group (Pen, Highlighter, Laser, Text, Spotlight, Magnifier) -->
+          <div class="grouped-tool-container" id="inkingGroupContainer">
+            <button class="tool-button icon-tool active grouped-main-btn" data-tool="pen" id="inkingGroupBtn" title="Inking Tools (Pen active)">
+              <svg id="inkingGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="inkingGroupPopover">
+              <button class="popover-btn active" data-subtool="pen" title="Pen Tool (Ctrl+Shift+1)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="highlighter" title="Highlighter (Ctrl+Shift+2)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 11-6 6v3h3l6-6"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="laser" title="Laser Pointer (Ctrl+Shift+L)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="text" title="Sticky Note Tool (Ctrl+Shift+T)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Presentation Group (Spotlight, Magnifier) -->
+          <div class="grouped-tool-container" id="presentationGroupContainer">
+            <button class="tool-button icon-tool grouped-main-btn" data-tool="spotlight" id="presentationGroupBtn" title="Presentation Tools (Spotlight active)">
+              <svg id="presentationGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="presentationGroupPopover">
+              <button class="popover-btn active" data-subtool="spotlight" title="Presenter Spotlight">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="magnifier" title="Magnifier Tool">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+              </button>
+              <div class="popover-divider" id="spotlightControlsDivider" style="display: none; width: 1px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 4px;"></div>
+              <div id="spotlightControls" style="display: none; flex-direction: row; align-items: center; gap: 8px; padding: 0 4px;">
+                <span style="font-size: 11px; color: #aaa; white-space: nowrap;">Radius (<span id="spotlightRadiusVal">150px</span>)</span>
+                <input type="range" id="spotlightRadiusRange" min="50" max="400" step="10" value="150" style="width: 65px; cursor: pointer;">
+                <span style="font-size: 11px; color: #aaa; white-space: nowrap; margin-left: 4px;">Darkness (<span id="spotlightAlphaVal">75%</span>)</span>
+                <input type="range" id="spotlightAlphaRange" min="0.2" max="0.95" step="0.05" value="0.75" style="width: 65px; cursor: pointer;">
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Shapes Group -->
+          <div class="grouped-tool-container" id="shapesGroupContainer">
+            <button class="tool-button icon-tool grouped-main-btn" data-tool="shapes" id="shapesGroupBtn" title="Magic Shapes (Active: Rectangle)">
+              <svg id="shapesGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="shapesGroupPopover">
+              <button class="popover-btn active" data-subshape="rectangle" title="Rectangle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg></button>
+              <button class="popover-btn" data-subshape="circle" title="Circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/></svg></button>
+              <button class="popover-btn" data-subshape="line" title="Straight Line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="19" x2="19" y2="5"/></svg></button>
+              <button class="popover-btn" data-subshape="arrow" title="Arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+              <button class="popover-btn" data-subshape="triangle" title="Triangle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 2 21h20z"/></svg></button>
+            </div>
+          </div>
+
+          <!-- 5. Eraser -->
+          <button class="tool-button icon-tool" data-tool="eraser" title="Eraser Tool" aria-label="Eraser tool">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+          </button>
+
+          <!-- 6. Pen Size Dot & Opacity -->
+          <div class="grouped-tool-container" id="penSizeContainer">
+            <button class="tool-button icon-tool grouped-main-btn" id="penSizeBtn" title="Stroke Thickness & Opacity (Click to change)">
+              <span class="size-dot-preview" id="sizeDotPreview" style="width: 8px; height: 8px;"></span>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="penSizePopover">
+              <button class="popover-btn size-btn" data-size="2" title="Fine (2px)"><span class="size-dot" style="width: 4px; height: 4px;"></span></button>
+              <button class="popover-btn size-btn" data-size="4" title="Normal (4px)"><span class="size-dot" style="width: 6px; height: 6px;"></span></button>
+              <button class="popover-btn size-btn active" data-size="8" title="Medium (8px)"><span class="size-dot" style="width: 8px; height: 8px;"></span></button>
+              <button class="popover-btn size-btn" data-size="16" title="Thick (16px)"><span class="size-dot" style="width: 12px; height: 12px;"></span></button>
+              <button class="popover-btn size-btn" data-size="24" title="Marker (24px)"><span class="size-dot" style="width: 16px; height: 16px;"></span></button>
+              <div class="popover-divider" style="width: 1px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 4px;"></div>
+              <div style="display: flex; align-items: center; gap: 6px; padding: 0 4px;">
+                <span style="font-size: 11px; color: #aaa; white-space: nowrap;">Opacity (<span id="opacityValDisplay">100%</span>)</span>
+                <input id="inlineOpacityRange" type="range" min="0.1" max="1" step="0.05" value="1" class="mini-slider" style="width: 65px; cursor: pointer;" />
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- 7. Undo -->
+          <button class="action-icon-btn" id="undoButton" title="Undo (Ctrl+Shift+Z)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+          </button>
+
+          <!-- 8. Clear Screen -->
+          <button class="action-icon-btn danger" id="clearButton" title="Clear All Annotations (Ctrl+Alt+C)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          </button>
+
+          <!-- 9. Whiteboard (Scrble Ink style) -->
+          <div class="grouped-tool-container" id="whiteboardContainer">
+            <button class="tool-button icon-tool grouped-main-btn" id="whiteboardBtn" title="Whiteboard / Digital Paper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M3 17h18"/><path d="M12 17v4"/><path d="M8 21h8"/></svg>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="whiteboardPopover">
+              <div class="popover-row">
+                <button class="popover-btn active" data-bg="transparent" title="Transparent Desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><line x1="3" y1="3" x2="21" y2="17"/></svg></button>
+                <button class="popover-btn" data-bg="whiteboard" title="Pure Whiteboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2" fill="#ffffff" stroke="#ccc"/></svg></button>
+                <button class="popover-btn" data-bg="blackboard" title="Blackboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2" fill="#18181c" stroke="#888"/></svg></button>
+                <button class="popover-btn" data-bg="grid" title="Grid / Graph Paper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M9 3v14"/><path d="M15 3v14"/><path d="M3 8h18"/><path d="M3 12h18"/></svg></button>
+                <button class="popover-btn" data-bg="ruled" title="Ruled Notebook Paper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M7 3v14"/><path d="M3 8h18"/><path d="M3 12h18"/><path d="M3 16h18"/></svg></button>
+                <button class="popover-btn" data-bg="staff" title="Music Staff / Cornell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M3 6h18"/><path d="M3 9h18"/><path d="M3 12h18"/><path d="M3 15h18"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Screenshot -->
+          <button class="action-icon-btn" id="screenshotButton" title="Take Screenshot (PNG/JPEG)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          </button>
+
+          <!-- 11. Settings -->
+          <button class="action-icon-btn" id="settingsButton" title="Settings & Shortcuts">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+          </button>
+
+          <div class="divider"></div>
+
+          <!-- 12. Inline Color Swatches (5 most used + custom color on 6th place) -->
+          <div class="inline-color-swatches" id="inlineColorSwatches" aria-label="Quick Color Palette">
+            <div class="swatch-grid">
+              <button class="swatch-btn active" data-color="#ff5a5f" style="background-color: #ff5a5f;" title="Coral Red"></button>
+              <button class="swatch-btn" data-color="#ffe36d" style="background-color: #ffe36d;" title="Lemon Yellow"></button>
+              <button class="swatch-btn" data-color="#00d26a" style="background-color: #00d26a;" title="Emerald Green"></button>
+              <button class="swatch-btn" data-color="#3b82f6" style="background-color: #3b82f6;" title="Electric Blue"></button>
+              <button class="swatch-btn" data-color="#ffffff" style="background-color: #ffffff;" title="White"></button>
+              <label class="custom-swatch-picker swatch-btn" title="Pick Custom Color">
+                <span class="custom-plus">+</span>
+                <input type="color" id="inlineCustomColorPicker" value="#ff5a5f">
+              </label>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <script src="./toolbar.js"></script>
+  </body>
+</html>

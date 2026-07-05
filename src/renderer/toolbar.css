@@ -1,0 +1,967 @@
+:root {
+  color-scheme: dark;
+  font-family: "Bahnschrift", "Segoe UI Variable Text", "Segoe UI", -apple-system, sans-serif;
+  --bg-bar: rgba(10, 14, 23, 0.88);
+  --bg-panel: rgba(13, 18, 30, 0.94);
+  --line: rgba(255, 255, 255, 0.14);
+  --text: #edf2ff;
+  --muted: #8ea0c7;
+  --accent: #00e5ff;
+  --accent-glow: rgba(0, 229, 255, 0.45);
+  --bar-width: 38px;
+  --tool-cell: 30px;
+  --tool-icon: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:not(.size-dot):not(.size-dot-preview) {
+  border-radius: 0 !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  color: var(--text);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* App Container */
+.app-container {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.pen-bar, .grouped-popover, .inline-color-swatches, .modal-overlay {
+  pointer-events: auto;
+}
+
+/* Primary Vertical Palette (Pen Bar) - Ultra Compact */
+.pen-bar {
+  width: var(--bar-width);
+  background: var(--bg-bar);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--line);
+  border-radius: 0 !important;
+  padding: 3px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.pen-bar.collapsed {
+  height: auto;
+  border-radius: 0 !important;
+  padding: 4px;
+  gap: 0;
+}
+
+.pen-bar.collapsed .tool-column,
+.pen-bar.collapsed .action-column,
+.pen-bar.collapsed .divider,
+.pen-bar.collapsed #orientationBtn {
+  display: none !important;
+}
+
+/* Drag Grip Header */
+.drag-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: move;
+  -webkit-app-region: drag;
+}
+
+.mark-mini {
+  width: var(--tool-cell);
+  height: var(--tool-cell);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 4px 12px var(--accent-glow);
+  letter-spacing: 0;
+}
+
+.header-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.collapse-btn {
+  -webkit-app-region: no-drag;
+  width: 21px;
+  height: 21px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.collapse-btn svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.25;
+  pointer-events: none;
+}
+
+.collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Columns */
+.tool-column, .action-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 100%;
+  align-items: center;
+}
+
+/* Tool & Action Buttons - Epic Pen scale compact cells */
+.tool-button, .action-icon-btn {
+  width: var(--tool-cell);
+  height: var(--tool-cell);
+  border-radius: 0 !important;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  outline: none;
+  font-size: 0;
+  line-height: 1;
+}
+
+.tool-button svg, .action-icon-btn svg, .shape-button svg, .text-mode-btn svg {
+  width: var(--tool-icon);
+  height: var(--tool-icon);
+  stroke-width: 2.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.tool-button:hover, .action-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.tool-button.active {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.34), rgba(0, 149, 255, 0.26));
+  color: #fff;
+  box-shadow: 0 0 16px var(--accent-glow);
+  border-color: rgba(0, 229, 255, 0.6);
+  transform: scale(1.05);
+}
+
+.tool-button.muted-state {
+  color: rgba(237, 242, 255, 0.58);
+}
+
+.tool-button:focus-visible,
+.action-icon-btn:focus-visible,
+.collapse-btn:focus-visible,
+.popover-btn:focus-visible,
+.swatch-btn:focus-visible,
+.custom-swatch-picker:focus-within {
+  outline: 2px solid rgba(0, 229, 255, 0.88);
+  outline-offset: 2px;
+}
+
+.action-icon-btn.danger:hover {
+  background: rgba(255, 90, 95, 0.25);
+  border-color: rgba(255, 90, 95, 0.5);
+  color: #ff5a5f;
+}
+
+/* Divider */
+.divider {
+  width: 34px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 1px 0;
+  flex-shrink: 0;
+}
+
+/* Secondary Flyout Panel */
+.flyout-panel {
+  width: 270px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  color: var(--text);
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.flyout-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  width: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+/* Flyout Content */
+.flyout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+  gap: 8px;
+}
+
+.tool-title-pill {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent-2);
+}
+
+.status-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.status-pill {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+}
+
+.flyout-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.label-row, .section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-color-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-color-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(1.05);
+}
+
+.custom-color-btn input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.val-badge {
+  font-size: 11px;
+  background: rgba(255, 122, 89, 0.2);
+  color: var(--accent);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* Swatches Grid */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.swatch:hover {
+  transform: scale(1.15);
+}
+
+.swatch.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px var(--accent), inset 0 0 0 1px rgba(0,0,0,0.3);
+  transform: scale(1.15);
+}
+
+/* Shape Grid & Mode Buttons */
+.shape-grid, .button-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.shape-grid .shape-button:last-child:nth-child(odd) {
+  grid-column: span 2;
+}
+
+.button-grid {
+  grid-template-columns: 1fr;
+}
+
+.shape-button, .mode-btn, .text-mode-btn {
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shape-button:hover, .mode-btn:hover, .text-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.shape-button.active, .text-mode-btn.active {
+  background: rgba(255, 122, 89, 0.25);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Size Presets */
+.size-presets {
+  display: flex;
+  gap: 6px;
+}
+
+.size-preset-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+
+.size-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.size-preset-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.range-slider {
+  width: 100%;
+  accent-color: var(--accent);
+  height: 6px;
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+/* Page Nav & Session I/O */
+.page-nav-row, .session-io-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.page-counter {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.io-btn {
+  flex: 1;
+  padding: 7px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.save-btn {
+  background: rgba(76, 201, 240, 0.15);
+  color: #4cc9f0;
+  border-color: rgba(76, 201, 240, 0.3);
+}
+
+.save-btn:hover {
+  background: rgba(76, 201, 240, 0.3);
+}
+
+.load-btn {
+  background: rgba(255, 227, 109, 0.15);
+  color: #ffe36d;
+  border-color: rgba(255, 227, 109, 0.3);
+}
+
+.load-btn:hover {
+  background: rgba(255, 227, 109, 0.3);
+}
+
+/* Custom Scrollbar for Flyout */
+.flyout-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.flyout-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.flyout-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Horizontal Orientation Mode */
+.app-container.horizontal {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pen-bar.horizontal {
+  width: auto;
+  height: 52px;
+  flex-direction: row;
+  padding: 4px 8px;
+}
+
+.pen-bar.horizontal .drag-header {
+  width: auto;
+  flex-direction: row;
+}
+
+.pen-bar.horizontal .tool-column,
+.pen-bar.horizontal .action-column {
+  width: auto;
+  flex-direction: row;
+}
+
+.pen-bar.horizontal .divider {
+  width: 1px;
+  height: 24px;
+  margin: 0 2px;
+}
+
+.pen-bar.horizontal.collapsed {
+  width: auto;
+  height: 52px;
+}
+
+.flyout-panel.horizontal {
+  width: auto;
+  max-width: 660px;
+  max-height: 280px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+
+.flyout-panel.horizontal .flyout-section {
+  min-width: 170px;
+  flex: 1;
+}
+
+/* Responsive Docking Direction & Animations */
+.app-container.dock-left {
+  flex-direction: row;
+}
+
+.app-container.dock-right {
+  flex-direction: row-reverse;
+}
+
+.app-container.horizontal.dock-top {
+  flex-direction: column;
+}
+
+.app-container.horizontal.dock-bottom {
+  flex-direction: column-reverse;
+}
+
+.app-container.dock-left .flyout-panel.hidden {
+  transform: translateX(-15px) scale(0.95);
+}
+
+.app-container.dock-right .flyout-panel.hidden {
+  transform: translateX(15px) scale(0.95);
+}
+
+.app-container.horizontal.dock-top .flyout-panel.hidden {
+  transform: translateY(-15px) scale(0.95);
+}
+
+.app-container.horizontal.dock-bottom .flyout-panel.hidden {
+  transform: translateY(15px) scale(0.95);
+}
+
+/* Grouped Tool Containers & Split Buttons */
+.grouped-tool-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grouped-main-btn {
+  position: relative;
+}
+
+.group-indicator {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 7px 7px;
+  border-color: transparent transparent rgba(255, 255, 255, 0.7) transparent;
+  pointer-events: none;
+  transition: border-color 0.15s ease;
+  z-index: 5;
+}
+
+.grouped-main-btn:hover .group-indicator,
+.grouped-tool-container:hover .group-indicator {
+  border-color: transparent transparent #00e5ff transparent;
+}
+
+.grouped-popover {
+  position: absolute;
+  z-index: 999;
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-bar);
+  backdrop-filter: blur(30px);
+  border: 1px solid var(--line);
+  padding: 4px;
+  border-radius: 0 !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.popover-row, .notebook-nav-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.popover-divider {
+  width: 1px;
+  height: 22px;
+  background: var(--line);
+  margin: 0 2px;
+}
+
+.nav-separator {
+  width: 1px;
+  height: 18px;
+  background: var(--line);
+  margin: 0 2px;
+}
+
+.page-count {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--fg);
+  padding: 0 6px;
+  min-width: 60px;
+  text-align: center;
+  user-select: none;
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* 1. Vertical Docking - Left side of screen: Popovers open to the RIGHT */
+.app-container:not(.dock-right):not(.horizontal) .grouped-popover,
+.app-container.dock-left:not(.horizontal) .grouped-popover {
+  left: 100%;
+  right: auto;
+  top: 0;
+  bottom: auto;
+  transform: translateX(-8px);
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.5);
+}
+
+.app-container:not(.dock-right):not(.horizontal) .grouped-popover::before,
+.app-container.dock-left:not(.horizontal) .grouped-popover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -12px;
+  right: auto;
+  width: 12px;
+  height: 100%;
+}
+
+.app-container:not(.dock-right):not(.horizontal) .grouped-tool-container:hover .grouped-popover,
+.app-container:not(.dock-right):not(.horizontal) .grouped-popover.show,
+.app-container.dock-left:not(.horizontal) .grouped-tool-container:hover .grouped-popover,
+.app-container.dock-left:not(.horizontal) .grouped-popover.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* 2. Vertical Docking - Right side of screen: Popovers open to the LEFT */
+.app-container.dock-right:not(.horizontal) .grouped-popover {
+  left: auto;
+  right: 100%;
+  top: 0;
+  bottom: auto;
+  transform: translateX(8px);
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.5);
+}
+
+.app-container.dock-right:not(.horizontal) .grouped-popover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -12px;
+  left: auto;
+  width: 12px;
+  height: 100%;
+}
+
+.app-container.dock-right:not(.horizontal) .grouped-tool-container:hover .grouped-popover,
+.app-container.dock-right:not(.horizontal) .grouped-popover.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* 3. Horizontal Docking - Top of screen: Popovers open DOWNWARDS */
+.app-container.horizontal:not(.dock-bottom) .grouped-popover,
+.app-container.horizontal.dock-top .grouped-popover {
+  left: 0;
+  right: auto;
+  top: 100%;
+  bottom: auto;
+  transform: translateY(-8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.app-container.horizontal:not(.dock-bottom) .grouped-popover::before,
+.app-container.horizontal.dock-top .grouped-popover::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  bottom: auto;
+  left: 0;
+  width: 100%;
+  height: 12px;
+}
+
+.app-container.horizontal:not(.dock-bottom) .grouped-tool-container:hover .grouped-popover,
+.app-container.horizontal:not(.dock-bottom) .grouped-popover.show,
+.app-container.horizontal.dock-top .grouped-tool-container:hover .grouped-popover,
+.app-container.horizontal.dock-top .grouped-popover.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* 4. Horizontal Docking - Bottom of screen: Popovers open UPWARDS */
+.app-container.horizontal.dock-bottom .grouped-popover {
+  left: 0;
+  right: auto;
+  top: auto;
+  bottom: 100%;
+  transform: translateY(8px);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.app-container.horizontal.dock-bottom .grouped-popover::before {
+  content: '';
+  position: absolute;
+  top: auto;
+  bottom: -12px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+}
+
+.app-container.horizontal.dock-bottom .grouped-tool-container:hover .grouped-popover,
+.app-container.horizontal.dock-bottom .grouped-popover.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.popover-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0 !important;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.popover-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.popover-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.popover-btn.active {
+  background: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+/* Pen Size Dot Preview & Buttons */
+.size-dot-preview, .size-dot {
+  display: inline-block;
+  background-color: currentColor;
+  border-radius: 50%;
+}
+
+.size-btn {
+  justify-content: flex-start;
+  min-width: 100px;
+}
+
+.app-container.horizontal .size-btn {
+  min-width: auto;
+}
+
+/* Inline Color Swatches Grid */
+.inline-color-swatches {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0 0;
+  gap: 2px;
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  width: var(--tool-cell);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-container.horizontal .swatch-grid {
+  grid-template-columns: repeat(6, 1fr);
+  width: auto;
+}
+
+.swatch-btn {
+  width: 21px;
+  height: 21px;
+  border-radius: 0 !important;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.swatch-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  z-index: 2;
+}
+
+.swatch-btn.active {
+  border: 2px solid #fff;
+  box-shadow: 0 0 8px currentColor;
+  transform: scale(1.15);
+  z-index: 2;
+}
+
+.custom-swatch-picker {
+  width: 21px;
+  height: 21px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 0 !important;
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.custom-swatch-picker:hover,
+.custom-swatch-picker.active {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  transform: scale(1.15);
+  z-index: 2;
+}
+
+.custom-swatch-picker input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.popover-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 4px 6px 2px;
+  font-weight: bold;
+}
+
+.popover-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 4px 0;
+}
+
+.opacity-slider-row {
+  padding: 4px 6px 6px;
+}
+
+.mini-slider {
+  width: 100%;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
