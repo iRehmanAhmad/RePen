@@ -1,0 +1,10 @@
+#!/bin/sh
+# Auto-update Graphify knowledge graph and .md files before pushing
+echo "[pre-push] Verifying graphify knowledge graph and .md reports before push..."
+graphify update . 2>/dev/null || npx --no-install graphify update . 2>/dev/null || true
+
+if ! git diff --quiet graphify-out/ .agents/rules/graphify.md 2>/dev/null || ! git diff --cached --quiet graphify-out/ .agents/rules/graphify.md 2>/dev/null; then
+  echo "[pre-push] Graphify knowledge graph or .md reports were updated. Auto-committing changes before push..."
+  git add graphify-out/ .agents/rules/graphify.md 2>/dev/null || true
+  git commit -m "chore: auto-update graphify knowledge graph and md reports" --no-verify 2>/dev/null || true
+fi

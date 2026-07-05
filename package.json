@@ -6,7 +6,10 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js"
+    "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js",
+    "postinstall": "git config core.hooksPath .githooks",
+    "prepare": "git config core.hooksPath .githooks",
+    "graphify:update": "graphify update ."
   },
   "keywords": [
     "annotation",

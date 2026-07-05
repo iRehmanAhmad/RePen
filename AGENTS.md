@@ -45,11 +45,13 @@ Each phase handoff should be recorded with:
 - Update task status when starting or finishing a phase.
 - If implementation differs from the plan, record why in the task messages.
 - If automated tests are missing, say so and use the QA checklist or a focused manual verification note.
+- **Knowledge Graph Sync**: Graphify is configured via Git hooks (`.githooks/pre-commit` and `.githooks/pre-push`) to update automatically on each commit and push. All `.md` reports (`GRAPH_REPORT.md`, etc.) are automatically synchronized.
 
 ## Commands
 
 - Start app: `npm start`
 - Existing test command: `npm test`
+- Update knowledge graph: `npm run graphify:update` (also runs automatically on `git push`)
 - Agent hub CLI: `npm run agent -- <command>`
 
 ## Done Criteria

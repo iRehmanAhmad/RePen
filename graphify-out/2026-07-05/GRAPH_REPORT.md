@@ -1,11 +1,11 @@
 # Graph Report - epic-pen-clone  (2026-07-05)
 
 ## Corpus Check
-- 36 files · ~29,034 words
+- 36 files · ~29,099 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 548 nodes · 752 edges · 53 communities (50 shown, 3 thin omitted)
+- 547 nodes · 752 edges · 53 communities (50 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
@@ -97,12 +97,12 @@ Cohesion: 0.13
 Nodes (31): allowedTypes, appendMessage(), commandBrief(), commandHelp(), commandList(), commandNew(), commandNote(), commandPhase() (+23 more)
 
 ### Community 3 - "overlay.js"
-Cohesion: 0.12
-Nodes (29): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clickRipples, createStrokeFromEvent(), createTextEditor(), ctx (+21 more)
+Cohesion: 0.11
+Nodes (31): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clickRipples, createStrokeFromEvent(), createTextEditor(), ctx (+23 more)
 
 ### Community 4 - "toolbar.js"
-Cohesion: 0.15
-Nodes (18): appState, COLORS, currentBrushValue(), elements, ensureActiveSwatch(), INKING_ICONS, INKING_TOOLS, OVERLAY_ICONS (+10 more)
+Cohesion: 0.18
+Nodes (15): appState, COLORS, currentBrushValue(), elements, ensureActiveSwatch(), INKING_ICONS, INKING_TOOLS, OVERLAY_ICONS (+7 more)
 
 ### Community 5 - "package.json"
 Cohesion: 0.13
@@ -285,7 +285,7 @@ Cohesion: 0.50
 Nodes (3): Implementation Checklist, Phase History, Task: Scrble-Style Endless Whiteboard Pagination & Notes Saving
 
 ## Knowledge Gaps
-- **309 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+304 more)
+- **307 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+302 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -299,7 +299,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _309 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _307 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.060784313725490195 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

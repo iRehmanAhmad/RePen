@@ -1,7 +1,7 @@
 {
   ".agent-hub/state/tasks.json": {
-    "mtime": 1783179747.360775,
-    "ast_hash": "a7bc10da32d8b69152f44b22ad85a6ba",
+    "mtime": 1783244681.0361352,
+    "ast_hash": "d9a426ad7b8560724f26f5455598f3b1",
     "semantic_hash": ""
   },
   "main.js": {
@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783242122.659793,
-    "ast_hash": "c2277a94b135ad9660df9b1fa05c3283",
+    "mtime": 1783245331.8770483,
+    "ast_hash": "d6198665841b6c8d751027a77ed7aa15",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -20,8 +20,8 @@
     "semantic_hash": ""
   },
   "scripts/verify-dom-ids.js": {
-    "mtime": 1783181050.0713522,
-    "ast_hash": "d30b1b97d23a670e84598ffcc75d099a",
+    "mtime": 1783244640.6323042,
+    "ast_hash": "a502a6c57ba5f118182ea12cc3ba39e5",
     "semantic_hash": ""
   },
   "scripts/verify-ipc-contract.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783244062.9889483,
-    "ast_hash": "1288d886b1601fbc8cdc31154c040ee4",
+    "mtime": 1783244640.6312969,
+    "ast_hash": "091bebf80ec00d928d20cd9615ff3f80",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -150,8 +150,8 @@
     "semantic_hash": ""
   },
   ".agents/rules/graphify.md": {
-    "mtime": 1783188235.0564468,
-    "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
+    "mtime": 1783245345.8617709,
+    "ast_hash": "57bd2b16b813ea9f9cee17c924448502",
     "semantic_hash": ""
   },
   ".agents/workflows/graphify.md": {
@@ -160,18 +160,18 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1783242260.0570672,
-    "ast_hash": "8a5decbc1fbadb82ca5623794909e549",
+    "mtime": 1783245357.6722429,
+    "ast_hash": "b07b267e9384571f92e440a7e463ff1b",
     "semantic_hash": ""
   },
   "docs/qa-checklist.md": {
-    "mtime": 1783242284.3018374,
-    "ast_hash": "e8ad5da44598bd3d0a4b95103cbe7784",
+    "mtime": 1783245401.1227186,
+    "ast_hash": "701c662f6144607d13f137cdb6106a7b",
     "semantic_hash": ""
   },
   "docs/technical-architecture.md": {
-    "mtime": 1783096339.0763009,
-    "ast_hash": "61cd5c5c4e4c8dc35f54a68cab029545",
+    "mtime": 1783245380.7933235,
+    "ast_hash": "4c00a680013a4e9cf9adb1201283bb74",
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
@@ -192,6 +192,26 @@
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
     "mtime": 1783243023.3297677,
     "ast_hash": "4db25e7c54bd0ff42baae6b6ddbc01e8",
+    "semantic_hash": ""
+  },
+  ".githooks/pre-commit": {
+    "mtime": 1783245306.793564,
+    "ast_hash": "42e08f44023b1f4036c9cad486c01ee8",
+    "semantic_hash": ""
+  },
+  ".githooks/pre-push": {
+    "mtime": 1783245312.9742444,
+    "ast_hash": "5561d65b6a3883f40373c098d002384a",
+    "semantic_hash": ""
+  },
+  "scripts/verify-js-syntax.js": {
+    "mtime": 1783244552.4018948,
+    "ast_hash": "359cdf851720946382851f26ee746b35",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260705-094117-fix-broken-tools-after-feature-updates.md": {
+    "mtime": 1783244713.535159,
+    "ast_hash": "516c238ecbfe3d2fbb2cda2c43f48ac6",
     "semantic_hash": ""
   }
 }

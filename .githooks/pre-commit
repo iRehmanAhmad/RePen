@@ -1,0 +1,5 @@
+#!/bin/sh
+# Auto-update Graphify knowledge graph and .md files before committing
+echo "[pre-commit] Updating graphify knowledge graph and .md reports..."
+graphify update . 2>/dev/null || npx --no-install graphify update . 2>/dev/null || true
+git add graphify-out/ .agents/rules/graphify.md 2>/dev/null || true

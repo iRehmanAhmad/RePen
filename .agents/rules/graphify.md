@@ -12,3 +12,4 @@ Rules:
 - If graphify-out/wiki/index.md exists, navigate it instead of reading raw files
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context
 - After modifying code files in this session, run `graphify update .` to keep the graph current (AST-only, no API cost)
+- **Automatic Git Push & Commit Sync**: Graphify is configured via Git hooks (`.githooks/pre-commit` and `.githooks/pre-push`) to update automatically on each commit and push. Whenever code is pushed, `graphify update .` runs automatically, and any resulting changes to `.md` reports (`GRAPH_REPORT.md`, `.agents/rules/graphify.md`, etc.) or `graphify-out/` are automatically staged and committed.

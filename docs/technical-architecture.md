@@ -741,7 +741,12 @@ src/
     utils/
 docs/
   technical-architecture.md
+graphify-out/         # Persistent AST knowledge graph and .md reports
+.githooks/            # Automated pre-commit and pre-push hooks
 ```
+
+### 20.1 Automated Knowledge Graph Sync
+The project utilizes **Graphify** (`graphify-out/`) to maintain an architectural knowledge graph and generated `.md` reports (`GRAPH_REPORT.md`, `.agents/rules/graphify.md`). Via Git hooks (`.githooks/pre-commit` and `.githooks/pre-push`), running `git commit` or `git push` automatically invokes `graphify update .`, stages any updated `.md` files or graph data, and ensures the repository documentation is perpetually synchronized with code changes.
 
 ## 21. Milestone-Based Implementation Plan
 
