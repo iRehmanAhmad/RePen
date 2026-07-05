@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-05)
 
 ## Corpus Check
-- 40 files · ~30,084 words
+- 42 files · ~31,702 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 578 nodes · 782 edges · 55 communities (52 shown, 3 thin omitted)
+- 599 nodes · 807 edges · 57 communities (54 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9f697873`
+- Built from commit: `42affadb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -70,13 +70,15 @@
 - [[_COMMUNITY_Task Scrble-Style Endless Whiteboard Pagination & Notes Saving|Task: Scrble-Style Endless Whiteboard Pagination & Notes Saving]]
 - [[_COMMUNITY_Fix broken tools after feature updates|Fix broken tools after feature updates]]
 - [[_COMMUNITY_verify-js-syntax.js|verify-js-syntax.js]]
+- [[_COMMUNITY_Separate whiteboard and transparent annotations|Separate whiteboard and transparent annotations]]
+- [[_COMMUNITY_verify-scene-store-separation.js|verify-scene-store-separation.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Screen Annotation App Technical Architecture` - 25 edges
 2. `broadcastState()` - 24 edges
-3. `getShortcutActions()` - 17 edges
+3. `getShortcutActions()` - 18 edges
 4. `deepClone()` - 12 edges
-5. `broadcastScene()` - 11 edges
+5. `broadcastScene()` - 12 edges
 6. `updateTrayMenu()` - 11 edges
 7. `Set up multi-agent collaboration system` - 11 edges
 8. `Sprint 1 and 2 Features Complete` - 11 edges
@@ -89,11 +91,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (55 total, 3 thin omitted)
+## Communities (57 total, 3 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
-Nodes (78): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+70 more)
+Nodes (80): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+72 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.13
@@ -104,7 +106,7 @@ Cohesion: 0.13
 Nodes (31): allowedTypes, appendMessage(), commandBrief(), commandHelp(), commandList(), commandNew(), commandNote(), commandPhase() (+23 more)
 
 ### Community 3 - "overlay.js"
-Cohesion: 0.11
+Cohesion: 0.12
 Nodes (31): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clickRipples, createStrokeFromEvent(), createTextEditor(), ctx (+23 more)
 
 ### Community 4 - "toolbar.js"
@@ -299,8 +301,16 @@ Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Fix bro
 Cohesion: 0.25
 Nodes (6): files, fs, path, rootDir, { spawnSync }, syntaxRoots
 
+### Community 55 - "Separate whiteboard and transparent annotations"
+Cohesion: 0.17
+Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
+
+### Community 56 - "verify-scene-store-separation.js"
+Cohesion: 0.29
+Nodes (6): fs, loadStateMatch, mainContent, mainPath, path, setBackgroundModeMatch
+
 ## Knowledge Gaps
-- **332 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+327 more)
+- **349 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+344 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -308,15 +318,15 @@ Nodes (6): files, fs, path, rootDir, { spawnSync }, syntaxRoots
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `19. Security Model`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
-  _High betweenness centrality (0.026) - this node is a cross-community bridge._
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `8. Interaction Modes` connect `8. Interaction Modes` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _332 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _349 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.060784313725490195 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.059609730018711574 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.12878787878787878 - nodes in this community are weakly interconnected._
 - **Should `agent-hub.js` be split into smaller, more focused modules?**

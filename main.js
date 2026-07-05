@@ -61,6 +61,7 @@ const DEFAULT_STATE = {
     loadSession: 'CommandOrControl+Alt+O',
     prevPage: 'CommandOrControl+Alt+Left',
     nextPage: 'CommandOrControl+Alt+Right',
+    pasteImage: 'CommandOrControl+Alt+I',
   },
 };
 
@@ -76,16 +77,23 @@ let settingsWindow = null;
 const overlayWindows = new Map();
 let state = { ...DEFAULT_STATE };
 let pages = [{ annotations: [], undoStack: [], redoStack: [] }];
+let desktopPage = { annotations: [], undoStack: [], redoStack: [] };
 let currentPageIndex = 0;
-let annotations = pages[0].annotations;
-let undoStack = pages[0].undoStack;
-let redoStack = pages[0].redoStack;
+let annotations = desktopPage.annotations;
+let undoStack = desktopPage.undoStack;
+let redoStack = desktopPage.redoStack;
 
 function syncPageStore() {
-  if (pages[currentPageIndex]) {
-    pages[currentPageIndex].annotations = annotations;
-    pages[currentPageIndex].undoStack = undoStack;
-    pages[currentPageIndex].redoStack = redoStack;
+  if (state && state.backgroundMode && state.backgroundMode !== 'transparent') {
+    if (pages[currentPageIndex]) {
+      pages[currentPageIndex].annotations = annotations;
+      pages[currentPageIndex].undoStack = undoStack;
+      pages[currentPageIndex].redoStack = redoStack;
+    }
+  } else {
+    desktopPage.annotations = annotations;
+    desktopPage.undoStack = undoStack;
+    desktopPage.redoStack = redoStack;
   }
 }
 
@@ -132,8 +140,11 @@ function writePersistedState() {
         brushDefaults: state.brushDefaults,
         hotkeys: state.hotkeys,
         exportDefaults: state.exportDefaults,
+        desktopPage: {
+          annotations: state.backgroundMode === 'transparent' ? annotations : (desktopPage.annotations || [])
+        },
         pages: pages.map((p, idx) => ({
-          annotations: idx === currentPageIndex ? annotations : (p.annotations || [])
+          annotations: (state.backgroundMode !== 'transparent' && idx === currentPageIndex) ? annotations : (p.annotations || [])
         })),
         currentPageIndex,
       },
@@ -181,6 +192,13 @@ function loadState() {
       },
     };
     state.overlayVisible = true;
+    if (persisted.state.desktopPage) {
+      desktopPage = {
+        annotations: deepClone(persisted.state.desktopPage.annotations || []),
+        undoStack: [],
+        redoStack: []
+      };
+    }
     if (Array.isArray(persisted.state.pages) && persisted.state.pages.length > 0) {
       pages = persisted.state.pages.map(p => ({
         annotations: deepClone(p.annotations || []),
@@ -188,9 +206,15 @@ function loadState() {
         redoStack: []
       }));
       currentPageIndex = Math.min(Math.max(0, persisted.state.currentPageIndex || 0), pages.length - 1);
+    }
+    if (state.backgroundMode !== 'transparent') {
       annotations = pages[currentPageIndex].annotations;
       undoStack = pages[currentPageIndex].undoStack;
       redoStack = pages[currentPageIndex].redoStack;
+    } else {
+      annotations = desktopPage.annotations;
+      undoStack = desktopPage.undoStack;
+      redoStack = desktopPage.redoStack;
     }
   }
 
@@ -226,6 +250,9 @@ function loadState() {
     delete state.eraseRadius;
   }
   state.backgroundMode = 'transparent';
+  annotations = desktopPage.annotations;
+  undoStack = desktopPage.undoStack;
+  redoStack = desktopPage.redoStack;
 }
 
 function getDockSide() {
@@ -646,12 +673,31 @@ function setPassThrough(enabled) {
 }
 
 function setBackgroundMode(mode) {
-  state.backgroundMode = mode || 'transparent';
+  const oldMode = state.backgroundMode || 'transparent';
+  const newMode = mode || 'transparent';
+  if (oldMode === newMode) return;
+
+  syncPageStore();
+
+  state.backgroundMode = newMode;
+
+  if (newMode === 'transparent') {
+    annotations = desktopPage.annotations || [];
+    undoStack = desktopPage.undoStack || [];
+    redoStack = desktopPage.redoStack || [];
+  } else {
+    const page = pages[currentPageIndex] || { annotations: [], undoStack: [], redoStack: [] };
+    annotations = page.annotations || [];
+    undoStack = page.undoStack || [];
+    redoStack = page.redoStack || [];
+  }
+
   if (state.backgroundMode !== 'transparent') {
     setPassThrough(false);
   } else {
     broadcastState();
   }
+  broadcastScene();
 }
 
 function cycleBackgroundMode() {
@@ -1052,7 +1098,7 @@ function segmentDistance(px, py, x1, y1, x2, y2) {
 }
 
 function strokeHitsEraserPath(stroke, erasePoints, radius) {
-  if (stroke.tool === 'text') {
+  if (stroke.tool === 'text' || stroke.tool === 'image') {
     const w = typeof stroke.width === 'number' ? stroke.width : 200;
     const h = typeof stroke.height === 'number' ? stroke.height : 80;
     for (const pt of erasePoints) {
@@ -1089,7 +1135,7 @@ function strokeHitsEraserPath(stroke, erasePoints, radius) {
 }
 
 function eraseStrokeSegments(stroke, erasePoints, radius) {
-  if (stroke.tool === 'text' || stroke.tool === 'shapes' || stroke.shapeType) {
+  if (stroke.tool === 'text' || stroke.tool === 'shapes' || stroke.shapeType || stroke.tool === 'image') {
     if (strokeHitsEraserPath(stroke, erasePoints, radius)) {
       return [];
     }
@@ -1205,6 +1251,19 @@ function normalizeStroke(stroke) {
     };
   }
 
+  if (tool === 'image') {
+    return {
+      id,
+      tool: 'image',
+      dataUrl: typeof stroke.dataUrl === 'string' ? stroke.dataUrl : '',
+      x: typeof stroke.x === 'number' ? stroke.x : 0,
+      y: typeof stroke.y === 'number' ? stroke.y : 0,
+      width: typeof stroke.width === 'number' ? stroke.width : 400,
+      height: typeof stroke.height === 'number' ? stroke.height : 300,
+      opacity: typeof stroke.opacity === 'number' ? stroke.opacity : 1,
+    };
+  }
+
   if (tool === 'shapes' || stroke.shapeType) {
     return {
       ...autoMeta,
@@ -1250,13 +1309,52 @@ function normalizeStroke(stroke) {
 
 function addStroke(stroke) {
   const normalized = normalizeStroke(stroke);
-  if (normalized.tool !== 'text' && normalized.tool !== 'shapes' && (!normalized.points || !normalized.points.length)) {
+  if (normalized.tool !== 'text' && normalized.tool !== 'shapes' && normalized.tool !== 'image' && (!normalized.points || !normalized.points.length)) {
     return;
   }
 
   recordSceneChange(() => {
     annotations.push(normalized);
   });
+}
+
+function pasteClipboardImage() {
+  const image = clipboard.readImage();
+  if (!image || image.isEmpty()) {
+    return { ok: false, error: 'No image found in clipboard' };
+  }
+  const size = image.getSize();
+  const dataUrl = image.toDataURL();
+
+  let w = size.width || 400;
+  let h = size.height || 300;
+  const maxDim = 450;
+  if (w > maxDim || h > maxDim) {
+    const scale = maxDim / Math.max(w, h);
+    w = Math.round(w * scale);
+    h = Math.round(h * scale);
+  }
+
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const screenW = primaryDisplay ? primaryDisplay.bounds.width : 1000;
+  const screenH = primaryDisplay ? primaryDisplay.bounds.height : 800;
+  const x = Math.max(50, Math.round((screenW - w) / 2));
+  const y = Math.max(50, Math.round((screenH - h) / 2));
+
+  recordSceneChange(() => {
+    const stroke = {
+      id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+      tool: 'image',
+      dataUrl: dataUrl,
+      x,
+      y,
+      width: w,
+      height: h,
+      opacity: state.brushDefaults.pen.opacity || 1
+    };
+    annotations.push(stroke);
+  });
+  return { ok: true, dataUrl };
 }
 
 function quitApp() {
@@ -1302,6 +1400,7 @@ function getShortcutActions() {
     loadSession: () => loadSession(),
     prevPage: () => prevPage(),
     nextPage: () => nextPage(),
+    pasteImage: () => pasteClipboardImage(),
   };
 }
 
@@ -1513,6 +1612,10 @@ ipcMain.handle('app:set-spotlight', (_, payload) => {
   const { radius, alpha } = payload || {};
   setSpotlight(radius, alpha);
   return getAppState();
+});
+
+ipcMain.handle('app:paste-image', () => {
+  return pasteClipboardImage();
 });
 
 ipcMain.handle('scene:add-stroke', (_, stroke) => {

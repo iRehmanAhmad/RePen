@@ -1,13 +1,18 @@
 # Graph Report - epic-pen-clone  (2026-07-05)
 
 ## Corpus Check
-- 36 files · ~29,099 words
+- 40 files · ~31,097 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 547 nodes · 752 edges · 53 communities (50 shown, 3 thin omitted)
+- 580 nodes · 790 edges · 55 communities (52 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `42affadb`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_main.js|main.js]]
@@ -63,13 +68,15 @@
 - [[_COMMUNITY_graphify|graphify.md]]
 - [[_COMMUNITY_graphify|graphify.md]]
 - [[_COMMUNITY_Task Scrble-Style Endless Whiteboard Pagination & Notes Saving|Task: Scrble-Style Endless Whiteboard Pagination & Notes Saving]]
+- [[_COMMUNITY_Fix broken tools after feature updates|Fix broken tools after feature updates]]
+- [[_COMMUNITY_verify-js-syntax.js|verify-js-syntax.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `Screen Annotation App Technical Architecture` - 25 edges
 2. `broadcastState()` - 24 edges
-3. `getShortcutActions()` - 17 edges
+3. `getShortcutActions()` - 18 edges
 4. `deepClone()` - 12 edges
-5. `broadcastScene()` - 11 edges
+5. `broadcastScene()` - 12 edges
 6. `updateTrayMenu()` - 11 edges
 7. `Set up multi-agent collaboration system` - 11 edges
 8. `Sprint 1 and 2 Features Complete` - 11 edges
@@ -82,11 +89,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (53 total, 3 thin omitted)
+## Communities (55 total, 3 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
-Nodes (78): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+70 more)
+Nodes (80): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+72 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.13
@@ -97,16 +104,16 @@ Cohesion: 0.13
 Nodes (31): allowedTypes, appendMessage(), commandBrief(), commandHelp(), commandList(), commandNew(), commandNote(), commandPhase() (+23 more)
 
 ### Community 3 - "overlay.js"
-Cohesion: 0.11
+Cohesion: 0.12
 Nodes (31): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clickRipples, createStrokeFromEvent(), createTextEditor(), ctx (+23 more)
 
 ### Community 4 - "toolbar.js"
-Cohesion: 0.18
-Nodes (15): appState, COLORS, currentBrushValue(), elements, ensureActiveSwatch(), INKING_ICONS, INKING_TOOLS, OVERLAY_ICONS (+7 more)
+Cohesion: 0.15
+Nodes (18): appState, COLORS, currentBrushValue(), elements, ensureActiveSwatch(), INKING_ICONS, INKING_TOOLS, OVERLAY_ICONS (+10 more)
 
 ### Community 5 - "package.json"
-Cohesion: 0.13
-Nodes (14): author, description, devDependencies, electron, keywords, license, main, name (+6 more)
+Cohesion: 0.11
+Nodes (17): author, description, devDependencies, electron, keywords, license, main, name (+9 more)
 
 ### Community 6 - "Multi-Agent Collaboration Protocol"
 Cohesion: 0.17
@@ -153,20 +160,20 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.18
-Nodes (10): 1. Purpose, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture, Non-objectives for the first release (+2 more)
+Cohesion: 0.17
+Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
 Nodes (10): fs, handledChannels, invokedChannels, listenedChannels, mainContent, mainPath, path, preloadContent (+2 more)
 
 ### Community 19 - "Overlay Ink — QA Regression & Smoke Test Checklist"
-Cohesion: 0.22
-Nodes (8): 1. ✍️ Basic Drawing & Erasing, 2. 📝 Text Note Tool, 3. ✋ Select & Move (Lasso Transformation), 4. 🌐 Background Modes & Click Ripple Halo, 5. 🔴 Laser Pointer Presentation Tool, 6. 💾 Settings & Schema Persistence (v2 Schema), 7. 📸 Screenshot Export Workflow, RePen — QA Regression & Smoke Test Checklist
+Cohesion: 0.20
+Nodes (9): 1. ✍️ Basic Drawing & Erasing, 2. 📝 Text Note Tool, 3. ✋ Select & Move (Lasso Transformation), 4. 🌐 Background Modes & Click Ripple Halo, 5. 🔴 Laser Pointer Presentation Tool, 6. 💾 Settings & Schema Persistence (v2 Schema), 7. 📸 Screenshot Export Workflow, 8. 🤖 Automated Knowledge Graph & Git Verification (+1 more)
 
 ### Community 20 - "verify-dom-ids.js"
-Cohesion: 0.22
-Nodes (8): fs, htmlContent, htmlIds, jsContent, jsIds, path, toolbarHtmlPath, toolbarJsPath
+Cohesion: 0.17
+Nodes (11): declaredElementKeys, elementsObject, fs, htmlContent, htmlIds, jsContent, jsIds, path (+3 more)
 
 ### Community 21 - "verify-tool-state.js"
 Cohesion: 0.22
@@ -284,8 +291,16 @@ Nodes (3): 19. Security Model, Network posture, Required security decisions
 Cohesion: 0.50
 Nodes (3): Implementation Checklist, Phase History, Task: Scrble-Style Endless Whiteboard Pagination & Notes Saving
 
+### Community 53 - "Fix broken tools after feature updates"
+Cohesion: 0.17
+Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Fix broken tools after feature updates, Goal, Handoff Notes, Owners (+3 more)
+
+### Community 54 - "verify-js-syntax.js"
+Cohesion: 0.25
+Nodes (6): files, fs, path, rootDir, { spawnSync }, syntaxRoots
+
 ## Knowledge Gaps
-- **307 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+302 more)
+- **333 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+328 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -293,15 +308,15 @@ Nodes (3): Implementation Checklist, Phase History, Task: Scrble-Style Endless W
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `19. Security Model`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+  _High betweenness centrality (0.026) - this node is a cross-community bridge._
 - **Why does `8. Interaction Modes` connect `8. Interaction Modes` to `Screen Annotation App Technical Architecture`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _307 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _333 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.060784313725490195 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.059609730018711574 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.12878787878787878 - nodes in this community are weakly interconnected._
 - **Should `agent-hub.js` be split into smaller, more focused modules?**

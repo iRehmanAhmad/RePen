@@ -1,17 +1,17 @@
 {
   ".agent-hub/state/tasks.json": {
-    "mtime": 1783244681.0361352,
-    "ast_hash": "d9a426ad7b8560724f26f5455598f3b1",
+    "mtime": 1783248357.2658007,
+    "ast_hash": "946ebd961d9258789a007ed254101bdd",
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783243222.788613,
-    "ast_hash": "31bb47fd7d348b85b3f3de11fe43c747",
+    "mtime": 1783248322.515841,
+    "ast_hash": "65de3ea841030983b764d9d7cc5ea888",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783245331.8770483,
-    "ast_hash": "d6198665841b6c8d751027a77ed7aa15",
+    "mtime": 1783248322.5267115,
+    "ast_hash": "152ea41d8c70015e352b1b8a1a96169d",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783182747.0355737,
-    "ast_hash": "c3a12f29ce75a8221234f25254ed5778",
+    "mtime": 1783246775.3723574,
+    "ast_hash": "4d5a098d3d8c4af84db5364c88a83827",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783244225.401719,
-    "ast_hash": "79daf116c3ec7513b10760105cc1e423",
+    "mtime": 1783247226.4847698,
+    "ast_hash": "5f833478fbaaa21c3002e152e6037423",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783244093.4184847,
-    "ast_hash": "361d1d5118b9579f9a609e26855f8d02",
+    "mtime": 1783247004.7389967,
+    "ast_hash": "e3ce2e5627b57c598cb7c090ccf19ce4",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
@@ -212,6 +212,16 @@
   ".agent-hub/tasks/20260705-094117-fix-broken-tools-after-feature-updates.md": {
     "mtime": 1783244713.535159,
     "ast_hash": "516c238ecbfe3d2fbb2cda2c43f48ac6",
+    "semantic_hash": ""
+  },
+  "scripts/verify-scene-store-separation.js": {
+    "mtime": 1783248322.5225978,
+    "ast_hash": "6ac4e768da5f38738496f4f0e5a64472",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260705-104424-separate-whiteboard-and-transparent-annotations.md": {
+    "mtime": 1783248370.5411675,
+    "ast_hash": "ee45efa320901a9bf456abb4b1fa0d1a",
     "semantic_hash": ""
   }
 }

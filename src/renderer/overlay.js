@@ -64,6 +64,86 @@ function setupBoardNav() {
       window.appBridge?.loadSession?.();
     });
   }
+  const pasteBtn = document.getElementById('pasteImgBtn');
+  if (pasteBtn) {
+    pasteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.appBridge?.pasteImage?.();
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+      const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
+      if (isBoard || !appState?.passThrough) {
+        window.appBridge?.pasteImage?.();
+      }
+    }
+  });
+
+  const scrollbar = document.getElementById('boardScrollbar');
+  const thumb = document.getElementById('boardScrollThumb');
+  if (scrollbar && thumb) {
+    scrollbar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (e.target === thumb) return;
+      const trackHeight = scrollbar.clientHeight || 1;
+      const ratio = Math.max(0, Math.min(1, e.offsetY / trackHeight));
+      const total = typeof appState?.totalPages === 'number' && appState.totalPages > 0 ? appState.totalPages : 1;
+      const targetIdx = Math.round(ratio * (total - 1));
+      window.appBridge?.setPage?.(targetIdx);
+    });
+
+    let isDraggingThumb = false;
+    let startY = 0;
+    let startTop = 0;
+    thumb.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      isDraggingThumb = true;
+      startY = e.clientY;
+      startTop = parseInt(thumb.style.top || '0', 10);
+      thumb.classList.add('active');
+      thumb.setPointerCapture(e.pointerId);
+    });
+    thumb.addEventListener('pointermove', (e) => {
+      if (!isDraggingThumb || !appState) return;
+      e.stopPropagation();
+      const dy = e.clientY - startY;
+      const trackHeight = scrollbar.clientHeight || 1;
+      const thumbHeight = thumb.clientHeight || 48;
+      const maxTop = Math.max(1, trackHeight - thumbHeight);
+      const newTop = Math.max(0, Math.min(maxTop, startTop + dy));
+      thumb.style.top = `${newTop}px`;
+      const total = typeof appState.totalPages === 'number' && appState.totalPages > 0 ? appState.totalPages : 1;
+      const targetIdx = Math.round((newTop / maxTop) * (total - 1));
+      if (targetIdx !== appState.currentPageIndex) {
+        window.appBridge?.setPage?.(targetIdx);
+      }
+    });
+    thumb.addEventListener('pointerup', (e) => {
+      if (!isDraggingThumb) return;
+      e.stopPropagation();
+      isDraggingThumb = false;
+      thumb.classList.remove('active');
+      thumb.releasePointerCapture(e.pointerId);
+      updateBoardNav();
+    });
+  }
+
+  let lastWheelTime = 0;
+  window.addEventListener('wheel', (e) => {
+    const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
+    if (!isBoard) return;
+    const now = Date.now();
+    if (now - lastWheelTime < 350) return;
+    if (e.deltaY > 30) {
+      lastWheelTime = now;
+      window.appBridge?.nextPage?.();
+    } else if (e.deltaY < -30) {
+      lastWheelTime = now;
+      window.appBridge?.prevPage?.();
+    }
+  });
 }
 
 function updateBoardNav() {
@@ -77,6 +157,24 @@ function updateBoardNav() {
     nav.classList.add('show');
   } else {
     nav.classList.remove('show');
+  }
+
+  const scrollbar = document.getElementById('boardScrollbar');
+  const thumb = document.getElementById('boardScrollThumb');
+  if (scrollbar && thumb && appState) {
+    if (isBoard) {
+      scrollbar.classList.add('show');
+      const total = typeof appState.totalPages === 'number' && appState.totalPages > 0 ? appState.totalPages : 1;
+      const current = typeof appState.currentPageIndex === 'number' ? appState.currentPageIndex : 0;
+      const trackHeight = scrollbar.clientHeight || (window.innerHeight - 160);
+      const thumbHeight = Math.max(48, Math.round(trackHeight / Math.max(1, total)));
+      thumb.style.height = `${thumbHeight}px`;
+      const maxTop = Math.max(0, trackHeight - thumbHeight);
+      const top = total <= 1 ? 0 : Math.round((current / (total - 1)) * maxTop);
+      thumb.style.top = `${top}px`;
+    } else {
+      scrollbar.classList.remove('show');
+    }
   }
 
   if (indicator && appState) {
@@ -353,6 +451,29 @@ function drawStroke(stroke, targetCtx = ctx) {
       }
       targetCtx.fillText(currentLine, pt.x + paddingX, lineY);
       lineY += 26;
+    }
+    targetCtx.restore();
+    return;
+  }
+
+  if (stroke.tool === 'image' && stroke.dataUrl) {
+    const pt = globalToLocal({ x: stroke.x, y: stroke.y });
+    const w = stroke.width || 400;
+    const h = stroke.height || 300;
+    if (!stroke._cachedImg || stroke._cachedImgSrc !== stroke.dataUrl) {
+      const img = new Image();
+      img.src = stroke.dataUrl;
+      stroke._cachedImg = img;
+      stroke._cachedImgSrc = stroke.dataUrl;
+      img.onload = () => scheduleRender();
+    }
+    targetCtx.save();
+    targetCtx.globalAlpha = stroke.opacity || 1;
+    if (stroke._cachedImg && stroke._cachedImg.complete) {
+      targetCtx.drawImage(stroke._cachedImg, pt.x, pt.y, w, h);
+    } else {
+      targetCtx.fillStyle = 'rgba(200, 200, 200, 0.3)';
+      targetCtx.fillRect(pt.x, pt.y, w, h);
     }
     targetCtx.restore();
     return;
@@ -754,12 +875,12 @@ function getSelectionBoundingBox(ids) {
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const stroke of scene.annotations) {
     if (ids.includes(stroke.id)) {
-      if (stroke.tool === 'text') {
+      if (stroke.tool === 'text' || stroke.tool === 'image') {
         const pt = globalToLocal({ x: stroke.x, y: stroke.y });
         minX = Math.min(minX, pt.x - 4);
         minY = Math.min(minY, pt.y - 4);
-        maxX = Math.max(maxX, pt.x + (stroke.width || 200) + 4);
-        maxY = Math.max(maxY, pt.y + (stroke.height || 80) + 4);
+        maxX = Math.max(maxX, pt.x + (stroke.width || (stroke.tool === 'image' ? 400 : 200)) + 4);
+        maxY = Math.max(maxY, pt.y + (stroke.height || (stroke.tool === 'image' ? 300 : 80)) + 4);
       } else if (stroke.tool === 'shapes' || stroke.shapeType) {
         const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
         const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
@@ -1139,10 +1260,10 @@ function recognizeShape(stroke) {
 
 async function checkAutoAdvance(stroke) {
   if (!appState || !appState.backgroundMode || appState.backgroundMode === 'transparent') return;
-  if (!stroke || ['eraser', 'laser', 'select', 'spotlight', 'magnifier'].includes(stroke.tool)) return;
+  if (!stroke || ['laser', 'select', 'spotlight', 'magnifier'].includes(stroke.tool)) return;
 
   let hitBottom = false;
-  const threshY = window.innerHeight - 50;
+  const threshY = window.innerHeight - 110;
   if (stroke.points && stroke.points.length > 0) {
     for (const p of stroke.points) {
       if (globalToLocal(p).y >= threshY) {
@@ -1283,10 +1404,10 @@ canvas.addEventListener('pointerdown', (event) => {
     let clickedId = null;
     for (let i = scene.annotations.length - 1; i >= 0; i--) {
       const stroke = scene.annotations[i];
-      if (stroke.tool === 'text') {
+      if (stroke.tool === 'text' || stroke.tool === 'image') {
         const spt = globalToLocal({ x: stroke.x, y: stroke.y });
-        const w = stroke.width || 200;
-        const h = stroke.height || 80;
+        const w = stroke.width || (stroke.tool === 'image' ? 400 : 200);
+        const h = stroke.height || (stroke.tool === 'image' ? 300 : 80);
         if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
           clickedId = stroke.id;
           break;
@@ -1384,11 +1505,11 @@ canvas.addEventListener('pointermove', (event) => {
       if (selectedIds.includes(stroke.id)) {
         const orig = isResizingSelection.origStrokes.find((a) => a.id === stroke.id);
         if (!orig) continue;
-        if (stroke.tool === 'text') {
+        if (stroke.tool === 'text' || stroke.tool === 'image') {
           stroke.x = gAnchor.x + (orig.x - gAnchor.x) * scaleX;
           stroke.y = gAnchor.y + (orig.y - gAnchor.y) * scaleY;
-          stroke.width = Math.max(50, Math.round((orig.width || 200) * Math.abs(scaleX)));
-          stroke.height = Math.max(30, Math.round((orig.height || 80) * Math.abs(scaleY)));
+          stroke.width = Math.max(50, Math.round((orig.width || (stroke.tool === 'image' ? 400 : 200)) * Math.abs(scaleX)));
+          stroke.height = Math.max(30, Math.round((orig.height || (stroke.tool === 'image' ? 300 : 80)) * Math.abs(scaleY)));
         } else if (stroke.tool === 'shapes' || stroke.shapeType) {
           if (orig.start) stroke.start = { x: gAnchor.x + (orig.start.x - gAnchor.x) * scaleX, y: gAnchor.y + (orig.start.y - gAnchor.y) * scaleY };
           if (orig.end) stroke.end = { x: gAnchor.x + (orig.end.x - gAnchor.x) * scaleX, y: gAnchor.y + (orig.end.y - gAnchor.y) * scaleY };
@@ -1410,7 +1531,7 @@ canvas.addEventListener('pointermove', (event) => {
     const dy = event.offsetY - dragStartY;
     for (const stroke of scene.annotations) {
       if (selectedIds.includes(stroke.id)) {
-        if (stroke.tool === 'text') {
+        if (stroke.tool === 'text' || stroke.tool === 'image') {
           stroke.x += dx;
           stroke.y += dy;
         } else if (stroke.tool === 'shapes' || stroke.shapeType) {
@@ -1452,10 +1573,10 @@ canvas.addEventListener('pointermove', (event) => {
     if (!isDraggingSelection && !isResizingSelection && !marqueeBox && (appState.activeTool === 'text' || appState.activeTool === 'select')) {
       let overText = false;
       for (const stroke of scene.annotations) {
-        if (stroke.tool === 'text') {
+        if (stroke.tool === 'text' || stroke.tool === 'image') {
           const spt = globalToLocal({ x: stroke.x, y: stroke.y });
-          const w = stroke.width || 200;
-          const h = stroke.height || 80;
+          const w = stroke.width || (stroke.tool === 'image' ? 400 : 200);
+          const h = stroke.height || (stroke.tool === 'image' ? 300 : 80);
           if (event.offsetX >= spt.x && event.offsetX <= spt.x + w && event.offsetY >= spt.y && event.offsetY <= spt.y + h) {
             overText = true;
             break;
@@ -1495,6 +1616,8 @@ canvas.addEventListener('pointerup', async (event) => {
     return;
   }
 
+  if (isResizingSelection) { return; }
+
   if (marqueeBox) {
     const minX = Math.min(marqueeBox.startX, marqueeBox.currentX);
     const maxX = Math.max(marqueeBox.startX, marqueeBox.currentX);
@@ -1506,9 +1629,9 @@ canvas.addEventListener('pointerup', async (event) => {
     if (Math.hypot(maxX - minX, maxY - minY) > 5) {
       for (const stroke of scene.annotations) {
         let box = null;
-        if (stroke.tool === 'text') {
+        if (stroke.tool === 'text' || stroke.tool === 'image') {
           const pt = globalToLocal({ x: stroke.x, y: stroke.y });
-          box = { minX: pt.x, minY: pt.y, maxX: pt.x + (stroke.width || 200), maxY: pt.y + (stroke.height || 80) };
+          box = { minX: pt.x, minY: pt.y, maxX: pt.x + (stroke.width || (stroke.tool === 'image' ? 400 : 200)), maxY: pt.y + (stroke.height || (stroke.tool === 'image' ? 300 : 80)) };
         } else if (stroke.tool === 'shapes' || stroke.shapeType) {
           const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
           const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
@@ -1528,8 +1651,8 @@ canvas.addEventListener('pointerup', async (event) => {
           newSelected.push(stroke.id);
         }
       }
+      selectedIds = newSelected;
     }
-    selectedIds = newSelected;
     scheduleRender();
     return;
   }
@@ -1567,7 +1690,7 @@ canvas.addEventListener('pointerup', async (event) => {
 
   if (!currentStroke) {
     if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
-      if (event.offsetY >= window.innerHeight - 50 && Date.now() - lastAutoAdvanceTime > 1500) {
+      if (event.offsetY >= window.innerHeight - 110 && Date.now() - lastAutoAdvanceTime > 1500) {
         lastAutoAdvanceTime = Date.now();
         if (window.appBridge && window.appBridge.nextPage) {
           const nextState = await window.appBridge.nextPage();

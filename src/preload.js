@@ -45,4 +45,5 @@ contextBridge.exposeInMainWorld('appBridge', {
   prevPage: () => ipcRenderer.invoke('session:prev-page'),
   nextPage: () => ipcRenderer.invoke('session:next-page'),
   setPage: (idx) => ipcRenderer.invoke('session:set-page', idx),
+  pasteImage: () => ipcRenderer.invoke('app:paste-image'),
 });
