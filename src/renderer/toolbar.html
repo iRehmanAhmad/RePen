@@ -10,17 +10,21 @@
     <div class="app-container" id="appContainer">
       <!-- Primary Vertical Palette (The Pen Bar) -->
       <nav class="pen-bar" id="penBar" aria-label="Main Toolbar">
-        <!-- Draggable Brand Grip & Collapse Toggle -->
-        <div class="drag-header" id="dragHeader" title="Drag to reposition">
-          <div class="mark-mini">RP</div>
-          <div class="header-actions">
-            <button class="collapse-btn" id="orientationBtn" title="Toggle Horizontal / Vertical Orientation">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 3l4 4-4 4"/><path d="M20 7H4"/><path d="M8 21l-4-4 4-4"/><path d="M4 17h16"/></svg>
-            </button>
-            <button class="collapse-btn" id="collapseBtn" title="Minimize / Expand">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/></svg>
-            </button>
-          </div>
+        <!-- Drag Grip Header -->
+        <div class="drag-header" id="dragHeader">
+          <button class="mark-mini" id="collapseBtn" title="Minimize / Expand / Drag">
+            <svg viewBox="0 0 508 508" style="width: 28px; height: 28px;">
+              <circle style="fill:#90DFAA;" cx="254" cy="254" r="254"/>
+              <polygon style="fill:#FFFFFF;" points="285.2,119.6 222.8,119.6 187.6,181.2 154.8,238 353.2,236.8 320.4,181.2 "/>
+              <polygon style="fill:#324A5E;" points="254,64.4 222.8,119.6 285.2,119.6 "/>
+              <rect x="154.8" y="238" style="fill:#FF7058;" width="66.4" height="174"/>
+              <polygon style="fill:#F1543F;" points="220.8,236.8 187.6,181.2 154.8,236.8 154.8,238 220.8,238 "/>
+              <rect x="220.8" y="238" style="fill:#FFD05B;" width="66.4" height="174"/>
+              <polygon style="fill:#F9B54C;" points="287.2,238 287.2,236.8 254,181.2 220.8,236.8 220.8,238 "/>
+              <polygon style="fill:#F1543F;" points="353.2,238 353.2,236.8 320.4,181.2 287.2,236.8 287.2,238 "/>
+              <rect x="287.2" y="238" style="fill:#FF7058;" width="66.4" height="174"/>
+            </svg>
+          </button>
         </div>
 
         <div class="divider"></div>
@@ -29,22 +33,45 @@
         <div class="tool-column" aria-label="Drawing & Presentation Tools">
           <!-- 1. Cursor / Pass-through Mode -->
           <button class="tool-button icon-tool" id="togglePassThrough" title="Cursor / Pass-through Mode (Ctrl+Shift+P)" aria-label="Cursor / pass-through mode">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg>
+            <svg viewBox="0 0 100 100" fill="none"><path d="M 5,5 90,30 65,50 95,80 80,95 50,65 30,90 z" fill="#ffffff" stroke="#000000" stroke-width="7" stroke-linejoin="miter"/></svg>
           </button>
 
-          <!-- 1b. Select & View Group (Hand + Hide/Show Overlay) -->
+          <!-- 1b. Select & View Group (Hand + Hide/Show Overlay + Presentation) -->
           <div class="grouped-tool-container" id="selectGroupContainer">
             <button class="tool-button icon-tool grouped-main-btn" id="selectButton" data-tool="select" title="Select & Move / View Tools (Ctrl+Shift+S)" aria-label="Select and move annotations">
-              <svg id="selectGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.9-2.3L2.4 15a2 2 0 0 1 2.8-2.8l1.8 1.8V13a2 2 0 0 1 4 0"/></svg>
+              <svg id="selectGroupIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11 1a1.5 1.5 0 0 0-1.5 1.5V9h-1V5a1.5 1.5 0 0 0-3 0v9l-2-3a1.5 1.5 0 0 0-2.6 1.6l3 5C6 20 8.5 22 12 22h1a7.5 7.5 0 0 0 7.5-7.5v-7a1.5 1.5 0 0 0-3 0V11h-1V4a1.5 1.5 0 0 0-3 0v7h-1V2.5A1.5 1.5 0 0 0 11 1z"/></svg>
               <span class="group-indicator" aria-hidden="true"></span>
             </button>
             <div class="grouped-popover" id="selectGroupPopover">
               <button class="popover-btn active" data-subtool="select" title="Select & Move Annotations (Ctrl+Shift+S)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.9-2.3L2.4 15a2 2 0 0 1 2.8-2.8l1.8 1.8V13a2 2 0 0 1 4 0"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11 1a1.5 1.5 0 0 0-1.5 1.5V9h-1V5a1.5 1.5 0 0 0-3 0v9l-2-3a1.5 1.5 0 0 0-2.6 1.6l3 5C6 20 8.5 22 12 22h1a7.5 7.5 0 0 0 7.5-7.5v-7a1.5 1.5 0 0 0-3 0V11h-1V4a1.5 1.5 0 0 0-3 0v7h-1V2.5A1.5 1.5 0 0 0 11 1z"/></svg>
               </button>
               <button class="popover-btn" id="toggleOverlayBtn" title="Hide Overlay (Ctrl+Alt+H)" aria-label="Toggle overlay visibility">
-                <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg id="eyeIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 4C5 4 1 12 1 12s4 8 11 8 11-8 11-8-4-8-11-8zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
               </button>
+              <button class="popover-btn" data-subtool="spotlight" title="Presenter Spotlight">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 3l1.8 3.6L18 10l-3.2 2.4L16 16l-4-2.5L8 16l1.2-3.6L6 10l4.2-1.4L12 5z"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="magnifier" title="Magnifier Tool">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M10.5 2a8.5 8.5 0 0 1 6.6 13.7l4.6 4.6a1 1 0 0 1-1.4 1.4l-4.6-4.6A8.5 8.5 0 1 1 10.5 2zm0 2a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm1 3a1 1 0 0 0-2 0v2.5H7a1 1 0 0 0 0 2h2.5V14a1 1 0 0 0 2 0v-2.5H14a1 1 0 0 0 0-2h-2.5V7z"/></svg>
+              </button>
+              <div class="popover-row-divider" id="spotlightControlsDivider" style="display: none;"></div>
+              <div class="popover-row slider-row" id="spotlightControls" style="display: none;">
+                <div class="slider-control-item">
+                  <div class="slider-label-row">
+                    <span class="slider-label-text">Radius</span>
+                    <span id="spotlightRadiusVal" class="slider-val">150px</span>
+                  </div>
+                  <input type="range" id="spotlightRadiusRange" min="50" max="400" step="10" value="150" class="mini-slider" />
+                </div>
+                <div class="slider-control-item">
+                  <div class="slider-label-row">
+                    <span class="slider-label-text">Darkness</span>
+                    <span id="spotlightAlphaVal" class="slider-val">75%</span>
+                  </div>
+                  <input type="range" id="spotlightAlphaRange" min="0.2" max="0.95" step="0.05" value="0.75" class="mini-slider" />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -53,66 +80,45 @@
           <!-- 2. Inking Group (Pen, Highlighter, Laser, Text, Spotlight, Magnifier) -->
           <div class="grouped-tool-container" id="inkingGroupContainer">
             <button class="tool-button icon-tool active grouped-main-btn" data-tool="pen" id="inkingGroupBtn" title="Inking Tools (Pen active)">
-              <svg id="inkingGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              <svg id="inkingGroupIcon" viewBox="0 0 64 64" fill="currentColor" stroke="none"><path d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536L37.356,12.497z M8.364,51.39l33.941-33.942l4.243,4.243L12.606,55.632L8.364,51.39z M3.001,61.995c-0.553,0-1.001-0.446-1-0.999v-1.583l2.582,2.582H3.001z M7.411,61.996l-5.41-5.41l0.001-8.73l14.141,14.141H7.411z M17.557,60.582l-3.536-3.536l33.942-33.94l3.535,3.535L17.557,60.582z M52.912,25.227L38.771,11.083l2.828-2.828l14.143,14.143L52.912,25.227z M61.414,16.725l-4.259,4.259L43.013,6.841l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002l11.314,11.314C62.195,14.678,62.194,15.943,61.414,16.725z"/></svg>
               <span class="group-indicator" aria-hidden="true"></span>
             </button>
             <div class="grouped-popover" id="inkingGroupPopover">
               <button class="popover-btn active" data-subtool="pen" title="Pen Tool (Ctrl+Shift+1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                <svg viewBox="0 0 64 64" fill="currentColor" stroke="none"><path d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536L37.356,12.497z M8.364,51.39l33.941-33.942l4.243,4.243L12.606,55.632L8.364,51.39z M3.001,61.995c-0.553,0-1.001-0.446-1-0.999v-1.583l2.582,2.582H3.001z M7.411,61.996l-5.41-5.41l0.001-8.73l14.141,14.141H7.411z M17.557,60.582l-3.536-3.536l33.942-33.94l3.535,3.535L17.557,60.582z M52.912,25.227L38.771,11.083l2.828-2.828l14.143,14.143L52.912,25.227z M61.414,16.725l-4.259,4.259L43.013,6.841l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002l11.314,11.314C62.195,14.678,62.194,15.943,61.414,16.725z"/></svg>
               </button>
               <button class="popover-btn" data-subtool="highlighter" title="Highlighter (Ctrl+Shift+2)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m9 11-6 6v3h3l6-6"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3.293,20.707a1,1,0,0,1,0-1.414l16-16a1,1,0,1,1,1.414,1.414l-16,16A1,1,0,0,1,3.293,20.707Z"/></svg>
               </button>
               <button class="popover-btn" data-subtool="laser" title="Laser Pointer (Ctrl+Shift+L)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="3"/><path fill-rule="evenodd" d="M12 2a1 1 0 0 1 1 1v3a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v3a1 1 0 0 1-2 0v-3a1 1 0 0 1 1-1zM2 12a1 1 0 0 1 1-1h3a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm15 0a1 1 0 0 1 1-1h3a1 1 0 0 1 0 2h-3a1 1 0 0 1-1-1zM4.93 4.93a1 1 0 0 1 1.41 0l2.12 2.12a1 1 0 0 1-1.41 1.42L4.93 6.34a1 1 0 0 1 0-1.41zm10.6 10.6a1 1 0 0 1 1.42 0l2.12 2.12a1 1 0 0 1-1.42 1.42l-2.12-2.12a1 1 0 0 1 0-1.42zM19.07 4.93a1 1 0 0 1 0 1.41l-2.12 2.12a1 1 0 1 1-1.42-1.42l2.12-2.11a1 1 0 0 1 1.42 0zM8.46 15.54a1 1 0 0 1 0 1.41l-2.12 2.12a1 1 0 0 1-1.41-1.42l2.12-2.11a1 1 0 0 1 1.41 0z"/></svg>
               </button>
               <button class="popover-btn" data-subtool="text" title="Sticky Note Tool (Ctrl+Shift+T)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M5 4h14a1 1 0 0 1 0 2h-6v13h3a1 1 0 0 1 0 2H8a1 1 0 0 1 0-2h3V6H5a1 1 0 0 1 0-2z"/></svg>
               </button>
             </div>
           </div>
 
-          <!-- 3. Presentation Group (Spotlight, Magnifier) -->
-          <div class="grouped-tool-container" id="presentationGroupContainer">
-            <button class="tool-button icon-tool grouped-main-btn" data-tool="spotlight" id="presentationGroupBtn" title="Presentation Tools (Spotlight active)">
-              <svg id="presentationGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-              <span class="group-indicator" aria-hidden="true"></span>
-            </button>
-            <div class="grouped-popover" id="presentationGroupPopover">
-              <button class="popover-btn active" data-subtool="spotlight" title="Presenter Spotlight">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-              </button>
-              <button class="popover-btn" data-subtool="magnifier" title="Magnifier Tool">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
-              </button>
-              <div class="popover-divider" id="spotlightControlsDivider" style="display: none; width: 1px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 4px;"></div>
-              <div id="spotlightControls" style="display: none; flex-direction: row; align-items: center; gap: 8px; padding: 0 4px;">
-                <span style="font-size: 11px; color: #aaa; white-space: nowrap;">Radius (<span id="spotlightRadiusVal">150px</span>)</span>
-                <input type="range" id="spotlightRadiusRange" min="50" max="400" step="10" value="150" style="width: 65px; cursor: pointer;">
-                <span style="font-size: 11px; color: #aaa; white-space: nowrap; margin-left: 4px;">Darkness (<span id="spotlightAlphaVal">75%</span>)</span>
-                <input type="range" id="spotlightAlphaRange" min="0.2" max="0.95" step="0.05" value="0.75" style="width: 65px; cursor: pointer;">
-              </div>
-            </div>
-          </div>
+
 
           <!-- 4. Shapes Group -->
           <div class="grouped-tool-container" id="shapesGroupContainer">
             <button class="tool-button icon-tool grouped-main-btn" data-tool="shapes" id="shapesGroupBtn" title="Magic Shapes (Active: Rectangle)">
-              <svg id="shapesGroupIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+              <svg id="shapesGroupIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M3 3h10v10H3V3zm2 2v6h6V5H5z"/><path fill-rule="evenodd" d="M16 10a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm-4 6a4 4 0 1 1 8 0 4 4 0 0 1-8 0z"/></svg>
               <span class="group-indicator" aria-hidden="true"></span>
             </button>
             <div class="grouped-popover" id="shapesGroupPopover">
-              <button class="popover-btn active" data-subshape="rectangle" title="Rectangle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="18" x="3" y="3" rx="2"/></svg></button>
-              <button class="popover-btn" data-subshape="circle" title="Circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/></svg></button>
-              <button class="popover-btn" data-subshape="line" title="Straight Line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="19" x2="19" y2="5"/></svg></button>
-              <button class="popover-btn" data-subshape="arrow" title="Arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-              <button class="popover-btn" data-subshape="triangle" title="Triangle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3 2 21h20z"/></svg></button>
+              <button class="popover-btn active" data-subshape="rectangle" title="Rectangle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg></button>
+              <button class="popover-btn" data-subshape="circle" title="Circle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM2 12C2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12z"/></svg></button>
+              <button class="popover-btn" data-subshape="line" title="Straight Line"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="3" y="11" width="22" height="2.5" rx="1" transform="rotate(-45 12 12)"/></svg></button>
+              <button class="popover-btn" data-subshape="arrow" title="Arrow"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 11h12.2l-4.6-4.6a1 1 0 0 1 1.4-1.4l6.7 6.7a1 1 0 0 1 0 1.4l-6.7 6.7a1 1 0 0 1-1.4-1.4L16.2 13H4a1 1 0 0 1 0-2z"/></svg></button>
+              <button class="popover-btn" data-subshape="triangle" title="Triangle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 3l10 17H2L12 3zm0 4.5L5.5 18h13L12 7.5z"/></svg></button>
             </div>
           </div>
 
           <!-- 5. Eraser -->
-          <button class="tool-button icon-tool" data-tool="eraser" title="Eraser Tool" aria-label="Eraser tool">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg>
+          <button class="tool-button icon-tool" id="eraserBtn" data-tool="eraser" title="Eraser Tool" aria-label="Eraser tool">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19.3,4.71l-4-4A2,2,0,0,0,13.88.71L2.71,11.88a2,2,0,0,0,0,2.83l4.58,4.58H20v-2H10.54l8.76-8.75a2,2,0,0,0,0-2.83ZM8.12,17.29,4.12,13.29l6.59-6.59L14.71,10.7Z" /></svg>
           </button>
 
           <!-- 6. Pen Size Dot & Opacity -->
@@ -121,16 +127,23 @@
               <span class="size-dot-preview" id="sizeDotPreview" style="width: 8px; height: 8px;"></span>
               <span class="group-indicator" aria-hidden="true"></span>
             </button>
-            <div class="grouped-popover" id="penSizePopover">
-              <button class="popover-btn size-btn" data-size="2" title="Fine (2px)"><span class="size-dot" style="width: 4px; height: 4px;"></span></button>
-              <button class="popover-btn size-btn" data-size="4" title="Normal (4px)"><span class="size-dot" style="width: 6px; height: 6px;"></span></button>
-              <button class="popover-btn size-btn active" data-size="8" title="Medium (8px)"><span class="size-dot" style="width: 8px; height: 8px;"></span></button>
-              <button class="popover-btn size-btn" data-size="16" title="Thick (16px)"><span class="size-dot" style="width: 12px; height: 12px;"></span></button>
-              <button class="popover-btn size-btn" data-size="24" title="Marker (24px)"><span class="size-dot" style="width: 16px; height: 16px;"></span></button>
-              <div class="popover-divider" style="width: 1px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 4px;"></div>
-              <div style="display: flex; align-items: center; gap: 6px; padding: 0 4px;">
-                <span style="font-size: 11px; color: #aaa; white-space: nowrap;">Opacity (<span id="opacityValDisplay">100%</span>)</span>
-                <input id="inlineOpacityRange" type="range" min="0.1" max="1" step="0.05" value="1" class="mini-slider" style="width: 65px; cursor: pointer;" />
+            <div class="grouped-popover popover-stacked" id="penSizePopover">
+              <div class="popover-row">
+                <button class="popover-btn size-btn" data-size="2" title="Fine (2px)"><span class="size-dot" style="width: 4px; height: 4px;"></span></button>
+                <button class="popover-btn size-btn" data-size="4" title="Normal (4px)"><span class="size-dot" style="width: 6px; height: 6px;"></span></button>
+                <button class="popover-btn size-btn active" data-size="8" title="Medium (8px)"><span class="size-dot" style="width: 8px; height: 8px;"></span></button>
+                <button class="popover-btn size-btn" data-size="16" title="Thick (16px)"><span class="size-dot" style="width: 12px; height: 12px;"></span></button>
+                <button class="popover-btn size-btn" data-size="24" title="Marker (24px)"><span class="size-dot" style="width: 16px; height: 16px;"></span></button>
+              </div>
+              <div class="popover-row-divider"></div>
+              <div class="popover-row slider-row">
+                <div class="slider-control-item">
+                  <div class="slider-label-row">
+                    <span class="slider-label-text">Opacity</span>
+                    <span id="opacityValDisplay" class="slider-val">100%</span>
+                  </div>
+                  <input id="inlineOpacityRange" type="range" min="0.1" max="1" step="0.05" value="1" class="mini-slider" />
+                </div>
               </div>
             </div>
           </div>
@@ -139,36 +152,36 @@
 
           <!-- 7. Undo -->
           <button class="action-icon-btn" id="undoButton" title="Undo (Ctrl+Shift+Z)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7H15C16.8692 7 17.8039 7 18.5 7.40193C18.9561 7.66523 19.3348 8.04394 19.5981 8.49999C20 9.19615 20 10.1308 20 12C20 13.8692 20 14.8038 19.5981 15.5C19.3348 15.9561 18.9561 16.3348 18.5 16.5981C17.8039 17 16.8692 17 15 17H8.00001M4 7L7 4M4 7L7 10"/></svg>
           </button>
 
           <!-- 8. Clear Screen -->
           <button class="action-icon-btn danger" id="clearButton" title="Clear All Annotations (Ctrl+Alt+C)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M9 3a1 1 0 0 0-1 1v1H4a1 1 0 0 0 0 2h1l1.1 12.2A2 2 0 0 0 8.1 21h7.8a2 2 0 0 0 2-1.8L19 7h1a1 1 0 0 0 0-2h-4V4a1 1 0 0 0-1-1H9zm1 2h4v1h-4V5zm-3 4h10l-1 10H8L7 9z"/></svg>
           </button>
 
           <!-- 9. Whiteboard (Scrble Ink style) -->
           <div class="grouped-tool-container" id="whiteboardContainer">
             <button class="tool-button icon-tool grouped-main-btn" id="whiteboardBtn" title="Whiteboard / Digital Paper">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M3 17h18"/><path d="M12 17v4"/><path d="M8 21h8"/></svg>
+              <svg viewBox="0 0 512 512" fill="currentColor" stroke="none"><path d="M512,0H0v40h16v296h480V40h16V0z M464,304H48V40h416V304z"/><rect x="240" y="352" width="32" height="160"/><polygon points="113.273,512 145.273,512 212.179,352 180.179,352"/><polygon points="299.82,352 366.726,512 398.726,512 331.82,352"/><path d="M149.797,214.883c12.969,0,23.469-10.508,23.469-23.469c0-1.805-0.25-3.547-0.633-5.242l53.726-34.774c3.938,2.985,8.781,4.821,14.094,4.821c0.664,0,1.289-0.141,1.938-0.195l13.57,29.398c-4.297,4.25-6.961,10.14-6.961,16.664c0,12.961,10.5,23.469,23.453,23.469c12.969,0,23.469-10.508,23.469-23.469c0-1.594-0.164-3.149-0.469-4.649l71.766-43.758c4.016,3.211,9.039,5.211,14.578,5.211c12.969,0,23.469-10.508,23.469-23.469c0-12.962-10.5-23.462-23.469-23.462c-12.961,0-23.461,10.5-23.461,23.462c0,1.594,0.164,3.148,0.468,4.648l-71.773,43.758c-4.016-3.202-9.039-5.202-14.578-5.202c-0.656,0-1.274,0.14-1.922,0.195l-13.57-29.406c4.297-4.25,6.961-10.141,6.961-16.664c0-12.961-10.5-23.461-23.469-23.461C227.5,109.29,217,119.79,217,132.75c0,1.812,0.25,3.554,0.633,5.242l-53.734,34.774c-3.93-2.976-8.782-4.812-14.102-4.812c-12.969,0-23.469,10.5-23.469,23.461S136.828,214.883,149.797,214.883z"/></svg>
               <span class="group-indicator" aria-hidden="true"></span>
             </button>
             <div class="grouped-popover" id="whiteboardPopover">
               <div class="popover-row">
-                <button class="popover-btn active" data-bg="whiteboard" title="Pure Whiteboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2" fill="#ffffff" stroke="#ccc"/></svg></button>
-                <button class="popover-btn" data-bg="blackboard" title="Blackboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="18" height="14" x="3" y="3" rx="2" fill="#18181c" stroke="#888"/></svg></button>
+                <button class="popover-btn active" data-bg="whiteboard" title="Pure Whiteboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" fill="#ffffff" stroke="#ccc"/></svg></button>
+                <button class="popover-btn" data-bg="blackboard" title="Blackboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="12" rx="2" fill="#18181c" stroke="#888"/></svg></button>
               </div>
             </div>
           </div>
 
           <!-- 10. Screenshot -->
           <button class="action-icon-btn" id="screenshotButton" title="Take Screenshot (PNG/JPEG)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17,5C18.0544,5,18.9182,5.81588,18.9945,6.85074L19,7L19,17L21,17C21.5523,17,22,17.4477,22,18C22,18.5129,21.614,18.9355,21.1166,18.9933L21,19L19,19L19,21C19,21.5523,18.5523,22,18,22C17.4872,22,17.0645,21.614,17.0067,21.1166L17,21L17,7L9,7L9,5L17,5Z M6,2C6.51283,2,6.93551,2.38604,6.99327,2.88338L7,3L7,17L15,17L15,19L7,19C5.94564,19,5.08183,18.1842,5.00549,17.1493L5,17L5,7L3,7C2.44772,7,2,6.55228,2,6C2,5.48717,2.38604,5.06449,2.88338,5.00673L3,5L5,5L5,3C5,2.44772,5.44772,2,6,2Z"/></svg>
           </button>
 
           <!-- 11. Settings -->
-          <button class="action-icon-btn" id="settingsButton" title="Settings & Shortcuts">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+          <button class="tool-button icon-tool" id="settingsButton" title="Settings">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
           </button>
 
           <div class="divider"></div>

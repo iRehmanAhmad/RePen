@@ -5,13 +5,13 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783506546.5052333,
-    "ast_hash": "fe65bf82bb2193dc3e7d8a3ded585cf7",
+    "mtime": 1783501072.193247,
+    "ast_hash": "5578f9bc4478e55751b7ba15853e60aa",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783503921.8742988,
-    "ast_hash": "d7cdcad8e70c7a8466d3f9cf2db629f0",
+    "mtime": 1783248322.5267115,
+    "ast_hash": "152ea41d8c70015e352b1b8a1a96169d",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -35,13 +35,13 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783506555.118598,
-    "ast_hash": "e49b28dd67eaeac8611c7413e3cb83f7",
+    "mtime": 1783496878.0556169,
+    "ast_hash": "586855c32a8a75a3120baae1ade9bbfd",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783506555.1518056,
-    "ast_hash": "0d65bcb6b6c76ac48ecef06707aa01ca",
+    "mtime": 1783501036.9369001,
+    "ast_hash": "fc5f351230973f811b82cdd069ea4bc9",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783506397.2307892,
-    "ast_hash": "b81a1b63214bcc6bb725a4d556dbdb52",
+    "mtime": 1783501206.801538,
+    "ast_hash": "0585739a83f124e20f1e2cdd93c17054",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783506365.72011,
-    "ast_hash": "87fe44348c4bc17d4720f596cce8deb1",
+    "mtime": 1783501206.787665,
+    "ast_hash": "a9766b09982c7741c3ec92ae8d5c95dd",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -252,16 +252,6 @@
   ".agent-hub/tasks/20260708-133034-toolbar-controls-functionality-audit-and-fix-plan.md": {
     "mtime": 1783500769.073831,
     "ast_hash": "8c0889f4bf785e291779177bc41d466f",
-    "semantic_hash": ""
-  },
-  "scripts/verify-dialog-routing.js": {
-    "mtime": 1783503921.8542812,
-    "ast_hash": "f8f62df3875a9ca28364e8dc953b62ea",
-    "semantic_hash": ""
-  },
-  "scripts/verify-eraser-geometry.js": {
-    "mtime": 1783503911.206218,
-    "ast_hash": "fa5452fcdf838d5dad39d24bf891c340",
     "semantic_hash": ""
   }
 }

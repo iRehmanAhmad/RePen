@@ -23,6 +23,28 @@ let lastMagnifierUrl = null;
 let lastAutoAdvanceTime = 0;
 let pageToastTimer = null;
 
+function clearSelection() {
+  selectedIds = [];
+  marqueeBox = null;
+  isDraggingSelection = false;
+  isResizingSelection = null;
+  canvas.style.cursor = appState && appState.activeTool === 'select' ? 'default' : 'crosshair';
+}
+
+function resetInteractionState(reason) {
+  clearSelection();
+  currentStroke = null;
+  isDraggingText = null;
+  dragStartX = 0;
+  dragStartY = 0;
+  
+  // Commit any open text editor
+  const openTextarea = document.querySelector('textarea');
+  if (openTextarea) {
+    openTextarea.blur(); // Triggers the commit logic
+  }
+}
+
 function showPageToast(msg) {
   const toast = document.getElementById('pageToast');
   if (!toast) return;
@@ -69,7 +91,8 @@ function setupBoardNav() {
   if (loadBtn) {
     loadBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      window.appBridge?.loadSession?.();
+      const rect = loadBtn.getBoundingClientRect();
+      window.appBridge?.showLoadMenu?.(rect.left, rect.bottom);
     });
   }
   if (exportPdfBtn) {
@@ -115,6 +138,9 @@ function setupBoardNav() {
 
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+      if (document.activeElement && document.activeElement.tagName === 'TEXTAREA') {
+        return; // Allow native text paste in textarea
+      }
       const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
       if (isBoard || !appState?.passThrough) {
         window.appBridge?.pasteImage?.();
@@ -358,8 +384,8 @@ function createTextEditor(x, y, existingStroke = null) {
     left = spt.x;
     top = spt.y;
     textarea.value = existingStroke.text || '';
-    textarea.style.width = `${existingStroke.width || 200}px`;
-    textarea.style.height = `${existingStroke.height || 80}px`;
+    if (existingStroke.width) textarea.style.width = `${existingStroke.width}px`;
+    if (existingStroke.height) textarea.style.height = `${existingStroke.height}px`;
   } else {
     textarea.style.left = `${left}px`;
     textarea.style.top = `${top}px`;
@@ -385,14 +411,34 @@ function createTextEditor(x, y, existingStroke = null) {
     textarea.style.textShadow = '0 1px 4px rgba(0, 0, 0, 0.8)';
   }
   textarea.style.outline = 'none';
-  textarea.style.resize = 'both';
-  textarea.style.whiteSpace = 'pre-wrap';
-  textarea.style.wordWrap = 'break-word';
-  textarea.style.overflowWrap = 'break-word';
-  textarea.style.minWidth = '180px';
-  textarea.style.minHeight = '70px';
+  if (mode === 'sticky') {
+    textarea.style.resize = 'both';
+    textarea.style.whiteSpace = 'pre-wrap';
+    textarea.style.wordWrap = 'break-word';
+    textarea.style.overflowWrap = 'break-word';
+    textarea.style.minWidth = '180px';
+    textarea.style.minHeight = '70px';
+  } else {
+    textarea.style.resize = 'none';
+    textarea.style.whiteSpace = 'pre';
+    textarea.style.overflow = 'hidden';
+    textarea.style.minWidth = '20px';
+    textarea.style.minHeight = '30px';
+  }
   textarea.style.zIndex = '99999';
   document.body.appendChild(textarea);
+  
+  const autoResize = () => {
+    if (mode === 'plain') {
+      textarea.style.width = '10px';
+      textarea.style.height = '10px';
+      textarea.style.width = `${textarea.scrollWidth + 2}px`;
+      textarea.style.height = `${textarea.scrollHeight + 2}px`;
+    }
+  };
+  textarea.addEventListener('input', autoResize);
+  autoResize();
+  
   textarea.focus();
 
   let isJustCreated = true;
@@ -422,8 +468,8 @@ function createTextEditor(x, y, existingStroke = null) {
           ...existingStroke,
           text: text,
           textMode: existingStroke.textMode || appState.textMode || 'plain',
-          width: Math.max(180, textarea.offsetWidth),
-          height: Math.max(70, textarea.offsetHeight)
+          width: Math.max(20, textarea.offsetWidth),
+          height: Math.max(30, textarea.offsetHeight)
         };
         if (window.appBridge.updateAnnotation) {
           await window.appBridge.updateAnnotation(updated);
@@ -440,8 +486,8 @@ function createTextEditor(x, y, existingStroke = null) {
         text: text,
         x: globalPt.x,
         y: globalPt.y,
-        width: Math.max(180, textarea.offsetWidth),
-        height: Math.max(70, textarea.offsetHeight)
+        width: Math.max(20, textarea.offsetWidth),
+        height: Math.max(30, textarea.offsetHeight)
       });
     }
     if (textarea.parentNode) textarea.parentNode.removeChild(textarea);
@@ -975,6 +1021,7 @@ function addPointToStroke(stroke, point) {
 }
 
 function createStrokeFromEvent(event) {
+  if (!appState) return null;
   const brush = getBrushStyle();
   const globalPoint = localToGlobal({ x: event.offsetX, y: event.offsetY });
 
@@ -1394,6 +1441,7 @@ async function finalizeStroke() {
 }
 
 canvas.addEventListener('pointerdown', (event) => {
+  if (window.DEBUG_REPEN) console.log('[DEBUG Overlay] pointerdown at screen position:', event.clientX, event.clientY, 'offset:', event.offsetX, event.offsetY, 'activeTool:', appState ? appState.activeTool : 'N/A');
   if (appState && appState.clickHalo) {
     const globalPt = localToGlobal({ x: event.offsetX, y: event.offsetY });
     clickRipples.push({ x: globalPt.x, y: globalPt.y, time: Date.now() });
@@ -1632,7 +1680,7 @@ canvas.addEventListener('pointermove', (event) => {
   }
 
   if (!currentStroke) {
-    if (!isDraggingSelection && !isResizingSelection && !marqueeBox && (appState.activeTool === 'text' || appState.activeTool === 'select')) {
+    if (appState && !isDraggingSelection && !isResizingSelection && !marqueeBox && (appState.activeTool === 'text' || appState.activeTool === 'select')) {
       let overText = false;
       for (const stroke of scene.annotations) {
         if (stroke.tool === 'text' || stroke.tool === 'image') {
@@ -1645,7 +1693,7 @@ canvas.addEventListener('pointermove', (event) => {
           }
         }
       }
-      canvas.style.cursor = overText ? 'grab' : (appState.activeTool === 'select' ? 'default' : 'text');
+      canvas.style.cursor = overText ? 'grab' : (appState && appState.activeTool === 'select' ? 'default' : 'text');
     }
     return;
   }
@@ -1837,17 +1885,50 @@ async function bootstrapApp() {
   updateBoardNav();
 
   window.appBridge.onStateChanged((nextState) => {
+    const prevTool = appState ? appState.activeTool : null;
+    const prevPassThrough = appState ? appState.passThrough : false;
+    const prevBackgroundMode = appState ? appState.backgroundMode : 'transparent';
+    
     appState = nextState;
     updateMagnifierImg();
     updateBoardNav();
+    
+    // Clear transient state if switching away from select or text
+    if (prevTool === 'select' && appState.activeTool !== 'select') {
+      clearSelection();
+    }
+    if (prevTool === 'text' && appState.activeTool !== 'text') {
+      const openTextarea = document.querySelector('textarea');
+      if (openTextarea) openTextarea.blur();
+    }
+    
+    // Reset all interaction state if switching to pass-through or a new board mode
+    if (appState.passThrough && !prevPassThrough) {
+      resetInteractionState('pass-through enabled');
+    }
+    if (appState.backgroundMode !== prevBackgroundMode) {
+      resetInteractionState('background mode changed');
+    }
+
     if (currentStroke && currentStroke.tool !== appState.activeTool) {
       currentStroke = null;
     }
+    
     scheduleRender();
   });
 
   window.appBridge.onSceneChanged((nextScene) => {
     scene = nextScene;
+    
+    if (selectedIds.length > 0) {
+      const existingIds = new Set(scene.annotations.map(a => a.id));
+      const previousCount = selectedIds.length;
+      selectedIds = selectedIds.filter(id => existingIds.has(id));
+      if (selectedIds.length < previousCount) {
+        clearSelection();
+      }
+    }
+
     updateBoardNav();
     scheduleRender();
   });

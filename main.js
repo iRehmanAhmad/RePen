@@ -63,6 +63,7 @@ const DEFAULT_STATE = {
     nextPage: 'CommandOrControl+Alt+Right',
     pasteImage: 'CommandOrControl+Alt+I',
   },
+  toolbarHovered: false,
 };
 
 if (!app.requestSingleInstanceLock()) {
@@ -192,13 +193,12 @@ function loadState() {
       },
     };
     state.overlayVisible = true;
-    if (persisted.state.desktopPage) {
-      desktopPage = {
-        annotations: deepClone(persisted.state.desktopPage.annotations || []),
-        undoStack: [],
-        redoStack: []
-      };
-    }
+    // Do not restore desktop annotations on startup
+    desktopPage = {
+      annotations: [],
+      undoStack: [],
+      redoStack: []
+    };
     if (Array.isArray(persisted.state.pages) && persisted.state.pages.length > 0) {
       pages = persisted.state.pages.map(p => ({
         annotations: deepClone(p.annotations || []),
@@ -465,10 +465,14 @@ function createOverlayWindow(display) {
   };
 
   win.loadURL(windowUrl('overlay.html', { displayId: display.id }));
-  win.setIgnoreMouseEvents(state.passThrough, { forward: true });
-  const isBoard = state.backgroundMode && state.backgroundMode !== 'transparent';
-  win.setFocusable((isBoard || state.activeTool === 'text' || state.activeTool === 'select') && !state.passThrough);
-  win.setAlwaysOnTop(true, 'pop-up-menu');
+  const logPath = path.join(__dirname, 'rep-debug.log');
+  
+  win.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    const logLine = `[Overlay Console] ${message} (${sourceId}:${line})\n`;
+    console.log(logLine.trim());
+    try { fs.appendFileSync(logPath, logLine); } catch (e) {}
+  });
+  win.setAlwaysOnTop(true, 'floating');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   win.webContents.on('before-input-event', (event, input) => {
@@ -492,6 +496,7 @@ function createOverlayWindow(display) {
   });
 
   overlayWindows.set(display.id, win);
+  updateOverlayIgnoreMouse();
   return win;
 }
 
@@ -512,8 +517,8 @@ function createToolbarWindow() {
     y,
     width: toolbarWidth,
     height: toolbarHeight,
-    frame: false,
     transparent: true,
+    frame: false,
     resizable: false,
     minimizable: false,
     maximizable: false,
@@ -530,7 +535,17 @@ function createToolbarWindow() {
     },
   });
 
+  const logPath = path.join(__dirname, 'rep-debug.log');
+
   toolbarWindow.loadURL(windowUrl('toolbar.html'));
+  
+  toolbarWindow.setIgnoreMouseEvents(true, { forward: true });
+  toolbarWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
+    const logLine = `[Renderer Console] ${message} (${sourceId}:${line})\n`;
+    console.log(logLine.trim());
+    try { fs.appendFileSync(logPath, logLine); } catch (e) {}
+  });
+  
   toolbarWindow.setAlwaysOnTop(true, 'screen-saver');
   toolbarWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -675,19 +690,33 @@ function toggleOverlayVisibility(forceValue) {
   broadcastState();
 }
 
-function setPassThrough(enabled) {
-  state.passThrough = enabled;
+function updateOverlayIgnoreMouse() {
+  const ignoreForTool = state.activeTool === 'laser' || state.activeTool === 'spotlight' || state.activeTool === 'magnifier';
+  const shouldIgnore = state.passThrough || ignoreForTool;
+
   for (const win of overlayWindows.values()) {
     if (!win.isDestroyed()) {
-      if (enabled) {
+      if (shouldIgnore) {
         win.setIgnoreMouseEvents(true, { forward: true });
       } else {
         win.setIgnoreMouseEvents(false);
       }
       const isBoard = state.backgroundMode && state.backgroundMode !== 'transparent';
-      win.setFocusable((isBoard || state.activeTool === 'text' || state.activeTool === 'select') && !enabled);
+      const focusable = (isBoard || state.activeTool === 'text' || state.activeTool === 'select') && !shouldIgnore;
+      win.setFocusable(focusable);
     }
   }
+}
+
+function setPassThrough(enabled) {
+  state.passThrough = enabled;
+  if (state.passThrough) {
+    state.activeTool = 'cursor';
+    state.magnifierBgUrls = null;
+  } else if (state.activeTool === 'cursor') {
+    state.activeTool = 'pen';
+  }
+  updateOverlayIgnoreMouse();
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
     toolbarWindow.moveTop();
   }
@@ -747,7 +776,7 @@ function setExportIncludeBackground(enabled) {
   broadcastState();
 }
 
-let magnifierInterval = null;
+
 let isCapturingMagnifier = false;
 
 async function captureMagnifierBackground() {
@@ -769,6 +798,11 @@ async function captureMagnifierBackground() {
       if (matched && matched.thumbnail) {
         bgUrls[disp.id] = matched.thumbnail.toDataURL();
       }
+    }
+    if (state.activeTool !== 'magnifier' || state.passThrough) {
+      state.magnifierBgUrls = null;
+      broadcastState();
+      return;
     }
     state.magnifierBgUrls = bgUrls;
     broadcastState();
@@ -792,52 +826,17 @@ function setTool(tool) {
     state.overlayVisible = true;
     showOverlayWindows();
   }
-  if (tool === 'pen' || tool === 'highlighter' || tool === 'eraser' || tool === 'shapes' || tool === 'text' || tool === 'select') {
-    state.passThrough = false;
-    for (const win of overlayWindows.values()) {
-      if (!win.isDestroyed()) {
-        win.setIgnoreMouseEvents(false);
-        win.setFocusable(tool === 'text' || tool === 'select');
-      }
-    }
-  } else if (tool === 'laser' || tool === 'spotlight' || tool === 'magnifier') {
-    state.passThrough = false;
-    for (const win of overlayWindows.values()) {
-      if (!win.isDestroyed()) {
-        win.setIgnoreMouseEvents(true, { forward: true });
-        win.setFocusable(false);
-      }
-    }
-  } else {
-    for (const win of overlayWindows.values()) {
-      if (!win.isDestroyed()) {
-        win.setFocusable(false);
-      }
-    }
-  }
+  state.passThrough = false;
+  broadcastState();
+  updateOverlayIgnoreMouse();
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
     toolbarWindow.moveTop();
   }
   if (tool === 'magnifier') {
     captureMagnifierBackground();
-    if (!magnifierInterval) {
-      magnifierInterval = setInterval(() => {
-        if (state.activeTool === 'magnifier') {
-          captureMagnifierBackground();
-        } else {
-          clearInterval(magnifierInterval);
-          magnifierInterval = null;
-        }
-      }, 750);
-    }
   } else {
-    if (magnifierInterval) {
-      clearInterval(magnifierInterval);
-      magnifierInterval = null;
-    }
     state.magnifierBgUrls = null;
   }
-  broadcastState();
 }
 
 function setToolbarOrientation(orientation) {
@@ -1019,18 +1018,43 @@ async function showModalDialog(type, options) {
       return helperWin && !helperWin.isDestroyed() ? await dialog.showOpenDialog(helperWin, options) : await dialog.showOpenDialog(options);
     }
   } finally {
-    for (const win of overlayWindows.values()) {
-      if (!win.isDestroyed()) {
-        if (state.passThrough) {
-          win.setIgnoreMouseEvents(true, { forward: true });
-        } else {
-          win.setIgnoreMouseEvents(false);
-        }
-      }
-    }
+    updateOverlayIgnoreMouse();
     if (toolbarWindow && !toolbarWindow.isDestroyed()) {
       toolbarWindow.moveTop();
     }
+  }
+}
+
+function autoArchiveCurrentSession() {
+  syncPageStore();
+  const hasAnnotations = pages.some(p => p.annotations && p.annotations.length > 0);
+  if (!hasAnnotations) return;
+
+  try {
+    const boardsDir = path.join(app.getPath('userData'), 'boards');
+    fs.mkdirSync(boardsDir, { recursive: true });
+    
+    // Check if current session already matches the last saved state to avoid duplicates
+    // But for simplicity, we just save a new timestamped file.
+    const ts = new Date().toLocaleString().replace(/[:./\\]/g, '-');
+    const filePath = path.join(boardsDir, `Board_${ts}.rpen`);
+    
+    const payload = {
+      version: 2,
+      type: 'repen-session',
+      currentPageIndex,
+      pages: pages.map(p => ({
+        annotations: p.annotations || []
+      })),
+      state: {
+        backgroundMode: state.backgroundMode,
+        clickHalo: state.clickHalo,
+        exportDefaults: state.exportDefaults
+      }
+    };
+    fs.writeFileSync(filePath, JSON.stringify(payload, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Failed to auto-archive session:', err);
   }
 }
 
@@ -1080,28 +1104,49 @@ async function loadSession() {
   });
   if (canceled || !filePaths || !filePaths.length) return { ok: false };
 
+  autoArchiveCurrentSession();
+  const result = loadSessionFromFile(filePaths[0]);
+  return result;
+}
+
+function loadSessionFromFile(filePath) {
   try {
-    const content = fs.readFileSync(filePaths[0], 'utf8');
+    const content = fs.readFileSync(filePath, 'utf8');
     const parsed = JSON.parse(content);
-    if (!parsed || !Array.isArray(parsed.pages) || !parsed.pages.length) {
-      return { ok: false, error: 'Invalid session file format' };
+
+    if (parsed.type === 'repen-session') {
+      if (Array.isArray(parsed.pages) && parsed.pages.length > 0) {
+        pages = parsed.pages.map(p => ({
+          annotations: deepClone(p.annotations || []),
+          undoStack: [],
+          redoStack: []
+        }));
+      } else {
+        return { ok: false, error: 'Invalid session file' };
+      }
+    } else {
+      // Legacy .ink
+      const legacyPages = Array.isArray(parsed) ? parsed : [parsed];
+      pages = legacyPages.map(p => ({
+        annotations: Array.isArray(p.annotations) ? deepClone(p.annotations) : [],
+        undoStack: [],
+        redoStack: []
+      }));
     }
-    pages = parsed.pages.map(p => ({
-      annotations: deepClone(p.annotations || []),
-      undoStack: [],
-      redoStack: []
-    }));
-    if (parsed.state) {
-      if (parsed.state.backgroundMode) state.backgroundMode = parsed.state.backgroundMode;
-      if (typeof parsed.state.clickHalo === 'boolean') state.clickHalo = parsed.state.clickHalo;
-      if (parsed.state.exportDefaults) Object.assign(state.exportDefaults, parsed.state.exportDefaults);
-    }
+
     const targetIndex = Math.min(Math.max(0, parsed.currentPageIndex || 0), pages.length - 1);
     currentPageIndex = targetIndex;
     const page = pages[currentPageIndex];
     annotations = page.annotations || [];
     undoStack = page.undoStack || [];
     redoStack = page.redoStack || [];
+    
+    if (parsed.state && parsed.state.backgroundMode && parsed.state.backgroundMode !== 'transparent') {
+      state.backgroundMode = parsed.state.backgroundMode;
+    } else if (state.backgroundMode === 'transparent') {
+      state.backgroundMode = 'whiteboard';
+    }
+
     broadcastScene();
     broadcastState();
     return { ok: true };
@@ -1112,6 +1157,7 @@ async function loadSession() {
 }
 
 function newSession() {
+  autoArchiveCurrentSession();
   pages = [{ annotations: [], undoStack: [], redoStack: [] }];
   currentPageIndex = 0;
   if (state.backgroundMode === 'transparent') {
@@ -1176,36 +1222,85 @@ function segmentDistance(px, py, x1, y1, x2, y2) {
   return pointDistance(px, py, nearestX, nearestY);
 }
 
+function ccw(ax, ay, bx, by, cx, cy) {
+  return (cy - ay) * (bx - ax) > (by - ay) * (cx - ax);
+}
+
+function segmentsIntersect(ax, ay, bx, by, cx, cy, dx, dy) {
+  return ccw(ax, ay, cx, cy, dx, dy) !== ccw(bx, by, cx, cy, dx, dy) &&
+         ccw(ax, ay, bx, by, cx, cy) !== ccw(ax, ay, bx, by, dx, dy);
+}
+
+function segmentToSegmentDistance(x1, y1, x2, y2, x3, y3, x4, y4) {
+  if (segmentsIntersect(x1, y1, x2, y2, x3, y3, x4, y4)) return 0;
+  return Math.min(
+    segmentDistance(x1, y1, x3, y3, x4, y4),
+    segmentDistance(x2, y2, x3, y3, x4, y4),
+    segmentDistance(x3, y3, x1, y1, x2, y2),
+    segmentDistance(x4, y4, x1, y1, x2, y2)
+  );
+}
+
 function strokeHitsEraserPath(stroke, erasePoints, radius) {
+  if (erasePoints.length < 2) return false;
+
   if (stroke.tool === 'text' || stroke.tool === 'image') {
     const w = typeof stroke.width === 'number' ? stroke.width : 200;
     const h = typeof stroke.height === 'number' ? stroke.height : 80;
-    for (const pt of erasePoints) {
-      if (pt.x >= stroke.x && pt.x <= stroke.x + w && pt.y >= stroke.y && pt.y <= stroke.y + h) {
-        return true;
-      }
+    
+    for (let i = 0; i < erasePoints.length - 1; i++) {
+      const a = erasePoints[i], b = erasePoints[i+1];
+      const distTop = segmentToSegmentDistance(stroke.x, stroke.y, stroke.x + w, stroke.y, a.x, a.y, b.x, b.y);
+      const distBottom = segmentToSegmentDistance(stroke.x, stroke.y + h, stroke.x + w, stroke.y + h, a.x, a.y, b.x, b.y);
+      const distLeft = segmentToSegmentDistance(stroke.x, stroke.y, stroke.x, stroke.y + h, a.x, a.y, b.x, b.y);
+      const distRight = segmentToSegmentDistance(stroke.x + w, stroke.y, stroke.x + w, stroke.y + h, a.x, a.y, b.x, b.y);
+      if (Math.min(distTop, distBottom, distLeft, distRight) <= radius) return true;
+      if (a.x >= stroke.x && a.x <= stroke.x + w && a.y >= stroke.y && a.y <= stroke.y + h) return true;
     }
     return false;
   }
 
   if (stroke.tool === 'shapes' || stroke.shapeType) {
-    const minX = Math.min(stroke.start?.x || 0, stroke.end?.x || 0);
-    const maxX = Math.max(stroke.start?.x || 0, stroke.end?.x || 0);
-    const minY = Math.min(stroke.start?.y || 0, stroke.end?.y || 0);
-    const maxY = Math.max(stroke.start?.y || 0, stroke.end?.y || 0);
-    for (const pt of erasePoints) {
-      if (pt.x >= minX - radius && pt.x <= maxX + radius && pt.y >= minY - radius && pt.y <= maxY + radius) {
-        return true;
+    const sx = stroke.start?.x || 0, sy = stroke.start?.y || 0;
+    const ex = stroke.end?.x || 0, ey = stroke.end?.y || 0;
+    
+    for (let i = 0; i < erasePoints.length - 1; i++) {
+      const a = erasePoints[i], b = erasePoints[i+1];
+      if (stroke.shapeType === 'line') {
+        if (segmentToSegmentDistance(sx, sy, ex, ey, a.x, a.y, b.x, b.y) <= radius) return true;
+      } else if (stroke.shapeType === 'rectangle') {
+        const minX = Math.min(sx, ex), maxX = Math.max(sx, ex);
+        const minY = Math.min(sy, ey), maxY = Math.max(sy, ey);
+        const distT = segmentToSegmentDistance(minX, minY, maxX, minY, a.x, a.y, b.x, b.y);
+        const distB = segmentToSegmentDistance(minX, maxY, maxX, maxY, a.x, a.y, b.x, b.y);
+        const distL = segmentToSegmentDistance(minX, minY, minX, maxY, a.x, a.y, b.x, b.y);
+        const distR = segmentToSegmentDistance(maxX, minY, maxX, maxY, a.x, a.y, b.x, b.y);
+        if (Math.min(distT, distB, distL, distR) <= radius) return true;
+        if (a.x >= minX && a.x <= maxX && a.y >= minY && a.y <= maxY) return true;
+      } else if (stroke.shapeType === 'circle') {
+        const cx = (sx + ex) / 2, cy = (sy + ey) / 2;
+        const r = Math.hypot(ex - sx, ey - sy) / 2;
+        const distToCenter = segmentDistance(cx, cy, a.x, a.y, b.x, b.y);
+        if (Math.abs(distToCenter - r) <= radius || distToCenter <= r) return true;
+      } else if (stroke.shapeType === 'triangle' || stroke.shapeType === 'arrow' || !stroke.shapeType) {
+        // Fallback for triangle, arrow, and others using bounding box
+        const minX = Math.min(sx, ex), maxX = Math.max(sx, ex);
+        const minY = Math.min(sy, ey), maxY = Math.max(sy, ey);
+        if (a.x >= minX - radius && a.x <= maxX + radius && a.y >= minY - radius && a.y <= maxY + radius) return true;
       }
     }
+    return false;
   }
 
   if (!Array.isArray(stroke.points)) return false;
-  for (const point of stroke.points) {
-    for (let i = 0; i < erasePoints.length - 1; i += 1) {
-      const a = erasePoints[i];
-      const b = erasePoints[i + 1];
-      if (segmentDistance(point.x, point.y, a.x, a.y, b.x, b.y) <= radius + stroke.width / 2) {
+  const threshold = radius + (typeof stroke.width === 'number' ? stroke.width : 4) / 2;
+  
+  for (let pIdx = 0; pIdx < stroke.points.length; pIdx++) {
+    const p1 = stroke.points[pIdx];
+    const p2 = pIdx < stroke.points.length - 1 ? stroke.points[pIdx + 1] : p1;
+    for (let i = 0; i < erasePoints.length - 1; i++) {
+      const a = erasePoints[i], b = erasePoints[i+1];
+      if (segmentToSegmentDistance(p1.x, p1.y, p2.x, p2.y, a.x, a.y, b.x, b.y) <= threshold) {
         return true;
       }
     }
@@ -1230,12 +1325,15 @@ function eraseStrokeSegments(stroke, erasePoints, radius) {
   let anyHit = false;
 
   for (let pIdx = 0; pIdx < stroke.points.length; pIdx += 1) {
-    const pt = stroke.points[pIdx];
+    const p1 = stroke.points[pIdx];
+    const p2 = pIdx < stroke.points.length - 1 ? stroke.points[pIdx + 1] : p1;
+    
     for (let i = 0; i < erasePoints.length - 1; i += 1) {
       const a = erasePoints[i];
       const b = erasePoints[i + 1];
-      if (segmentDistance(pt.x, pt.y, a.x, a.y, b.x, b.y) <= threshold) {
+      if (segmentToSegmentDistance(p1.x, p1.y, p2.x, p2.y, a.x, a.y, b.x, b.y) <= threshold) {
         hits[pIdx] = true;
+        if (pIdx < stroke.points.length - 1) hits[pIdx + 1] = true;
         anyHit = true;
         break;
       }
@@ -1282,8 +1380,10 @@ function eraseStrokeSegments(stroke, erasePoints, radius) {
 }
 
 function erasePath(payload) {
-  const { points = [], radius = state.brushDefaults.eraser.radius } = payload || {};
-  if (points.length < 2) {
+  let { points = [], radius = state.brushDefaults.eraser.radius } = payload || {};
+  if (points.length === 1) {
+    points = [points[0], { x: points[0].x + 0.1, y: points[0].y + 0.1 }];
+  } else if (points.length < 2) {
     return;
   }
 
@@ -1398,13 +1498,40 @@ function addStroke(stroke) {
 }
 
 function pasteClipboardImage() {
-  const image = clipboard.readImage();
-  if (!image || image.isEmpty()) {
+  let image = clipboard.readImage();
+  let dataUrl = null;
+  
+  if (image && !image.isEmpty()) {
+    dataUrl = image.toDataURL();
+  } else {
+    try {
+      const rawFilePath = clipboard.read('FileNameW');
+      if (rawFilePath) {
+        const str = rawFilePath.toString('utf16le').replace(/\0/g, '');
+        if (str && fs.existsSync(str)) {
+          const ext = path.extname(str).toLowerCase();
+          if (['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp'].includes(ext)) {
+            const buffer = fs.readFileSync(str);
+            let mime = 'image/png';
+            if (ext === '.jpg' || ext === '.jpeg') mime = 'image/jpeg';
+            else if (ext === '.webp') mime = 'image/webp';
+            else if (ext === '.gif') mime = 'image/gif';
+            else if (ext === '.bmp') mime = 'image/bmp';
+            dataUrl = `data:${mime};base64,${buffer.toString('base64')}`;
+            image = nativeImage.createFromDataURL(dataUrl);
+          }
+        }
+      }
+    } catch (err) {
+      console.error('Failed to read image file from clipboard', err);
+    }
+  }
+
+  if (!dataUrl) {
     return { ok: false, error: 'No image found in clipboard' };
   }
-  const size = image.getSize();
-  const dataUrl = image.toDataURL();
 
+  const size = image.getSize();
   let w = size.width || 400;
   let h = size.height || 300;
   const maxDim = 450;
@@ -1652,6 +1779,19 @@ ipcMain.handle('app:set-pass-through', (_, enabled) => {
   return getAppState();
 });
 
+ipcMain.handle('app:set-toolbar-hover', (_, hovered) => {
+  state.toolbarHovered = Boolean(hovered);
+  if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+    if (state.toolbarHovered) {
+      toolbarWindow.setIgnoreMouseEvents(false);
+    } else {
+      toolbarWindow.setIgnoreMouseEvents(true, { forward: true });
+    }
+  }
+  updateOverlayIgnoreMouse();
+  return getAppState();
+});
+
 ipcMain.handle('app:toggle-visibility', (_, forceValue) => {
   toggleOverlayVisibility(forceValue);
   return getAppState();
@@ -1765,11 +1905,58 @@ ipcMain.handle('scene:revert-auto-shape', () => {
 
 ipcMain.handle('session:save', () => saveSession());
 ipcMain.handle('session:load', () => loadSession());
+ipcMain.handle('session:showLoadMenu', (event, x, y) => {
+  const boardsDir = path.join(app.getPath('userData'), 'boards');
+  let files = [];
+  try {
+    if (fs.existsSync(boardsDir)) {
+      files = fs.readdirSync(boardsDir).filter(f => f.endsWith('.rpen')).map(f => {
+        const stats = fs.statSync(path.join(boardsDir, f));
+        return { name: f, path: path.join(boardsDir, f), mtime: stats.mtimeMs };
+      });
+      files.sort((a, b) => b.mtime - a.mtime);
+    }
+  } catch(e) {}
+
+  const template = files.map(f => ({
+    label: f.name.replace('.rpen', '').replace(/_/g, ' '),
+    click: () => {
+      autoArchiveCurrentSession();
+      loadSessionFromFile(f.path);
+    }
+  }));
+
+  if (template.length > 0) {
+    template.push({ type: 'separator' });
+  }
+  template.push({
+    label: 'Browse for file...',
+    click: () => loadSession()
+  });
+
+  const menu = Menu.buildFromTemplate(template);
+  const win = BrowserWindow.fromWebContents(event.sender);
+  if (win) {
+    menu.popup({ window: win, x: Math.round(x), y: Math.round(y) });
+  }
+});
 ipcMain.handle('session:new', () => newSession());
 ipcMain.handle('session:export-pdf', () => exportPdf());
 ipcMain.handle('session:prev-page', () => prevPage());
 ipcMain.handle('session:next-page', () => nextPage());
 ipcMain.handle('session:set-page', (_, idx) => setPage(idx));
+
+ipcMain.on('app:move-toolbar', (event, dx, dy) => {
+  if (toolbarWindow) {
+    const bounds = toolbarWindow.getBounds();
+    toolbarWindow.setBounds({
+      x: bounds.x + dx,
+      y: bounds.y + dy,
+      width: bounds.width,
+      height: bounds.height
+    });
+  }
+});
 
 ipcMain.handle('settings:get', () => {
   return {

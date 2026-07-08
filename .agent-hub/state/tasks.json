@@ -121,6 +121,50 @@
       "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260705-104424-separate-whiteboard-and-transparent-annotations.md",
       "createdAt": "2026-07-05T10:44:24.650Z",
       "updatedAt": "2026-07-05T10:45:57.261Z"
+    },
+    {
+      "id": "20260706-121200-fix-toolbar-layout-overflows",
+      "title": "Fix toolbar layout overflows",
+      "phase": "done",
+      "owner": "antigravity",
+      "implementer": "antigravity",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260706-121200-fix-toolbar-layout-overflows.md",
+      "createdAt": "2026-07-06T12:12:00.000Z",
+      "updatedAt": "2026-07-06T12:12:00.000Z"
+    },
+    {
+      "id": "20260708-125652-fix-main-icon-click-drag-behavior",
+      "title": "Fix main icon click drag behavior",
+      "phase": "handoff",
+      "owner": "codex",
+      "implementer": "codex",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260708-125652-fix-main-icon-click-drag-behavior.md",
+      "createdAt": "2026-07-08T07:56:52.000Z",
+      "updatedAt": "2026-07-08T07:56:52.000Z"
+    },
+    {
+      "id": "20260708-131843-fix-cursor-clearing-grouped-tools",
+      "title": "Fix cursor clearing grouped tools",
+      "phase": "handoff",
+      "owner": "codex",
+      "implementer": "codex",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260708-131843-fix-cursor-clearing-grouped-tools.md",
+      "createdAt": "2026-07-08T08:18:43.000Z",
+      "updatedAt": "2026-07-08T08:18:43.000Z"
+    },
+    {
+      "id": "20260708-133034-toolbar-controls-functionality-audit-and-fix-plan",
+      "title": "Toolbar controls functionality audit and fix plan",
+      "phase": "plan",
+      "owner": "codex",
+      "implementer": "unassigned",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260708-133034-toolbar-controls-functionality-audit-and-fix-plan.md",
+      "createdAt": "2026-07-08T08:30:34.000Z",
+      "updatedAt": "2026-07-08T08:30:34.000Z"
     }
   ]
 }

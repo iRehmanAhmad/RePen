@@ -1,11 +1,11 @@
 # Graph Report - epic-pen-clone  (2026-07-08)
 
 ## Corpus Check
-- 50 files · ~39,505 words
+- 48 files · ~39,111 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 686 nodes · 909 edges · 65 communities (62 shown, 3 thin omitted)
+- 674 nodes · 894 edges · 63 communities (60 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
@@ -78,8 +78,6 @@
 - [[_COMMUNITY_Toolbar controls functionality audit and fix plan|Toolbar controls functionality audit and fix plan]]
 - [[_COMMUNITY_Fix main icon click drag behavior|Fix main icon click drag behavior]]
 - [[_COMMUNITY_Fix cursor clearing grouped tools|Fix cursor clearing grouped tools]]
-- [[_COMMUNITY_verify-dialog-routing.js|verify-dialog-routing.js]]
-- [[_COMMUNITY_verify-eraser-geometry.js|verify-eraser-geometry.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 26 edges
@@ -99,11 +97,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (65 total, 3 thin omitted)
+## Communities (63 total, 3 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
-Nodes (89): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground() (+81 more)
+Nodes (87): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), ccw() (+79 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.13
@@ -341,16 +339,8 @@ Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Fix mai
 Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Fix cursor clearing grouped tools, Goal, Handoff Notes, Owners (+3 more)
 
-### Community 63 - "verify-dialog-routing.js"
-Cohesion: 0.40
-Nodes (4): fs, mainContent, mainPath, path
-
-### Community 64 - "verify-eraser-geometry.js"
-Cohesion: 0.40
-Nodes (4): fs, mainContent, mainPath, path
-
 ## Knowledge Gaps
-- **408 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+403 more)
+- **400 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+395 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -358,15 +348,15 @@ Nodes (4): fs, mainContent, mainPath, path
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `19. Security Model`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Why does `8. Interaction Modes` connect `8. Interaction Modes` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _408 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _400 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.055043859649122805 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.055822466254861584 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.12878787878787878 - nodes in this community are weakly interconnected._
 - **Should `agent-hub.js` be split into smaller, more focused modules?**

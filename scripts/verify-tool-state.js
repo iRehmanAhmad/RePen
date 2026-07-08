@@ -37,6 +37,51 @@ for (const t of htmlTools) {
   }
 }
 
+const overlayPath = path.join(__dirname, '../src/renderer/overlay.js');
+const overlayContent = fs.readFileSync(overlayPath, 'utf8');
+
+if (!/resetInteractionState\('background mode changed'\)/.test(overlayContent)) {
+  console.error('[FAIL] overlay.js must reset interaction state on backgroundMode changes');
+  hasError = true;
+} else {
+  console.log('[PASS] overlay.js resets interaction state on backgroundMode changes');
+}
+
+if (!/segmentToSegmentDistance/.test(mainContent)) {
+  console.error('[FAIL] main.js must use segmentToSegmentDistance for accurate erasing');
+  hasError = true;
+} else {
+  console.log('[PASS] main.js uses segmentToSegmentDistance for accurate erasing');
+}
+
+if (!/broadcastState\(\);\s*updateOverlayIgnoreMouse\(\);/.test(mainContent)) {
+  console.error('[FAIL] main.js must broadcast state before updating overlay mouse capture in setTool');
+  hasError = true;
+} else {
+  console.log('[PASS] main.js broadcasts state before updating overlay mouse capture');
+}
+
+if (!/function\s+setPassThrough\s*\([^)]*\)\s*\{[\s\S]*state\.activeTool\s*=\s*['"]cursor['"]/.test(mainContent)) {
+  console.error('[FAIL] setPassThrough() must set activeTool to "cursor" when pass-through is enabled');
+  hasError = true;
+} else {
+  console.log('[PASS] setPassThrough() clears active tools by switching to cursor mode');
+}
+
+if (!/function\s+setPassThrough\s*\([^)]*\)\s*\{[\s\S]*state\.magnifierBgUrls\s*=\s*null/.test(mainContent)) {
+  console.error('[FAIL] setPassThrough() must clear magnifier background state when cursor mode is enabled');
+  hasError = true;
+} else {
+  console.log('[PASS] setPassThrough() clears magnifier background state');
+}
+
+if (!/function\s+captureMagnifierBackground\s*\([^)]*\)\s*\{[\s\S]*state\.activeTool\s*!==\s*['"]magnifier['"][\s\S]*state\.passThrough[\s\S]*state\.magnifierBgUrls\s*=\s*null/.test(mainContent)) {
+  console.error('[FAIL] captureMagnifierBackground() must not publish stale magnifier state after cursor/pass-through is enabled');
+  hasError = true;
+} else {
+  console.log('[PASS] captureMagnifierBackground() ignores stale captures outside magnifier mode');
+}
+
 if (hasError) {
   console.error('Tool State verification failed!');
   process.exit(1);

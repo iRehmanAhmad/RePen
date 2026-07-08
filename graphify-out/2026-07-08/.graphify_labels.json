@@ -61,7 +61,5 @@
   "59": "2. Product Objectives",
   "60": "Toolbar controls functionality audit and fix plan",
   "61": "Fix main icon click drag behavior",
-  "62": "Fix cursor clearing grouped tools",
-  "63": "verify-dialog-routing.js",
-  "64": "verify-eraser-geometry.js"
+  "62": "Fix cursor clearing grouped tools"
 }

@@ -1,17 +1,17 @@
 {
   ".agent-hub/state/tasks.json": {
-    "mtime": 1783499484.0518494,
-    "ast_hash": "14c4964a9237bf1b2fd593cce42667be",
+    "mtime": 1783322025.197927,
+    "ast_hash": "aa753052526275a491fcff3c6e8c8eb3",
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783506546.5052333,
-    "ast_hash": "fe65bf82bb2193dc3e7d8a3ded585cf7",
+    "mtime": 1783334018.2004638,
+    "ast_hash": "315251f11d99476ec8af2ece5953a599",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783503921.8742988,
-    "ast_hash": "d7cdcad8e70c7a8466d3f9cf2db629f0",
+    "mtime": 1783248322.5267115,
+    "ast_hash": "152ea41d8c70015e352b1b8a1a96169d",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -30,18 +30,18 @@
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783501241.6869996,
-    "ast_hash": "0c67f840e5870adac3d559273f1de466",
+    "mtime": 1783181195.8959155,
+    "ast_hash": "4bb1f0064f65491412269a9f77bc350b",
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783506555.118598,
-    "ast_hash": "e49b28dd67eaeac8611c7413e3cb83f7",
+    "mtime": 1783333852.386696,
+    "ast_hash": "e7e554b8686c9edc2006b007a2165d42",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783506555.1518056,
-    "ast_hash": "0d65bcb6b6c76ac48ecef06707aa01ca",
+    "mtime": 1783333728.7625706,
+    "ast_hash": "fe2f5b96a8a4fcb706f040234392cf18",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783506397.2307892,
-    "ast_hash": "b81a1b63214bcc6bb725a4d556dbdb52",
+    "mtime": 1783335103.1308165,
+    "ast_hash": "c4167aad8256598df08052916977502e",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783506365.72011,
-    "ast_hash": "87fe44348c4bc17d4720f596cce8deb1",
+    "mtime": 1783337131.7525947,
+    "ast_hash": "0e097fae564dac42219692b0bc741d47",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -235,33 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1783337169.901796,
-    "ast_hash": "be05c7daf4fb3d9280cca7afb7be0b60",
-    "semantic_hash": ""
-  },
-  ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
-    "mtime": 1783497503.4786553,
-    "ast_hash": "b902764495c3d028dcd7c834f45889f2",
-    "semantic_hash": ""
-  },
-  ".agent-hub/tasks/20260708-131843-fix-cursor-clearing-grouped-tools.md": {
-    "mtime": 1783498860.6630998,
-    "ast_hash": "f879175a6fea14c21eaeb5679546d8f4",
-    "semantic_hash": ""
-  },
-  ".agent-hub/tasks/20260708-133034-toolbar-controls-functionality-audit-and-fix-plan.md": {
-    "mtime": 1783500769.073831,
-    "ast_hash": "8c0889f4bf785e291779177bc41d466f",
-    "semantic_hash": ""
-  },
-  "scripts/verify-dialog-routing.js": {
-    "mtime": 1783503921.8542812,
-    "ast_hash": "f8f62df3875a9ca28364e8dc953b62ea",
-    "semantic_hash": ""
-  },
-  "scripts/verify-eraser-geometry.js": {
-    "mtime": 1783503911.206218,
-    "ast_hash": "fa5452fcdf838d5dad39d24bf891c340",
+    "mtime": 1783335132.7199683,
+    "ast_hash": "2709b0d773ba595ad0a3eff17e5714c1",
     "semantic_hash": ""
   }
 }

@@ -1,11 +1,11 @@
-# Graph Report - epic-pen-clone  (2026-07-08)
+# Graph Report - epic-pen-clone  (2026-07-06)
 
 ## Corpus Check
-- 50 files · ~39,505 words
+- 45 files · ~35,846 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 686 nodes · 909 edges · 65 communities (62 shown, 3 thin omitted)
+- 630 nodes · 846 edges · 60 communities (57 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
@@ -75,11 +75,6 @@
 - [[_COMMUNITY_Task Board Toolbar Reorganization & Overlay Navigation|Task: Board Toolbar Reorganization & Overlay Navigation]]
 - [[_COMMUNITY_Fix toolbar layout overflows|Fix toolbar layout overflows]]
 - [[_COMMUNITY_2. Product Objectives|2. Product Objectives]]
-- [[_COMMUNITY_Toolbar controls functionality audit and fix plan|Toolbar controls functionality audit and fix plan]]
-- [[_COMMUNITY_Fix main icon click drag behavior|Fix main icon click drag behavior]]
-- [[_COMMUNITY_Fix cursor clearing grouped tools|Fix cursor clearing grouped tools]]
-- [[_COMMUNITY_verify-dialog-routing.js|verify-dialog-routing.js]]
-- [[_COMMUNITY_verify-eraser-geometry.js|verify-eraser-geometry.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 26 edges
@@ -87,11 +82,11 @@
 3. `getShortcutActions()` - 18 edges
 4. `broadcastScene()` - 14 edges
 5. `deepClone()` - 12 edges
-6. `Toolbar controls functionality audit and fix plan` - 12 edges
-7. `updateTrayMenu()` - 11 edges
-8. `Set up multi-agent collaboration system` - 11 edges
-9. `Sprint 1 and 2 Features Complete` - 11 edges
-10. `Epic Pen UI Redesign` - 11 edges
+6. `updateTrayMenu()` - 11 edges
+7. `Set up multi-agent collaboration system` - 11 edges
+8. `Sprint 1 and 2 Features Complete` - 11 edges
+9. `Epic Pen UI Redesign` - 11 edges
+10. `Color Picker and Orientation Toggle` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -99,11 +94,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (65 total, 3 thin omitted)
+## Communities (60 total, 3 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
-Nodes (89): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground() (+81 more)
+Nodes (84): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }, applyHotkeys(), applySettingsPayload(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene() (+76 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.13
@@ -115,7 +110,7 @@ Nodes (31): allowedTypes, appendMessage(), commandBrief(), commandHelp(), comman
 
 ### Community 3 - "overlay.js"
 Cohesion: 0.11
-Nodes (34): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clearSelection(), clickRipples, createStrokeFromEvent(), createTextEditor() (+26 more)
+Nodes (32): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clickRipples, createStrokeFromEvent(), createTextEditor(), ctx (+24 more)
 
 ### Community 4 - "toolbar.js"
 Cohesion: 0.14
@@ -186,8 +181,8 @@ Cohesion: 0.17
 Nodes (11): declaredElementKeys, elementsObject, fs, htmlContent, htmlIds, jsContent, jsIds, path (+3 more)
 
 ### Community 21 - "verify-tool-state.js"
-Cohesion: 0.18
-Nodes (10): fs, htmlContent, htmlTools, knownToolsInMain, mainContent, mainPath, overlayContent, overlayPath (+2 more)
+Cohesion: 0.22
+Nodes (8): fs, htmlContent, htmlTools, knownToolsInMain, mainContent, mainPath, path, toolbarHtmlPath
 
 ### Community 22 - "Task: Magnifier Background, Enhanced Auto-Shapes, and Highlighter Blending"
 Cohesion: 0.25
@@ -327,30 +322,10 @@ Nodes (9): Acceptance Checks, Constraints, Context Read, Current Phase, Fix tool
 
 ### Community 59 - "2. Product Objectives"
 Cohesion: 0.22
-Nodes (8): Automated Tests, Changes Made, 🎨 CSS & Vector Aesthetics, ⚙️ JavaScript Interaction & Hover Click-Through, Manual Verification, Verification Results, ✨ Visual Upgrades (Header & Active Selection Highlights), Walkthrough — Toolbar Layout & Premium Aesthetics
-
-### Community 60 - "Toolbar controls functionality audit and fix plan"
-Cohesion: 0.15
-Nodes (12): Acceptance Checks, Constraints, Context Read, Current Phase, Findings, Goal, Handoff Notes, Owners (+4 more)
-
-### Community 61 - "Fix main icon click drag behavior"
-Cohesion: 0.17
-Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Fix main icon click drag behavior, Goal, Handoff Notes, Owners (+3 more)
-
-### Community 62 - "Fix cursor clearing grouped tools"
-Cohesion: 0.17
-Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Fix cursor clearing grouped tools, Goal, Handoff Notes, Owners (+3 more)
-
-### Community 63 - "verify-dialog-routing.js"
-Cohesion: 0.40
-Nodes (4): fs, mainContent, mainPath, path
-
-### Community 64 - "verify-eraser-geometry.js"
-Cohesion: 0.40
-Nodes (4): fs, mainContent, mainPath, path
+Nodes (8): Automated Tests, Changes Made, 🎨 CSS & Vector Aesthetics, ⚙️ JavaScript Interaction & Hover Click-Through, Manual Verification, Verification Results, ✨ Visual Upgrades (Header & Knobs), Walkthrough — Toolbar Layout & Premium Aesthetics
 
 ## Knowledge Gaps
-- **408 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+403 more)
+- **367 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+362 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -358,15 +333,15 @@ Nodes (4): fs, mainContent, mainPath, path
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `19. Security Model`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **Why does `8. Interaction Modes` connect `8. Interaction Modes` to `Screen Annotation App Technical Architecture`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _408 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _367 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.055043859649122805 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05787545787545788 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.12878787878787878 - nodes in this community are weakly interconnected._
 - **Should `agent-hub.js` be split into smaller, more focused modules?**
