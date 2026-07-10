@@ -10,10 +10,8 @@
     <main class="shell">
       <header class="hero">
         <div class="brand">
-          <div class="mark"></div>
           <div>
             <h1>Settings</h1>
-            <p>Brush defaults and global shortcuts for fast annotation.</p>
           </div>
         </div>
 
@@ -29,112 +27,136 @@
       </header>
 
       <section class="content">
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Brush Defaults</h2>
-            <p>These values become the defaults used by the toolbar and overlay.</p>
-          </div>
+        <nav class="sidebar">
+          <button class="tab-btn active" data-target="tab-tools">Tools &amp; Brush</button>
+          <button class="tab-btn" data-target="tab-screenshot">Screenshot &amp; Export</button>
+          <button class="tab-btn" data-target="tab-hotkeys">Global Hotkeys</button>
+        </nav>
 
-          <div class="brush-grid">
-            <article class="brush-card">
-              <h3>Pen</h3>
-              <label>
-                <span>Color</span>
-                <input id="penColor" type="color" />
-              </label>
-              <label>
-                <span>Width</span>
-                <input id="penWidth" type="range" min="1" max="24" step="1" />
-              </label>
-              <label>
-                <span>Opacity</span>
-                <input id="penOpacity" type="range" min="0.1" max="1" step="0.05" />
-              </label>
-            </article>
+        <div class="tab-content">
+          <!-- TOOLS -->
+          <section id="tab-tools" class="tab-panel active">
+            <div class="panel-head">
+              <h2>Brush Defaults</h2>
+              <p>These values become the defaults used by the toolbar and overlay.</p>
+            </div>
+            <div class="brush-grid">
+              <article class="brush-card">
+                <h3>Pen</h3>
+                <label>
+                  <span>Color</span>
+                  <input id="penColor" type="color" />
+                </label>
+                <label>
+                  <span>Width (<span id="penWidthVal">4</span>px)</span>
+                  <input id="penWidth" type="range" min="1" max="24" step="1" />
+                </label>
+                <label>
+                  <span>Opacity (<span id="penOpacityVal">100</span>%)</span>
+                  <input id="penOpacity" type="range" min="0.1" max="1" step="0.05" />
+                </label>
+              </article>
+              <article class="brush-card">
+                <h3>Highlighter</h3>
+                <label>
+                  <span>Color</span>
+                  <input id="highlighterColor" type="color" />
+                </label>
+                <label>
+                  <span>Width (<span id="highlighterWidthVal">18</span>px)</span>
+                  <input id="highlighterWidth" type="range" min="8" max="40" step="1" />
+                </label>
+                <label>
+                  <span>Opacity (<span id="highlighterOpacityVal">30</span>%)</span>
+                  <input id="highlighterOpacity" type="range" min="0.1" max="1" step="0.05" />
+                </label>
+              </article>
+              <article class="brush-card">
+                <h3>Eraser</h3>
+                <label>
+                  <span>Radius (<span id="eraserRadiusVal">18</span>px)</span>
+                  <input id="eraserRadius" type="range" min="4" max="60" step="1" />
+                </label>
+              </article>
+            </div>
+          </section>
 
-            <article class="brush-card">
-              <h3>Highlighter</h3>
-              <label>
-                <span>Color</span>
-                <input id="highlighterColor" type="color" />
-              </label>
-              <label>
-                <span>Width</span>
-                <input id="highlighterWidth" type="range" min="8" max="40" step="1" />
-              </label>
-              <label>
-                <span>Opacity</span>
-                <input id="highlighterOpacity" type="range" min="0.1" max="1" step="0.05" />
-              </label>
-            </article>
+          <!-- SCREENSHOT -->
+          <section id="tab-screenshot" class="tab-panel">
+            <div class="panel-head">
+              <h2>Screenshot &amp; Export</h2>
+              <p>Configure image output behavior when using the screenshot tool.</p>
+            </div>
+            
+            <div class="brush-grid">
+              <article class="brush-card">
+                <h3>After Capture Behavior</h3>
+                <label class="radio-label">
+                  <input type="radio" name="screenshotAction" value="ask" />
+                  <span>Ask to save (preview and prompt)</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="screenshotAction" value="auto-save" />
+                  <span>Save automatically to folder</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" name="screenshotAction" value="copy-only" />
+                  <span>Copy to clipboard only</span>
+                </label>
+              </article>
 
-            <article class="brush-card">
-              <h3>Eraser</h3>
-              <label>
-                <span>Radius</span>
-                <input id="eraserRadius" type="range" min="4" max="60" step="1" />
-              </label>
-            </article>
-          </div>
-        </section>
+              <article class="brush-card">
+                <h3>Export Options</h3>
+                <label>
+                  <span>Format</span>
+                  <select id="exportFormat" class="select-field">
+                    <option value="png">PNG (Lossless / Transparent)</option>
+                    <option value="jpeg">JPEG (Smaller file size)</option>
+                    <option value="webp">WebP (Modern / Compact)</option>
+                  </select>
+                </label>
+                <label id="qualityContainer">
+                  <span>Quality (<span id="qualityVal">90%</span>)</span>
+                  <input id="exportQuality" type="range" min="0.1" max="1.0" step="0.05" />
+                </label>
+                <div style="height: 12px"></div>
+                <label class="checkbox-label">
+                  <input id="exportCopyToClipboard" type="checkbox" />
+                  <span>Also copy to clipboard after saving</span>
+                </label>
+                <label class="checkbox-label">
+                  <input id="exportIncludeBackground" type="checkbox" />
+                  <span>Include Desktop Background</span>
+                </label>
+              </article>
 
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Export &amp; Screenshot Preferences</h2>
-            <p>Configure image output format, background capture, and clipboard behavior.</p>
-          </div>
+              <article class="brush-card">
+                <h3>Auto-save Output Path</h3>
+                <label>
+                  <span>Directory</span>
+                  <div class="path-input-group">
+                    <input id="exportAutoSavePath" type="text" placeholder="Select a directory" readonly />
+                    <button id="browsePathButton" class="secondary-button" type="button">Browse</button>
+                    <button id="clearPathButton" class="secondary-button icon-btn" type="button" title="Clear path" aria-label="Clear path">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                      </svg>
+                    </button>
+                  </div>
+                </label>
+              </article>
+            </div>
+          </section>
 
-          <div class="brush-grid">
-            <article class="brush-card">
-              <h3>Image Format</h3>
-              <label>
-                <span>Format</span>
-                <select id="exportFormat" class="select-field">
-                  <option value="png">PNG (Lossless / Transparent)</option>
-                  <option value="jpeg">JPEG (Smaller file size)</option>
-                  <option value="webp">WebP (Modern / Compact)</option>
-                </select>
-              </label>
-              <label id="qualityContainer">
-                <span>Quality (<span id="qualityVal">90%</span>)</span>
-                <input id="exportQuality" type="range" min="0.1" max="1.0" step="0.05" />
-              </label>
-            </article>
-
-            <article class="brush-card">
-              <h3>Capture Options</h3>
-              <label class="checkbox-label">
-                <input id="exportIncludeBackground" type="checkbox" />
-                <span>Include Desktop Background</span>
-              </label>
-              <label class="checkbox-label">
-                <input id="exportCopyToClipboard" type="checkbox" />
-                <span>Auto-copy to Clipboard</span>
-              </label>
-            </article>
-
-            <article class="brush-card">
-              <h3>Output Path</h3>
-              <label>
-                <span>Auto-save Directory</span>
-                <div class="path-input-group">
-                  <input id="exportAutoSavePath" type="text" placeholder="Prompt each time (Default)" readonly />
-                  <button id="browsePathButton" class="secondary-button" type="button">Browse...</button>
-                  <button id="clearPathButton" class="secondary-button icon-btn" type="button" title="Clear path" aria-label="Clear path"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-                </div>
-              </label>
-            </article>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-head">
-            <h2>Global Hotkeys</h2>
-            <p>Click a shortcut, then press the new key combo. Esc cancels, Backspace clears.</p>
-          </div>
-
-          <div class="hotkey-list" id="hotkeyList"></div>
-        </section>
+          <!-- HOTKEYS -->
+          <section id="tab-hotkeys" class="tab-panel">
+            <div class="panel-head">
+              <h2>Global Hotkeys</h2>
+              <p>Click a shortcut, then press the new key combo. Esc cancels, Backspace clears.</p>
+            </div>
+            <div class="hotkey-list" id="hotkeyList"></div>
+          </section>
+        </div>
       </section>
 
       <footer class="footer">

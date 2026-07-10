@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js && node scripts/verify-scene-store-separation.js && node scripts/verify-eraser-geometry.js && node scripts/verify-dialog-routing.js",
+    "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js && node scripts/verify-scene-store-separation.js && node scripts/verify-eraser-geometry.js && node scripts/verify-dialog-routing.js && node scripts/verify-mindmap-math.js",
     "postinstall": "git config core.hooksPath .githooks",
     "prepare": "git config core.hooksPath .githooks",
     "graphify:update": "graphify update ."

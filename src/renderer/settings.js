@@ -20,6 +20,7 @@ const DEFAULT_SETTINGS = {
     includeBackground: false,
     autoSavePath: '',
     copyToClipboard: true,
+    screenshotAction: 'ask',
   },
   spotlight: {
     radius: 150,
@@ -104,6 +105,14 @@ const elements = {
   modalCancelButton: document.getElementById('modalCancelButton'),
   modalDiscardButton: document.getElementById('modalDiscardButton'),
   modalSaveButton: document.getElementById('modalSaveButton'),
+  actionRadios: document.querySelectorAll('input[name="screenshotAction"]'),
+  tabButtons: document.querySelectorAll('.tab-btn'),
+  tabPanels: document.querySelectorAll('.tab-panel'),
+  penWidthVal: document.getElementById('penWidthVal'),
+  penOpacityVal: document.getElementById('penOpacityVal'),
+  highlighterWidthVal: document.getElementById('highlighterWidthVal'),
+  highlighterOpacityVal: document.getElementById('highlighterOpacityVal'),
+  eraserRadiusVal: document.getElementById('eraserRadiusVal'),
 };
 
 const appState = {
@@ -269,22 +278,47 @@ function setFieldValue(element, value) {
 function renderBrushControls() {
   setFieldValue(elements.penColor, draft.brushDefaults.pen.color);
   setFieldValue(elements.penWidth, draft.brushDefaults.pen.width);
+  if (elements.penWidthVal) elements.penWidthVal.textContent = draft.brushDefaults.pen.width;
   setFieldValue(elements.penOpacity, draft.brushDefaults.pen.opacity);
+  if (elements.penOpacityVal) elements.penOpacityVal.textContent = Math.round(draft.brushDefaults.pen.opacity * 100);
+  
   setFieldValue(elements.highlighterColor, draft.brushDefaults.highlighter.color);
   setFieldValue(elements.highlighterWidth, draft.brushDefaults.highlighter.width);
+  if (elements.highlighterWidthVal) elements.highlighterWidthVal.textContent = draft.brushDefaults.highlighter.width;
   setFieldValue(elements.highlighterOpacity, draft.brushDefaults.highlighter.opacity);
+  if (elements.highlighterOpacityVal) elements.highlighterOpacityVal.textContent = Math.round(draft.brushDefaults.highlighter.opacity * 100);
+  
   setFieldValue(elements.eraserRadius, draft.brushDefaults.eraser.radius);
+  if (elements.eraserRadiusVal) elements.eraserRadiusVal.textContent = draft.brushDefaults.eraser.radius;
 
   if (elements.exportFormat && draft.exportDefaults) {
     elements.exportFormat.value = draft.exportDefaults.format || 'png';
     elements.exportQuality.value = draft.exportDefaults.quality || 0.9;
-    elements.qualityVal.textContent = Math.round((draft.exportDefaults.quality || 0.9) * 100) + '%';
-    elements.qualityContainer.style.display = draft.exportDefaults.format === 'png' ? 'none' : 'flex';
+    if (elements.qualityVal) elements.qualityVal.textContent = Math.round((draft.exportDefaults.quality || 0.9) * 100) + '%';
+    
+    // Disable quality when PNG is selected
+    const isPng = draft.exportDefaults.format === 'png';
+    elements.exportQuality.disabled = isPng;
+    if (elements.qualityContainer) elements.qualityContainer.classList.toggle('disabled', isPng);
+    
     elements.exportIncludeBackground.checked = Boolean(draft.exportDefaults.includeBackground);
     elements.exportCopyToClipboard.checked = Boolean(draft.exportDefaults.copyToClipboard);
     elements.exportAutoSavePath.value = draft.exportDefaults.autoSavePath || '';
+    
+    const action = draft.exportDefaults.screenshotAction || 'ask';
+    if (elements.actionRadios) {
+      for (const r of elements.actionRadios) {
+        r.checked = (r.value === action);
+      }
+    }
+    
+    const isAutoSave = action === 'auto-save';
+    if (elements.exportAutoSavePath) elements.exportAutoSavePath.disabled = !isAutoSave;
+    if (elements.browsePathButton) elements.browsePathButton.disabled = !isAutoSave;
+    if (elements.clearPathButton) elements.clearPathButton.disabled = !isAutoSave;
   }
 }
+
 
 function getHotkeyConflicts() {
   const counts = new Map();
@@ -432,6 +466,8 @@ function collectDraftFromUi() {
     draft.exportDefaults.includeBackground = elements.exportIncludeBackground.checked;
     draft.exportDefaults.copyToClipboard = elements.exportCopyToClipboard.checked;
     draft.exportDefaults.autoSavePath = elements.exportAutoSavePath.value;
+    const checkedAction = document.querySelector('input[name="screenshotAction"]:checked');
+    if (checkedAction) draft.exportDefaults.screenshotAction = checkedAction.value;
   }
 }
 
@@ -461,8 +497,13 @@ async function saveChanges() {
     dirty = false;
     captureAction = null;
     applyDraftToUi();
-    const failed = result.failures.map((entry) => `${entry.name} (${formatAccelerator(entry.accelerator)})`).join(', ');
-    setMessage(`Could not register: ${failed}. Your previous shortcuts were restored.`, 'error');
+    const failures = result.failures || [];
+    if (failures.length > 0) {
+      const failed = failures.map((entry) => `${entry.name} (${formatAccelerator(entry.accelerator)})`).join(', ');
+      setMessage(`Could not register: ${failed}. Your previous shortcuts were restored.`, 'error');
+    } else {
+      setMessage('Failed to save settings.', 'error');
+    }
     return false;
   }
 
@@ -487,11 +528,13 @@ elements.penColor.addEventListener('input', () => {
 
 elements.penWidth.addEventListener('input', () => {
   draft.brushDefaults.pen.width = Number(elements.penWidth.value);
+  if (elements.penWidthVal) elements.penWidthVal.textContent = elements.penWidth.value;
   markDirty();
 });
 
 elements.penOpacity.addEventListener('input', () => {
   draft.brushDefaults.pen.opacity = Number(elements.penOpacity.value);
+  if (elements.penOpacityVal) elements.penOpacityVal.textContent = Math.round(Number(elements.penOpacity.value) * 100);
   markDirty();
 });
 
@@ -502,16 +545,19 @@ elements.highlighterColor.addEventListener('input', () => {
 
 elements.highlighterWidth.addEventListener('input', () => {
   draft.brushDefaults.highlighter.width = Number(elements.highlighterWidth.value);
+  if (elements.highlighterWidthVal) elements.highlighterWidthVal.textContent = elements.highlighterWidth.value;
   markDirty();
 });
 
 elements.highlighterOpacity.addEventListener('input', () => {
   draft.brushDefaults.highlighter.opacity = Number(elements.highlighterOpacity.value);
+  if (elements.highlighterOpacityVal) elements.highlighterOpacityVal.textContent = Math.round(Number(elements.highlighterOpacity.value) * 100);
   markDirty();
 });
 
 elements.eraserRadius.addEventListener('input', () => {
   draft.brushDefaults.eraser.radius = Number(elements.eraserRadius.value);
+  if (elements.eraserRadiusVal) elements.eraserRadiusVal.textContent = elements.eraserRadius.value;
   markDirty();
 });
 
@@ -519,7 +565,9 @@ if (elements.exportFormat) {
   elements.exportFormat.addEventListener('change', () => {
     if (draft.exportDefaults) {
       draft.exportDefaults.format = elements.exportFormat.value;
-      elements.qualityContainer.style.display = elements.exportFormat.value === 'png' ? 'none' : 'flex';
+      const isPng = elements.exportFormat.value === 'png';
+      elements.exportQuality.disabled = isPng;
+      if (elements.qualityContainer) elements.qualityContainer.classList.toggle('disabled', isPng);
       markDirty();
     }
   });
@@ -527,7 +575,7 @@ if (elements.exportFormat) {
   elements.exportQuality.addEventListener('input', () => {
     if (draft.exportDefaults) {
       draft.exportDefaults.quality = Number(elements.exportQuality.value);
-      elements.qualityVal.textContent = Math.round(draft.exportDefaults.quality * 100) + '%';
+      if (elements.qualityVal) elements.qualityVal.textContent = Math.round(draft.exportDefaults.quality * 100) + '%';
       markDirty();
     }
   });
@@ -545,7 +593,32 @@ if (elements.exportFormat) {
       markDirty();
     }
   });
+}
 
+if (elements.actionRadios) {
+  elements.actionRadios.forEach(r => {
+    r.addEventListener('change', () => {
+      const isAutoSave = r.value === 'auto-save';
+      if (elements.exportAutoSavePath) elements.exportAutoSavePath.disabled = !isAutoSave;
+      if (elements.browsePathButton) elements.browsePathButton.disabled = !isAutoSave;
+      if (elements.clearPathButton) elements.clearPathButton.disabled = !isAutoSave;
+      if (draft.exportDefaults) {
+        draft.exportDefaults.screenshotAction = r.value;
+        markDirty();
+      }
+    });
+  });
+}
+
+if (elements.tabButtons && elements.tabPanels) {
+  elements.tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      elements.tabButtons.forEach(b => b.classList.toggle('active', b === btn));
+      elements.tabPanels.forEach(p => p.classList.toggle('active', p.id === targetId));
+    });
+  });
+}
   elements.browsePathButton.addEventListener('click', async () => {
     const dir = await window.appBridge.selectDirectory();
     if (dir && draft.exportDefaults) {
@@ -562,8 +635,6 @@ if (elements.exportFormat) {
       markDirty();
     }
   });
-}
-
 function showConfirmModal() {
   if (!elements.confirmModal) {
     return;

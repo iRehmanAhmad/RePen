@@ -11,6 +11,48 @@ let currentDevicePixelRatio = window.devicePixelRatio || 1;
 let laserPoints = [];
 let clickRipples = [];
 let selectedIds = [];
+let clipboardData = null;
+let boardZoom = 1.0;
+let boardPanX = 0;
+let boardPanY = 0;
+let isPanningBoard = false;
+let boardPanStartX = 0;
+let boardPanStartY = 0;
+let isSpaceDown = false;
+
+function setBoardZoom(newZoom, centerX, centerY) {
+  if (centerX === undefined) centerX = window.innerWidth / 2;
+  if (centerY === undefined) centerY = window.innerHeight / 2;
+  const localX = (centerX - boardPanX) / boardZoom;
+  const localY = (centerY - boardPanY) / boardZoom;
+  boardZoom = Math.min(Math.max(newZoom, 0.1), 10.0);
+  boardPanX = centerX - localX * boardZoom;
+  boardPanY = centerY - localY * boardZoom;
+  const zoomText = document.getElementById('zoomLevelText');
+  if (zoomText) zoomText.innerText = Math.round(boardZoom * 100) + '%';
+  scheduleRender();
+}
+
+function resetBoardZoom() {
+  boardZoom = 1.0;
+  boardPanX = 0;
+  boardPanY = 0;
+  const zoomText = document.getElementById('zoomLevelText');
+  if (zoomText) zoomText.innerText = '100%';
+  scheduleRender();
+}
+
+let isSnippingMode = false;
+let snipStart = null;
+let snipCurrent = null;
+
+if (window.appBridge && window.appBridge.onStartSnipMode) {
+  window.appBridge.onStartSnipMode(() => {
+    isSnippingMode = true;
+    document.body.style.cursor = 'crosshair';
+    scheduleRender();
+  });
+}
 let isDraggingSelection = false;
 let isResizingSelection = null;
 let isDraggingText = null;
@@ -22,21 +64,68 @@ let magnifierImg = null;
 let lastMagnifierUrl = null;
 let lastAutoAdvanceTime = 0;
 let pageToastTimer = null;
+let autoPanRafId = null;
+
+function autoPanLoop() {
+  if (!currentStroke || !appState || appState.backgroundMode === 'transparent' || isPanningBoard) {
+    autoPanRafId = null;
+    return;
+  }
+  
+  const edgeMargin = 50;
+  const panSpeed = 10;
+  let dx = 0;
+  let dy = 0;
+
+  if (currentMousePos && currentMousePos.x > window.innerWidth - edgeMargin) dx = -panSpeed;
+  else if (currentMousePos && currentMousePos.x < edgeMargin) dx = panSpeed;
+  
+  if (currentMousePos && currentMousePos.y > window.innerHeight - edgeMargin) dy = -panSpeed;
+  else if (currentMousePos && currentMousePos.y < edgeMargin) dy = panSpeed;
+
+  if (dx !== 0 || dy !== 0) {
+    boardPanX += dx;
+    boardPanY += dy;
+    
+    if (currentStroke.tool !== 'shapes' && currentMousePos) {
+      const globalPt = localToGlobal(currentMousePos);
+      if (currentStroke.points) {
+        addPointToStroke(currentStroke, globalPt);
+      }
+    } else if (currentStroke.tool === 'shapes' && currentMousePos) {
+      currentStroke.end = localToGlobal(currentMousePos);
+    }
+    
+    scheduleRender();
+  }
+  
+  autoPanRafId = requestAnimationFrame(autoPanLoop);
+}
 
 function clearSelection() {
   selectedIds = [];
   marqueeBox = null;
   isDraggingSelection = false;
   isResizingSelection = null;
-  canvas.style.cursor = appState && appState.activeTool === 'select' ? 'default' : 'crosshair';
+  if (appState && appState.activeTool === 'mindmap') {
+    canvas.style.cursor = window.hoveredAddButton?.hovered ? 'pointer' : 'default';
+  } else {
+    canvas.style.cursor = appState && appState.activeTool === 'select' ? 'default' : 'crosshair';
+  }
 }
 
 function resetInteractionState(reason) {
   clearSelection();
   currentStroke = null;
   isDraggingText = null;
+  window.isDraggingMindmapNode = null;
+  window.hoveredAddButton = null;
   dragStartX = 0;
   dragStartY = 0;
+  
+  if (appState && appState.activeTool === 'mindmap') {
+    canvas.style.cursor = 'default';
+  }
   
   // Commit any open text editor
   const openTextarea = document.querySelector('textarea');
@@ -99,6 +188,29 @@ function setupBoardNav() {
     exportPdfBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       window.appBridge?.exportPdf?.();
+    });
+  }
+
+  const zoomInBtn = document.getElementById('zoomInButton');
+  const zoomOutBtn = document.getElementById('zoomOutButton');
+  const zoomResetBtn = document.getElementById('zoomResetButton');
+
+  if (zoomInBtn) {
+    zoomInBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setBoardZoom(boardZoom * 1.2);
+    });
+  }
+  if (zoomOutBtn) {
+    zoomOutBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setBoardZoom(boardZoom / 1.2);
+    });
+  }
+  if (zoomResetBtn) {
+    zoomResetBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetBoardZoom();
     });
   }
 
@@ -201,6 +313,7 @@ function setupBoardNav() {
   window.addEventListener('wheel', (e) => {
     const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
     if (!isBoard) return;
+    if (e.ctrlKey) return; // Prevent page turn when zooming!
     const now = Date.now();
     if (now - lastWheelTime < 350) return;
     if (e.deltaY > 30) {
@@ -328,15 +441,15 @@ function resizeCanvas() {
 
 function globalToLocal(point) {
   return {
-    x: point.x - displayBounds.x,
-    y: point.y - displayBounds.y,
+    x: ((point.x - displayBounds.x) * boardZoom) + boardPanX,
+    y: ((point.y - displayBounds.y) * boardZoom) + boardPanY,
   };
 }
 
 function localToGlobal(point) {
   return {
-    x: point.x + displayBounds.x,
-    y: point.y + displayBounds.y,
+    x: ((point.x - boardPanX) / boardZoom) + displayBounds.x,
+    y: ((point.y - boardPanY) / boardZoom) + displayBounds.y,
   };
 }
 
@@ -349,7 +462,11 @@ function getBrushStyle() {
     };
   }
 
-  if (appState.activeTool === 'highlighter') {
+  const toolToCheck = appState.activeTool === 'shapes' 
+    ? (appState.lastInkingTool || 'pen') 
+    : appState.activeTool;
+
+  if (toolToCheck === 'highlighter') {
     return {
       color: appState.brushDefaults.highlighter.color,
       width: appState.brushDefaults.highlighter.width,
@@ -357,7 +474,15 @@ function getBrushStyle() {
     };
   }
 
-  if (appState.activeTool === 'eraser') {
+  if (toolToCheck === 'calligraphy') {
+    return {
+      color: appState.brushDefaults.calligraphy.color,
+      width: appState.brushDefaults.calligraphy.width,
+      opacity: appState.brushDefaults.calligraphy.opacity || 1,
+    };
+  }
+
+  if (toolToCheck === 'eraser') {
     return {
       color: '#ffffff',
       width: appState.brushDefaults.eraser.radius,
@@ -371,6 +496,14 @@ function getBrushStyle() {
     opacity: appState.brushDefaults.pen.opacity,
   };
 }
+window.getCentralNode = (node) => {
+  if (node.nodeType === 'central') return node;
+  if (node.parentId) {
+    const parent = scene.annotations.find(a => a.id === node.parentId);
+    if (parent) return window.getCentralNode(parent);
+  }
+  return node;
+};
 
 function createTextEditor(x, y, existingStroke = null) {
   const brush = getBrushStyle();
@@ -391,40 +524,65 @@ function createTextEditor(x, y, existingStroke = null) {
     textarea.style.top = `${top}px`;
   }
 
-  const mode = existingStroke?.textMode || appState.textMode || 'plain';
-  textarea.style.left = `${left}px`;
-  textarea.style.top = `${top}px`;
-  textarea.style.color = existingStroke?.color || brush.color;
-  textarea.style.font = existingStroke?.font || 'bold 22px sans-serif';
-  if (mode === 'sticky') {
-    textarea.style.background = 'rgba(255, 255, 220, 0.95)';
-    textarea.style.border = '2px dashed #666';
-    textarea.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-    textarea.style.borderRadius = '0px';
-    textarea.style.padding = '8px';
-  } else {
-    textarea.style.background = 'transparent';
-    textarea.style.border = 'none';
+  if (existingStroke?.tool === 'mindmap') {
+    const isCentral = existingStroke.nodeType === 'central';
+    const isMain = existingStroke.nodeType === 'main';
+    
+    textarea.style.left = `${left}px`;
+    textarea.style.top = `${top}px`;
+    textarea.style.background = isCentral ? (existingStroke.color || '#8b5cf6') : (isMain ? '#ffffff' : '#f8f9fa');
+    textarea.style.color = isCentral ? '#ffffff' : '#1e293b';
+    const fontSize = Math.max(10, Math.round((isCentral ? 16 : 14) * boardZoom));
+    textarea.style.font = `bold ${fontSize}px sans-serif`;
+    
+    textarea.style.border = isCentral ? 'none' : `${(isMain ? 3 : 1) * boardZoom}px solid ${existingStroke.color || '#333'}`;
+    textarea.style.borderRadius = `${(isCentral ? 25 : 8) * boardZoom}px`;
+    textarea.style.padding = `${isCentral ? 10 : 8}px`; // approximate vertical centering
+    textarea.style.textAlign = 'center';
     textarea.style.boxShadow = 'none';
-    textarea.style.borderRadius = '0px';
-    textarea.style.padding = '0px';
-    textarea.style.textShadow = '0 1px 4px rgba(0, 0, 0, 0.8)';
-  }
-  textarea.style.outline = 'none';
-  if (mode === 'sticky') {
-    textarea.style.resize = 'both';
+    textarea.style.textShadow = 'none';
+    textarea.style.outline = 'none';
+    textarea.style.resize = 'none';
+    textarea.style.overflow = 'hidden';
     textarea.style.whiteSpace = 'pre-wrap';
     textarea.style.wordWrap = 'break-word';
-    textarea.style.overflowWrap = 'break-word';
-    textarea.style.minWidth = '180px';
-    textarea.style.minHeight = '70px';
   } else {
-    textarea.style.resize = 'none';
-    textarea.style.whiteSpace = 'pre';
-    textarea.style.overflow = 'hidden';
-    textarea.style.minWidth = '20px';
-    textarea.style.minHeight = '30px';
+    const mode = existingStroke?.textMode || appState.textMode || 'plain';
+    textarea.style.left = `${left}px`;
+    textarea.style.top = `${top}px`;
+    textarea.style.color = existingStroke?.color || brush.color;
+    textarea.style.font = existingStroke?.font || 'bold 22px sans-serif';
+    if (mode === 'sticky') {
+      textarea.style.background = 'rgba(255, 255, 220, 0.95)';
+      textarea.style.border = '2px dashed #666';
+      textarea.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+      textarea.style.borderRadius = '0px';
+      textarea.style.padding = '8px';
+    } else {
+      textarea.style.background = 'transparent';
+      textarea.style.border = 'none';
+      textarea.style.boxShadow = 'none';
+      textarea.style.borderRadius = '0px';
+      textarea.style.padding = '0px';
+      textarea.style.textShadow = '0 1px 4px rgba(0, 0, 0, 0.8)';
+    }
+    textarea.style.outline = 'none';
+    if (mode === 'sticky') {
+      textarea.style.resize = 'both';
+      textarea.style.whiteSpace = 'pre-wrap';
+      textarea.style.wordWrap = 'break-word';
+      textarea.style.overflowWrap = 'break-word';
+      textarea.style.minWidth = '180px';
+      textarea.style.minHeight = '70px';
+    } else {
+      textarea.style.resize = 'none';
+      textarea.style.whiteSpace = 'pre';
+      textarea.style.overflow = 'hidden';
+      textarea.style.minWidth = '20px';
+      textarea.style.minHeight = '30px';
+    }
   }
+  
   textarea.style.zIndex = '99999';
   document.body.appendChild(textarea);
   
@@ -450,13 +608,16 @@ function createTextEditor(x, y, existingStroke = null) {
   textarea.addEventListener('pointerup', (e) => e.stopPropagation());
   textarea.addEventListener('click', (e) => e.stopPropagation());
 
+  let committed = false;
   const commit = async () => {
+    if (committed) return;
     if (isJustCreated) {
       setTimeout(() => {
         if (textarea.parentNode) textarea.focus();
       }, 10);
       return;
     }
+    committed = true;
     const text = textarea.value.trim();
     if (existingStroke) {
       if (!text) {
@@ -473,6 +634,10 @@ function createTextEditor(x, y, existingStroke = null) {
         };
         if (window.appBridge.updateAnnotation) {
           await window.appBridge.updateAnnotation(updated);
+        }
+        if (updated.tool === 'mindmap') {
+          const central = window.getCentralNode(updated);
+          if (central) window.layoutMindmap(central.id);
         }
       }
     } else if (text) {
@@ -494,8 +659,60 @@ function createTextEditor(x, y, existingStroke = null) {
   };
 
   textarea.addEventListener('blur', commit);
-  textarea.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' || (e.key === 'Enter' && (e.ctrlKey || e.metaKey || e.shiftKey))) {
+  textarea.addEventListener('keydown', async (e) => {
+    if (existingStroke?.tool === 'mindmap' && !e.shiftKey) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        isJustCreated = false;
+        await commit();
+        
+        const childType = existingStroke.nodeType === 'central' ? 'main' : 'sub';
+        const COLORS = ['#ff5a5f', '#ffe36d', '#00d26a', '#3b82f6', '#ffffff'];
+        const newColor = childType === 'main' 
+            ? COLORS[scene.annotations.filter(a => a.tool === 'mindmap' && a.nodeType === 'main').length % COLORS.length] 
+            : existingStroke.color;
+
+        const newNode = createMindmapNode({
+          nodeType: childType,
+          parentId: existingStroke.id,
+          text: 'New Topic',
+          color: newColor,
+          side: existingStroke.side, // Inherit side from parent
+          x: existingStroke.x,
+          y: existingStroke.y
+        });
+        
+        // Wait for it to be added and let the pipeline focus the editor
+        window.addMindmapNode(newNode, { focusEditor: true });
+        return;
+      }
+      
+      if (e.key === 'Enter') {
+        if (existingStroke.nodeType !== 'central' && existingStroke.parentId) {
+          e.preventDefault();
+          isJustCreated = false;
+          await commit();
+          
+          const parentNode = scene.annotations.find(a => a.id === existingStroke.parentId);
+          if (parentNode) {
+            const newNode = createMindmapNode({
+              nodeType: existingStroke.nodeType,
+              parentId: parentNode.id,
+              text: 'New Topic',
+              color: existingStroke.color,
+              side: existingStroke.side, // Inherit side
+              x: existingStroke.x,
+              y: existingStroke.y
+            });
+            
+            window.addMindmapNode(newNode, { focusEditor: true });
+            return;
+          }
+        }
+      }
+    }
+
+    if (e.key === 'Escape' || (e.key === 'Enter' && (e.ctrlKey || e.metaKey || e.shiftKey || existingStroke?.tool !== 'mindmap'))) {
       e.preventDefault();
       isJustCreated = false;
       textarea.blur();
@@ -503,12 +720,361 @@ function createTextEditor(x, y, existingStroke = null) {
   });
 }
 
+// --- Mind Map Helpers ---
+function getMindmapNodes() {
+  return scene.annotations.filter(a => a.tool === 'mindmap');
+}
+
+function getMindmapCentralNode() {
+  return scene.annotations.find(a => a.tool === 'mindmap' && a.nodeType === 'central');
+}
+
+function mindmapNodeToScreenRect(node) {
+  const pt = globalToLocal({ x: node.x, y: node.y });
+  return {
+    x: pt.x,
+    y: pt.y,
+    w: (node.width || 120) * boardZoom,
+    h: (node.height || 40) * boardZoom
+  };
+}
+
+function findMindmapNodeAtPoint(x, y) {
+  const nodes = getMindmapNodes();
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const rect = mindmapNodeToScreenRect(nodes[i]);
+    if (x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h) {
+      return nodes[i];
+    }
+  }
+  return null;
+}
+
+function findMindmapAddButtonAtPoint(x, y) {
+  const nodes = getMindmapNodes();
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const node = nodes[i];
+    const rect = mindmapNodeToScreenRect(node);
+    
+    // Stable screen-pixel radius for hit target
+    const btnRadius = 14; 
+    
+    // Check right handle (Central or Right child)
+    if (node.nodeType === 'central' || node.side === 'right' || (!node.side && node.nodeType !== 'central')) {
+      const btnXRight = rect.x + rect.w + 15 * boardZoom;
+      const btnYRight = rect.y + rect.h / 2;
+      const dxRight = x - btnXRight;
+      const dyRight = y - btnYRight;
+      if (Math.hypot(dxRight, dyRight) <= btnRadius) {
+        return { node, side: 'right' };
+      }
+    }
+    
+    // Check left handle (Central or Left child)
+    if (node.nodeType === 'central' || node.side === 'left') {
+      const btnXLeft = rect.x - 15 * boardZoom;
+      const btnYLeft = rect.y + rect.h / 2;
+      const dxLeft = x - btnXLeft;
+      const dyLeft = y - btnYLeft;
+      if (Math.hypot(dxLeft, dyLeft) <= btnRadius) {
+        return { node, side: 'left' };
+      }
+    }
+  }
+  return null;
+}
+
+function getMindmapSubtreeIds(rootId) {
+  const nodes = getMindmapNodes();
+  const subtreeIds = new Set([rootId]);
+  let added = true;
+  while (added) {
+    added = false;
+    for (const node of nodes) {
+      if (!subtreeIds.has(node.id) && subtreeIds.has(node.parentId)) {
+        subtreeIds.add(node.id);
+        added = true;
+      }
+    }
+  }
+  return Array.from(subtreeIds);
+}
+
+function createMindmapNode(opts) {
+  return {
+    id: Date.now() + '-' + Math.random().toString(16).slice(2),
+    tool: 'mindmap',
+    nodeType: opts.nodeType || 'sub',
+    parentId: opts.parentId || null,
+    side: opts.side || null,
+    text: opts.text || '',
+    x: opts.x || 0,
+    y: opts.y || 0,
+    width: opts.width || 120,
+    height: opts.height || 40,
+    color: opts.color || '#ff5a5f',
+    widthRatio: opts.widthRatio || 2,
+    opacity: opts.opacity || 1
+  };
+}
+
+window.addMindmapNode = async function(node, options = {}) {
+  const { focusEditor = true } = options;
+  await window.appBridge.addStroke(node);
+  
+  return new Promise((resolve) => {
+    let attempts = 0;
+    const check = () => {
+      attempts++;
+      const reconciledNode = scene.annotations.find(a => a.id === node.id);
+      if (reconciledNode || attempts > 30) {
+        if (reconciledNode) {
+          const central = getMindmapCentralNode();
+          if (central) window.layoutMindmap(central.id);
+          
+          if (focusEditor) {
+            const finalNode = scene.annotations.find(a => a.id === node.id);
+            if (finalNode) {
+              const rect = mindmapNodeToScreenRect(finalNode);
+              createTextEditor(rect.x, rect.y, finalNode);
+            }
+          }
+        }
+        resolve(reconciledNode);
+      } else {
+        requestAnimationFrame(check);
+      }
+    };
+    requestAnimationFrame(check);
+  });
+};
+window.layoutMindmap = async function(centralNodeId) {
+  const nodes = scene.annotations.filter(a => a.tool === 'mindmap');
+  const nodeMap = new Map();
+  nodes.forEach(n => nodeMap.set(n.id, n));
+  
+  const central = nodeMap.get(centralNodeId);
+  if (!central) return;
+  
+  const HORIZONTAL_SPACING = 80;
+  const VERTICAL_SPACING = 20;
+  
+  const updatedNodes = [];
+  
+  // Phase 7: Text measurement and pre-layout dimension update
+  ctx.save();
+  for (const node of nodes) {
+    const isCentral = node.nodeType === 'central';
+    const baseFontSize = isCentral ? 16 : 14;
+    ctx.font = `bold ${baseFontSize}px sans-serif`;
+    
+    const lines = (node.text || ' ').split('\n');
+    let maxLineWidth = 0;
+    for (const line of lines) {
+      maxLineWidth = Math.max(maxLineWidth, ctx.measureText(line).width);
+    }
+    
+    const minW = isCentral ? 140 : 100;
+    const paddingX = isCentral ? 40 : 20;
+    const newWidth = Math.max(minW, maxLineWidth + paddingX * 2);
+    const newHeight = Math.max(isCentral ? 50 : 40, lines.length * (baseFontSize * 1.5) + (isCentral ? 20 : 16));
+    
+    if (node.width !== newWidth || node.height !== newHeight) {
+      node.width = newWidth;
+      node.height = newHeight;
+      updatedNodes.push(node);
+    }
+  }
+  ctx.restore();
+
+  function getChildren(parentId, side = null) {
+    let children = nodes.filter(n => n.parentId === parentId).sort((a, b) => a.y - b.y);
+    if (side && parentId === centralNodeId) {
+      children = children.filter(n => n.side === side || (!n.side && side === 'right'));
+    }
+    return children;
+  }
+  
+  const heights = new Map();
+  function calcHeight(nodeId, side = null) {
+    const children = getChildren(nodeId, side);
+    const node = nodeMap.get(nodeId);
+    const minHeight = (node.height || 40) + VERTICAL_SPACING;
+    if (children.length === 0) {
+      heights.set(nodeId, minHeight);
+      return minHeight;
+    }
+    let total = 0;
+    for (const child of children) {
+      total += calcHeight(child.id);
+    }
+    const finalHeight = Math.max(total, minHeight);
+    heights.set(nodeId, finalHeight);
+    return finalHeight;
+  }
+  
+  calcHeight(centralNodeId, 'right');
+  const rightHeight = heights.get(centralNodeId);
+  heights.delete(centralNodeId);
+  calcHeight(centralNodeId, 'left');
+  const leftHeight = heights.get(centralNodeId);
+  
+  function positionNode(nodeId, startX, centerY, direction = 1) {
+    const node = nodeMap.get(nodeId);
+    const nodeHeight = node.height || 40;
+    const nodeWidth = node.width || 120;
+    
+    const newY = centerY - nodeHeight / 2;
+    const newX = direction === 1 ? startX : startX - nodeWidth;
+    
+    if (node.x !== newX || node.y !== newY) {
+      node.x = newX;
+      node.y = newY;
+      if (!updatedNodes.includes(node)) updatedNodes.push(node);
+    }
+    
+    const children = getChildren(nodeId, nodeId === centralNodeId ? (direction === 1 ? 'right' : 'left') : null);
+    if (children.length > 0) {
+      const childStartX = direction === 1 
+        ? newX + nodeWidth + HORIZONTAL_SPACING 
+        : newX - HORIZONTAL_SPACING;
+      
+      let totalChildrenHeight = 0;
+      for (const child of children) {
+        totalChildrenHeight += heights.get(child.id);
+      }
+      
+      let currentY = centerY - totalChildrenHeight / 2;
+      
+      for (const child of children) {
+        const childHeight = heights.get(child.id);
+        const childCenterY = currentY + childHeight / 2;
+        positionNode(child.id, childStartX, childCenterY, direction);
+        currentY += childHeight;
+      }
+    }
+  }
+  
+  const centralCenterY = central.y + (central.height || 40) / 2;
+  positionNode(centralNodeId, central.x, centralCenterY, 1);
+  positionNode(centralNodeId, central.x, centralCenterY, -1);
+  
+  if (updatedNodes.length > 0) {
+    if (window.appBridge.updateAnnotations) {
+      await window.appBridge.updateAnnotations(updatedNodes);
+    } else if (window.appBridge.updateAnnotation) {
+      for (const node of updatedNodes) {
+        await window.appBridge.updateAnnotation(node);
+      }
+    }
+    scheduleRender();
+  }
+};
+
 function drawStroke(stroke, targetCtx = ctx) {
+  if (stroke.tool === 'mindmap') {
+    const pt = globalToLocal({ x: stroke.x, y: stroke.y });
+    targetCtx.save();
+    const boxW = (stroke.width || 120) * boardZoom;
+    const boxH = (stroke.height || 40) * boardZoom;
+    
+    if (stroke.parentId) {
+      const parentNode = scene.annotations.find(a => a.id === stroke.parentId);
+      if (parentNode) {
+        const parentPt = globalToLocal({ x: parentNode.x, y: parentNode.y });
+        const parentBoxW = (parentNode.width || 120) * boardZoom;
+        const parentBoxH = (parentNode.height || 40) * boardZoom;
+        
+        targetCtx.beginPath();
+        const isLeft = stroke.side === 'left';
+        const startX = isLeft ? parentPt.x : parentPt.x + parentBoxW;
+        const startY = parentPt.y + parentBoxH / 2;
+        const endX = isLeft ? pt.x + boxW : pt.x;
+        const endY = pt.y + boxH / 2;
+        targetCtx.moveTo(startX, startY);
+        const curveOffset = isLeft ? -40 * boardZoom : 40 * boardZoom;
+        targetCtx.bezierCurveTo(startX + curveOffset, startY, endX - curveOffset, endY, endX, endY);
+        targetCtx.strokeStyle = stroke.color || '#333';
+        targetCtx.lineWidth = 2 * boardZoom;
+        targetCtx.stroke();
+      }
+    }
+    
+    const isCentral = stroke.nodeType === 'central';
+    const isMain = stroke.nodeType === 'main';
+    
+    targetCtx.fillStyle = isCentral ? (stroke.color || '#8b5cf6') : (isMain ? '#ffffff' : '#f8f9fa');
+    targetCtx.strokeStyle = isCentral ? 'transparent' : (stroke.color || '#333');
+    targetCtx.lineWidth = (isMain ? 3 : 1) * boardZoom;
+    
+    // Draw Node Body
+    if (targetCtx.roundRect) {
+      targetCtx.beginPath();
+      targetCtx.roundRect(pt.x, pt.y, boxW, boxH, (isCentral ? 25 : 8) * boardZoom);
+      targetCtx.fill();
+      if (!isCentral) targetCtx.stroke();
+    } else {
+      targetCtx.fillRect(pt.x, pt.y, boxW, boxH);
+      if (!isCentral) targetCtx.strokeRect(pt.x, pt.y, boxW, boxH);
+    }
+    
+    // Draw Plus Handles if selected or hovered
+    if (window.selectedMindmapNodeId === stroke.id || window.hoveredAddButton?.nodeId === stroke.id) {
+      const btnRadius = 14;
+      targetCtx.fillStyle = '#ffffff';
+      targetCtx.strokeStyle = '#e2e8f0';
+      targetCtx.lineWidth = 1;
+      
+      const drawPlus = (x, y, hovered) => {
+        targetCtx.beginPath();
+        targetCtx.arc(x, y, btnRadius, 0, Math.PI * 2);
+        targetCtx.fill();
+        targetCtx.stroke();
+        
+        targetCtx.beginPath();
+        targetCtx.strokeStyle = hovered ? '#2563eb' : '#64748b';
+        targetCtx.lineWidth = 2;
+        targetCtx.moveTo(x - 5, y);
+        targetCtx.lineTo(x + 5, y);
+        targetCtx.moveTo(x, y - 5);
+        targetCtx.lineTo(x, y + 5);
+        targetCtx.stroke();
+      };
+      
+      if (isCentral || stroke.side === 'right' || !stroke.side) {
+        const rightHovered = window.hoveredAddButton?.nodeId === stroke.id && window.hoveredAddButton?.side === 'right';
+        drawPlus(pt.x + boxW + 15 * boardZoom, pt.y + boxH / 2, rightHovered);
+      }
+      
+      if (isCentral || stroke.side === 'left') {
+        const leftHovered = window.hoveredAddButton?.nodeId === stroke.id && window.hoveredAddButton?.side === 'left';
+        drawPlus(pt.x - 15 * boardZoom, pt.y + boxH / 2, leftHovered);
+      }
+    }
+    
+    targetCtx.fillStyle = isCentral ? '#ffffff' : '#1e293b';
+    const fontSize = Math.max(10, Math.round((isCentral ? 16 : 14) * boardZoom));
+    targetCtx.font = `bold ${fontSize}px sans-serif`;
+    targetCtx.textBaseline = 'middle';
+    targetCtx.textAlign = 'center';
+    
+    const lines = (stroke.text || '').split('\n');
+    const lineHeight = fontSize * 1.5;
+    const startYText = pt.y + boxH / 2 - ((lines.length - 1) * lineHeight) / 2;
+    
+    for (let i = 0; i < lines.length; i++) {
+      targetCtx.fillText(lines[i], pt.x + boxW / 2, startYText + i * lineHeight);
+    }
+    
+    targetCtx.restore();
+    return;
+  }
+
   if (stroke.tool === 'text' && stroke.text) {
     const pt = globalToLocal({ x: stroke.x, y: stroke.y });
     targetCtx.save();
-    const boxW = stroke.width || 200;
-    const boxH = stroke.height || 80;
+    const boxW = (stroke.width || 200) * boardZoom;
+    const boxH = (stroke.height || 80) * boardZoom;
     const mode = stroke.textMode || appState.textMode || 'plain';
     if (mode === 'sticky') {
       targetCtx.fillStyle = 'rgba(255, 255, 220, 0.95)';
@@ -528,7 +1094,8 @@ function drawStroke(stroke, targetCtx = ctx) {
     }
 
     targetCtx.fillStyle = stroke.color || '#333';
-    targetCtx.font = stroke.font || 'bold 22px sans-serif';
+    const fontSize = Math.max(10, Math.round(22 * boardZoom));
+    targetCtx.font = stroke.font ? stroke.font.replace(/\d+px/, `${fontSize}px`) : `bold ${fontSize}px sans-serif`;
     targetCtx.textBaseline = 'top';
     const paddingX = mode === 'sticky' ? 10 : 4;
     const paddingY = mode === 'sticky' ? 10 : 4;
@@ -563,8 +1130,8 @@ function drawStroke(stroke, targetCtx = ctx) {
 
   if (stroke.tool === 'image' && stroke.dataUrl) {
     const pt = globalToLocal({ x: stroke.x, y: stroke.y });
-    const w = stroke.width || 400;
-    const h = stroke.height || 300;
+    const w = (stroke.width || 400) * boardZoom;
+    const h = (stroke.height || 300) * boardZoom;
     if (!stroke._cachedImg || stroke._cachedImgSrc !== stroke.dataUrl) {
       const img = new Image();
       img.src = stroke.dataUrl;
@@ -590,13 +1157,79 @@ function drawStroke(stroke, targetCtx = ctx) {
     const shapeType = stroke.shapeType || 'rectangle';
 
     targetCtx.save();
-    targetCtx.globalCompositeOperation = 'source-over';
-    targetCtx.strokeStyle = hexToRgba(stroke.color || '#ff5a5f', stroke.opacity || 1);
-    targetCtx.lineWidth = stroke.width || 4;
+    targetCtx.globalAlpha = stroke.opacity || 1;
+    targetCtx.strokeStyle = stroke.color || '#000';
+    targetCtx.lineWidth = Math.max(1, (stroke.width || 4) * boardZoom);
     targetCtx.lineCap = 'round';
     targetCtx.lineJoin = 'round';
 
     targetCtx.beginPath();
+    
+    // Support calligraphy shapes
+    if (stroke.brushType === 'calligraphy') {
+      const pts = [];
+      if (shapeType === 'rectangle') {
+        const x = Math.min(pStart.x, pEnd.x);
+        const y = Math.min(pStart.y, pEnd.y);
+        const w = Math.abs(pEnd.x - pStart.x);
+        const h = Math.abs(pEnd.y - pStart.y);
+        pts.push({x: x, y: y}, {x: x+w, y: y}, {x: x+w, y: y+h}, {x: x, y: y+h}, {x: x, y: y});
+      } else if (shapeType === 'circle') {
+        const cx = (pStart.x + pEnd.x) / 2;
+        const cy = (pStart.y + pEnd.y) / 2;
+        const rx = Math.abs(pEnd.x - pStart.x) / 2;
+        const ry = Math.abs(pEnd.y - pStart.y) / 2;
+        const numPts = 60;
+        for (let i = 0; i <= numPts; i++) {
+          const t = (i / numPts) * Math.PI * 2;
+          pts.push({ x: cx + rx * Math.cos(t), y: cy + ry * Math.sin(t) });
+        }
+      } else if (shapeType === 'triangle') {
+        const topX = (pStart.x + pEnd.x) / 2;
+        const topY = Math.min(pStart.y, pEnd.y);
+        const bottomY = Math.max(pStart.y, pEnd.y);
+        pts.push({x: topX, y: topY}, {x: pEnd.x, y: bottomY}, {x: pStart.x, y: bottomY}, {x: topX, y: topY});
+      } else if (shapeType === 'line') {
+        pts.push({x: pStart.x, y: pStart.y}, {x: pEnd.x, y: pEnd.y});
+      } else if (shapeType === 'arrow') {
+        pts.push({x: pStart.x, y: pStart.y}, {x: pEnd.x, y: pEnd.y});
+        const angle = Math.atan2(pEnd.y - pStart.y, pEnd.x - pStart.x);
+        const headLen = Math.max(12, (stroke.width || 4) * 3 * boardZoom);
+        pts.push(
+          {x: pEnd.x - headLen * Math.cos(angle - Math.PI / 6), y: pEnd.y - headLen * Math.sin(angle - Math.PI / 6)},
+          {x: pEnd.x, y: pEnd.y},
+          {x: pEnd.x - headLen * Math.cos(angle + Math.PI / 6), y: pEnd.y - headLen * Math.sin(angle + Math.PI / 6)}
+        );
+      }
+      
+      targetCtx.fillStyle = stroke.color || '#000';
+      const angle = typeof stroke.angle === 'number' ? stroke.angle : Math.PI / 4;
+      const bw = Math.max(1, (stroke.width || 4) * boardZoom);
+      const offsetX = Math.cos(angle) * (bw / 2);
+      const offsetY = -Math.sin(angle) * (bw / 2);
+      
+      if (pts.length > 0) {
+        targetCtx.moveTo(pts[0].x - offsetX, pts[0].y - offsetY);
+        targetCtx.lineTo(pts[0].x + offsetX, pts[0].y + offsetY);
+        targetCtx.lineWidth = 1;
+        targetCtx.stroke();
+        
+        for (let i = 0; i < pts.length - 1; i++) {
+          const p1 = pts[i];
+          const p2 = pts[i+1];
+          targetCtx.beginPath();
+          targetCtx.moveTo(p1.x - offsetX, p1.y - offsetY);
+          targetCtx.lineTo(p2.x - offsetX, p2.y - offsetY);
+          targetCtx.lineTo(p2.x + offsetX, p2.y + offsetY);
+          targetCtx.lineTo(p1.x + offsetX, p1.y + offsetY);
+          targetCtx.closePath();
+          targetCtx.fill();
+        }
+      }
+      targetCtx.restore();
+      return;
+    }
+
     if (shapeType === 'rectangle') {
       const x = Math.min(pStart.x, pEnd.x);
       const y = Math.min(pStart.y, pEnd.y);
@@ -629,7 +1262,7 @@ function drawStroke(stroke, targetCtx = ctx) {
       targetCtx.stroke();
 
       const angle = Math.atan2(pEnd.y - pStart.y, pEnd.x - pStart.x);
-      const headLen = Math.max(12, (stroke.width || 4) * 3);
+      const headLen = Math.max(12, (stroke.width || 4) * 3 * boardZoom);
       targetCtx.beginPath();
       targetCtx.moveTo(pEnd.x, pEnd.y);
       targetCtx.lineTo(pEnd.x - headLen * Math.cos(angle - Math.PI / 6), pEnd.y - headLen * Math.sin(angle - Math.PI / 6));
@@ -646,29 +1279,55 @@ function drawStroke(stroke, targetCtx = ctx) {
   }
 
   const points = stroke.points.map(globalToLocal);
+  const style = getBrushStyle();
   targetCtx.save();
   targetCtx.globalCompositeOperation = stroke.tool === 'eraser' ? 'destination-out' : 'source-over';
-  targetCtx.strokeStyle = hexToRgba(stroke.color, stroke.opacity);
-  targetCtx.fillStyle = hexToRgba(stroke.color, stroke.opacity);
-  targetCtx.lineWidth = stroke.width;
+  targetCtx.globalAlpha = stroke.opacity || 1;
+  targetCtx.strokeStyle = stroke.color || '#000';
+  targetCtx.fillStyle = stroke.color || '#000';
+  targetCtx.lineWidth = Math.max(1, (stroke.width || style.width) * boardZoom);
   targetCtx.lineCap = 'round';
   targetCtx.lineJoin = 'round';
 
-  if (points.length === 1) {
-    const point = points[0];
+  if (stroke.tool === 'calligraphy') {
+    const angle = typeof stroke.angle === 'number' ? stroke.angle : Math.PI / 4;
+    const w = Math.max(1, (stroke.width || style.width) * boardZoom);
+    const offsetX = Math.cos(angle) * (w / 2);
+    const offsetY = -Math.sin(angle) * (w / 2);
+    
+    // Draw the starting nib stamp
     targetCtx.beginPath();
-    targetCtx.arc(point.x, point.y, stroke.width / 2, 0, Math.PI * 2);
-    targetCtx.fill();
-    targetCtx.restore();
-    return;
+    targetCtx.moveTo(points[0].x - offsetX, points[0].y - offsetY);
+    targetCtx.lineTo(points[0].x + offsetX, points[0].y + offsetY);
+    targetCtx.lineWidth = 1;
+    targetCtx.stroke();
+    
+    for (let i = 0; i < points.length - 1; i++) {
+      const p1 = points[i];
+      const p2 = points[i+1];
+      targetCtx.beginPath();
+      targetCtx.moveTo(p1.x - offsetX, p1.y - offsetY);
+      targetCtx.lineTo(p2.x - offsetX, p2.y - offsetY);
+      targetCtx.lineTo(p2.x + offsetX, p2.y + offsetY);
+      targetCtx.lineTo(p1.x + offsetX, p1.y + offsetY);
+      targetCtx.closePath();
+      targetCtx.fill();
+    }
+  } else {
+    if (points.length === 1) {
+      targetCtx.beginPath();
+      targetCtx.arc(points[0].x, points[0].y, (stroke.width || style.width) * boardZoom / 2, 0, Math.PI * 2);
+      targetCtx.fill();
+    } else {
+      targetCtx.beginPath();
+      targetCtx.moveTo(points[0].x, points[0].y);
+      for (let i = 1; i < points.length; i += 1) {
+        targetCtx.lineTo(points[i].x, points[i].y);
+      }
+      targetCtx.stroke();
+    }
   }
-
-  targetCtx.beginPath();
-  targetCtx.moveTo(points[0].x, points[0].y);
-  for (let i = 1; i < points.length; i += 1) {
-    targetCtx.lineTo(points[i].x, points[i].y);
-  }
-  targetCtx.stroke();
+  
   targetCtx.restore();
 }
 
@@ -706,37 +1365,49 @@ function render() {
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, width, height);
 
+    ctx.translate(boardPanX, boardPanY);
+    ctx.scale(boardZoom, boardZoom);
+
+    const startX = Math.floor((-boardPanX / boardZoom) / 28) * 28;
+    const startY = Math.floor((-boardPanY / boardZoom) / 28) * 28;
+    const endX = (-boardPanX + width) / boardZoom;
+    const endY = (-boardPanY + height) / boardZoom;
+
     if (appState.backgroundMode === 'grid') {
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : '#e0e0e8';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1 / boardZoom;
       ctx.beginPath();
-      for (let x = 0; x < width; x += 28) {
-        ctx.moveTo(x, 0); ctx.lineTo(x, height);
+      for (let x = startX; x <= endX; x += 28) {
+        ctx.moveTo(x, startY); ctx.lineTo(x, endY);
       }
-      for (let y = 0; y < height; y += 28) {
-        ctx.moveTo(0, y); ctx.lineTo(width, y);
+      for (let y = startY; y <= endY; y += 28) {
+        ctx.moveTo(startX, y); ctx.lineTo(endX, y);
       }
       ctx.stroke();
     } else if (appState.backgroundMode === 'ruled') {
+      const rStartY = Math.floor((-boardPanY / boardZoom) / 32) * 32;
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : '#e2e8f0';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = 1 / boardZoom;
       ctx.beginPath();
-      for (let y = 40; y < height; y += 32) {
-        ctx.moveTo(0, y); ctx.lineTo(width, y);
+      for (let y = rStartY; y <= endY; y += 32) {
+        if (y < 40) continue;
+        ctx.moveTo(startX, y); ctx.lineTo(endX, y);
       }
       ctx.stroke();
       ctx.strokeStyle = '#f87171';
       ctx.beginPath();
-      ctx.moveTo(80, 0); ctx.lineTo(80, height);
+      ctx.moveTo(80, startY); ctx.lineTo(80, endY);
       ctx.stroke();
     } else if (appState.backgroundMode === 'staff') {
+      const sStartY = Math.floor((-boardPanY / boardZoom) / 140) * 140;
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.25)' : '#cbd5e1';
-      ctx.lineWidth = 1.5;
-      for (let y = 60; y < height; y += 140) {
+      ctx.lineWidth = 1.5 / boardZoom;
+      for (let y = sStartY; y <= endY; y += 140) {
+        if (y < 60) continue;
         ctx.beginPath();
         for (let i = 0; i < 5; i++) {
           const sy = y + i * 14;
-          ctx.moveTo(0, sy); ctx.lineTo(width, sy);
+          ctx.moveTo(startX, sy); ctx.lineTo(endX, sy);
         }
         ctx.stroke();
       }
@@ -747,7 +1418,7 @@ function render() {
   const highlighterStrokes = [];
   const normalStrokes = [];
   for (const stroke of scene.annotations) {
-    if (stroke.tool === 'highlighter' || stroke.origTool === 'highlighter') {
+    if (stroke.tool === 'highlighter' || stroke.origTool === 'highlighter' || stroke.brushType === 'highlighter') {
       highlighterStrokes.push(stroke);
     } else {
       normalStrokes.push(stroke);
@@ -758,7 +1429,7 @@ function render() {
     drawStroke(stroke);
   }
 
-  const isPreviewHighlighter = currentStroke && (currentStroke.tool === 'highlighter' || currentStroke.origTool === 'highlighter');
+  const isPreviewHighlighter = currentStroke && (currentStroke.tool === 'highlighter' || currentStroke.origTool === 'highlighter' || currentStroke.brushType === 'highlighter');
   if (highlighterStrokes.length > 0 || isPreviewHighlighter) {
     if (!window.hlCanvas) {
       window.hlCanvas = document.createElement('canvas');
@@ -972,6 +1643,62 @@ function render() {
     ctx.restore();
   }
 
+  if (isSnippingMode) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, width, height);
+    if (snipStart && snipCurrent) {
+      const sx = Math.min(snipStart.x, snipCurrent.x);
+      const sy = Math.min(snipStart.y, snipCurrent.y);
+      const sw = Math.abs(snipStart.x - snipCurrent.x);
+      const sh = Math.abs(snipStart.y - snipCurrent.y);
+      ctx.rect(sx, sy, sw, sh);
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.fill('evenodd');
+    
+    if (snipStart && snipCurrent) {
+      const sx = Math.min(snipStart.x, snipCurrent.x);
+      const sy = Math.min(snipStart.y, snipCurrent.y);
+      const sw = Math.abs(snipStart.x - snipCurrent.x);
+      const sh = Math.abs(snipStart.y - snipCurrent.y);
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([5, 5]);
+      ctx.strokeRect(sx, sy, sw, sh);
+      ctx.setLineDash([]);
+    }
+    ctx.restore();
+  }
+
+  if (appState && appState.activeTool === 'mindmap' && window.hoveredAddButton) {
+    const parentNode = scene.annotations.find(a => a.id === window.hoveredAddButton.nodeId);
+    if (parentNode) {
+      const pt = globalToLocal({ x: parentNode.x, y: parentNode.y });
+      const boxW = (parentNode.width || 120) * boardZoom;
+      const boxH = (parentNode.height || 40) * boardZoom;
+      
+      const btnX = pt.x + boxW + 15 * boardZoom;
+      const btnY = pt.y + boxH / 2;
+      
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(btnX, btnY, 10 * boardZoom, 0, Math.PI * 2);
+      ctx.fillStyle = window.hoveredAddButton.hovered ? '#3b82f6' : '#fff';
+      ctx.fill();
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 2 * boardZoom;
+      ctx.stroke();
+      
+      ctx.fillStyle = window.hoveredAddButton.hovered ? '#fff' : '#3b82f6';
+      ctx.font = `bold ${14 * boardZoom}px sans-serif`;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.fillText('+', btnX, btnY + 1 * boardZoom);
+      ctx.restore();
+    }
+  }
+
   ctx.restore();
 }
 
@@ -1030,6 +1757,7 @@ function createStrokeFromEvent(event) {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       tool: 'shapes',
       shapeType: appState.activeShapeType || 'rectangle',
+      brushType: appState.lastInkingTool || 'pen',
       color: brush.color,
       width: brush.width,
       opacity: brush.opacity,
@@ -1229,8 +1957,9 @@ function recognizeShape(stroke) {
   const isMagicShape = stroke.tool === 'shapes';
 
   // Check simple line first: if end-to-end distance is very close to total path length
-  const lineThreshold = isMagicShape ? 0.88 : 0.96;
-  const lineMinDist = isMagicShape ? 25 : 50;
+  const lineThreshold = 0.88;
+  const lineMinDist = 25;
+
   if (totalPathLen > 0 && (closedDist / totalPathLen) > lineThreshold && closedDist > lineMinDist) {
     return { shapeType: 'line', start: { ...pStart }, end: { ...pEnd } };
   }
@@ -1283,9 +2012,9 @@ function recognizeShape(stroke) {
     const avgRectErr = sumRectErr / stroke.points.length;
     const avgTriErr = sumTriErr / stroke.points.length;
 
-    const triThresh = isMagicShape ? 0.35 : 0.20;
-    const circleThresh = isMagicShape ? 0.32 : 0.18;
-    const rectThresh = isMagicShape ? 0.32 : 0.18;
+    const triThresh = 0.35;
+    const circleThresh = 0.32;
+    const rectThresh = 0.32;
 
     if (avgTriErr < triThresh && avgTriErr < avgCircleErr && avgTriErr < avgRectErr) {
       return { shapeType: 'triangle', start: { x: minX, y: minY }, end: { x: maxX, y: maxY } };
@@ -1340,8 +2069,8 @@ function recognizeShape(stroke) {
   }
   const avgShaftErr = shaftCount > 0 ? sumShaftDist / shaftCount : avgLineErr;
 
-  const arrowThresh = isMagicShape ? 0.30 : 0.15;
-  const lineErrThresh = isMagicShape ? 0.28 : 0.15;
+  const arrowThresh = 0.30;
+  const lineErrThresh = 0.28;
 
   if (avgShaftErr < arrowThresh) {
     let hasBarb = false;
@@ -1367,38 +2096,6 @@ function recognizeShape(stroke) {
   return null;
 }
 
-async function checkAutoAdvance(stroke) {
-  if (!appState || !appState.backgroundMode || appState.backgroundMode === 'transparent') return;
-  if (!stroke || ['laser', 'select', 'spotlight', 'magnifier'].includes(stroke.tool)) return;
-
-  let hitBottom = false;
-  const threshY = window.innerHeight - 110;
-  if (stroke.points && stroke.points.length > 0) {
-    for (const p of stroke.points) {
-      if (globalToLocal(p).y >= threshY) {
-        hitBottom = true;
-        break;
-      }
-    }
-  } else if (stroke.start || stroke.end) {
-    const sy = stroke.start ? globalToLocal(stroke.start).y : 0;
-    const ey = stroke.end ? globalToLocal(stroke.end).y : 0;
-    if (Math.max(sy, ey) >= threshY) hitBottom = true;
-  }
-
-  if (hitBottom && Date.now() - lastAutoAdvanceTime > 1500) {
-    lastAutoAdvanceTime = Date.now();
-    if (window.appBridge && window.appBridge.nextPage) {
-      const nextState = await window.appBridge.nextPage();
-      if (nextState && typeof nextState.currentPageIndex === 'number') {
-        showPageToast(`Page ${nextState.currentPageIndex + 1} created`);
-      } else {
-        showPageToast(`New page created`);
-      }
-    }
-  }
-}
-
 async function finalizeStroke() {
   if (!currentStroke) {
     return;
@@ -1410,7 +2107,6 @@ async function finalizeStroke() {
   if (stroke.tool === 'shapes') {
     if (stroke.start && stroke.end && Math.hypot(stroke.end.x - stroke.start.x, stroke.end.y - stroke.start.y) >= 4) {
       await window.appBridge.addStroke(stroke);
-      await checkAutoAdvance(stroke);
     }
     return;
   }
@@ -1421,10 +2117,11 @@ async function finalizeStroke() {
       radius: appState.brushDefaults.eraser.radius,
     });
   } else {
-    const recognized = (stroke.tool === 'shapes' || stroke.tool === 'pen') ? recognizeShape(stroke) : null;
+    const recognized = (stroke.tool === 'shapes' || stroke.tool === 'pen' || stroke.tool === 'calligraphy' || stroke.tool === 'highlighter') ? recognizeShape(stroke) : null;
     if (recognized) {
       stroke.isAutoShape = true;
       stroke.origTool = stroke.tool;
+      stroke.brushType = stroke.tool; // Preserve the original tool as the brushType
       stroke.origPoints = stroke.points ? stroke.points.map(point => ({ x: point.x, y: point.y })) : null;
       stroke.origShapeType = recognized.shapeType;
       stroke.origStart = { ...recognized.start };
@@ -1436,20 +2133,43 @@ async function finalizeStroke() {
       stroke.end = { ...recognized.end };
     }
     await window.appBridge.addStroke(stroke);
-    await checkAutoAdvance(stroke);
   }
 }
 
 canvas.addEventListener('pointerdown', (event) => {
+  currentMousePos = { x: event.offsetX, y: event.offsetY };
+  
+  if (isSnippingMode) {
+    snipStart = { x: event.offsetX, y: event.offsetY };
+    snipCurrent = { ...snipStart };
+    return;
+  }
+
+  if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+    if (event.button === 1 || (event.button === 0 && isSpaceDown)) {
+      isPanningBoard = true;
+      boardPanStartX = event.offsetX - boardPanX;
+      boardPanStartY = event.offsetY - boardPanY;
+      canvas.style.cursor = 'grabbing';
+      return;
+    }
+  }
+
   if (window.DEBUG_REPEN) console.log('[DEBUG Overlay] pointerdown at screen position:', event.clientX, event.clientY, 'offset:', event.offsetX, event.offsetY, 'activeTool:', appState ? appState.activeTool : 'N/A');
   if (appState && appState.clickHalo) {
     const globalPt = localToGlobal({ x: event.offsetX, y: event.offsetY });
-    clickRipples.push({ x: globalPt.x, y: globalPt.y, time: Date.now() });
+    clickRipples.push({ ...globalPt, time: Date.now() });
     scheduleRender();
   }
 
   if (!canDraw()) {
     return;
+  }
+
+  if (appState && appState.backgroundMode !== 'transparent') {
+    if (!autoPanRafId) {
+      autoPanRafId = requestAnimationFrame(autoPanLoop);
+    }
   }
 
   if (appState.activeTool === 'laser' || appState.activeTool === 'spotlight' || appState.activeTool === 'magnifier') {
@@ -1480,6 +2200,80 @@ canvas.addEventListener('pointerdown', (event) => {
       }
     }
     createTextEditor(event.clientX, event.clientY);
+    return;
+  }
+  if (appState.activeTool === 'mindmap') {
+    const pt = { x: event.offsetX, y: event.offsetY };
+    const globalPt = localToGlobal(pt);
+
+    if (window.hoveredAddButton?.hovered) {
+      const parentNode = getMindmapNodes().find(a => a.id === window.hoveredAddButton.nodeId);
+      if (parentNode) {
+        const childType = parentNode.nodeType === 'central' ? 'main' : 'sub';
+        const side = window.hoveredAddButton.side;
+        
+        const COLORS = ['#ff5a5f', '#ffe36d', '#00d26a', '#3b82f6', '#ffffff'];
+        const newColor = childType === 'main' 
+            ? COLORS[getMindmapNodes().filter(a => a.nodeType === 'main').length % COLORS.length] 
+            : parentNode.color;
+
+        const newNode = createMindmapNode({
+          nodeType: childType,
+          parentId: parentNode.id,
+          side: side,
+          text: 'New Topic',
+          color: newColor,
+          x: parentNode.x,
+          y: parentNode.y
+        });
+
+        window.addMindmapNode(newNode, { focusEditor: true });
+        return;
+      }
+    }
+
+    const clickedNode = findMindmapNodeAtPoint(event.offsetX, event.offsetY);
+    if (clickedNode) {
+      window.isDraggingMindmapNode = {
+        nodeId: clickedNode.id,
+        startX: event.offsetX,
+        startY: event.offsetY,
+        origX: clickedNode.x,
+        origY: clickedNode.y,
+        hasMoved: false,
+        clientX: event.clientX,
+        clientY: event.clientY,
+        subtreeIds: getMindmapSubtreeIds(clickedNode.id),
+        origSubtreeCoords: getMindmapSubtreeIds(clickedNode.id).map(id => {
+          const n = getMindmapNodes().find(a => a.id === id);
+          return { id, x: n.x, y: n.y };
+        })
+      };
+      canvas.style.cursor = 'grabbing';
+      canvas.setPointerCapture(event.pointerId);
+      return;
+    } else {
+      window.selectedMindmapNodeId = null;
+      scheduleRender();
+    }
+
+    const isCentralExist = getMindmapCentralNode();
+    if (!isCentralExist) {
+      const newNode = createMindmapNode({
+        nodeType: 'central',
+        text: 'Central Topic',
+        color: '#8b5cf6',
+        x: globalPt.x - 75,
+        y: globalPt.y - 25,
+        width: 150,
+        height: 50
+      });
+      scene.annotations.push(newNode); // Optimistic
+      window.appBridge.addStroke(newNode).then(() => {
+        window.layoutMindmap(newNode.id);
+        createTextEditor(event.clientX, event.clientY, newNode);
+      });
+    }
     return;
   }
 
@@ -1569,6 +2363,19 @@ canvas.addEventListener('pointerdown', (event) => {
 });
 
 canvas.addEventListener('pointermove', (event) => {
+  if (isSnippingMode && snipStart) {
+    snipCurrent = { x: event.offsetX, y: event.offsetY };
+    scheduleRender();
+    return;
+  }
+
+  if (isPanningBoard) {
+    boardPanX = event.offsetX - boardPanStartX;
+    boardPanY = event.offsetY - boardPanStartY;
+    scheduleRender();
+    return;
+  }
+
   currentMousePos = { x: event.offsetX, y: event.offsetY };
   if (appState && (appState.activeTool === 'spotlight' || appState.activeTool === 'magnifier')) {
     scheduleRender();
@@ -1585,6 +2392,47 @@ canvas.addEventListener('pointermove', (event) => {
     marqueeBox.currentX = event.offsetX;
     marqueeBox.currentY = event.offsetY;
     scheduleRender();
+    return;
+  }
+
+  if (appState && appState.activeTool === 'mindmap') {
+    if (window.isDraggingMindmapNode) {
+      const state = window.isDraggingMindmapNode;
+      const dx = event.offsetX - state.startX;
+      const dy = event.offsetY - state.startY;
+      if (Math.hypot(dx, dy) > 3) state.hasMoved = true;
+      
+      const deltaX = dx / boardZoom;
+      const deltaY = dy / boardZoom;
+      
+      for (const orig of state.origSubtreeCoords) {
+        const node = scene.annotations.find(a => a.id === orig.id);
+        if (node) {
+          node.x = orig.x + deltaX;
+          node.y = orig.y + deltaY;
+        }
+      }
+      
+      scheduleRender();
+      return;
+    }
+    
+    let foundHover = null;
+    const hoverBtn = findMindmapAddButtonAtPoint(event.offsetX, event.offsetY);
+    if (hoverBtn) {
+      foundHover = { nodeId: hoverBtn.node.id, side: hoverBtn.side, hovered: true };
+    } else {
+      const hoverNode = findMindmapNodeAtPoint(event.offsetX, event.offsetY);
+      if (hoverNode) {
+        foundHover = { nodeId: hoverNode.id, hovered: false };
+      }
+    }
+    
+    if (window.hoveredAddButton?.nodeId !== foundHover?.nodeId || window.hoveredAddButton?.hovered !== foundHover?.hovered || window.hoveredAddButton?.side !== foundHover?.side) {
+      window.hoveredAddButton = foundHover;
+      canvas.style.cursor = foundHover?.hovered ? 'pointer' : 'default';
+      scheduleRender();
+    }
     return;
   }
 
@@ -1710,6 +2558,33 @@ canvas.addEventListener('pointermove', (event) => {
 });
 
 canvas.addEventListener('pointerup', async (event) => {
+  if (isPanningBoard) {
+    isPanningBoard = false;
+    canvas.style.cursor = isSpaceDown ? 'grab' : (appState && appState.activeTool === 'select' ? 'default' : 'crosshair');
+    return;
+  }
+
+  if (isSnippingMode && snipStart) {
+    snipCurrent = { x: event.offsetX, y: event.offsetY };
+    const rect = {
+      x: Math.min(snipStart.x, snipCurrent.x),
+      y: Math.min(snipStart.y, snipCurrent.y),
+      width: Math.abs(snipStart.x - snipCurrent.x),
+      height: Math.abs(snipStart.y - snipCurrent.y)
+    };
+    isSnippingMode = false;
+    snipStart = null;
+    snipCurrent = null;
+    document.body.style.cursor = '';
+    scheduleRender();
+    
+    if (rect.width > 5 && rect.height > 5) {
+      setTimeout(() => {
+        window.appBridge.takeScreenshot(rect);
+      }, 50);
+    }
+    return;
+  }
   if (isResizingSelection) {
     isResizingSelection = null;
     const updatedStrokes = scene.annotations.filter((stroke) => selectedIds.includes(stroke.id));
@@ -1798,6 +2673,28 @@ canvas.addEventListener('pointerup', async (event) => {
     return;
   }
 
+  if (window.isDraggingMindmapNode) {
+    const dragObj = window.isDraggingMindmapNode;
+    window.isDraggingMindmapNode = null;
+    canvas.style.cursor = window.hoveredAddButton?.hovered ? 'pointer' : 'default';
+    if (dragObj.hasMoved) {
+      const updatedStrokes = dragObj.subtreeIds.map(id => scene.annotations.find(a => a.id === id)).filter(Boolean);
+      
+      if (updatedStrokes.length > 0 && window.appBridge.updateAnnotations) {
+        await window.appBridge.updateAnnotations(updatedStrokes);
+      } else if (window.appBridge.updateAnnotation) {
+        for (const stroke of updatedStrokes) {
+          await window.appBridge.updateAnnotation(stroke);
+        }
+      }
+      scheduleRender();
+    } else {
+      window.selectedMindmapNodeId = dragObj.nodeId;
+      scheduleRender();
+    }
+    return;
+  }
+
   if (!currentStroke) {
     if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
       if (event.offsetY >= window.innerHeight - 110 && Date.now() - lastAutoAdvanceTime > 1500) {
@@ -1816,6 +2713,10 @@ canvas.addEventListener('pointerup', async (event) => {
   }
 
   try {
+    if (autoPanRafId) {
+      cancelAnimationFrame(autoPanRafId);
+      autoPanRafId = null;
+    }
     await finalizeStroke(event);
   } finally {
     scheduleRender();
@@ -1827,13 +2728,28 @@ canvas.addEventListener('pointercancel', () => {
   isDraggingSelection = false;
   isResizingSelection = null;
   isDraggingText = null;
+  window.isDraggingMindmapNode = null;
   marqueeBox = null;
+  if (autoPanRafId) {
+    cancelAnimationFrame(autoPanRafId);
+    autoPanRafId = null;
+  }
   scheduleRender();
 });
 
 canvas.addEventListener('dblclick', (event) => {
   if (!canDraw()) return;
   const pt = { x: event.offsetX, y: event.offsetY };
+  
+  if (appState?.activeTool === 'mindmap') {
+    const clickedNode = findMindmapNodeAtPoint(event.offsetX, event.offsetY);
+    if (clickedNode) {
+      const rect = mindmapNodeToScreenRect(clickedNode);
+      createTextEditor(rect.x, rect.y, clickedNode);
+      return;
+    }
+  }
+  
   for (let i = scene.annotations.length - 1; i >= 0; i--) {
     const stroke = scene.annotations[i];
     if (stroke.tool === 'text') {
@@ -1850,8 +2766,27 @@ canvas.addEventListener('dblclick', (event) => {
 
 window.addEventListener('keydown', async (event) => {
   if (event.key === 'Escape') {
+    if (isSnippingMode) {
+      isSnippingMode = false;
+      snipStart = null;
+      snipCurrent = null;
+      document.body.style.cursor = '';
+      scheduleRender();
+      return;
+    }
     currentStroke = null;
     scheduleRender();
+  }
+  
+  if ((event.key === 'Delete' || event.key === 'Backspace') && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'INPUT') {
+    if (appState?.activeTool === 'mindmap' && window.selectedMindmapNodeId) {
+      const subtreeIds = getMindmapSubtreeIds(window.selectedMindmapNodeId);
+      if (subtreeIds.length > 0 && window.appBridge.deleteAnnotations) {
+        await window.appBridge.deleteAnnotations(subtreeIds);
+        window.selectedMindmapNodeId = null;
+        scheduleRender();
+      }
+    }
   }
 
   if ((event.key === 'Delete' || event.key === 'Backspace') && selectedIds.length > 0 && (!document.activeElement || document.activeElement.tagName !== 'TEXTAREA')) {
@@ -1873,7 +2808,40 @@ window.addEventListener('keydown', async (event) => {
     event.preventDefault();
     await window.appBridge.revertAutoShape();
   }
+
+  if (event.code === 'Space' && (!document.activeElement || document.activeElement.tagName !== 'TEXTAREA')) {
+    if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
+      isSpaceDown = true;
+      canvas.style.cursor = 'grab';
+    }
+  }
 });
+
+window.addEventListener('keyup', (event) => {
+  if (event.code === 'Space') {
+    isSpaceDown = false;
+    if (!isPanningBoard) {
+      canvas.style.cursor = appState && appState.activeTool === 'select' ? 'default' : 'crosshair';
+    }
+  }
+});
+
+canvas.addEventListener('wheel', (event) => {
+  if (!appState || !appState.backgroundMode || appState.backgroundMode === 'transparent') return;
+  
+  if (event.ctrlKey) {
+    event.preventDefault();
+    const zoomFactor = event.deltaY < 0 ? 1.1 : 0.9;
+    setBoardZoom(boardZoom * zoomFactor, event.offsetX, event.offsetY);
+  } else if (event.shiftKey) {
+    event.preventDefault();
+    boardPanX -= event.deltaY; // Shift+Wheel is usually horizontal scroll mapping to deltaY
+    scheduleRender();
+  } else if (event.deltaX !== 0) {
+    boardPanX -= event.deltaX; // Native horizontal scroll (trackpad)
+    scheduleRender();
+  }
+}, { passive: false });
 
 async function bootstrapApp() {
   bootstrap = await window.appBridge.getBootstrap();
@@ -1883,6 +2851,17 @@ async function bootstrapApp() {
   resizeCanvas();
   setupBoardNav();
   updateBoardNav();
+
+
+
+  if (window.appBridge.onTriggerMindmapAutoLayout) {
+    window.appBridge.onTriggerMindmapAutoLayout(() => {
+      const central = getMindmapCentralNode();
+      if (central) {
+        window.layoutMindmap(central.id);
+      }
+    });
+  }
 
   window.appBridge.onStateChanged((nextState) => {
     const prevTool = appState ? appState.activeTool : null;
@@ -1908,10 +2887,14 @@ async function bootstrapApp() {
     }
     if (appState.backgroundMode !== prevBackgroundMode) {
       resetInteractionState('background mode changed');
+      if (appState.backgroundMode === 'transparent') {
+        resetBoardZoom();
+      }
     }
 
     if (currentStroke && currentStroke.tool !== appState.activeTool) {
       currentStroke = null;
+      scheduleRender();
     }
     
     scheduleRender();
@@ -1962,11 +2945,21 @@ async function bootstrapApp() {
         exportCtx.drawImage(canvas, 0, 0, exportCanvas.width, exportCanvas.height);
       }
       
+      let finalCanvas = exportCanvas;
+      if (payload.rect && payload.rect.width > 0 && payload.rect.height > 0) {
+        const { rect } = payload;
+        finalCanvas = document.createElement('canvas');
+        finalCanvas.width = rect.width;
+        finalCanvas.height = rect.height;
+        const cropCtx = finalCanvas.getContext('2d');
+        cropCtx.drawImage(exportCanvas, rect.x, rect.y, rect.width, rect.height, 0, 0, rect.width, rect.height);
+      }
+      
       let mimeType = 'image/png';
       if (format === 'jpeg' || format === 'jpg') mimeType = 'image/jpeg';
       else if (format === 'webp') mimeType = 'image/webp';
       
-      const dataUrl = exportCanvas.toDataURL(mimeType, quality);
+      const dataUrl = finalCanvas.toDataURL(mimeType, quality);
       window.appBridge.renderExport({
         dataUrl,
         format,
@@ -1983,6 +2976,117 @@ async function bootstrapApp() {
     }
   });
 }
+
+window.getPdfPageCount = () => {
+  const allPages = typeof appState !== 'undefined' ? appState.pages : window.appState.pages;
+  return allPages ? allPages.length : 0;
+};
+
+window.generatePdfImageForPage = async (pageIndex) => {
+  const originalZoom = boardZoom;
+  const originalPanX = boardPanX;
+  const originalPanY = boardPanY;
+  const allPages = typeof appState !== 'undefined' ? appState.pages : window.appState.pages;
+  const page = allPages[pageIndex];
+  
+  if (!page) return null;
+
+  try {
+    const strokes = page.annotations || [];
+    if (strokes.length === 0) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1920;
+      canvas.height = 1080;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/png', 1.0);
+    }
+    
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    
+    for (const stroke of strokes) {
+      if (stroke.points) {
+        for (const p of stroke.points) {
+          if (p.x < minX) minX = p.x;
+          if (p.y < minY) minY = p.y;
+          if (p.x > maxX) maxX = p.x;
+          if (p.y > maxY) maxY = p.y;
+        }
+      }
+      if (stroke.start) {
+        if (stroke.start.x < minX) minX = stroke.start.x;
+        if (stroke.start.y < minY) minY = stroke.start.y;
+        if (stroke.start.x > maxX) maxX = stroke.start.x;
+        if (stroke.start.y > maxY) maxY = stroke.start.y;
+      }
+      if (stroke.end) {
+        if (stroke.end.x < minX) minX = stroke.end.x;
+        if (stroke.end.y < minY) minY = stroke.end.y;
+        if (stroke.end.x > maxX) maxX = stroke.end.x;
+        if (stroke.end.y > maxY) maxY = stroke.end.y;
+      }
+      if (stroke.tool === 'text' || stroke.tool === 'image' || stroke.tool === 'mindmap') {
+        const x = stroke.x || 0;
+        const y = stroke.y || 0;
+        const w = stroke.width || 100;
+        const h = stroke.height || 100;
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x + w > maxX) maxX = x + w;
+        if (y + h > maxY) maxY = y + h;
+      }
+    }
+    
+    const padding = 100;
+    let width = 1920;
+    let height = 1080;
+    
+    if (minX !== Infinity && maxX !== -Infinity && minY !== Infinity && maxY !== -Infinity) {
+      width = Math.max(800, maxX - minX + padding * 2);
+      height = Math.max(600, maxY - minY + padding * 2);
+      boardZoom = 1;
+      boardPanX = -(minX - padding);
+      boardPanY = -(minY - padding);
+    } else {
+      boardZoom = 1;
+      boardPanX = 0;
+      boardPanY = 0;
+    }
+    
+    if (width > 8000) {
+      const ratio = 8000 / width;
+      width = 8000;
+      height = Math.max(600, height * ratio);
+      boardZoom = ratio;
+    }
+    if (height > 8000) {
+      const ratio = 8000 / height;
+      height = 8000;
+      width = Math.max(800, width * ratio);
+      boardZoom = boardZoom * ratio;
+    }
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.floor(width);
+    canvas.height = Math.floor(height);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    for (const stroke of strokes) {
+      drawStroke(stroke, ctx);
+    }
+    
+    return canvas.toDataURL('image/png', 1.0);
+  } finally {
+    boardZoom = originalZoom;
+    boardPanX = originalPanX;
+    boardPanY = originalPanY;
+  }
+};
 
 bootstrapApp().then(() => {
   updateMagnifierImg();

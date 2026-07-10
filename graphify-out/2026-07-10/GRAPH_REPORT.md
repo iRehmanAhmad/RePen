@@ -1,16 +1,16 @@
-# Graph Report - epic-pen-clone  (2026-07-10)
+# Graph Report - epic-pen-clone  (2026-07-08)
 
 ## Corpus Check
-- 54 files · ~49,707 words
+- 50 files · ~39,505 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 749 nodes · 983 edges · 69 communities (66 shown, 3 thin omitted)
+- 686 nodes · 909 edges · 65 communities (62 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8fad9323`
+- Built from commit: `2aa7b4aa`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -80,22 +80,18 @@
 - [[_COMMUNITY_Fix cursor clearing grouped tools|Fix cursor clearing grouped tools]]
 - [[_COMMUNITY_verify-dialog-routing.js|verify-dialog-routing.js]]
 - [[_COMMUNITY_verify-eraser-geometry.js|verify-eraser-geometry.js]]
-- [[_COMMUNITY_Settings panel and screenshot save flow plan|Settings panel and screenshot save flow plan]]
-- [[_COMMUNITY_Mind map tool audit and fix plan|Mind map tool audit and fix plan]]
-- [[_COMMUNITY_Mind map Miro-parity follow-up audit and plan|Mind map Miro-parity follow-up audit and plan]]
-- [[_COMMUNITY_verify-mindmap-math.js|verify-mindmap-math.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 26 edges
 2. `Screen Annotation App Technical Architecture` - 25 edges
 3. `getShortcutActions()` - 18 edges
 4. `broadcastScene()` - 14 edges
-5. `Mind map tool audit and fix plan` - 14 edges
-6. `Mind map Miro-parity follow-up audit and plan` - 14 edges
-7. `Settings panel and screenshot save flow plan` - 13 edges
-8. `deepClone()` - 12 edges
-9. `Toolbar controls functionality audit and fix plan` - 12 edges
-10. `updateTrayMenu()` - 11 edges
+5. `deepClone()` - 12 edges
+6. `Toolbar controls functionality audit and fix plan` - 12 edges
+7. `updateTrayMenu()` - 11 edges
+8. `Set up multi-agent collaboration system` - 11 edges
+9. `Sprint 1 and 2 Features Complete` - 11 edges
+10. `Epic Pen UI Redesign` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
@@ -103,7 +99,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (69 total, 3 thin omitted)
+## Communities (65 total, 3 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -118,8 +114,8 @@ Cohesion: 0.13
 Nodes (31): allowedTypes, appendMessage(), commandBrief(), commandHelp(), commandList(), commandNew(), commandNote(), commandPhase() (+23 more)
 
 ### Community 3 - "overlay.js"
-Cohesion: 0.09
-Nodes (45): addPointToStroke(), autoPanLoop(), bootstrapApp(), calcHeight(), canDraw(), canvas, clearSelection(), clickRipples (+37 more)
+Cohesion: 0.11
+Nodes (34): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clearSelection(), clickRipples, createStrokeFromEvent(), createTextEditor() (+26 more)
 
 ### Community 4 - "toolbar.js"
 Cohesion: 0.14
@@ -353,24 +349,8 @@ Nodes (4): fs, mainContent, mainPath, path
 Cohesion: 0.40
 Nodes (4): fs, mainContent, mainPath, path
 
-### Community 65 - "Settings panel and screenshot save flow plan"
-Cohesion: 0.12
-Nodes (15): Acceptance Checks, Baseline, Constraints, Context Read, Current Phase, Findings, Goal, Handoff Notes (+7 more)
-
-### Community 66 - "Mind map tool audit and fix plan"
-Cohesion: 0.13
-Nodes (14): Acceptance Checks, Baseline, Constraints, Context Read, Current Phase, Findings, Goal, Handoff Notes (+6 more)
-
-### Community 67 - "Mind map Miro-parity follow-up audit and plan"
-Cohesion: 0.13
-Nodes (14): Acceptance Checks, Baseline, Constraints, Context Read, Current Findings, Current Phase, Goal, Handoff Notes (+6 more)
-
-### Community 68 - "verify-mindmap-math.js"
-Cohesion: 0.40
-Nodes (4): fs, overlayContent, overlayPath, path
-
 ## Knowledge Gaps
-- **451 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+446 more)
+- **408 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+403 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -378,13 +358,13 @@ Nodes (4): fs, overlayContent, overlayPath, path
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `19. Security Model`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Why does `8. Interaction Modes` connect `8. Interaction Modes` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _451 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _408 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.055043859649122805 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

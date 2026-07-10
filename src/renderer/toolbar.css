@@ -57,7 +57,7 @@ html, body {
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   border: 1px solid var(--line);
-  border-radius: 0 !important;
+  border-radius: 22px 22px 0 0 !important;
   padding: 0 2px;
   display: flex;
   flex-direction: column;
@@ -68,10 +68,11 @@ html, body {
 }
 
 .pen-bar.collapsed {
-  height: auto;
-  border-radius: 0 !important;
-  padding: 4px;
-  gap: 0;
+  height: var(--bar-width);
+  width: var(--bar-width);
+  border-radius: 16px !important;
+  padding: 0;
+  justify-content: center;
 }
 
 .pen-bar.collapsed .tool-column,
@@ -81,6 +82,9 @@ html, body {
   display: none !important;
 }
 
+.pen-bar.collapsed .mark-mini svg {
+  transform: rotate(180deg);
+}
 /* Dedicated Drag Grip Handle */
 .drag-grip {
   width: 100%;
@@ -122,16 +126,60 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   -webkit-app-region: no-drag;
   cursor: pointer;
   padding: 0;
   outline: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   color: var(--text);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes googleSpin {
+  to { --border-angle: 360deg; }
+}
+
+.pen-bar.collapsed .mark-mini {
+  border-radius: 4px;
+}
+
+.mark-mini::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 4px;
+  padding: 3px;
+  background: conic-gradient(from var(--border-angle),
+    #4285F4 0deg 75deg, transparent 75deg 90deg,
+    #EA4335 90deg 165deg, transparent 165deg 180deg,
+    #FBBC05 180deg 255deg, transparent 255deg 270deg,
+    #34A853 270deg 345deg, transparent 345deg 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: googleSpin 2s linear infinite;
+  animation-play-state: paused;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0.5;
+}
+
+.pen-bar.collapsed .mark-mini::before {
+  animation-play-state: running;
+  opacity: 1;
+}
+
+.mark-mini:hover::before {
+  opacity: 1;
 }
 
 .mark-mini:hover {
@@ -150,6 +198,7 @@ html, body {
   width: var(--tool-icon);
   height: var(--tool-icon);
   pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header-actions {
@@ -590,6 +639,7 @@ html, body {
   height: 52px;
   flex-direction: row;
   padding: 4px 8px;
+  border-radius: 22px 0 0 22px !important;
 }
 
 .pen-bar.horizontal .drag-grip {
@@ -626,8 +676,11 @@ html, body {
 }
 
 .pen-bar.horizontal.collapsed {
-  width: auto;
+  width: 52px;
   height: 52px;
+  border-radius: 16px !important;
+  padding: 0;
+  justify-content: center;
 }
 
 .flyout-panel.horizontal {

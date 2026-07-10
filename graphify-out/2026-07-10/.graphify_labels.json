@@ -63,9 +63,5 @@
   "61": "Fix main icon click drag behavior",
   "62": "Fix cursor clearing grouped tools",
   "63": "verify-dialog-routing.js",
-  "64": "verify-eraser-geometry.js",
-  "65": "Settings panel and screenshot save flow plan",
-  "66": "Mind map tool audit and fix plan",
-  "67": "Mind map Miro-parity follow-up audit and plan",
-  "68": "verify-mindmap-math.js"
+  "64": "verify-eraser-geometry.js"
 }

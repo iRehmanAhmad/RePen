@@ -5,13 +5,13 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783612205.8050818,
-    "ast_hash": "a0acfedad9d73b20e7694c441b20c531",
+    "mtime": 1783506546.5052333,
+    "ast_hash": "fe65bf82bb2193dc3e7d8a3ded585cf7",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783612050.4731753,
-    "ast_hash": "7942cedc1238e3d9e266b62c69398468",
+    "mtime": 1783503921.8742988,
+    "ast_hash": "d7cdcad8e70c7a8466d3f9cf2db629f0",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -25,33 +25,33 @@
     "semantic_hash": ""
   },
   "scripts/verify-ipc-contract.js": {
-    "mtime": 1783612009.035823,
-    "ast_hash": "6a717e34bb257ab5da38af6b5c1dd481",
+    "mtime": 1783181112.075477,
+    "ast_hash": "0d01f95e51efefeb3f78e937ce793c4c",
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783610009.3148608,
-    "ast_hash": "5d6b56544bd4f1d40e310fc449815737",
+    "mtime": 1783501241.6869996,
+    "ast_hash": "0c67f840e5870adac3d559273f1de466",
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783611778.4347074,
-    "ast_hash": "56768d1f9b7f1108a0885e25ca0ebb56",
+    "mtime": 1783506555.118598,
+    "ast_hash": "e49b28dd67eaeac8611c7413e3cb83f7",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783612474.870578,
-    "ast_hash": "4ce89a1b329d66bf9a6ded1838f3a0b3",
+    "mtime": 1783506555.1518056,
+    "ast_hash": "0d65bcb6b6c76ac48ecef06707aa01ca",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
-    "mtime": 1783526426.9976027,
-    "ast_hash": "a506f24882663aaaba94e8a8af022471",
+    "mtime": 1783243252.9771347,
+    "ast_hash": "0d64f05b7f2937b1401b87b9f09b942f",
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783611958.0407636,
-    "ast_hash": "bc0def6e574ed7c700c7ffe3f3b1399a",
+    "mtime": 1783506397.2307892,
+    "ast_hash": "b81a1b63214bcc6bb725a4d556dbdb52",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -175,18 +175,18 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783585605.9149365,
-    "ast_hash": "e7690a08da5eeb8acbecb767d06ed427",
+    "mtime": 1783252261.8726878,
+    "ast_hash": "caa760d915bcd8049fd38efe8868ac5c",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
-    "mtime": 1783511528.4890392,
-    "ast_hash": "0f38ed0b82bb1736757aadfd977114f2",
+    "mtime": 1783242243.80111,
+    "ast_hash": "732d53f81b7fcc4fa61297b4801cf160",
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783611724.643706,
-    "ast_hash": "c3b49ea34b9ea8749dc5b61d40fe8570",
+    "mtime": 1783506365.72011,
+    "ast_hash": "87fe44348c4bc17d4720f596cce8deb1",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -262,26 +262,6 @@
   "scripts/verify-eraser-geometry.js": {
     "mtime": 1783503911.206218,
     "ast_hash": "fa5452fcdf838d5dad39d24bf891c340",
-    "semantic_hash": ""
-  },
-  "scripts/verify-mindmap-math.js": {
-    "mtime": 1783612087.4928193,
-    "ast_hash": "2402abce8949e562624ca164a22fd096",
-    "semantic_hash": ""
-  },
-  ".agent-hub/tasks/20260708-164715-settings-panel-and-screenshot-save-flow-plan.md": {
-    "mtime": 1783511291.4890392,
-    "ast_hash": "f6a61a07feaa0e835b1feb789a5c2fdd",
-    "semantic_hash": ""
-  },
-  ".agent-hub/tasks/20260709-200947-mind-map-tool-audit-and-fix-plan.md": {
-    "mtime": 1783609843.014316,
-    "ast_hash": "b0cda7184a244618fb63cb6923167498",
-    "semantic_hash": ""
-  },
-  ".agent-hub/tasks/20260709-202436-mind-map-miro-parity-followup-plan.md": {
-    "mtime": 1783610742.744782,
-    "ast_hash": "20f51f6886db5eeb6302f39ee045ce48",
     "semantic_hash": ""
   }
 }

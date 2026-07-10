@@ -36,6 +36,11 @@ while ((match = sendRegex.exec(mainContent)) !== null) {
   sentChannels.add(match[1]);
 }
 
+const broadcastRegex = /broadcastToOverlays\(['"]([^'"]+)['"]/g;
+while ((match = broadcastRegex.exec(mainContent)) !== null) {
+  sentChannels.add(match[1]);
+}
+
 let hasError = false;
 console.log('--- Verifying IPC Contract ---');
 

@@ -24,8 +24,20 @@ const DEFAULT_STATE = {
       width: 18,
       opacity: 0.3,
     },
+    calligraphy: {
+      color: '#ef4444',
+      width: 4,
+      angle: Math.PI / 4,
+      opacity: 1,
+    },
     eraser: {
       radius: 18,
+    },
+    shapes: {
+      opacity: 0.3,
+    },
+    mindmap: {
+      opacity: 1,
     },
   },
   exportDefaults: {
@@ -34,6 +46,7 @@ const DEFAULT_STATE = {
     includeBackground: false,
     autoSavePath: '',
     copyToClipboard: true,
+    screenshotAction: 'ask',
   },
   spotlight: {
     radius: 150,
@@ -178,9 +191,21 @@ function loadState() {
           ...DEFAULT_STATE.brushDefaults.highlighter,
           ...((persisted.state.brushDefaults && persisted.state.brushDefaults.highlighter) || {}),
         },
+        calligraphy: {
+          ...DEFAULT_STATE.brushDefaults.calligraphy,
+          ...((persisted.state.brushDefaults && persisted.state.brushDefaults.calligraphy) || {}),
+        },
         eraser: {
           ...DEFAULT_STATE.brushDefaults.eraser,
           ...((persisted.state.brushDefaults && persisted.state.brushDefaults.eraser) || {}),
+        },
+        shapes: {
+          ...DEFAULT_STATE.brushDefaults.shapes,
+          ...((persisted.state.brushDefaults && persisted.state.brushDefaults.shapes) || {}),
+        },
+        mindmap: {
+          ...DEFAULT_STATE.brushDefaults.mindmap,
+          ...((persisted.state.brushDefaults && persisted.state.brushDefaults.mindmap) || {}),
         },
       },
       hotkeys: {
@@ -239,6 +264,12 @@ function loadState() {
       eraser: {
         ...state.brushDefaults.eraser,
         radius: state.eraseRadius || state.brushDefaults.eraser.radius,
+      },
+      shapes: {
+        ...state.brushDefaults.shapes,
+      },
+      mindmap: {
+        ...state.brushDefaults.mindmap,
       },
     };
     delete state.color;
@@ -590,8 +621,8 @@ function createSettingsWindow() {
   }
 
   const primary = screen.getPrimaryDisplay();
-  const settingsWidth = 920;
-  const settingsHeight = 780;
+  const settingsWidth = 860;
+  const settingsHeight = 600;
   const x = Math.round(primary.bounds.x + primary.bounds.width / 2 - settingsWidth / 2);
   const y = Math.round(primary.bounds.y + primary.bounds.height / 2 - settingsHeight / 2);
 
@@ -822,6 +853,9 @@ function setSpotlight(radius, alpha) {
 
 function setTool(tool) {
   state.activeTool = tool;
+  if (['pen', 'highlighter', 'calligraphy'].includes(tool)) {
+    state.lastInkingTool = tool;
+  }
   if (!state.overlayVisible) {
     state.overlayVisible = true;
     showOverlayWindows();
@@ -876,6 +910,8 @@ function setTextMode(mode) {
 function setColor(color) {
   if (state.activeTool === 'highlighter') {
     state.brushDefaults.highlighter.color = color;
+  } else if (state.activeTool === 'calligraphy') {
+    state.brushDefaults.calligraphy.color = color;
   } else {
     state.brushDefaults.pen.color = color;
   }
@@ -888,6 +924,8 @@ function setWidth(width) {
     state.brushDefaults.highlighter.width = nextWidth;
   } else if (state.activeTool === 'eraser') {
     state.brushDefaults.eraser.radius = nextWidth;
+  } else if (state.activeTool === 'calligraphy') {
+    state.brushDefaults.calligraphy.width = nextWidth;
   } else {
     state.brushDefaults.pen.width = nextWidth;
   }
@@ -1192,15 +1230,72 @@ async function exportPdf() {
   if (canceled || !filePath) return { ok: false };
 
   try {
-    const pdfData = await win.webContents.printToPDF({
+    console.log('[Main] Generating PDF images in renderer...');
+    const dataUrls = [];
+    console.log('[Main] Getting page count...');
+    const pageCount = await win.webContents.executeJavaScript(`window.getPdfPageCount()`);
+    console.log(`[Main] Generating images for ${pageCount} pages...`);
+    
+    for (let i = 0; i < pageCount; i++) {
+      console.log(`[Main] Rendering page ${i + 1}/${pageCount}...`);
+      const dataUrl = await win.webContents.executeJavaScript(`window.generatePdfImageForPage(${i})`);
+      if (dataUrl) dataUrls.push(dataUrl);
+    }
+
+    const hiddenWin = new BrowserWindow({
+      show: false,
+      webPreferences: { nodeIntegration: false, contextIsolation: true }
+    });
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          @page { margin: 0; size: A4 landscape; }
+          body { margin: 0; background: #fff; display: block; }
+          img { width: 100vw; height: 100vh; object-fit: contain; page-break-after: always; display: block; }
+        </style>
+      </head>
+      <body>
+        ${dataUrls.map(url => `<img src="${url}">`).join('\n')}
+      </body>
+      </html>
+    `;
+
+    const os = require('os');
+    const tmpHtml = path.join(os.tmpdir(), `repen_export_${Date.now()}.html`);
+    console.log('[Main] Writing temp HTML file:', tmpHtml);
+    fs.writeFileSync(tmpHtml, html);
+
+    console.log('[Main] Loading temp HTML in hidden window...');
+    await hiddenWin.loadURL(`file:///${tmpHtml.replace(/\\/g, '/')}`);
+    
+    // Wait for images to load just in case
+    await hiddenWin.webContents.executeJavaScript(`
+      new Promise(resolve => {
+        if (document.readyState === 'complete') resolve();
+        else window.addEventListener('load', resolve);
+      })
+    `);
+
+    console.log('[Main] Printing to PDF...');
+    const pdfData = await hiddenWin.webContents.printToPDF({
       printBackground: true,
       pageSize: 'A4',
       landscape: true
     });
+    console.log('[Main] printToPDF complete. Size:', pdfData.length);
+
+    hiddenWin.close();
+    try { fs.unlinkSync(tmpHtml); } catch(e){}
+
     fs.writeFileSync(filePath, pdfData);
     return { ok: true, filePath };
   } catch (err) {
     console.error('Failed to export PDF:', err);
+    const { dialog } = require('electron');
+    dialog.showErrorBox('Export Failed', err.message || String(err));
     return { ok: false, error: err.message };
   }
 }
@@ -1415,6 +1510,18 @@ function normalizeStroke(stroke) {
   const autoMeta = extractAutoShapeMeta(stroke);
   const tool = stroke.tool || 'pen';
   const id = stroke.id || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  
+  if (tool === 'calligraphy') {
+    return {
+      id,
+      tool: 'calligraphy',
+      color: stroke.color || state.brushDefaults.calligraphy.color,
+      width: typeof stroke.width === 'number' ? stroke.width : state.brushDefaults.calligraphy.size,
+      points: Array.isArray(stroke.points) ? [...stroke.points] : [],
+      angle: typeof stroke.angle === 'number' ? stroke.angle : Math.PI / 4 // 45 degrees
+    };
+  }
+  
   if (tool === 'text') {
     return {
       id,
@@ -1443,12 +1550,28 @@ function normalizeStroke(stroke) {
     };
   }
 
+  if (tool === 'mindmap') {
+    return {
+      id,
+      tool: 'mindmap',
+      nodeType: stroke.nodeType || 'topic',
+      text: stroke.text || '',
+      parentId: stroke.parentId || null,
+      color: stroke.color || '#333',
+      x: typeof stroke.x === 'number' ? stroke.x : 0,
+      y: typeof stroke.y === 'number' ? stroke.y : 0,
+      width: typeof stroke.width === 'number' ? stroke.width : 120,
+      height: typeof stroke.height === 'number' ? stroke.height : 40,
+    };
+  }
+
   if (tool === 'shapes' || stroke.shapeType) {
     return {
       ...autoMeta,
       id,
       tool: 'shapes',
       shapeType: stroke.shapeType || 'rectangle',
+      brushType: stroke.brushType || 'pen',
       color: stroke.color || state.brushDefaults.pen.color,
       width: typeof stroke.width === 'number' ? stroke.width : state.brushDefaults.pen.width,
       opacity: typeof stroke.opacity === 'number' ? stroke.opacity : state.brushDefaults.pen.opacity,
@@ -1628,9 +1751,21 @@ function normalizeBrushDefaults(nextBrushDefaults = {}) {
       ...DEFAULT_STATE.brushDefaults.highlighter,
       ...(incoming.highlighter || {}),
     },
+    calligraphy: {
+      ...DEFAULT_STATE.brushDefaults.calligraphy,
+      ...(incoming.calligraphy || {}),
+    },
     eraser: {
       ...DEFAULT_STATE.brushDefaults.eraser,
       ...(incoming.eraser || {}),
+    },
+    shapes: {
+      ...DEFAULT_STATE.brushDefaults.shapes,
+      ...(incoming.shapes || {}),
+    },
+    mindmap: {
+      ...DEFAULT_STATE.brushDefaults.mindmap,
+      ...(incoming.mindmap || {}),
     },
   };
 }
@@ -1757,6 +1892,11 @@ ipcMain.handle('bootstrap:get', (event) => {
 ipcMain.handle('app:set-tool', (_, tool) => {
   setTool(tool);
   return getAppState();
+});
+
+ipcMain.handle('app:trigger-mindmap-layout', () => {
+  broadcastToOverlays('scene:trigger-mindmap-layout');
+  return true;
 });
 
 ipcMain.handle('app:set-shape-type', (_, shapeType) => {
@@ -1979,16 +2119,21 @@ ipcMain.handle('app:render-export', async (_, payload) => {
     const base64Data = payload.dataUrl.replace(/^data:image\/[a-z]+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
 
-    if (payload.copyToClipboard || state.exportDefaults.copyToClipboard) {
+    const format = payload.format || state.exportDefaults.format || 'png';
+    const action = payload.screenshotAction || state.exportDefaults.screenshotAction || 'ask';
+    const shouldCopy = payload.copyToClipboard !== undefined ? payload.copyToClipboard : state.exportDefaults.copyToClipboard;
+    let savePath = payload.autoSavePath || state.exportDefaults.autoSavePath;
+
+    if (action === 'copy-only') {
       const image = nativeImage.createFromBuffer(buffer);
       if (!image.isEmpty()) {
         clipboard.writeImage(image);
       }
+      if (pendingExportResolve) { pendingExportResolve(true); pendingExportResolve = null; }
+      return true;
     }
 
-    const format = payload.format || state.exportDefaults.format || 'png';
-    let savePath = payload.autoSavePath || state.exportDefaults.autoSavePath;
-    if (!savePath) {
+    if (action === 'ask' || !savePath) {
       const { filePath, canceled } = await showModalDialog('save', {
         title: 'Save Screenshot / Export',
         defaultPath: path.join(app.getPath('pictures'), `RePen_${Date.now()}.${format}`),
@@ -2012,6 +2157,13 @@ ipcMain.handle('app:render-export', async (_, payload) => {
       }
     }
 
+    if (shouldCopy) {
+      const image = nativeImage.createFromBuffer(buffer);
+      if (!image.isEmpty()) {
+        clipboard.writeImage(image);
+      }
+    }
+
     fs.writeFileSync(savePath, buffer);
     if (pendingExportResolve) { pendingExportResolve(true); pendingExportResolve = null; }
     return true;
@@ -2022,7 +2174,7 @@ ipcMain.handle('app:render-export', async (_, payload) => {
   }
 });
 
-async function takeScreenshot() {
+async function takeScreenshot(rect) {
   const targetPoint = screen.getCursorScreenPoint();
   const targetDisplay = screen.getDisplayNearestPoint(targetPoint) || screen.getPrimaryDisplay();
   const { width, height } = targetDisplay.bounds;
@@ -2064,7 +2216,8 @@ async function takeScreenshot() {
       width: targetWidth,
       height: targetHeight,
       copyToClipboard: state.exportDefaults.copyToClipboard,
-      autoSavePath: state.exportDefaults.autoSavePath
+      autoSavePath: state.exportDefaults.autoSavePath,
+      rect
     });
     setTimeout(() => {
       if (pendingExportResolve === resolve) {
@@ -2075,7 +2228,15 @@ async function takeScreenshot() {
   });
 }
 
-ipcMain.handle('app:take-screenshot', () => takeScreenshot());
+ipcMain.handle('app:take-screenshot', (event, rect) => takeScreenshot(rect));
+ipcMain.handle('app:start-snip-mode', (event) => {
+  const targetPoint = screen.getCursorScreenPoint();
+  const targetDisplay = screen.getDisplayNearestPoint(targetPoint) || screen.getPrimaryDisplay();
+  const win = overlayWindows.get(targetDisplay.id) || overlayWindows.values().next().value;
+  if (win && !win.isDestroyed()) {
+    win.webContents.send('scene:start-snip-mode');
+  }
+});
 
 ipcMain.handle('app:select-directory', async () => {
   const { filePaths, canceled } = await showModalDialog('open', {
