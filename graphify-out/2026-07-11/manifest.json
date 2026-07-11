@@ -40,8 +40,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783747141.0582707,
-    "ast_hash": "482058951f85eb8963e2f41894c8b4ba",
+    "mtime": 1783762661.1802154,
+    "ast_hash": "320718cb80e49c7e283196f36f8ab329",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783760958.168492,
-    "ast_hash": "466c6dac0869fd6e0cddf785e55779ac",
+    "mtime": 1783762506.2874517,
+    "ast_hash": "fd8b96476e95676f1e7fe9e6da1171c4",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {

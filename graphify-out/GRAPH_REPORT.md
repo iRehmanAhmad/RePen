@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-11)
 
 ## Corpus Check
-- 55 files · ~42,851 words
+- 56 files · ~43,160 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 752 nodes · 999 edges · 70 communities (66 shown, 4 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
+- 762 nodes · 1008 edges · 71 communities (67 shown, 4 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `aa795d21`
+- Built from commit: `34eaeb70`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -85,6 +85,7 @@
 - [[_COMMUNITY_Prominent pencil icon and tool fixes|Prominent pencil icon and tool fixes]]
 - [[_COMMUNITY_patch-bg.js|patch-bg.js]]
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
+- [[_COMMUNITY_Cursorselect tool routing and broken tools audit|Cursor/select tool routing and broken tools audit]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 26 edges
@@ -104,7 +105,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (70 total, 4 thin omitted)
+## Communities (71 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -191,8 +192,8 @@ Cohesion: 0.17
 Nodes (11): declaredElementKeys, elementsObject, fs, htmlContent, htmlIds, jsContent, jsIds, path (+3 more)
 
 ### Community 21 - "verify-tool-state.js"
-Cohesion: 0.17
-Nodes (11): fs, htmlContent, htmlTools, knownToolsInMain, mainContent, mainPath, overlayContent, overlayPath (+3 more)
+Cohesion: 0.13
+Nodes (14): cursorButtonHandler, fs, htmlContent, htmlTools, knownToolsInMain, mainContent, mainPath, overlayContent (+6 more)
 
 ### Community 22 - "Task: Magnifier Background, Enhanced Auto-Shapes, and Highlighter Blending"
 Cohesion: 0.25
@@ -370,8 +371,12 @@ Nodes (8): Constraints, Current Phase, Goal, Handoff Notes, Owners, Plan, Promin
 Cohesion: 0.67
 Nodes (3): 19. Security Model, Network posture, Required security decisions
 
+### Community 70 - "Cursor/select tool routing and broken tools audit"
+Cohesion: 0.29
+Nodes (6): Current Phase, Cursor/select tool routing and broken tools audit, Goal, Handoff, Notes, Verification
+
 ## Knowledge Gaps
-- **442 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+437 more)
+- **450 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+445 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -385,7 +390,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _442 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _450 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.055482456140350876 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

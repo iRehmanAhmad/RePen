@@ -207,7 +207,7 @@ html, body {
 /* Tool & Action Buttons - Epic Pen scale compact cells */
 .tool-button, .action-icon-btn {
   width: var(--tool-cell);
-  height: var(--tool-cell);
+  height: 28px;
   border-radius: 6px;
   border: 1px solid transparent;
   background: transparent;
