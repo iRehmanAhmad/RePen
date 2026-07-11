@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783747023.4589958,
-    "ast_hash": "27cc003f2e900a449256704adfd19eb9",
+    "mtime": 1783756280.9417648,
+    "ast_hash": "b42fffa020c8d4fc19e69d3cd188e55a",
     "semantic_hash": ""
   },
   "package.json": {
@@ -30,13 +30,13 @@
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783747023.4606397,
-    "ast_hash": "95a1f36b136a3d0da12c8b3bbb3a6191",
+    "mtime": 1783756299.907472,
+    "ast_hash": "62e26f9ca6da64e2ddff438a89fb57e0",
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783746968.0678918,
-    "ast_hash": "9b3612c5b673f64131e4afee2b56a5a9",
+    "mtime": 1783750793.4556985,
+    "ast_hash": "71c24faabd5773149ab484208d1b7ac9",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
@@ -45,13 +45,13 @@
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
-    "mtime": 1783746968.0779824,
-    "ast_hash": "60956c2f21e16d59dbb60f989c6b6963",
+    "mtime": 1783749954.137897,
+    "ast_hash": "72d196af3f34c1a97ddf696266d3eda9",
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783748663.4212456,
-    "ast_hash": "64769a917c63823cdc6e646fb43b095e",
+    "mtime": 1783755353.9775424,
+    "ast_hash": "e500936cd45bf7eebcea0c8005ee0490",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -180,13 +180,13 @@
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
-    "mtime": 1783746968.0759711,
-    "ast_hash": "9fa161b4e920b1e80c35cd6f3f503d1f",
+    "mtime": 1783749850.0504625,
+    "ast_hash": "0789f7b79a1f89b00f1d1deaaa43a629",
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783746968.2175949,
-    "ast_hash": "1e8a14ed5427740a2c36425bbca5ddc9",
+    "mtime": 1783756252.7108953,
+    "ast_hash": "f920d2c3778973298abd27d154d704e4",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -262,6 +262,26 @@
   "scripts/verify-eraser-geometry.js": {
     "mtime": 1783503911.206218,
     "ast_hash": "fa5452fcdf838d5dad39d24bf891c340",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-105328-quiet-toolbar-redesign.md": {
+    "mtime": 1783749370.564296,
+    "ast_hash": "3fcc1c71288564dc5c249bbb4e83927a",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-110319-compact-settings-panel.md": {
+    "mtime": 1783750858.9867277,
+    "ast_hash": "a7dc673a08961bc8edc1824848d9241a",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-110922-toolbar-attached-settings.md": {
+    "mtime": 1783750866.3892677,
+    "ast_hash": "a5c911a10b648ee1049e204fcd5d58d3",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-123406-prominent-nib-icons.md": {
+    "mtime": 1783756328.991138,
+    "ast_hash": "e6522c59811fdf445e991c011ce2ca7f",
     "semantic_hash": ""
   }
 }

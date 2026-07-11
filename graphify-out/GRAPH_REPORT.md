@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-11)
 
 ## Corpus Check
-- 54 files · ~42,636 words
+- 55 files · ~42,720 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 748 nodes · 994 edges · 68 communities (65 shown, 3 thin omitted)
+- 751 nodes · 996 edges · 69 communities (65 shown, 4 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b202ce5f`
+- Built from commit: `262e7f50`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -83,6 +83,7 @@
 - [[_COMMUNITY_Compact settings panel|Compact settings panel]]
 - [[_COMMUNITY_Toolbar-attached settings|Toolbar-attached settings]]
 - [[_COMMUNITY_Prominent pencil icon and tool fixes|Prominent pencil icon and tool fixes]]
+- [[_COMMUNITY_patch-bg.js|patch-bg.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 26 edges
@@ -102,7 +103,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (68 total, 3 thin omitted)
+## Communities (69 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -365,9 +366,9 @@ Cohesion: 0.22
 Nodes (8): Constraints, Current Phase, Goal, Handoff Notes, Owners, Plan, Prominent pencil icon and tool fixes, Verification
 
 ## Knowledge Gaps
-- **441 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+436 more)
+- **442 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+437 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -379,7 +380,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
-  _441 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _442 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.055482456140350876 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

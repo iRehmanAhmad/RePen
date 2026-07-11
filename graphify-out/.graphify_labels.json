@@ -66,5 +66,6 @@
   "64": "verify-eraser-geometry.js",
   "65": "Compact settings panel",
   "66": "Toolbar-attached settings",
-  "67": "Prominent pencil icon and tool fixes"
+  "67": "Prominent pencil icon and tool fixes",
+  "68": "patch-bg.js"
 }

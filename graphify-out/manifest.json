@@ -283,5 +283,10 @@
     "mtime": 1783756328.991138,
     "ast_hash": "e6522c59811fdf445e991c011ce2ca7f",
     "semantic_hash": ""
+  },
+  "patch-bg.js": {
+    "mtime": 1783756809.3037438,
+    "ast_hash": "af6d994028e911625220a2767feb3c29",
+    "semantic_hash": ""
   }
 }
