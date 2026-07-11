@@ -1388,7 +1388,7 @@ html, body {
 
 .bottom-color-grid .swatch-grid {
   display: grid;
-  grid-template-columns: repeat(3, 14px);
+  grid-template-columns: repeat(2, 14px);
   gap: 2px;
 }
 
@@ -1400,7 +1400,7 @@ html, body {
 }
 
 .app-container.horizontal .bottom-color-grid .swatch-grid {
-  grid-template-columns: repeat(3, 14px);
+  grid-template-columns: repeat(2, 14px);
   gap: 2px;
 }
 
@@ -1438,7 +1438,7 @@ html, body {
 
 .color-popover-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, 14px);
+  grid-template-columns: repeat(2, 14px);
   gap: 3px;
   padding: 4px;
 }
