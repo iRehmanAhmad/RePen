@@ -1210,7 +1210,6 @@ html, body {
 .pen-bar:not(.horizontal) .tool-button,
 .pen-bar:not(.horizontal) .action-icon-btn {
   width: 44px !important;
-  height: 44px !important;
   margin: 0 !important;
   border-radius: 0 !important;
 }
@@ -1223,7 +1222,6 @@ html, body {
 .pen-bar.horizontal .action-icon-btn {
   height: calc(100% + 8px);
   margin: -4px 0;
-  width: 44px;
   border-radius: 0 !important;
 }
 
