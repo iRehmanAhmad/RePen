@@ -187,6 +187,17 @@
       "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260711-155112-adjust-bottom-color-grid-to-3x2-with-flyout.md",
       "createdAt": "2026-07-11T15:51:12.138Z",
       "updatedAt": "2026-07-11T15:51:16.418Z"
+    },
+    {
+      "id": "20260711-161015-simplify-settings-layout-and-remove-customize-he",
+      "title": "Simplify settings layout and remove customize/help tabs",
+      "phase": "done",
+      "owner": "antigravity",
+      "implementer": "antigravity",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260711-161015-simplify-settings-layout-and-remove-customize-he.md",
+      "createdAt": "2026-07-11T16:10:15.674Z",
+      "updatedAt": "2026-07-11T16:10:22.925Z"
     }
   ]
 }

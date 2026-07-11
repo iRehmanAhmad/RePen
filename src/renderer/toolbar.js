@@ -128,8 +128,7 @@ const elements = {
   toolbarSettingsSave: document.getElementById('toolbarSettingsSave'),
   toolbarSettingsReset: document.getElementById('toolbarSettingsReset'),
   appVersionText: document.getElementById('appVersionText'),
-  settingsStorageClipboard: document.getElementById('settingsStorageClipboard'),
-  settingsStorageFolder: document.getElementById('settingsStorageFolder'),
+
   settingsSaveLocationText: document.getElementById('settingsSaveLocationText'),
   settingsBrowseFolder: document.getElementById('settingsBrowseFolder'),
   prefRememberContent: document.getElementById('prefRememberContent'),
@@ -614,9 +613,8 @@ function updateToolbarSettingsValueLabels() {
 
 function updateGeneralSettingsControls() {
   if (!toolbarSettingsDraft) return;
-  const folderMode = !toolbarSettingsDraft.exportDefaults.copyToClipboard;
-  elements.settingsStorageClipboard?.classList.toggle('active', !folderMode);
-  elements.settingsStorageFolder?.classList.toggle('active', folderMode);
+  const copyToClipboard = elements.tsExportCopyToClipboard ? elements.tsExportCopyToClipboard.checked : toolbarSettingsDraft.exportDefaults.copyToClipboard;
+  const folderMode = !copyToClipboard;
   if (elements.settingsSaveLocationText) {
     elements.settingsSaveLocationText.textContent = toolbarSettingsDraft.exportDefaults.autoSavePath || 'Choose folder when saving';
   }
@@ -935,21 +933,10 @@ document.querySelectorAll('[data-external-link]').forEach((button) => {
   });
 });
 
-if (elements.settingsStorageClipboard) {
-  elements.settingsStorageClipboard.addEventListener('click', () => {
+if (elements.tsExportCopyToClipboard) {
+  elements.tsExportCopyToClipboard.addEventListener('change', () => {
     if (!toolbarSettingsDraft) return;
-    toolbarSettingsDraft.exportDefaults.copyToClipboard = true;
-    if (elements.tsExportCopyToClipboard) elements.tsExportCopyToClipboard.checked = true;
-    updateGeneralSettingsControls();
-    setToolbarSettingsDirty(true);
-  });
-}
-
-if (elements.settingsStorageFolder) {
-  elements.settingsStorageFolder.addEventListener('click', () => {
-    if (!toolbarSettingsDraft) return;
-    toolbarSettingsDraft.exportDefaults.copyToClipboard = false;
-    if (elements.tsExportCopyToClipboard) elements.tsExportCopyToClipboard.checked = false;
+    toolbarSettingsDraft.exportDefaults.copyToClipboard = elements.tsExportCopyToClipboard.checked;
     updateGeneralSettingsControls();
     setToolbarSettingsDirty(true);
   });

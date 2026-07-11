@@ -240,26 +240,18 @@
 
         <nav class="toolbar-settings-tabs" aria-label="Settings tabs">
           <button class="toolbar-settings-tab active" type="button" data-settings-tab="general">General</button>
-          <button class="toolbar-settings-tab" type="button" data-settings-tab="customize">Customize</button>
           <button class="toolbar-settings-tab" type="button" data-settings-tab="hotkeys">Shortcuts</button>
           <button class="toolbar-settings-tab" type="button" data-settings-tab="about">About</button>
-          <button class="toolbar-settings-tab" type="button" data-settings-tab="help">Help</button>
         </nav>
 
         <section class="toolbar-settings-body">
           <div class="toolbar-settings-page active" data-settings-page="general">
             <article class="settings-mini-group">
               <h3>Screenshot Storage</h3>
-              <div class="settings-segmented" role="group" aria-label="Screenshot storage">
-                <button class="settings-segment active" id="settingsStorageClipboard" type="button" data-storage-mode="clipboard">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><rect x="4" y="4" width="11" height="11" rx="2"/></svg>
-                  Clipboard
-                </button>
-                <button class="settings-segment" id="settingsStorageFolder" type="button" data-storage-mode="folder">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h6l2 2h10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                  Folder
-                </button>
-              </div>
+              <label class="settings-check-row">
+                <input id="tsExportCopyToClipboard" type="checkbox" />
+                <span>Copy screenshot to clipboard</span>
+              </label>
               <div class="settings-location-row">
                 <span id="settingsSaveLocationText">Choose folder when saving</span>
                 <button class="settings-inline-button" id="settingsBrowseFolder" type="button">Browse</button>
@@ -444,7 +436,6 @@
         </footer>
 
         <div class="toolbar-settings-legacy" aria-hidden="true">
-          <input id="tsExportCopyToClipboard" type="checkbox" tabindex="-1" />
         </div>
       </aside>
     </div>
