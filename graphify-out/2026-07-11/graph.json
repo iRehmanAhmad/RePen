@@ -3237,7 +3237,7 @@
       "label": "closeAllPopovers()",
       "file_type": "code",
       "source_file": "src/renderer/toolbar.js",
-      "source_location": "L1082",
+      "source_location": "L1085",
       "_origin": "ast",
       "id": "src_renderer_toolbar_closeallpopovers",
       "community": 4,
@@ -3247,7 +3247,7 @@
       "label": "spotlightRadiusRange",
       "file_type": "code",
       "source_file": "src/renderer/toolbar.js",
-      "source_location": "L1190",
+      "source_location": "L1193",
       "_origin": "ast",
       "id": "src_renderer_toolbar_spotlightradiusrange",
       "community": 4,
@@ -3257,7 +3257,7 @@
       "label": "spotlightAlphaRange",
       "file_type": "code",
       "source_file": "src/renderer/toolbar.js",
-      "source_location": "L1191",
+      "source_location": "L1194",
       "_origin": "ast",
       "id": "src_renderer_toolbar_spotlightalpharange",
       "community": 4,
@@ -7250,7 +7250,7 @@
       "source_location": "L681",
       "_origin": "ast",
       "id": "docs_technical_architecture_19_security_model",
-      "community": 17,
+      "community": 69,
       "norm_label": "19. security model"
     },
     {
@@ -7260,7 +7260,7 @@
       "source_location": "L685",
       "_origin": "ast",
       "id": "docs_technical_architecture_required_security_decisions",
-      "community": 17,
+      "community": 69,
       "norm_label": "required security decisions"
     },
     {
@@ -7270,7 +7270,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "docs_technical_architecture_network_posture",
-      "community": 17,
+      "community": 69,
       "norm_label": "network posture"
     },
     {
@@ -13145,7 +13145,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/toolbar.js",
-      "source_location": "L1082",
+      "source_location": "L1085",
       "weight": 1.0,
       "source": "src_renderer_toolbar",
       "target": "src_renderer_toolbar_closeallpopovers",
@@ -13388,7 +13388,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/toolbar.js",
-      "source_location": "L1191",
+      "source_location": "L1194",
       "weight": 1.0,
       "source": "src_renderer_toolbar",
       "target": "src_renderer_toolbar_spotlightalpharange",
@@ -13398,7 +13398,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/toolbar.js",
-      "source_location": "L1190",
+      "source_location": "L1193",
       "weight": 1.0,
       "source": "src_renderer_toolbar",
       "target": "src_renderer_toolbar_spotlightradiusrange",
@@ -17779,5 +17779,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "262e7f500258b794f17432c9fa6b52dedb3bc897"
+  "built_at_commit": "bc469989a7d376be0e8111c3d24670afe1cf764f"
 }

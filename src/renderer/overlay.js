@@ -23,12 +23,23 @@ let lastMagnifierUrl = null;
 let lastAutoAdvanceTime = 0;
 let pageToastTimer = null;
 
+function getBaseCursor() {
+  if (!appState || appState.passThrough) return 'default';
+  if (appState.activeTool === 'select') return 'default';
+  if (appState.activeTool === 'text') return 'text';
+  if (appState.activeTool === 'eraser') {
+    const eraserSvg = encodeURIComponent('<svg width="32" height="32" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M38.032 127.602l76.405-78.588c3.074-3.162 9.157-5.737 13.573-5.737h88.392a7.958 7.958 0 0 1 7.966 7.996l-.243 63.237c-.017 4.412-2.563 10.53-5.686 13.655l-74.118 74.176c-3.121 3.124-9.239 5.659-13.66 5.659H40.46c-4.425 0-8.005-3.577-8.005-7.99v-58.682c0-4.414 2.497-10.558 5.577-13.726zM120.002 144h-63.98c-4.405 0-7.997 3.578-7.997 7.993v32.09a7.992 7.992 0 0 0 7.998 7.993h63.98c4.405 0 7.997-3.578 7.997-7.993v-32.09a7.992 7.992 0 0 0-7.998-7.993zm29.638-6.036c-3.115 3.14-5.64 9.268-5.64 13.685v21.72c0 4.418 2.476 5.42 5.542 2.227l53.585-55.823c3.06-3.188 5.542-9.36 5.542-13.771V80.459c0-1.105-.63-1.365-1.41-.578l-57.62 58.083zm-18.046-78.59c-1.66.03-3.966 1-5.143 2.16l-61.065 60.197c-3.146 3.102-2.114 5.616 2.306 5.616h60.119c4.42 0 10.559-2.506 13.71-5.596l63.519-62.277c.788-.773.525-1.384-.577-1.365l-72.869 1.266z" fill="white" stroke="black" stroke-width="8" fill-rule="evenodd"/></svg>');
+    return `url('data:image/svg+xml;utf8,${eraserSvg}') 0 32, crosshair`;
+  }
+  return 'crosshair';
+}
+
 function clearSelection() {
   selectedIds = [];
   marqueeBox = null;
   isDraggingSelection = false;
   isResizingSelection = null;
-  canvas.style.cursor = appState && appState.activeTool === 'select' ? 'default' : 'crosshair';
+  canvas.style.cursor = getBaseCursor();
 }
 
 function resetInteractionState(reason) {
@@ -1729,7 +1740,7 @@ canvas.addEventListener('pointermove', (event) => {
           }
         }
       }
-      canvas.style.cursor = overText ? 'grab' : (appState && appState.activeTool === 'select' ? 'default' : 'text');
+      canvas.style.cursor = overText ? 'grab' : getBaseCursor();
     }
     return;
   }
@@ -1822,7 +1833,7 @@ canvas.addEventListener('pointerup', async (event) => {
   if (isDraggingText) {
     const dragObj = isDraggingText;
     isDraggingText = null;
-    canvas.style.cursor = 'grab';
+    canvas.style.cursor = getBaseCursor();
     if (dragObj.hasMoved) {
       if (window.appBridge.updateAnnotation) {
         await window.appBridge.updateAnnotation(dragObj.stroke);
@@ -1914,6 +1925,7 @@ window.addEventListener('keydown', async (event) => {
 async function bootstrapApp() {
   bootstrap = await window.appBridge.getBootstrap();
   appState = bootstrap.appState;
+  canvas.style.cursor = getBaseCursor();
   scene = bootstrap.scene;
   displayBounds = bootstrap.display?.bounds || displayBounds;
   resizeCanvas();
@@ -1926,6 +1938,7 @@ async function bootstrapApp() {
     const prevBackgroundMode = appState ? appState.backgroundMode : 'transparent';
     
     appState = nextState;
+    canvas.style.cursor = getBaseCursor();
     updateMagnifierImg();
     updateBoardNav();
     

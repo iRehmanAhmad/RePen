@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-11)
 
 ## Corpus Check
-- 55 files · ~42,755 words
+- 55 files · ~42,851 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 751 nodes · 996 edges · 70 communities (66 shown, 4 thin omitted)
+- 752 nodes · 999 edges · 70 communities (66 shown, 4 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bc469989`
+- Built from commit: `aa795d21`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -120,7 +120,7 @@ Nodes (31): allowedTypes, appendMessage(), commandBrief(), commandHelp(), comman
 
 ### Community 3 - "overlay.js"
 Cohesion: 0.11
-Nodes (34): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clearSelection(), clickRipples, createStrokeFromEvent(), createTextEditor() (+26 more)
+Nodes (35): bootstrapApp(), canDraw(), canvas, checkAutoAdvance(), clearSelection(), clickRipples, createStrokeFromEvent(), createTextEditor() (+27 more)
 
 ### Community 4 - "toolbar.js"
 Cohesion: 0.08
