@@ -1159,7 +1159,7 @@ html, body {
   height: 36px;
   border-radius: 6px !important;
   background: rgba(47, 145, 237, 0.12);
-  border-color: rgba(47, 145, 237, 0.25);
+  border-color: transparent;
   color: rgba(242, 243, 245, 0.9);
   box-shadow: none;
 }
