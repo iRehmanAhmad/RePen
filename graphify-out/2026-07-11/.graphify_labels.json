@@ -64,6 +64,7 @@
   "62": "Fix cursor clearing grouped tools",
   "63": "verify-dialog-routing.js",
   "64": "verify-eraser-geometry.js",
-  "65": "add-calligraphy.js",
-  "66": "add-calligraphy-2.js"
+  "65": "patch3.js",
+  "66": "patch-ui.js",
+  "67": "patch-js.js"
 }

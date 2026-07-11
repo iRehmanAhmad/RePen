@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-11)
 
 ## Corpus Check
-- 52 files · ~1,934,895 words
+- 53 files · ~40,173 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 694 nodes · 915 edges · 67 communities (62 shown, 5 thin omitted)
+- 697 nodes · 917 edges · 68 communities (62 shown, 6 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2a83add1`
+- Built from commit: `0600478f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -80,8 +80,9 @@
 - [[_COMMUNITY_Fix cursor clearing grouped tools|Fix cursor clearing grouped tools]]
 - [[_COMMUNITY_verify-dialog-routing.js|verify-dialog-routing.js]]
 - [[_COMMUNITY_verify-eraser-geometry.js|verify-eraser-geometry.js]]
-- [[_COMMUNITY_add-calligraphy.js|add-calligraphy.js]]
-- [[_COMMUNITY_add-calligraphy-2.js|add-calligraphy-2.js]]
+- [[_COMMUNITY_patch3.js|patch3.js]]
+- [[_COMMUNITY_patch-ui.js|patch-ui.js]]
+- [[_COMMUNITY_patch-js.js|patch-js.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 26 edges
@@ -101,7 +102,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (67 total, 5 thin omitted)
+## Communities (68 total, 6 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -352,9 +353,9 @@ Cohesion: 0.40
 Nodes (4): fs, mainContent, mainPath, path
 
 ## Knowledge Gaps
-- **410 isolated node(s):** `fs`, `fs`, `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` (+405 more)
+- **411 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+406 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -365,8 +366,8 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **What connects `fs`, `fs`, `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }` to the rest of the system?**
-  _410 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog }`, `fs`, `path` to the rest of the system?**
+  _411 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.055043859649122805 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

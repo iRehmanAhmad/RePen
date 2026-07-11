@@ -50,7 +50,7 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783746968.2191074,
+    "mtime": 1783747972.0545874,
     "ast_hash": "b0d3dcb753094ae2e5cdf2c08e6227ec",
     "semantic_hash": ""
   },
@@ -264,24 +264,19 @@
     "ast_hash": "fa5452fcdf838d5dad39d24bf891c340",
     "semantic_hash": ""
   },
-  "add-calligraphy-2.js": {
-    "mtime": 1783747061.8627641,
-    "ast_hash": "2a992ee736974428c517f947394a4305",
+  "patch-js.js": {
+    "mtime": 1783747900.4475124,
+    "ast_hash": "5ad1839a4208f6c03477c9580d9f2b25",
     "semantic_hash": ""
   },
-  "add-calligraphy.js": {
-    "mtime": 1783747016.3012633,
-    "ast_hash": "6810b2aa50af3c20910cb37a41d9632e",
+  "patch-ui.js": {
+    "mtime": 1783747830.6453843,
+    "ast_hash": "e6a7b363c02ba118e206601e10234a0a",
     "semantic_hash": ""
   },
-  "all_diffs.txt": {
-    "mtime": 1783746933.233904,
-    "ast_hash": "5aa888a84d3e08b55ae5d38f3013760c",
-    "semantic_hash": ""
-  },
-  "temp_diff.txt": {
-    "mtime": 1783746839.1405618,
-    "ast_hash": "e0bdbb22b49bd0ee2f617166cdf64b53",
+  "patch3.js": {
+    "mtime": 1783747965.1791868,
+    "ast_hash": "a5624eac2ee650e84f96f14fa091ab54",
     "semantic_hash": ""
   }
 }

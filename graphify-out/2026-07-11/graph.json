@@ -4,86 +4,6 @@
   "graph": {},
   "nodes": [
     {
-      "label": "add-calligraphy-2.js",
-      "file_type": "code",
-      "source_file": "add-calligraphy-2.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "add_calligraphy_2",
-      "community": 66,
-      "norm_label": "add-calligraphy-2.js"
-    },
-    {
-      "label": "fs",
-      "file_type": "code",
-      "source_file": "add-calligraphy-2.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "add_calligraphy_2_fs",
-      "community": 66,
-      "norm_label": "fs"
-    },
-    {
-      "label": "patchOverlayJs2()",
-      "file_type": "code",
-      "source_file": "add-calligraphy-2.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "add_calligraphy_2_patchoverlayjs2",
-      "community": 66,
-      "norm_label": "patchoverlayjs2()"
-    },
-    {
-      "label": "add-calligraphy.js",
-      "file_type": "code",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "add_calligraphy",
-      "community": 65,
-      "norm_label": "add-calligraphy.js"
-    },
-    {
-      "label": "fs",
-      "file_type": "code",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "add_calligraphy_fs",
-      "community": 65,
-      "norm_label": "fs"
-    },
-    {
-      "label": "patchMainJs()",
-      "file_type": "code",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "add_calligraphy_patchmainjs",
-      "community": 65,
-      "norm_label": "patchmainjs()"
-    },
-    {
-      "label": "patchOverlayJs()",
-      "file_type": "code",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L91",
-      "_origin": "ast",
-      "id": "add_calligraphy_patchoverlayjs",
-      "community": 65,
-      "norm_label": "patchoverlayjs()"
-    },
-    {
-      "label": "patchVerifyToolState()",
-      "file_type": "code",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L135",
-      "_origin": "ast",
-      "id": "add_calligraphy_patchverifytoolstate",
-      "community": 65,
-      "norm_label": "patchverifytoolstate()"
-    },
-    {
       "label": "main.js",
       "file_type": "code",
       "source_file": "main.js",
@@ -1222,6 +1142,116 @@
       "id": "package_devdependencies_electron",
       "community": 5,
       "norm_label": "electron"
+    },
+    {
+      "label": "patch-js.js",
+      "file_type": "code",
+      "source_file": "patch-js.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch_js",
+      "community": 67,
+      "norm_label": "patch-js.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "patch-js.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch_js_fs",
+      "community": 67,
+      "norm_label": "fs"
+    },
+    {
+      "label": "fixJS()",
+      "file_type": "code",
+      "source_file": "patch-js.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "patch_js_fixjs",
+      "community": 67,
+      "norm_label": "fixjs()"
+    },
+    {
+      "label": "patch-ui.js",
+      "file_type": "code",
+      "source_file": "patch-ui.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch_ui",
+      "community": 66,
+      "norm_label": "patch-ui.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "patch-ui.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch_ui_fs",
+      "community": 66,
+      "norm_label": "fs"
+    },
+    {
+      "label": "patchCSS()",
+      "file_type": "code",
+      "source_file": "patch-ui.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "patch_ui_patchcss",
+      "community": 66,
+      "norm_label": "patchcss()"
+    },
+    {
+      "label": "patchJS()",
+      "file_type": "code",
+      "source_file": "patch-ui.js",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "patch_ui_patchjs",
+      "community": 66,
+      "norm_label": "patchjs()"
+    },
+    {
+      "label": "patch3.js",
+      "file_type": "code",
+      "source_file": "patch3.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch3",
+      "community": 65,
+      "norm_label": "patch3.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "patch3.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch3_fs",
+      "community": 65,
+      "norm_label": "fs"
+    },
+    {
+      "label": "patchCSS()",
+      "file_type": "code",
+      "source_file": "patch3.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "patch3_patchcss",
+      "community": 65,
+      "norm_label": "patchcss()"
+    },
+    {
+      "label": "patchJS()",
+      "file_type": "code",
+      "source_file": "patch3.js",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "patch3_patchjs",
+      "community": 65,
+      "norm_label": "patchjs()"
     },
     {
       "label": "agent-hub.js",
@@ -6948,66 +6978,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "add-calligraphy-2.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "add_calligraphy_2",
-      "target": "add_calligraphy_2_fs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "add-calligraphy-2.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "add_calligraphy_2",
-      "target": "add_calligraphy_2_patchoverlayjs2",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "add_calligraphy",
-      "target": "add_calligraphy_fs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "add_calligraphy",
-      "target": "add_calligraphy_patchmainjs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L91",
-      "weight": 1.0,
-      "source": "add_calligraphy",
-      "target": "add_calligraphy_patchoverlayjs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "add-calligraphy.js",
-      "source_location": "L135",
-      "weight": 1.0,
-      "source": "add_calligraphy",
-      "target": "add_calligraphy_patchverifytoolstate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "main.js",
       "source_location": "L1501",
       "weight": 1.0,
@@ -9839,6 +9809,86 @@
       "weight": 1.0,
       "source": "package_devdependencies",
       "target": "package_devdependencies_electron",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch-js.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "patch_js",
+      "target": "patch_js_fixjs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch-js.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "patch_js",
+      "target": "patch_js_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch-ui.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "patch_ui",
+      "target": "patch_ui_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch-ui.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "patch_ui",
+      "target": "patch_ui_patchcss",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch-ui.js",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "patch_ui",
+      "target": "patch_ui_patchjs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch3.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "patch3",
+      "target": "patch3_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch3.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "patch3",
+      "target": "patch3_patchcss",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch3.js",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "patch3",
+      "target": "patch3_patchjs",
       "confidence_score": 1.0
     },
     {
@@ -16369,5 +16419,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2a83add1226d0ed3e3ac2d969aaaf1a105f3867d"
+  "built_at_commit": "0600478f57dc9fb0f5f6343ee130cd150d26d599"
 }
