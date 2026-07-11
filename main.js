@@ -24,6 +24,11 @@ const DEFAULT_STATE = {
       width: 18,
       opacity: 0.3,
     },
+    calligraphy: {
+      color: '#ff5a5f',
+      width: 4,
+      opacity: 1,
+    },
     eraser: {
       radius: 18,
     },
@@ -406,20 +411,20 @@ function createTrayIcon() {
   const svg = Buffer.from(`
     <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
       <rect width="512" height="512" rx="104" fill="#101114"/>
-      <polygon fill="#424242" points="255.999,109.533 235.1,193.394 296.848,172.495"/>
-      <polygon fill="#707070" points="215.15,172.495 255.999,193.394 255.999,109.533"/>
-      <path fill="#FFBA00" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>
-      <path fill="#FDE09C" d="M215.15,172.495l-48.03,74.03c0.001,0.001,28.481,42.863,88.879,42.863V172.495H215.15z"/>
-      <path fill="#424242" d="M285.625,266.588c-8.852,1.176-18.71,1.9-29.626,1.9L235.1,389.293l20.899,122.706h29.626l20.899-122.706L285.625,266.588z"/>
-      <path fill="#FF8E00" d="M344.877,246.524c-0.001,0.001-19.132,14.735-59.253,20.063v245.412h59.253V246.524z"/>
-      <path fill="#707070" d="M226.373,266.588l-20.899,122.706L226.373,512h29.626V268.488c-10.917,0-20.775-0.724-29.626-1.9z"/>
-      <path fill="#FFBA00" d="M167.12,246.524v265.475h59.253V266.588c-40.121-5.329-59.252-20.063-59.253-20.064z"/>
-      <polygon fill="#003DA8" points="271.673,0 255.999,0 245.55,29.546 255.999,59.091 271.673,59.091"/>
-      <rect x="310.673" y="29.136" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 515.6158 330.9375)" fill="#003DA8" width="31.348" height="59.091"/>
-      <rect x="126.96" y="113.366" fill="#2F91ED" width="59.092" height="31.348"/>
-      <rect x="325.949" y="113.366" fill="#003DA8" width="59.092" height="31.348"/>
-      <rect x="156.105" y="43.008" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 275.4308 231.4505)" fill="#2F91ED" width="59.091" height="31.348"/>
-      <rect x="240.326" fill="#2F91ED" width="15.674" height="59.092"/>
+      <polygon fill="#111827" points="255.999,109.533 235.1,193.394 296.848,172.495"/>
+      <polygon fill="#64748B" points="215.15,172.495 255.999,193.394 255.999,109.533"/>
+      <path fill="#22D3EE" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>
+      <path fill="#F8FAFC" d="M215.15,172.495l-48.03,74.03c0.001,0.001,28.481,42.863,88.879,42.863V172.495H215.15z"/>
+      <path fill="#111827" d="M285.625,266.588c-8.852,1.176-18.71,1.9-29.626,1.9L235.1,389.293l20.899,122.706h29.626l20.899-122.706L285.625,266.588z"/>
+      <path fill="#0EA5E9" d="M344.877,246.524c-0.001,0.001-19.132,14.735-59.253,20.063v245.412h59.253V246.524z"/>
+      <path fill="#64748B" d="M226.373,266.588l-20.899,122.706L226.373,512h29.626V268.488c-10.917,0-20.775-0.724-29.626-1.9z"/>
+      <path fill="#F8FAFC" d="M167.12,246.524v265.475h59.253V266.588c-40.121-5.329-59.252-20.063-59.253-20.064z"/>
+      <polygon fill="#FDE68A" points="271.673,0 255.999,0 245.55,29.546 255.999,59.091 271.673,59.091"/>
+      <rect x="310.673" y="29.136" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 515.6158 330.9375)" fill="#67E8F9" width="31.348" height="59.091"/>
+      <rect x="126.96" y="113.366" fill="#FDE68A" width="59.092" height="31.348"/>
+      <rect x="325.949" y="113.366" fill="#67E8F9" width="59.092" height="31.348"/>
+      <rect x="156.105" y="43.008" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 275.4308 231.4505)" fill="#FDE68A" width="59.091" height="31.348"/>
+      <rect x="240.326" fill="#67E8F9" width="15.674" height="59.092"/>
     </svg>
   `);
   return nativeImage.createFromDataURL(`data:image/svg+xml;base64,${svg.toString('base64')}`);
@@ -716,9 +721,7 @@ function updateOverlayIgnoreMouse() {
       } else {
         win.setIgnoreMouseEvents(false);
       }
-      const isBoard = state.backgroundMode && state.backgroundMode !== 'transparent';
-      const focusable = (isBoard || state.activeTool === 'text' || state.activeTool === 'select') && !shouldIgnore;
-      win.setFocusable(focusable);
+      win.setFocusable(!shouldIgnore);
     }
   }
 }
@@ -729,7 +732,7 @@ function setPassThrough(enabled) {
     state.activeTool = 'cursor';
     state.magnifierBgUrls = null;
   } else if (state.activeTool === 'cursor') {
-    state.activeTool = 'pen';
+    state.activeTool = 'select';
   }
   updateOverlayIgnoreMouse();
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
@@ -836,7 +839,20 @@ function setSpotlight(radius, alpha) {
 }
 
 function setTool(tool) {
+  const previousTool = state.activeTool;
+  const previousBrush =
+    previousTool === 'highlighter'
+      ? state.brushDefaults.highlighter
+      : previousTool === 'calligraphy'
+      ? state.brushDefaults.calligraphy
+      : previousTool === 'eraser'
+      ? state.brushDefaults.pen
+      : state.brushDefaults.pen;
+
   state.activeTool = tool;
+  if (tool === 'calligraphy' && previousBrush && previousBrush.color) {
+    state.brushDefaults.calligraphy.color = previousBrush.color;
+  }
   if (!state.overlayVisible) {
     state.overlayVisible = true;
     showOverlayWindows();
@@ -2006,11 +2022,28 @@ let pendingExportResolve = null;
 ipcMain.handle('app:render-export', async (_, payload) => {
   if (!payload || !payload.dataUrl) {
     if (pendingExportResolve) { pendingExportResolve(false); pendingExportResolve = null; }
+    updateOverlayIgnoreMouse();
+    if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+      toolbarWindow.show();
+    }
     return false;
   }
   try {
     const base64Data = payload.dataUrl.replace(/^data:image\/[a-z]+;base64,/, '');
     const buffer = Buffer.from(base64Data, 'base64');
+
+    if (payload.copyOnly) {
+      const image = nativeImage.createFromBuffer(buffer);
+      if (!image.isEmpty()) {
+        clipboard.writeImage(image);
+      }
+      if (pendingExportResolve) { pendingExportResolve(true); pendingExportResolve = null; }
+      updateOverlayIgnoreMouse();
+      if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+        toolbarWindow.show();
+      }
+      return true;
+    }
 
     if (payload.copyToClipboard || state.exportDefaults.copyToClipboard) {
       const image = nativeImage.createFromBuffer(buffer);
@@ -2032,6 +2065,10 @@ ipcMain.handle('app:render-export', async (_, payload) => {
       });
       if (canceled || !filePath) {
         if (pendingExportResolve) { pendingExportResolve(false); pendingExportResolve = null; }
+        updateOverlayIgnoreMouse();
+        if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+          toolbarWindow.show();
+        }
         return false;
       }
       savePath = filePath;
@@ -2047,10 +2084,18 @@ ipcMain.handle('app:render-export', async (_, payload) => {
 
     fs.writeFileSync(savePath, buffer);
     if (pendingExportResolve) { pendingExportResolve(true); pendingExportResolve = null; }
+    updateOverlayIgnoreMouse();
+    if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+      toolbarWindow.show();
+    }
     return true;
   } catch (err) {
     console.error('Failed to save exported screenshot:', err);
     if (pendingExportResolve) { pendingExportResolve(false); pendingExportResolve = null; }
+    updateOverlayIgnoreMouse();
+    if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+      toolbarWindow.show();
+    }
     return false;
   }
 });
@@ -2063,8 +2108,20 @@ async function takeScreenshot() {
   const targetWidth = Math.round(width * scale);
   const targetHeight = Math.round(height * scale);
 
+  // 1. Hide overlay windows and toolbar so desktopCapturer captures a clean desktop without overlay components
+  for (const w of overlayWindows.values()) {
+    if (!w.isDestroyed()) {
+      w.hide();
+    }
+  }
+  if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+    toolbarWindow.hide();
+  }
+  // Wait a small moment for OS window manager to hide windows
+  await new Promise((resolve) => setTimeout(resolve, 150));
+
   let bgDataUrl = null;
-  if (state.exportDefaults.includeBackground) {
+  try {
     const sources = await desktopCapturer.getSources({
       types: ['screen'],
       thumbnailSize: { width: targetWidth, height: targetHeight },
@@ -2080,11 +2137,28 @@ async function takeScreenshot() {
         bgDataUrl = matched.thumbnail.toDataURL();
       }
     }
+  } catch (err) {
+    console.error('desktopCapturer failed:', err);
+  }
+
+  // 2. Bring overlay windows back (keep main toolbar hidden during snipping)
+  showOverlayWindows();
+
+  // 3. Make overlay windows capture mouse events during selection
+  for (const w of overlayWindows.values()) {
+    if (!w.isDestroyed()) {
+      w.setIgnoreMouseEvents(false);
+      w.setFocusable(true);
+    }
   }
 
   const win = overlayWindows.get(targetDisplay.id) || overlayWindows.values().next().value;
   if (!win || win.isDestroyed()) {
     console.error('Screenshot capture failed: no overlay window available');
+    updateOverlayIgnoreMouse();
+    if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+      toolbarWindow.show();
+    }
     return false;
   }
 
@@ -2097,14 +2171,19 @@ async function takeScreenshot() {
       width: targetWidth,
       height: targetHeight,
       copyToClipboard: state.exportDefaults.copyToClipboard,
-      autoSavePath: state.exportDefaults.autoSavePath
+      autoSavePath: state.exportDefaults.autoSavePath,
+      includeBackground: state.exportDefaults.includeBackground
     });
     setTimeout(() => {
       if (pendingExportResolve === resolve) {
         pendingExportResolve = null;
+        updateOverlayIgnoreMouse();
+        if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+          toolbarWindow.show();
+        }
         resolve(false);
       }
-    }, 10000);
+    }, 120000);
   });
 }
 

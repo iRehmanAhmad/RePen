@@ -65,6 +65,27 @@ if (!/resetInteractionState\('background mode changed'\)/.test(overlayContent)) 
   console.log('[PASS] overlay.js resets interaction state on backgroundMode changes');
 }
 
+if (!/let\s+cleanupScreenshotMode\s*=\s*null/.test(overlayContent) || !/function\s+cancelScreenshotMode\s*\(/.test(overlayContent)) {
+  console.error('[FAIL] overlay.js must expose a reusable screenshot-mode cleanup path');
+  hasError = true;
+} else {
+  console.log('[PASS] overlay.js has reusable screenshot-mode cleanup');
+}
+
+if (!/prevTool\s*!==\s*appState\.activeTool\s*\|\|\s*prevPassThrough\s*!==\s*appState\.passThrough[\s\S]*cancelScreenshotMode\(true\)/.test(overlayContent)) {
+  console.error('[FAIL] overlay.js must cancel screenshot mode when tool/pass-through state changes');
+  hasError = true;
+} else {
+  console.log('[PASS] overlay.js cancels screenshot mode on tool/pass-through changes');
+}
+
+if (!/function\s+hexToRgba\s*\([^)]*\)\s*\{[\s\S]*typeof\s+hex\s*===\s*['"]string['"][\s\S]*['"]#ff5a5f['"]/.test(overlayContent)) {
+  console.error('[FAIL] hexToRgba() must tolerate missing stroke colors so one malformed annotation cannot break drawing');
+  hasError = true;
+} else {
+  console.log('[PASS] hexToRgba() tolerates missing stroke colors');
+}
+
 if (!/segmentToSegmentDistance/.test(mainContent)) {
   console.error('[FAIL] main.js must use segmentToSegmentDistance for accurate erasing');
   hasError = true;
@@ -93,6 +114,22 @@ if (!/function\s+setPassThrough\s*\([^)]*\)\s*\{[\s\S]*state\.magnifierBgUrls\s*
   console.log('[PASS] setPassThrough() clears magnifier background state');
 }
 
+if (!/brushDefaults:\s*\{[\s\S]*calligraphy:\s*\{[\s\S]*color:\s*['"]#ff5a5f['"]/.test(mainContent)) {
+  console.error('[FAIL] DEFAULT_STATE must include a non-red calligraphy brush default aligned with the regular pen color');
+  hasError = true;
+} else {
+  console.log('[PASS] DEFAULT_STATE includes calligraphy brush defaults aligned with pen color');
+}
+
+const setToolMatch = mainContent.match(/function\s+setTool\s*\([^)]*\)\s*\{([\s\S]*?)\n\}/);
+const setToolBody = setToolMatch ? setToolMatch[1] : '';
+if (!/tool\s*===\s*['"]calligraphy['"][\s\S]*state\.brushDefaults\.calligraphy\.color\s*=\s*previousBrush\.color/.test(setToolBody)) {
+  console.error('[FAIL] setTool() must carry the current ink color into calligraphy instead of reverting to red');
+  hasError = true;
+} else {
+  console.log('[PASS] setTool() carries current ink color into calligraphy');
+}
+
 if (!/function\s+captureMagnifierBackground\s*\([^)]*\)\s*\{[\s\S]*state\.activeTool\s*!==\s*['"]magnifier['"][\s\S]*state\.passThrough[\s\S]*state\.magnifierBgUrls\s*=\s*null/.test(mainContent)) {
   console.error('[FAIL] captureMagnifierBackground() must not publish stale magnifier state after cursor/pass-through is enabled');
   hasError = true;
@@ -107,6 +144,13 @@ if (/activeTool\s*===\s*['"](laser|spotlight|magnifier)['"]/.test(updateOverlayI
   hasError = true;
 } else {
   console.log('[PASS] pointer-driven presentation tools keep overlay mouse input enabled');
+}
+
+if (!/setFocusable\(!shouldIgnore\)/.test(updateOverlayIgnoreMouseBody)) {
+  console.error('[FAIL] overlay windows must remain focusable for every active non-pass-through tool so drawing input is captured after tool switches');
+  hasError = true;
+} else {
+  console.log('[PASS] overlay windows stay focusable for active drawing and editing tools');
 }
 
 for (const [fnName, field] of [

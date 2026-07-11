@@ -4,6 +4,7 @@ const TOOLBAR_SETTINGS_DEFAULTS = {
   brushDefaults: {
     pen: { color: '#ff5a5f', width: 4, opacity: 1 },
     highlighter: { color: '#ffe36d', width: 18, opacity: 0.3 },
+    calligraphy: { color: '#ff5a5f', width: 4, opacity: 1 },
     eraser: { radius: 18 },
   },
   exportDefaults: {
@@ -84,8 +85,9 @@ const appState = {
       opacity: 0.3,
     },
     calligraphy: {
-      color: '#ef4444',
-      width: 4
+      color: '#ff5a5f',
+      width: 4,
+      opacity: 1,
     },
     eraser: {
       radius: 18,
@@ -209,7 +211,7 @@ function updateToolButtons() {
     button.classList.toggle('active', !appState.passThrough && button.dataset.tool === appState.activeTool);
   }
   if (elements.togglePassThrough) {
-    elements.togglePassThrough.classList.toggle('active', appState.passThrough);
+    elements.togglePassThrough.classList.toggle('active', appState.passThrough || appState.activeTool === 'select');
   }
   if (elements.inkingGroupBtn) {
     const isInkingActive = !appState.passThrough && INKING_TOOLS.includes(appState.activeTool);
@@ -309,8 +311,8 @@ function updatePills() {
   }
   if (elements.togglePassThrough) {
     elements.togglePassThrough.title = appState.passThrough
-      ? 'Pass-through active (Click to switch to Draw mode)'
-      : 'Switch to Cursor / PC Mouse Mode (Ctrl+Shift+P)';
+      ? 'Cursor / Move Annotations (Ctrl+Shift+P)'
+      : 'Enable Desktop Click-through (Ctrl+Shift+P)';
   }
 
   if (elements.bgModeButton) {
@@ -484,6 +486,10 @@ function normalizeToolbarSettings(nextState = {}) {
       highlighter: {
         ...TOOLBAR_SETTINGS_DEFAULTS.brushDefaults.highlighter,
         ...(((nextState.brushDefaults || {}).highlighter) || {}),
+      },
+      calligraphy: {
+        ...TOOLBAR_SETTINGS_DEFAULTS.brushDefaults.calligraphy,
+        ...(((nextState.brushDefaults || {}).calligraphy) || {}),
       },
       eraser: {
         ...TOOLBAR_SETTINGS_DEFAULTS.brushDefaults.eraser,
@@ -777,7 +783,11 @@ if (elements.textModeButtons) {
 
 if (elements.togglePassThrough) {
   elements.togglePassThrough.addEventListener('click', async () => {
-    await window.appBridge.setPassThrough(!appState.passThrough);
+    if (appState.activeTool === 'select' && !appState.passThrough) {
+      await window.appBridge.setPassThrough(true);
+    } else {
+      await window.appBridge.setTool('select');
+    }
   });
 }
 

@@ -22,6 +22,13 @@ let magnifierImg = null;
 let lastMagnifierUrl = null;
 let lastAutoAdvanceTime = 0;
 let pageToastTimer = null;
+let cleanupScreenshotMode = null;
+
+function cancelScreenshotMode(notifyMain = true) {
+  if (typeof cleanupScreenshotMode === 'function') {
+    cleanupScreenshotMode(notifyMain);
+  }
+}
 
 function getBaseCursor() {
   if (!appState || appState.passThrough) return 'default';
@@ -302,7 +309,9 @@ function updateMagnifierImg() {
 }
 
 function hexToRgba(hex, alpha) {
-  const value = hex.replace('#', '');
+  const safeHex = typeof hex === 'string' && hex.trim() ? hex : '#ff5a5f';
+  const safeAlpha = typeof alpha === 'number' ? alpha : 1;
+  const value = safeHex.replace('#', '');
   const normalized = value.length === 3
     ? value.split('').map((char) => char + char).join('')
     : value.padEnd(6, '0').slice(0, 6);
@@ -311,7 +320,7 @@ function hexToRgba(hex, alpha) {
   const r = (numeric >> 16) & 255;
   const g = (numeric >> 8) & 255;
   const b = numeric & 255;
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  return `rgba(${r}, ${g}, ${b}, ${safeAlpha})`;
 }
 
 function scheduleRender() {
@@ -1962,6 +1971,10 @@ async function bootstrapApp() {
     if (currentStroke && currentStroke.tool !== appState.activeTool) {
       currentStroke = null;
     }
+
+    if (prevTool !== appState.activeTool || prevPassThrough !== appState.passThrough) {
+      cancelScreenshotMode(true);
+    }
     
     scheduleRender();
   });
@@ -1984,18 +1997,27 @@ async function bootstrapApp() {
 
   if (window.appBridge.onRequestExport) {
     window.appBridge.onRequestExport(async (payload) => {
-      const { bgDataUrl, format = 'png', quality = 0.9, width, height, copyToClipboard, autoSavePath } = payload;
+      cancelScreenshotMode(false);
+
+      const { bgDataUrl, format = 'png', quality = 0.9, width, height, autoSavePath, includeBackground } = payload;
       
-      const exportCanvas = document.createElement('canvas');
-      exportCanvas.width = width || window.innerWidth;
-      exportCanvas.height = height || window.innerHeight;
-      const exportCtx = exportCanvas.getContext('2d');
+      const screenshotOverlay = document.getElementById('screenshotOverlay');
+      const screenshotCanvas = document.getElementById('screenshotCanvas');
+      const screenshotSelection = document.getElementById('screenshotSelection');
+      const screenshotToolbar = document.getElementById('screenshotToolbar');
+      
+      const scaleFactor = window.devicePixelRatio || 1;
+      const sWidth = Math.round(window.innerWidth * scaleFactor);
+      const sHeight = Math.round(window.innerHeight * scaleFactor);
+      screenshotCanvas.width = sWidth;
+      screenshotCanvas.height = sHeight;
+      const sCtx = screenshotCanvas.getContext('2d');
       
       if (bgDataUrl) {
         await new Promise((resolve) => {
           const img = new Image();
           img.onload = () => {
-            exportCtx.drawImage(img, 0, 0, exportCanvas.width, exportCanvas.height);
+            sCtx.drawImage(img, 0, 0, sWidth, sHeight, 0, 0, sWidth, sHeight);
             resolve();
           };
           img.onerror = resolve;
@@ -2003,25 +2025,131 @@ async function bootstrapApp() {
         });
       } else if (appState && appState.backgroundMode && appState.backgroundMode !== 'transparent') {
         const bg = appState.boardColor || (appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff');
-        exportCtx.fillStyle = bg;
-        exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+        sCtx.fillStyle = bg;
+        sCtx.fillRect(0, 0, sWidth, sHeight);
       }
       
       if (canvas) {
-        exportCtx.drawImage(canvas, 0, 0, exportCanvas.width, exportCanvas.height);
+        sCtx.drawImage(canvas, 0, 0, sWidth, sHeight);
       }
       
-      let mimeType = 'image/png';
-      if (format === 'jpeg' || format === 'jpg') mimeType = 'image/jpeg';
-      else if (format === 'webp') mimeType = 'image/webp';
+      screenshotOverlay.style.display = 'block';
+      screenshotOverlay.classList.remove('selecting');
+      screenshotSelection.style.display = 'none';
+      screenshotToolbar.style.display = 'none';
       
-      const dataUrl = exportCanvas.toDataURL(mimeType, quality);
-      window.appBridge.renderExport({
-        dataUrl,
-        format,
-        copyToClipboard,
-        autoSavePath
-      });
+      let startX = 0, startY = 0, isDragging = false;
+      let rect = { x: 0, y: 0, w: 0, h: 0 };
+      
+      const onPointerDown = (e) => {
+        if (e.target.closest('.screenshot-toolbar')) return;
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        rect = { x: startX, y: startY, w: 0, h: 0 };
+        screenshotOverlay.classList.add('selecting');
+        screenshotSelection.style.display = 'block';
+        screenshotToolbar.style.display = 'none';
+        updateSelectionUI();
+      };
+      
+      const onPointerMove = (e) => {
+        if (!isDragging) return;
+        rect.x = Math.min(startX, e.clientX);
+        rect.y = Math.min(startY, e.clientY);
+        rect.w = Math.abs(e.clientX - startX);
+        rect.h = Math.abs(e.clientY - startY);
+        updateSelectionUI();
+      };
+      
+      const onPointerUp = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        if (rect.w > 10 && rect.h > 10) {
+          screenshotToolbar.style.display = 'flex';
+          let tbBottom = -40;
+          if (rect.y + rect.h + 40 > window.innerHeight) {
+            tbBottom = 5;
+          }
+          screenshotToolbar.style.bottom = tbBottom + 'px';
+        } else {
+          screenshotSelection.style.display = 'none';
+          screenshotOverlay.classList.remove('selecting');
+        }
+      };
+      
+      const updateSelectionUI = () => {
+        screenshotSelection.style.left = rect.x + 'px';
+        screenshotSelection.style.top = rect.y + 'px';
+        screenshotSelection.style.width = rect.w + 'px';
+        screenshotSelection.style.height = rect.h + 'px';
+      };
+      
+      const cleanupListeners = () => {
+        screenshotOverlay.removeEventListener('pointerdown', onPointerDown);
+        document.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerup', onPointerUp);
+      };
+      
+      const cleanup = (notifyMain = true) => {
+        screenshotOverlay.style.display = 'none';
+        screenshotOverlay.classList.remove('selecting');
+        screenshotSelection.style.display = 'none';
+        screenshotToolbar.style.display = 'none';
+        cleanupListeners();
+        if (cleanupScreenshotMode === cleanup) {
+          cleanupScreenshotMode = null;
+        }
+        if (notifyMain) {
+          window.appBridge.renderExport({ dataUrl: null });
+        }
+      };
+      cleanupScreenshotMode = cleanup;
+      
+      const exportCrop = (copy) => {
+        const sourceCanvas = includeBackground ? screenshotCanvas : canvas;
+        const scaleX = sourceCanvas.width / window.innerWidth;
+        const scaleY = sourceCanvas.height / window.innerHeight;
+        
+        const cropCanvas = document.createElement('canvas');
+        cropCanvas.width = Math.round(rect.w * scaleX);
+        cropCanvas.height = Math.round(rect.h * scaleY);
+        const cropCtx = cropCanvas.getContext('2d');
+        cropCtx.drawImage(
+          sourceCanvas,
+          rect.x * scaleX,
+          rect.y * scaleY,
+          rect.w * scaleX,
+          rect.h * scaleY,
+          0,
+          0,
+          cropCanvas.width,
+          cropCanvas.height
+        );
+        
+        let mimeType = 'image/png';
+        if (format === 'jpeg' || format === 'jpg') mimeType = 'image/jpeg';
+        else if (format === 'webp') mimeType = 'image/webp';
+        
+        const dataUrl = cropCanvas.toDataURL(mimeType, quality);
+        window.appBridge.renderExport({
+          dataUrl,
+          format,
+          copyOnly: copy,
+          copyToClipboard: copy,
+          autoSavePath: copy ? null : autoSavePath
+        });
+        
+        cleanup(false);
+      };
+      
+      screenshotOverlay.addEventListener('pointerdown', onPointerDown);
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+      
+      document.getElementById('screenshotSaveBtn').onclick = () => exportCrop(false);
+      document.getElementById('screenshotCopyBtn').onclick = () => exportCrop(true);
+      document.getElementById('screenshotCloseBtn').onclick = () => cleanup(true);
     });
   }
 

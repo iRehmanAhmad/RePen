@@ -54,5 +54,24 @@
     </div>
     <div id="pageToast" class="page-toast"></div>
     <script src="./overlay.js"></script>
-  </body>
+    <!-- Screenshot Snipping Overlay -->
+  <div id="screenshotOverlay" class="screenshot-mode" style="display: none;">
+    <canvas id="screenshotCanvas"></canvas>
+    <div class="screenshot-dim"></div>
+    <div id="screenshotSelection" class="screenshot-selection">
+      <div id="screenshotToolbar" class="screenshot-toolbar">
+        <button id="screenshotSaveBtn" class="screenshot-btn" title="Save Screenshot">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/></svg> Save
+        </button>
+        <button id="screenshotCopyBtn" class="screenshot-btn" title="Copy to Clipboard">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copy
+        </button>
+        <button id="screenshotCloseBtn" class="screenshot-btn" title="Close Screenshot Mode">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
 </html>
