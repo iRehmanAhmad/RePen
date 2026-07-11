@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783756280.9417648,
-    "ast_hash": "b42fffa020c8d4fc19e69d3cd188e55a",
+    "mtime": 1783763078.334013,
+    "ast_hash": "7b429d2d8837e5ed43501f78cc1cc834",
     "semantic_hash": ""
   },
   "package.json": {
@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783756299.907472,
-    "ast_hash": "62e26f9ca6da64e2ddff438a89fb57e0",
+    "mtime": 1783763091.3288567,
+    "ast_hash": "a969db400332a6dc643c6c3a62062e2a",
     "semantic_hash": ""
   },
   "src/preload.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783760285.0335736,
-    "ast_hash": "b888654b042febde2342b6da7d380a5c",
+    "mtime": 1783763073.8359625,
+    "ast_hash": "cdf47aa888696803fbfdb71baf5919a1",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783762506.2874517,
-    "ast_hash": "fd8b96476e95676f1e7fe9e6da1171c4",
+    "mtime": 1783763019.2646694,
+    "ast_hash": "36f5516869aadb93b3e6bc0960b7cf14",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -287,6 +287,11 @@
   "patch-bg.js": {
     "mtime": 1783756809.3037438,
     "ast_hash": "af6d994028e911625220a2767feb3c29",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-135900-cursor-select-tool-routing.md": {
+    "mtime": 1783763112.9486072,
+    "ast_hash": "ef911d8c07a4877a631c7db5b0a38857",
     "semantic_hash": ""
   }
 }

@@ -165,6 +165,17 @@
       "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260708-133034-toolbar-controls-functionality-audit-and-fix-plan.md",
       "createdAt": "2026-07-08T08:30:34.000Z",
       "updatedAt": "2026-07-08T08:30:34.000Z"
+    },
+    {
+      "id": "20260711-154002-fix-screenshot-double-taskbar-alignment-and-life",
+      "title": "Fix screenshot double taskbar alignment and lifecycle",
+      "phase": "done",
+      "owner": "antigravity",
+      "implementer": "antigravity",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260711-154002-fix-screenshot-double-taskbar-alignment-and-life.md",
+      "createdAt": "2026-07-11T15:40:02.396Z",
+      "updatedAt": "2026-07-11T15:40:26.828Z"
     }
   ]
 }

@@ -69,5 +69,13 @@
   "67": "Prominent pencil icon and tool fixes",
   "68": "patch-bg.js",
   "69": "19. Security Model",
-  "70": "Cursor/select tool routing and broken tools audit"
+  "70": "Cursor/select tool routing and broken tools audit",
+  "71": "Drawing tools blocked by screenshot overlay",
+  "72": "Infinite Board Pan, Zoom, and Wide PDF Export",
+  "73": "Toolbar About Panel",
+  "74": "Settings Panel Window Clipping",
+  "75": "Calligraphy color and brand icon polish",
+  "76": "Multipage whiteboard PDF export",
+  "77": "Bottom Color Grid",
+  "78": "Markury-Style Settings Extraction"
 }

@@ -1,12 +1,12 @@
 {
   ".agent-hub/state/tasks.json": {
-    "mtime": 1783499484.0518494,
-    "ast_hash": "14c4964a9237bf1b2fd593cce42667be",
+    "mtime": 1783784426.8288844,
+    "ast_hash": "5a549612097b752c6689f4404a5766a3",
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783763078.334013,
-    "ast_hash": "7b429d2d8837e5ed43501f78cc1cc834",
+    "mtime": 1783775103.4010298,
+    "ast_hash": "c07db343592a13b42910ad333ce00725",
     "semantic_hash": ""
   },
   "package.json": {
@@ -30,18 +30,18 @@
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783763091.3288567,
-    "ast_hash": "a969db400332a6dc643c6c3a62062e2a",
+    "mtime": 1783772687.866598,
+    "ast_hash": "b9099521805c34e1d78d4c93332b7d85",
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783750793.4556985,
-    "ast_hash": "71c24faabd5773149ab484208d1b7ac9",
+    "mtime": 1783775103.4010298,
+    "ast_hash": "c1030c67e018dfb6f20af3a3f782317e",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783762661.1802154,
-    "ast_hash": "320718cb80e49c7e283196f36f8ab329",
+    "mtime": 1783772622.9558694,
+    "ast_hash": "f11f46acb6226f9ecc3964441b4e01af",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783763073.8359625,
-    "ast_hash": "cdf47aa888696803fbfdb71baf5919a1",
+    "mtime": 1783775103.4168122,
+    "ast_hash": "9526f09039519a6ff89041ad92a277e8",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -175,8 +175,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783746968.0706818,
-    "ast_hash": "be49fe89095867ec44ca63b50dd847e3",
+    "mtime": 1783772510.9914205,
+    "ast_hash": "ce6b11879dd6fbaacaa7fe06ad7525fe",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783763019.2646694,
-    "ast_hash": "36f5516869aadb93b3e6bc0960b7cf14",
+    "mtime": 1783774775.760844,
+    "ast_hash": "e1e77ada36befff25b518ea5be63ad67",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -292,6 +292,51 @@
   ".agent-hub/tasks/20260711-135900-cursor-select-tool-routing.md": {
     "mtime": 1783763112.9486072,
     "ast_hash": "ef911d8c07a4877a631c7db5b0a38857",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-142500-drawing-tools-blocked-by-screenshot-overlay.md": {
+    "mtime": 1783771091.070937,
+    "ast_hash": "8aa936592cb1ca6e9c681a1bb26a8a32",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-150500-calligraphy-color-and-brand-icon.md": {
+    "mtime": 1783771522.766566,
+    "ast_hash": "0625b2aa3356042c73c127372bd98cf6",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-153000-multipage-whiteboard-pdf-export.md": {
+    "mtime": 1783771974.2342203,
+    "ast_hash": "f72dc214642f1cedd4d20e99f7dcd140",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-154002-fix-screenshot-double-taskbar-alignment-and-life.md": {
+    "mtime": 1783784426.8288844,
+    "ast_hash": "acb352fb06f3fdc72991ac89f5e5d909",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-161000-infinite-board-zoom-export.md": {
+    "mtime": 1783772734.998223,
+    "ast_hash": "ea90e575261da3189f8e0f3d06e6a2ec",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-163000-toolbar-about-panel.md": {
+    "mtime": 1783774018.6052694,
+    "ast_hash": "7b73923c20a0af1a7a140565c8a41682",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-171000-bottom-color-grid.md": {
+    "mtime": 1783774373.5044734,
+    "ast_hash": "f154257c42d6711cf1f8304c39a4104b",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-172500-markury-style-settings.md": {
+    "mtime": 1783774812.194504,
+    "ast_hash": "4580960b4d5b5e909a0718f0839407e4",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260711-174000-settings-panel-window-clipping.md": {
+    "mtime": 1783775125.848072,
+    "ast_hash": "fa343c1240cba926e2879a6082915480",
     "semantic_hash": ""
   }
 }
