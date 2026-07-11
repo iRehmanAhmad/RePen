@@ -13,16 +13,9 @@
         <!-- Drag Grip Header -->
         <div class="drag-header" id="dragHeader">
           <button class="mark-mini" id="collapseBtn" title="Minimize / Expand / Drag">
-            <svg viewBox="0 0 508 508" style="width: 28px; height: 28px;">
-              <circle style="fill:#90DFAA;" cx="254" cy="254" r="254"/>
-              <polygon style="fill:#FFFFFF;" points="285.2,119.6 222.8,119.6 187.6,181.2 154.8,238 353.2,236.8 320.4,181.2 "/>
-              <polygon style="fill:#324A5E;" points="254,64.4 222.8,119.6 285.2,119.6 "/>
-              <rect x="154.8" y="238" style="fill:#FF7058;" width="66.4" height="174"/>
-              <polygon style="fill:#F1543F;" points="220.8,236.8 187.6,181.2 154.8,236.8 154.8,238 220.8,238 "/>
-              <rect x="220.8" y="238" style="fill:#FFD05B;" width="66.4" height="174"/>
-              <polygon style="fill:#F9B54C;" points="287.2,238 287.2,236.8 254,181.2 220.8,236.8 220.8,238 "/>
-              <polygon style="fill:#F1543F;" points="353.2,238 353.2,236.8 320.4,181.2 287.2,236.8 287.2,238 "/>
-              <rect x="287.2" y="238" style="fill:#FF7058;" width="66.4" height="174"/>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 19.25 15.8 8.45l-2.25-2.25L2.75 17v4.25H7l10.8-10.8-2-2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="m15.2 4.55 1.15-1.15a1.9 1.9 0 0 1 2.7 0l1.55 1.55a1.9 1.9 0 0 1 0 2.7L19.45 8.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
             </svg>
           </button>
         </div>
@@ -189,18 +182,24 @@
 
           <div class="divider"></div>
 
-          <!-- 12. Inline Color Swatches (5 most used + custom color on 6th place) -->
-          <div class="inline-color-swatches" id="inlineColorSwatches" aria-label="Quick Color Palette">
-            <div class="swatch-grid">
-              <button class="swatch-btn active" data-color="#ff5a5f" style="background-color: #ff5a5f;" title="Coral Red"></button>
-              <button class="swatch-btn" data-color="#ffe36d" style="background-color: #ffe36d;" title="Lemon Yellow"></button>
-              <button class="swatch-btn" data-color="#00d26a" style="background-color: #00d26a;" title="Emerald Green"></button>
-              <button class="swatch-btn" data-color="#3b82f6" style="background-color: #3b82f6;" title="Electric Blue"></button>
-              <button class="swatch-btn" data-color="#ffffff" style="background-color: #ffffff;" title="White"></button>
-              <label class="custom-swatch-picker swatch-btn" title="Pick Custom Color">
-                <span class="custom-plus">+</span>
-                <input type="color" id="inlineCustomColorPicker" value="#ff5a5f">
-              </label>
+          <!-- 12. Current Color Chip + Quiet Palette -->
+          <div class="grouped-tool-container" id="colorContainer">
+            <button class="tool-button icon-tool grouped-main-btn color-chip-btn" id="colorChipBtn" title="Color Palette">
+              <span class="current-color-chip" id="currentColorChip" style="background-color: #ff5a5f;"></span>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover palette-popover" id="inlineColorSwatches" aria-label="Quick Color Palette">
+              <div class="swatch-grid">
+                <button class="swatch-btn active" data-color="#ff5a5f" style="background-color: #ff5a5f;" title="Coral Red"></button>
+                <button class="swatch-btn" data-color="#ffe36d" style="background-color: #ffe36d;" title="Lemon Yellow"></button>
+                <button class="swatch-btn" data-color="#00d26a" style="background-color: #00d26a;" title="Emerald Green"></button>
+                <button class="swatch-btn" data-color="#3b82f6" style="background-color: #3b82f6;" title="Electric Blue"></button>
+                <button class="swatch-btn" data-color="#ffffff" style="background-color: #ffffff;" title="White"></button>
+                <label class="custom-swatch-picker swatch-btn" title="Pick Custom Color">
+                  <span class="custom-plus">+</span>
+                  <input type="color" id="inlineCustomColorPicker" value="#ff5a5f">
+                </label>
+              </div>
             </div>
           </div>
         </div>

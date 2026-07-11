@@ -83,6 +83,8 @@ const elements = {
   eraserBtn: document.getElementById('eraserBtn'),
   whiteboardPopover: document.getElementById('whiteboardPopover'),
   whiteboardSubButtons: Array.from(document.querySelectorAll('#whiteboardPopover .popover-btn[data-bg]')),
+  colorChipBtn: document.getElementById('colorChipBtn'),
+  currentColorChip: document.getElementById('currentColorChip'),
   inlineSwatches: Array.from(document.querySelectorAll('#inlineColorSwatches .swatch-btn')),
   visibilityPill: null,
   passThroughPill: null,
@@ -343,6 +345,12 @@ function updateUi() {
 
 function ensureActiveSwatch() {
   const activeColor = currentBrushValue().color || '#ff5a5f';
+  if (elements.currentColorChip) {
+    elements.currentColorChip.style.backgroundColor = activeColor;
+  }
+  if (elements.colorChipBtn) {
+    elements.colorChipBtn.title = `Color Palette (${activeColor})`;
+  }
   if (elements.customColorPicker && typeof activeColor === 'string' && activeColor.startsWith('#') && (activeColor.length === 7 || activeColor.length === 4)) {
     elements.customColorPicker.value = activeColor;
   }
@@ -635,6 +643,8 @@ function closeAllPopovers() {
   if (elements.shapesGroupPopover) elements.shapesGroupPopover.classList.remove('show');
   if (elements.penSizePopover) elements.penSizePopover.classList.remove('show');
   if (elements.whiteboardPopover) elements.whiteboardPopover.classList.remove('show');
+  const colorPopover = document.getElementById('inlineColorSwatches');
+  if (colorPopover) colorPopover.classList.remove('show');
 }
 
 document.addEventListener('click', (event) => {
@@ -864,12 +874,25 @@ if (elements.whiteboardSubButtons) {
 }
 
 // 12. Inline Color Swatches
+if (elements.colorChipBtn) {
+  elements.colorChipBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const colorPopover = document.getElementById('inlineColorSwatches');
+    if (colorPopover) {
+      const wasShow = colorPopover.classList.contains('show');
+      closeAllPopovers();
+      colorPopover.classList.toggle('show', !wasShow);
+    }
+  });
+}
+
 if (elements.inlineSwatches) {
   elements.inlineSwatches.forEach((swatch) => {
     swatch.addEventListener('click', async (event) => {
       event.stopPropagation();
       const color = swatch.dataset.color;
       if (color) {
+        closeAllPopovers();
         await window.appBridge.setColor(color);
       }
     });

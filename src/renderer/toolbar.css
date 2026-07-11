@@ -1,14 +1,17 @@
 :root {
   color-scheme: dark;
   font-family: "Bahnschrift", "Segoe UI Variable Text", "Segoe UI", -apple-system, sans-serif;
-  --bg-bar: rgba(10, 14, 23, 0.88);
-  --bg-panel: rgba(13, 18, 30, 0.94);
-  --line: rgba(255, 255, 255, 0.14);
-  --text: #edf2ff;
-  --muted: #8ea0c7;
-  --accent: #00e5ff;
-  --accent-2: #0084ff;
-  --accent-glow: rgba(0, 229, 255, 0.45);
+  --bg-bar: rgba(18, 19, 21, 0.88);
+  --bg-panel: rgba(24, 25, 28, 0.96);
+  --line: rgba(255, 255, 255, 0.11);
+  --text: #f2f3f5;
+  --muted: #a3a8b1;
+  --accent: #d7dde7;
+  --accent-2: #f2f3f5;
+  --accent-glow: rgba(215, 221, 231, 0.18);
+  --quiet-hover: rgba(255, 255, 255, 0.075);
+  --quiet-active: rgba(255, 255, 255, 0.105);
+  --quiet-danger: #ff6b6b;
   --bar-width: 44px;
   --tool-cell: 36px;
   --tool-icon: 20px;
@@ -16,10 +19,6 @@
 
 * {
   box-sizing: border-box;
-}
-
-*:not(.size-dot):not(.size-dot-preview) {
-  border-radius: 0 !important;
 }
 
 html, body {
@@ -1141,4 +1140,268 @@ html, body {
 
 .mini-slider::-webkit-slider-thumb:hover {
   transform: scale(1.25);
+}
+
+/* Quiet Graphite Toolbar Refinement */
+.pen-bar {
+  background: linear-gradient(180deg, rgba(23, 24, 27, 0.94), rgba(15, 16, 18, 0.9));
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px !important;
+  box-shadow: none;
+}
+
+.pen-bar.collapsed {
+  border-radius: 8px !important;
+}
+
+.mark-mini {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px !important;
+  background: transparent;
+  border-color: transparent;
+  color: rgba(242, 243, 245, 0.9);
+  box-shadow: none;
+}
+
+.mark-mini:hover {
+  background: var(--quiet-hover);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transform: none;
+  box-shadow: none;
+}
+
+.mark-mini:active {
+  transform: none;
+}
+
+.mark-mini svg {
+  width: 21px;
+  height: 21px;
+}
+
+.tool-button,
+.action-icon-btn,
+.popover-btn {
+  position: relative;
+  border-radius: 6px !important;
+  color: rgba(242, 243, 245, 0.86);
+  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+
+.tool-button svg,
+.action-icon-btn svg,
+.popover-btn svg {
+  width: 19px;
+  height: 19px;
+  filter: none !important;
+}
+
+.tool-button:hover,
+.action-icon-btn:hover,
+.popover-btn:hover {
+  background: var(--quiet-hover);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: none;
+}
+
+.tool-button.active,
+.popover-btn.active {
+  background: color-mix(in srgb, var(--dynamic-active-color, var(--accent)) 10%, var(--quiet-active));
+  color: color-mix(in srgb, var(--dynamic-active-color, var(--accent)) 72%, #ffffff);
+  border-color: color-mix(in srgb, var(--dynamic-active-color, var(--accent)) 26%, rgba(255, 255, 255, 0.14));
+  transform: none;
+  box-shadow: none;
+}
+
+.tool-button.active::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 9px;
+  width: 2px;
+  height: 18px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.85;
+}
+
+.pen-bar.horizontal .tool-button.active::after {
+  left: 9px;
+  top: auto;
+  bottom: 3px;
+  width: 18px;
+  height: 2px;
+}
+
+.tool-button.active svg {
+  filter: none !important;
+}
+
+.action-icon-btn.danger:hover {
+  background: rgba(255, 107, 107, 0.12);
+  border-color: rgba(255, 107, 107, 0.28);
+  color: var(--quiet-danger);
+}
+
+.divider {
+  width: 30px;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.pen-bar.horizontal .divider {
+  height: 28px;
+}
+
+.group-indicator {
+  border-color: transparent transparent rgba(255, 255, 255, 0.48) transparent;
+}
+
+.grouped-main-btn:hover .group-indicator,
+.grouped-tool-container:hover .group-indicator {
+  border-color: transparent transparent rgba(255, 255, 255, 0.84) transparent;
+}
+
+.grouped-popover {
+  background: rgba(20, 21, 23, 0.96);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+.app-container:not(.dock-right):not(.horizontal) .grouped-popover,
+.app-container.dock-left:not(.horizontal) .grouped-popover {
+  transform: translateX(-4px);
+}
+
+.app-container.dock-right:not(.horizontal) .grouped-popover {
+  transform: translateX(4px);
+}
+
+.app-container.horizontal:not(.dock-bottom) .grouped-popover,
+.app-container.horizontal.dock-top .grouped-popover {
+  transform: translateY(-4px);
+}
+
+.app-container.horizontal.dock-bottom .grouped-popover {
+  transform: translateY(4px);
+}
+
+.app-container:not(.dock-right):not(.horizontal) .grouped-tool-container:hover .grouped-popover,
+.app-container:not(.dock-right):not(.horizontal) .grouped-popover.show,
+.app-container.dock-left:not(.horizontal) .grouped-tool-container:hover .grouped-popover,
+.app-container.dock-left:not(.horizontal) .grouped-popover.show,
+.app-container.dock-right:not(.horizontal) .grouped-tool-container:hover .grouped-popover,
+.app-container.dock-right:not(.horizontal) .grouped-popover.show {
+  transform: translateX(0);
+}
+
+.app-container.horizontal:not(.dock-bottom) .grouped-tool-container:hover .grouped-popover,
+.app-container.horizontal:not(.dock-bottom) .grouped-popover.show,
+.app-container.horizontal.dock-top .grouped-tool-container:hover .grouped-popover,
+.app-container.horizontal.dock-top .grouped-popover.show,
+.app-container.horizontal.dock-bottom .grouped-tool-container:hover .grouped-popover,
+.app-container.horizontal.dock-bottom .grouped-popover.show {
+  transform: translateY(0);
+}
+
+.slider-label-row {
+  color: rgba(242, 243, 245, 0.68);
+}
+
+.slider-val {
+  color: rgba(242, 243, 245, 0.94);
+}
+
+.mini-slider {
+  background: rgba(255, 255, 255, 0.16);
+  accent-color: #d7dde7;
+}
+
+.mini-slider:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mini-slider::-webkit-slider-thumb {
+  background: #f2f3f5;
+}
+
+.mini-slider::-webkit-slider-thumb:hover {
+  transform: none;
+}
+
+.color-chip-btn {
+  color: rgba(242, 243, 245, 0.86);
+}
+
+.current-color-chip {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px !important;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.22);
+}
+
+.palette-popover {
+  padding: 6px !important;
+}
+
+.palette-popover .swatch-grid {
+  grid-template-columns: repeat(3, 22px);
+  width: auto;
+  gap: 3px;
+}
+
+.app-container.horizontal .palette-popover .swatch-grid {
+  grid-template-columns: repeat(6, 22px);
+  width: auto;
+  gap: 3px;
+}
+
+.palette-popover .swatch-btn,
+.palette-popover .custom-swatch-picker,
+.app-container.horizontal .palette-popover .swatch-btn,
+.app-container.horizontal .palette-popover .custom-swatch-picker {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform: none;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.palette-popover .swatch-btn:hover,
+.palette-popover .custom-swatch-picker:hover {
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+}
+
+.palette-popover .swatch-btn.active,
+.palette-popover .custom-swatch-picker.active {
+  transform: none;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.custom-swatch-picker {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.custom-swatch-picker:hover,
+.custom-swatch-picker.active {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.tool-button:focus-visible,
+.action-icon-btn:focus-visible,
+.collapse-btn:focus-visible,
+.popover-btn:focus-visible,
+.swatch-btn:focus-visible,
+.custom-swatch-picker:focus-within {
+  outline: 2px solid rgba(242, 243, 245, 0.82);
+  outline-offset: 2px;
 }
