@@ -4,6 +4,86 @@
   "graph": {},
   "nodes": [
     {
+      "label": "add-calligraphy-2.js",
+      "file_type": "code",
+      "source_file": "add-calligraphy-2.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "add_calligraphy_2",
+      "community": 66,
+      "norm_label": "add-calligraphy-2.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "add-calligraphy-2.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "add_calligraphy_2_fs",
+      "community": 66,
+      "norm_label": "fs"
+    },
+    {
+      "label": "patchOverlayJs2()",
+      "file_type": "code",
+      "source_file": "add-calligraphy-2.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "add_calligraphy_2_patchoverlayjs2",
+      "community": 66,
+      "norm_label": "patchoverlayjs2()"
+    },
+    {
+      "label": "add-calligraphy.js",
+      "file_type": "code",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "add_calligraphy",
+      "community": 65,
+      "norm_label": "add-calligraphy.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "add_calligraphy_fs",
+      "community": 65,
+      "norm_label": "fs"
+    },
+    {
+      "label": "patchMainJs()",
+      "file_type": "code",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "add_calligraphy_patchmainjs",
+      "community": 65,
+      "norm_label": "patchmainjs()"
+    },
+    {
+      "label": "patchOverlayJs()",
+      "file_type": "code",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "add_calligraphy_patchoverlayjs",
+      "community": 65,
+      "norm_label": "patchoverlayjs()"
+    },
+    {
+      "label": "patchVerifyToolState()",
+      "file_type": "code",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L135",
+      "_origin": "ast",
+      "id": "add_calligraphy_patchverifytoolstate",
+      "community": 65,
+      "norm_label": "patchverifytoolstate()"
+    },
+    {
       "label": "main.js",
       "file_type": "code",
       "source_file": "main.js",
@@ -6865,6 +6945,66 @@
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "add-calligraphy-2.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "add_calligraphy_2",
+      "target": "add_calligraphy_2_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "add-calligraphy-2.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "add_calligraphy_2",
+      "target": "add_calligraphy_2_patchoverlayjs2",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "add_calligraphy",
+      "target": "add_calligraphy_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "add_calligraphy",
+      "target": "add_calligraphy_patchmainjs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "add_calligraphy",
+      "target": "add_calligraphy_patchoverlayjs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "add-calligraphy.js",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "add_calligraphy",
+      "target": "add_calligraphy_patchverifytoolstate",
+      "confidence_score": 1.0
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -16229,5 +16369,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0c4521e0d8a0deeb4f48b117ec17ce4d7633e1be"
+  "built_at_commit": "2a83add1226d0ed3e3ac2d969aaaf1a105f3867d"
 }

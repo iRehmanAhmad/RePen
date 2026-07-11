@@ -178,6 +178,10 @@ function loadState() {
           ...DEFAULT_STATE.brushDefaults.highlighter,
           ...((persisted.state.brushDefaults && persisted.state.brushDefaults.highlighter) || {}),
         },
+        calligraphy: {
+          ...DEFAULT_STATE.brushDefaults.calligraphy,
+          ...((persisted.state.brushDefaults && persisted.state.brushDefaults.calligraphy) || {}),
+        },
         eraser: {
           ...DEFAULT_STATE.brushDefaults.eraser,
           ...((persisted.state.brushDefaults && persisted.state.brushDefaults.eraser) || {}),
@@ -1461,16 +1465,24 @@ function normalizeStroke(stroke) {
   const baseColor =
     tool === 'highlighter'
       ? stroke.color || state.brushDefaults.highlighter.color
+      : tool === 'calligraphy'
+      ? stroke.color || state.brushDefaults.calligraphy.color
       : stroke.color || state.brushDefaults.pen.color;
   const baseWidth =
     tool === 'highlighter'
       ? stroke.width || state.brushDefaults.highlighter.width
+      : tool === 'calligraphy'
+      ? typeof stroke.width === 'number' ? stroke.width : state.brushDefaults.calligraphy.width
       : stroke.width || state.brushDefaults.pen.width;
   const baseOpacity =
     tool === 'highlighter'
       ? typeof stroke.opacity === 'number'
         ? stroke.opacity
         : state.brushDefaults.highlighter.opacity
+      : tool === 'calligraphy'
+      ? typeof stroke.opacity === 'number'
+        ? stroke.opacity
+        : state.brushDefaults.calligraphy.opacity || 1
       : typeof stroke.opacity === 'number'
         ? stroke.opacity
         : state.brushDefaults.pen.opacity;
@@ -1627,6 +1639,10 @@ function normalizeBrushDefaults(nextBrushDefaults = {}) {
     highlighter: {
       ...DEFAULT_STATE.brushDefaults.highlighter,
       ...(incoming.highlighter || {}),
+    },
+    calligraphy: {
+      ...DEFAULT_STATE.brushDefaults.calligraphy,
+      ...(incoming.calligraphy || {}),
     },
     eraser: {
       ...DEFAULT_STATE.brushDefaults.eraser,

@@ -17,7 +17,7 @@ while ((match = toolRegex.exec(htmlContent)) !== null) {
 
 // In main.js, find the list of tools handled in setTool
 // Look for strings inside setTool function or check known tools
-const knownToolsInMain = ['cursor', 'pen', 'highlighter', 'eraser', 'shapes', 'laser', 'text', 'select', 'spotlight', 'magnifier'];
+const knownToolsInMain = ['cursor', 'pen', 'highlighter', 'eraser', 'shapes', 'laser', 'text', 'select', 'spotlight', 'magnifier', 'calligraphy'];
 
 let hasError = false;
 console.log('--- Verifying Tool State Alignment ---');

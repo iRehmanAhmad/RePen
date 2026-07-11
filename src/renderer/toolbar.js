@@ -1,9 +1,10 @@
 const COLORS = ['#ff5a5f', '#ffe36d', '#00d26a', '#3b82f6', '#ffffff'];
 
-const INKING_TOOLS = ['pen', 'highlighter', 'laser', 'text'];
+const INKING_TOOLS = ['pen', 'highlighter', 'calligraphy', 'laser', 'text'];
 const INKING_ICONS = {
   pen: '<path d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536L37.356,12.497z M8.364,51.39l33.941-33.942l4.243,4.243L12.606,55.632L8.364,51.39z M3.001,61.995c-0.553,0-1.001-0.446-1-0.999v-1.583l2.582,2.582H3.001z M7.411,61.996l-5.41-5.41l0.001-8.73l14.141,14.141H7.411z M17.557,60.582l-3.536-3.536l33.942-33.94l3.535,3.535L17.557,60.582z M52.912,25.227L38.771,11.083l2.828-2.828l14.143,14.143L52.912,25.227z M61.414,16.725l-4.259,4.259L43.013,6.841l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002l11.314,11.314C62.195,14.678,62.194,15.943,61.414,16.725z"/>',
   highlighter: '<path d="M3.293,20.707a1,1,0,0,1,0-1.414l16-16a1,1,0,1,1,1.414,1.414l-16,16A1,1,0,0,1,3.293,20.707Z"/>',
+  calligraphy: '<path d="M14.6,3.4L19.2,8c0.8,0.8,0.8,2,0,2.8L7,23H2v-5l12.2-12.2C14.6,5.4,14.2,3.8,14.6,3.4z M4,21h2l11-11l-2-2L4,19V21z M16.4,7.6l-2-2l1.4-1.4l2,2L16.4,7.6z"/>',
   laser: '<circle cx="12" cy="12" r="3"/><path fill-rule="evenodd" d="M12 2a1 1 0 0 1 1 1v3a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v3a1 1 0 0 1-2 0v-3a1 1 0 0 1 1-1zM2 12a1 1 0 0 1 1-1h3a1 1 0 0 1 0 2H3a1 1 0 0 1-1-1zm15 0a1 1 0 0 1 1-1h3a1 1 0 0 1 0 2h-3a1 1 0 0 1-1-1zM4.93 4.93a1 1 0 0 1 1.41 0l2.12 2.12a1 1 0 0 1-1.41 1.42L4.93 6.34a1 1 0 0 1 0-1.41zm10.6 10.6a1 1 0 0 1 1.42 0l2.12 2.12a1 1 0 0 1-1.42 1.42l-2.12-2.12a1 1 0 0 1 0-1.42zM19.07 4.93a1 1 0 0 1 0 1.41l-2.12 2.12a1 1 0 1 1-1.42-1.42l2.12-2.11a1 1 0 0 1 1.42 0zM8.46 15.54a1 1 0 0 1 0 1.41l-2.12 2.12a1 1 0 0 1-1.41-1.42l2.12-2.11a1 1 0 0 1 1.41 0z"/>',
   text: '<path d="M5 4h14a1 1 0 0 1 0 2h-6v13h3a1 1 0 0 1 0 2H8a1 1 0 0 1 0-2h3V6H5a1 1 0 0 1 0-2z"/>'
 };
@@ -34,6 +35,10 @@ const appState = {
       color: '#ffe36d',
       width: 18,
       opacity: 0.3,
+    },
+    calligraphy: {
+      color: '#ef4444',
+      width: 4
     },
     eraser: {
       radius: 18,
@@ -96,8 +101,14 @@ const elements = {
 };
 
 function currentBrushValue() {
+  if (appState.activeTool === 'pen') {
+    return appState.brushDefaults.pen;
+  }
   if (appState.activeTool === 'highlighter') {
     return appState.brushDefaults.highlighter;
+  }
+  if (appState.activeTool === 'calligraphy') {
+    return appState.brushDefaults.calligraphy;
   }
   if (appState.activeTool === 'eraser') {
     return appState.brushDefaults.eraser;
@@ -184,6 +195,7 @@ function updatePills() {
   const toolLabels = {
     pen: 'Pen',
     highlighter: 'Highlight',
+    calligraphy: 'Calligraphy',
     shapes: 'Magic Shapes',
     laser: 'Laser',
     text: 'Text Note',

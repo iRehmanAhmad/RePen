@@ -357,6 +357,14 @@ function getBrushStyle() {
     };
   }
 
+  if (appState.activeTool === 'calligraphy') {
+    return {
+      color: appState.brushDefaults.calligraphy.color,
+      width: appState.brushDefaults.calligraphy.width,
+      opacity: appState.brushDefaults.calligraphy.opacity || 1,
+    };
+  }
+
   if (appState.activeTool === 'eraser') {
     return {
       color: '#ffffff',
@@ -653,6 +661,34 @@ function drawStroke(stroke, targetCtx = ctx) {
   targetCtx.lineWidth = stroke.width;
   targetCtx.lineCap = 'round';
   targetCtx.lineJoin = 'round';
+
+  if (stroke.tool === 'calligraphy' || stroke.brushType === 'calligraphy') {
+    const angle = typeof stroke.angle === 'number' ? stroke.angle : Math.PI / 4;
+    const w = stroke.width || 4;
+    const offsetX = Math.cos(angle) * (w / 2);
+    const offsetY = -Math.sin(angle) * (w / 2);
+    
+    // Draw the starting nib stamp
+    targetCtx.beginPath();
+    targetCtx.moveTo(points[0].x - offsetX, points[0].y - offsetY);
+    targetCtx.lineTo(points[0].x + offsetX, points[0].y + offsetY);
+    targetCtx.lineWidth = 1;
+    targetCtx.stroke();
+    
+    for (let i = 0; i < points.length - 1; i++) {
+      const p1 = points[i];
+      const p2 = points[i+1];
+      targetCtx.beginPath();
+      targetCtx.moveTo(p1.x - offsetX, p1.y - offsetY);
+      targetCtx.lineTo(p2.x - offsetX, p2.y - offsetY);
+      targetCtx.lineTo(p2.x + offsetX, p2.y + offsetY);
+      targetCtx.lineTo(p1.x + offsetX, p1.y + offsetY);
+      targetCtx.closePath();
+      targetCtx.fill();
+    }
+    targetCtx.restore();
+    return;
+  }
 
   if (points.length === 1) {
     const point = points[0];
@@ -1421,7 +1457,7 @@ async function finalizeStroke() {
       radius: appState.brushDefaults.eraser.radius,
     });
   } else {
-    const recognized = (stroke.tool === 'shapes' || stroke.tool === 'pen') ? recognizeShape(stroke) : null;
+    const recognized = (stroke.tool === 'shapes' || stroke.tool === 'pen' || stroke.tool === 'calligraphy') ? recognizeShape(stroke) : null;
     if (recognized) {
       stroke.isAutoShape = true;
       stroke.origTool = stroke.tool;
