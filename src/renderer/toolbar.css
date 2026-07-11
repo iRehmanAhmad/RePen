@@ -611,6 +611,13 @@ html, body {
   flex-direction: row;
 }
 
+.pen-bar.horizontal .mark-mini {
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  border-radius: 6px !important;
+}
+
 .app-container.horizontal .header-actions {
   flex-direction: row;
 }
@@ -1155,10 +1162,11 @@ html, body {
 }
 
 .mark-mini {
-  width: 36px;
-  height: 36px;
-  border-radius: 6px !important;
-  background: rgba(47, 145, 237, 0.12);
+  width: calc(100% + 4px);
+  margin: 0 -2px;
+  height: 42px;
+  border-radius: 8px 8px 0 0 !important;
+  background: rgba(47, 145, 237, 0.15);
   border: none !important;
   color: rgba(242, 243, 245, 0.9);
   box-shadow: none;
