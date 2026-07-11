@@ -439,6 +439,7 @@ function updateUi() {
   updateToolButtons();
   updatePills();
   updateControls();
+  syncSettingsPanelHeight();
 }
 
 function ensureActiveSwatch() {
@@ -762,12 +763,27 @@ async function loadToolbarSettingsDraft() {
   activateToolbarSettingsTab(activeTab);
 }
 
+function syncSettingsPanelHeight() {
+  if (!elements.toolbarSettingsPanel || !elements.toolbarSettingsPanel.classList.contains('open')) return;
+  const appContainer = document.getElementById('appContainer');
+  if (elements.penBar && appContainer) {
+    const isHorizontal = appContainer.classList.contains('horizontal');
+    if (!isHorizontal) {
+      const barHeight = elements.penBar.offsetHeight;
+      elements.toolbarSettingsPanel.style.height = `${barHeight - 8}px`;
+    } else {
+      elements.toolbarSettingsPanel.style.height = '';
+    }
+  }
+}
+
 async function openToolbarSettingsPanel() {
   if (!elements.toolbarSettingsPanel) return;
   closeAllPopovers();
   await loadToolbarSettingsDraft();
   elements.toolbarSettingsPanel.classList.add('open');
   elements.toolbarSettingsPanel.setAttribute('aria-hidden', 'false');
+  syncSettingsPanelHeight();
   elements.settingsButton?.classList.add('active');
   await window.appBridge.setToolbarSettingsOpen?.(true);
   window.appBridge.setToolbarHover(true);
@@ -1048,6 +1064,7 @@ if (elements.collapseBtn && elements.penBar) {
     elements.collapseBtn.title = isCollapsed ? 'Expand toolbar / Drag' : 'Minimize toolbar / Drag';
     elements.collapseBtn.setAttribute('aria-label', isCollapsed ? 'Expand toolbar' : 'Minimize toolbar');
     if (elements.flyoutPanel) elements.flyoutPanel.classList.toggle('hidden', isCollapsed);
+    setTimeout(syncSettingsPanelHeight, 50);
   };
 
   const resetToolbarDrag = () => {
