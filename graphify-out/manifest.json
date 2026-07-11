@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783775103.4010298,
-    "ast_hash": "c07db343592a13b42910ad333ce00725",
+    "mtime": 1783787580.7677736,
+    "ast_hash": "368c0137c6e1c815d864fc8c37349b1f",
     "semantic_hash": ""
   },
   "package.json": {
@@ -347,6 +347,11 @@
   ".agent-hub/tasks/20260711-161015-simplify-settings-layout-and-remove-customize-he.md": {
     "mtime": 1783786222.9297843,
     "ast_hash": "18fecbb9c9b204339adce8dea48ad49b",
+    "semantic_hash": ""
+  },
+  "src/renderer/icon.svg": {
+    "mtime": 1783787551.739091,
+    "ast_hash": "5e929cbf6a9dd0e9b8c2511afdc9235d",
     "semantic_hash": ""
   }
 }

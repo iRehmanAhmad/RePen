@@ -424,26 +424,9 @@ function updateTrayMenu() {
 }
 
 function createTrayIcon() {
-  const svg = Buffer.from(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
-      <rect width="512" height="512" rx="104" fill="#101114"/>
-      <polygon fill="#111827" points="255.999,109.533 235.1,193.394 296.848,172.495"/>
-      <polygon fill="#64748B" points="215.15,172.495 255.999,193.394 255.999,109.533"/>
-      <path fill="#22D3EE" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>
-      <path fill="#F8FAFC" d="M215.15,172.495l-48.03,74.03c0.001,0.001,28.481,42.863,88.879,42.863V172.495H215.15z"/>
-      <path fill="#111827" d="M285.625,266.588c-8.852,1.176-18.71,1.9-29.626,1.9L235.1,389.293l20.899,122.706h29.626l20.899-122.706L285.625,266.588z"/>
-      <path fill="#0EA5E9" d="M344.877,246.524c-0.001,0.001-19.132,14.735-59.253,20.063v245.412h59.253V246.524z"/>
-      <path fill="#64748B" d="M226.373,266.588l-20.899,122.706L226.373,512h29.626V268.488c-10.917,0-20.775-0.724-29.626-1.9z"/>
-      <path fill="#F8FAFC" d="M167.12,246.524v265.475h59.253V266.588c-40.121-5.329-59.252-20.063-59.253-20.064z"/>
-      <polygon fill="#FDE68A" points="271.673,0 255.999,0 245.55,29.546 255.999,59.091 271.673,59.091"/>
-      <rect x="310.673" y="29.136" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 515.6158 330.9375)" fill="#67E8F9" width="31.348" height="59.091"/>
-      <rect x="126.96" y="113.366" fill="#FDE68A" width="59.092" height="31.348"/>
-      <rect x="325.949" y="113.366" fill="#67E8F9" width="59.092" height="31.348"/>
-      <rect x="156.105" y="43.008" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 275.4308 231.4505)" fill="#FDE68A" width="59.091" height="31.348"/>
-      <rect x="240.326" fill="#67E8F9" width="15.674" height="59.092"/>
-    </svg>
-  `);
-  return nativeImage.createFromDataURL(`data:image/svg+xml;base64,${svg.toString('base64')}`);
+  const iconPath = path.join(__dirname, 'src', 'renderer', 'icon.svg');
+  const img = nativeImage.createFromPath(iconPath);
+  return img.resize({ width: 20, height: 20, quality: 'best' });
 }
 
 function createTray() {
