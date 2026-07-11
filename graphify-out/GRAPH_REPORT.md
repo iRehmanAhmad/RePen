@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-11)
 
 ## Corpus Check
-- 65 files · ~48,432 words
+- 66 files · ~48,683 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 855 nodes · 1142 edges · 79 communities (75 shown, 4 thin omitted)
+- 867 nodes · 1153 edges · 81 communities (77 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3ccce3d9`
+- Built from commit: `a9e0c328`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -94,6 +94,8 @@
 - [[_COMMUNITY_Multipage whiteboard PDF export|Multipage whiteboard PDF export]]
 - [[_COMMUNITY_Bottom Color Grid|Bottom Color Grid]]
 - [[_COMMUNITY_Markury-Style Settings Extraction|Markury-Style Settings Extraction]]
+- [[_COMMUNITY_Adjust bottom color grid to 3x2 with flyout|Adjust bottom color grid to 3x2 with flyout]]
+- [[_COMMUNITY_19. Security Model|19. Security Model]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 28 edges
@@ -113,7 +115,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (79 total, 4 thin omitted)
+## Communities (81 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.05
@@ -184,8 +186,8 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.13
-Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
+Cohesion: 0.17
+Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -415,22 +417,30 @@ Nodes (5): Bottom Color Grid, Implementation, Intake, Status, Verification
 Cohesion: 0.33
 Nodes (5): Implementation, Intake, Markury-Style Settings Extraction, Status, Verification
 
+### Community 79 - "Adjust bottom color grid to 3x2 with flyout"
+Cohesion: 0.17
+Nodes (11): Acceptance Checks, Adjust bottom color grid to 3x2 with flyout, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners (+3 more)
+
+### Community 80 - "19. Security Model"
+Cohesion: 0.67
+Nodes (3): 19. Security Model, Network posture, Required security decisions
+
 ## Knowledge Gaps
-- **504 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+499 more)
+- **514 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+509 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `Screen Annotation App Technical Architecture` connect `Screen Annotation App Technical Architecture` to `4. Technology Decisions`, `7. Window Architecture`, `9. Canvas and Scene Model`, `11. Input Handling`, `12. IPC Design`, `13. Persistence Architecture`, `14. Export and Capture Architecture`, `15. Global Shortcuts`, `16. Multi-Monitor Architecture`, `17. Performance Strategy`, `18. Reliability and Recovery`, `22. Key Risks`, `3. Scope`, `19. Security Model`, `21. Milestone-Based Implementation Plan`, `8. Interaction Modes`, `10. State Management`, `6. Application Layers`?**
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `8. Interaction Modes` connect `8. Interaction Modes` to `Screen Annotation App Technical Architecture`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+  _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path` to the rest of the system?**
-  _504 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _514 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.050608358314230294 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

@@ -182,7 +182,9 @@ const elements = {
   whiteboardSubButtons: Array.from(document.querySelectorAll('#whiteboardPopover .popover-btn[data-bg]')),
   colorChipBtn: document.getElementById('colorChipBtn'),
   currentColorChip: document.getElementById('currentColorChip'),
-  inlineSwatches: Array.from(document.querySelectorAll('#inlineColorSwatches .swatch-btn')),
+  inlineSwatches: Array.from(document.querySelectorAll('.swatch-btn[data-color]')),
+  colorPopover: document.getElementById('colorPopover'),
+  moreColorsBtn: document.getElementById('moreColorsBtn'),
   visibilityPill: null,
   passThroughPill: null,
   toolPill: null,
@@ -1214,8 +1216,7 @@ function closeAllPopovers() {
   if (elements.shapesGroupPopover) elements.shapesGroupPopover.classList.remove('show');
   if (elements.penSizePopover) elements.penSizePopover.classList.remove('show');
   if (elements.whiteboardPopover) elements.whiteboardPopover.classList.remove('show');
-  const colorPopover = document.getElementById('inlineColorSwatches');
-  if (colorPopover) colorPopover.classList.remove('show');
+  if (elements.colorPopover) elements.colorPopover.classList.remove('show');
 }
 
 document.addEventListener('click', (event) => {
@@ -1445,6 +1446,17 @@ if (elements.whiteboardSubButtons) {
 }
 
 // 12. Inline Color Swatches
+if (elements.moreColorsBtn) {
+  elements.moreColorsBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (elements.colorPopover) {
+      const wasShow = elements.colorPopover.classList.contains('show');
+      closeAllPopovers();
+      elements.colorPopover.classList.toggle('show', !wasShow);
+    }
+  });
+}
+
 if (elements.colorChipBtn) {
   elements.colorChipBtn.addEventListener('click', (event) => {
     event.stopPropagation();
