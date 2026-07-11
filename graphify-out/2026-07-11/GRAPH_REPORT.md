@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-11)
 
 ## Corpus Check
-- 50 files · ~39,746 words
+- 50 files · ~39,767 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 686 nodes · 909 edges · 65 communities (62 shown, 3 thin omitted)
+- 686 nodes · 910 edges · 65 communities (62 shown, 3 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4d036769`
+- Built from commit: `75b71638`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -171,7 +171,7 @@ Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, H
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
 Cohesion: 0.17
-Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
+Nodes (11): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 5. System Overview, Conceptual architecture (+3 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -295,7 +295,7 @@ Nodes (4): 3. Scope, Initial platform target, Initial release capabilities, Late
 
 ### Community 48 - "19. Security Model"
 Cohesion: 0.67
-Nodes (3): 19. Security Model, Network posture, Required security decisions
+Nodes (3): 2. Product Objectives, Non-objectives for the first release, Primary objectives
 
 ### Community 52 - "Task: Scrble-Style Endless Whiteboard Pagination & Notes Saving"
 Cohesion: 0.50

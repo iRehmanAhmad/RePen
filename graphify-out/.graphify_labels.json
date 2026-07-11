@@ -63,5 +63,8 @@
   "61": "Fix main icon click drag behavior",
   "62": "Fix cursor clearing grouped tools",
   "63": "verify-dialog-routing.js",
-  "64": "verify-eraser-geometry.js"
+  "64": "verify-eraser-geometry.js",
+  "65": "Compact settings panel",
+  "66": "Toolbar-attached settings",
+  "67": "Prominent pencil icon and tool fixes"
 }
