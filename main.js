@@ -383,7 +383,7 @@ function updateTrayMenu() {
         { label: 'Magic Shapes', type: 'radio', checked: state.activeTool === 'shapes', click: () => setTool('shapes') },
         { label: 'Laser Pointer', type: 'radio', checked: state.activeTool === 'laser', click: () => setTool('laser') },
         { label: 'Text Tool', type: 'radio', checked: state.activeTool === 'text', click: () => setTool('text') },
-        { label: 'Select Tool', type: 'radio', checked: state.activeTool === 'select', click: () => setTool('select') },
+        { label: 'Cursor / Move Annotations', type: 'radio', checked: state.activeTool === 'select', click: () => setTool('select') },
         { label: 'Spotlight', type: 'radio', checked: state.activeTool === 'spotlight', click: () => setTool('spotlight') },
         { label: 'Magnifier', type: 'radio', checked: state.activeTool === 'magnifier', click: () => setTool('magnifier') },
         { label: 'Eraser', type: 'radio', checked: state.activeTool === 'eraser', click: () => setTool('eraser') },

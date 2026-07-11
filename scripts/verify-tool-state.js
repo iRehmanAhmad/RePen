@@ -3,9 +3,11 @@ const path = require('path');
 
 const toolbarHtmlPath = path.join(__dirname, '../src/renderer/toolbar.html');
 const mainPath = path.join(__dirname, '../main.js');
+const toolbarJsPath = path.join(__dirname, '../src/renderer/toolbar.js');
 
 const htmlContent = fs.readFileSync(toolbarHtmlPath, 'utf8');
 const mainContent = fs.readFileSync(mainPath, 'utf8');
+const toolbarJsContent = fs.readFileSync(toolbarJsPath, 'utf8');
 
 // Extract all data-tool="..." and data-subtool="..." attributes in toolbar.html
 const toolRegex = /data-(?:tool|subtool)=['"]([^'"]+)['"]/g;
@@ -39,6 +41,22 @@ for (const t of htmlTools) {
 
 const overlayPath = path.join(__dirname, '../src/renderer/overlay.js');
 const overlayContent = fs.readFileSync(overlayPath, 'utf8');
+
+if (/const\s+SELECT_TOOLS\s*=\s*\[[^\]]*['"]select['"]/.test(toolbarJsContent)) {
+  console.error('[FAIL] Select/move should be routed through the cursor button, not exposed as a separate view-group primary tool');
+  hasError = true;
+} else {
+  console.log('[PASS] Select/move is not exposed as a separate view-group primary tool');
+}
+
+const cursorButtonHandler = toolbarJsContent.match(/elements\.togglePassThrough\.addEventListener\('click',\s*async\s*\(\)\s*=>\s*\{([\s\S]*?)\n\s*\}\);/);
+const cursorButtonBody = cursorButtonHandler ? cursorButtonHandler[1] : '';
+if (!/setTool\(['"]select['"]\)/.test(cursorButtonBody) || !/setPassThrough\(true\)/.test(cursorButtonBody)) {
+  console.error('[FAIL] Cursor button must enter select/move mode and toggle back to desktop pass-through from select mode');
+  hasError = true;
+} else {
+  console.log('[PASS] Cursor button owns select/move and desktop pass-through transitions');
+}
 
 if (!/resetInteractionState\('background mode changed'\)/.test(overlayContent)) {
   console.error('[FAIL] overlay.js must reset interaction state on backgroundMode changes');
