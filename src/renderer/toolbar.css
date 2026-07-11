@@ -1209,8 +1209,9 @@ html, body {
 
 .pen-bar:not(.horizontal) .tool-button,
 .pen-bar:not(.horizontal) .action-icon-btn {
-  width: calc(100% + 4px);
-  margin: 0 -2px;
+  width: 44px !important;
+  height: 44px !important;
+  margin: 0 !important;
   border-radius: 0 !important;
 }
 
