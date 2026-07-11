@@ -1,4 +1,4 @@
-const COLORS = ['#ff5a5f', '#ffe36d', '#00d26a', '#3b82f6', '#ffffff'];
+const COLORS = ['#ff5a5f', '#f97316', '#ffe36d', '#00d26a', '#22d3ee', '#3b82f6', '#a855f7', '#ffffff', '#111827'];
 
 const TOOLBAR_SETTINGS_DEFAULTS = {
   brushDefaults: {
@@ -14,6 +14,11 @@ const TOOLBAR_SETTINGS_DEFAULTS = {
     copyToClipboard: true,
     autoSavePath: '',
   },
+  clickHalo: false,
+  rememberContentAfterExit: false,
+  clearOnMinimize: false,
+  startOnLogin: false,
+  checkUpdatesOnStartup: false,
   hotkeys: {
     toggleOverlay: 'CommandOrControl+Alt+H',
     togglePassThrough: 'CommandOrControl+Shift+P',
@@ -119,8 +124,19 @@ const elements = {
   toolbarSettingsTabs: Array.from(document.querySelectorAll('.toolbar-settings-tab')),
   toolbarSettingsPages: Array.from(document.querySelectorAll('.toolbar-settings-page')),
   toolbarSettingsMessage: document.getElementById('toolbarSettingsMessage'),
+  toolbarSettingsActions: document.getElementById('toolbarSettingsActions'),
   toolbarSettingsSave: document.getElementById('toolbarSettingsSave'),
   toolbarSettingsReset: document.getElementById('toolbarSettingsReset'),
+  appVersionText: document.getElementById('appVersionText'),
+  settingsStorageClipboard: document.getElementById('settingsStorageClipboard'),
+  settingsStorageFolder: document.getElementById('settingsStorageFolder'),
+  settingsSaveLocationText: document.getElementById('settingsSaveLocationText'),
+  settingsBrowseFolder: document.getElementById('settingsBrowseFolder'),
+  prefRememberContent: document.getElementById('prefRememberContent'),
+  prefClearOnMinimize: document.getElementById('prefClearOnMinimize'),
+  prefCursorHighlight: document.getElementById('prefCursorHighlight'),
+  prefStartOnLogin: document.getElementById('prefStartOnLogin'),
+  prefCheckUpdates: document.getElementById('prefCheckUpdates'),
   toolbarHotkeyList: document.getElementById('toolbarHotkeyList'),
   tsPenColor: document.getElementById('tsPenColor'),
   tsPenWidth: document.getElementById('tsPenWidth'),
@@ -504,6 +520,11 @@ function normalizeToolbarSettings(nextState = {}) {
       ...TOOLBAR_SETTINGS_DEFAULTS.hotkeys,
       ...(nextState.hotkeys || {}),
     },
+    clickHalo: Boolean(nextState.clickHalo),
+    rememberContentAfterExit: Boolean(nextState.rememberContentAfterExit),
+    clearOnMinimize: Boolean(nextState.clearOnMinimize),
+    startOnLogin: Boolean(nextState.startOnLogin),
+    checkUpdatesOnStartup: Boolean(nextState.checkUpdatesOnStartup),
   };
 }
 
@@ -589,8 +610,24 @@ function updateToolbarSettingsValueLabels() {
   }
 }
 
+function updateGeneralSettingsControls() {
+  if (!toolbarSettingsDraft) return;
+  const folderMode = !toolbarSettingsDraft.exportDefaults.copyToClipboard;
+  elements.settingsStorageClipboard?.classList.toggle('active', !folderMode);
+  elements.settingsStorageFolder?.classList.toggle('active', folderMode);
+  if (elements.settingsSaveLocationText) {
+    elements.settingsSaveLocationText.textContent = toolbarSettingsDraft.exportDefaults.autoSavePath || 'Choose folder when saving';
+  }
+  if (elements.settingsBrowseFolder) {
+    elements.settingsBrowseFolder.disabled = !folderMode;
+  }
+}
+
 function renderToolbarSettingsForm() {
   if (!toolbarSettingsDraft) return;
+  if (elements.appVersionText) {
+    elements.appVersionText.textContent = `v${appState.appVersion || '1.0.0'}`;
+  }
   elements.tsPenColor.value = toolbarSettingsDraft.brushDefaults.pen.color;
   elements.tsPenWidth.value = String(toolbarSettingsDraft.brushDefaults.pen.width);
   elements.tsPenOpacity.value = String(toolbarSettingsDraft.brushDefaults.pen.opacity);
@@ -602,7 +639,13 @@ function renderToolbarSettingsForm() {
   elements.tsExportQuality.value = String(toolbarSettingsDraft.exportDefaults.quality || 0.9);
   elements.tsExportIncludeBackground.checked = Boolean(toolbarSettingsDraft.exportDefaults.includeBackground);
   elements.tsExportCopyToClipboard.checked = Boolean(toolbarSettingsDraft.exportDefaults.copyToClipboard);
+  if (elements.prefRememberContent) elements.prefRememberContent.checked = Boolean(toolbarSettingsDraft.rememberContentAfterExit);
+  if (elements.prefClearOnMinimize) elements.prefClearOnMinimize.checked = Boolean(toolbarSettingsDraft.clearOnMinimize);
+  if (elements.prefCursorHighlight) elements.prefCursorHighlight.checked = Boolean(toolbarSettingsDraft.clickHalo);
+  if (elements.prefStartOnLogin) elements.prefStartOnLogin.checked = Boolean(toolbarSettingsDraft.startOnLogin);
+  if (elements.prefCheckUpdates) elements.prefCheckUpdates.checked = Boolean(toolbarSettingsDraft.checkUpdatesOnStartup);
   updateToolbarSettingsValueLabels();
+  updateGeneralSettingsControls();
   renderToolbarHotkeys();
 }
 
@@ -618,6 +661,11 @@ function collectToolbarSettingsDraft() {
   toolbarSettingsDraft.exportDefaults.quality = Number(elements.tsExportQuality.value);
   toolbarSettingsDraft.exportDefaults.includeBackground = elements.tsExportIncludeBackground.checked;
   toolbarSettingsDraft.exportDefaults.copyToClipboard = elements.tsExportCopyToClipboard.checked;
+  toolbarSettingsDraft.clickHalo = Boolean(elements.prefCursorHighlight?.checked);
+  toolbarSettingsDraft.rememberContentAfterExit = Boolean(elements.prefRememberContent?.checked);
+  toolbarSettingsDraft.clearOnMinimize = Boolean(elements.prefClearOnMinimize?.checked);
+  toolbarSettingsDraft.startOnLogin = Boolean(elements.prefStartOnLogin?.checked);
+  toolbarSettingsDraft.checkUpdatesOnStartup = Boolean(elements.prefCheckUpdates?.checked);
 }
 
 function getToolbarHotkeyConflicts() {
@@ -684,11 +732,23 @@ function renderToolbarHotkeys() {
 }
 
 function activateToolbarSettingsTab(tabName) {
+  const nextTab = tabName || 'about';
   for (const tab of elements.toolbarSettingsTabs) {
-    tab.classList.toggle('active', tab.dataset.settingsTab === tabName);
+    tab.classList.toggle('active', tab.dataset.settingsTab === nextTab);
   }
   for (const page of elements.toolbarSettingsPages) {
-    page.classList.toggle('active', page.dataset.settingsPage === tabName);
+    page.classList.toggle('active', page.dataset.settingsPage === nextTab);
+  }
+  elements.toolbarSettingsPanel?.classList.toggle('about-active', nextTab === 'about' || nextTab === 'help');
+  if (!toolbarSettingsDirty) {
+    const messages = {
+      general: 'General preferences ready.',
+      customize: 'Customize defaults, then save.',
+      hotkeys: 'Edit shortcuts, then save.',
+      about: 'Release profile ready.',
+      help: 'Help and support links.',
+    };
+    setToolbarSettingsMessage(messages[nextTab] || 'Ready.', 'info');
   }
 }
 
@@ -698,7 +758,8 @@ async function loadToolbarSettingsDraft() {
   toolbarSettingsDirty = false;
   toolbarSettingsCapture = null;
   renderToolbarSettingsForm();
-  setToolbarSettingsMessage('Attached to toolbar.', 'info');
+  const activeTab = elements.toolbarSettingsTabs.find((tab) => tab.classList.contains('active'))?.dataset.settingsTab || 'general';
+  activateToolbarSettingsTab(activeTab);
 }
 
 async function openToolbarSettingsPanel() {
@@ -708,6 +769,7 @@ async function openToolbarSettingsPanel() {
   elements.toolbarSettingsPanel.classList.add('open');
   elements.toolbarSettingsPanel.setAttribute('aria-hidden', 'false');
   elements.settingsButton?.classList.add('active');
+  await window.appBridge.setToolbarSettingsOpen?.(true);
   window.appBridge.setToolbarHover(true);
 }
 
@@ -838,6 +900,11 @@ if (elements.toolbarSettingsTabs) {
   elements.tsExportFormat,
   elements.tsExportIncludeBackground,
   elements.tsExportCopyToClipboard,
+  elements.prefRememberContent,
+  elements.prefClearOnMinimize,
+  elements.prefCursorHighlight,
+  elements.prefStartOnLogin,
+  elements.prefCheckUpdates,
 ].forEach((input) => {
   input?.addEventListener('input', () => {
     updateToolbarSettingsValueLabels();
@@ -855,6 +922,49 @@ if (elements.toolbarSettingsSave) {
 
 if (elements.toolbarSettingsReset) {
   elements.toolbarSettingsReset.addEventListener('click', resetToolbarSettings);
+}
+
+document.querySelectorAll('[data-external-link]').forEach((button) => {
+  button.addEventListener('click', async () => {
+    const url = button.dataset.externalLink;
+    if (url) {
+      await window.appBridge.openExternal?.(url);
+    }
+  });
+});
+
+if (elements.settingsStorageClipboard) {
+  elements.settingsStorageClipboard.addEventListener('click', () => {
+    if (!toolbarSettingsDraft) return;
+    toolbarSettingsDraft.exportDefaults.copyToClipboard = true;
+    if (elements.tsExportCopyToClipboard) elements.tsExportCopyToClipboard.checked = true;
+    updateGeneralSettingsControls();
+    setToolbarSettingsDirty(true);
+  });
+}
+
+if (elements.settingsStorageFolder) {
+  elements.settingsStorageFolder.addEventListener('click', () => {
+    if (!toolbarSettingsDraft) return;
+    toolbarSettingsDraft.exportDefaults.copyToClipboard = false;
+    if (elements.tsExportCopyToClipboard) elements.tsExportCopyToClipboard.checked = false;
+    updateGeneralSettingsControls();
+    setToolbarSettingsDirty(true);
+  });
+}
+
+if (elements.settingsBrowseFolder) {
+  elements.settingsBrowseFolder.addEventListener('click', async () => {
+    if (!toolbarSettingsDraft) return;
+    const selected = await window.appBridge.selectDirectory?.();
+    if (selected) {
+      toolbarSettingsDraft.exportDefaults.autoSavePath = selected;
+      toolbarSettingsDraft.exportDefaults.copyToClipboard = false;
+      if (elements.tsExportCopyToClipboard) elements.tsExportCopyToClipboard.checked = false;
+      updateGeneralSettingsControls();
+      setToolbarSettingsDirty(true);
+    }
+  });
 }
 
 window.appBridge.onToolbarSettingsOpen?.(() => {
@@ -942,6 +1052,9 @@ if (elements.collapseBtn && elements.penBar) {
     closeAllPopovers();
     elements.penBar.classList.toggle('collapsed');
     const isCollapsed = elements.penBar.classList.contains('collapsed');
+    if (isCollapsed && appState.clearOnMinimize) {
+      window.appBridge.clearScene?.();
+    }
     elements.collapseBtn.classList.toggle('is-minimized', isCollapsed);
     elements.collapseBtn.title = isCollapsed ? 'Expand toolbar / Drag' : 'Minimize toolbar / Drag';
     elements.collapseBtn.setAttribute('aria-label', isCollapsed ? 'Expand toolbar' : 'Minimize toolbar');
@@ -1335,12 +1448,7 @@ if (elements.whiteboardSubButtons) {
 if (elements.colorChipBtn) {
   elements.colorChipBtn.addEventListener('click', (event) => {
     event.stopPropagation();
-    const colorPopover = document.getElementById('inlineColorSwatches');
-    if (colorPopover) {
-      const wasShow = colorPopover.classList.contains('show');
-      closeAllPopovers();
-      colorPopover.classList.toggle('show', !wasShow);
-    }
+    elements.inlineCustomColorPicker?.click();
   });
 }
 
@@ -1350,7 +1458,6 @@ if (elements.inlineSwatches) {
       event.stopPropagation();
       const color = swatch.dataset.color;
       if (color) {
-        closeAllPopovers();
         await window.appBridge.setColor(color);
       }
     });

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog } = require('electron');
+const { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -40,9 +40,17 @@ const DEFAULT_STATE = {
     autoSavePath: '',
     copyToClipboard: true,
   },
+  rememberContentAfterExit: false,
+  clearOnMinimize: false,
+  startOnLogin: false,
+  checkUpdatesOnStartup: false,
   spotlight: {
     radius: 150,
     alpha: 0.75,
+  },
+  boardViewport: {
+    x: 0,
+    zoom: 1,
   },
   hotkeys: {
     toggleOverlay: 'CommandOrControl+Alt+H',
@@ -146,6 +154,11 @@ function writePersistedState() {
         brushDefaults: state.brushDefaults,
         hotkeys: state.hotkeys,
         exportDefaults: state.exportDefaults,
+        boardViewport: state.boardViewport,
+        rememberContentAfterExit: state.rememberContentAfterExit,
+        clearOnMinimize: state.clearOnMinimize,
+        startOnLogin: state.startOnLogin,
+        checkUpdatesOnStartup: state.checkUpdatesOnStartup,
         desktopPage: {
           annotations: state.backgroundMode === 'transparent' ? annotations : (desktopPage.annotations || [])
         },
@@ -200,11 +213,12 @@ function loadState() {
         ...DEFAULT_STATE.exportDefaults,
         ...(persisted.state.exportDefaults || {}),
       },
+      boardViewport: normalizeBoardViewport(persisted.state.boardViewport),
     };
     state.overlayVisible = true;
-    // Do not restore desktop annotations on startup
+    // Desktop annotations are session-only unless the user opts in.
     desktopPage = {
-      annotations: [],
+      annotations: state.rememberContentAfterExit ? deepClone(persisted.state.desktopPage?.annotations || []) : [],
       undoStack: [],
       redoStack: []
     };
@@ -286,10 +300,12 @@ function getDockSide() {
 }
 
 function getAppState() {
+  state.boardViewport = normalizeBoardViewport(state.boardViewport);
   const payload = deepClone(state);
   payload.currentPageIndex = currentPageIndex;
   payload.totalPages = pages.length;
   payload.dockSide = getDockSide();
+  payload.appVersion = app.getVersion();
   return payload;
 }
 
@@ -517,21 +533,10 @@ function createOverlayWindow(display) {
 
 function createToolbarWindow() {
   const primary = screen.getPrimaryDisplay();
-  const isHorizontal = state.toolbarOrientation === 'horizontal';
-  const toolbarWidth = isHorizontal ? Math.min(760, primary.workArea.width - 10) : 350;
-  const toolbarHeight = isHorizontal ? 350 : Math.min(760, primary.workArea.height - 10);
-  const x = isHorizontal
-    ? Math.round(primary.bounds.x + (primary.bounds.width - toolbarWidth) / 2)
-    : Math.round(primary.bounds.x + primary.bounds.width - toolbarWidth - 20);
-  const y = isHorizontal
-    ? Math.max(primary.bounds.y + 20, primary.workArea.y + 12)
-    : Math.round(primary.bounds.y + Math.max(20, (primary.bounds.height - toolbarHeight) / 2));
+  const toolbarBounds = getToolbarWindowBounds(primary);
 
   toolbarWindow = new BrowserWindow({
-    x,
-    y,
-    width: toolbarWidth,
-    height: toolbarHeight,
+    ...toolbarBounds,
     transparent: true,
     frame: false,
     resizable: false,
@@ -598,6 +603,48 @@ function createToolbarWindow() {
     }
     broadcastState();
   });
+}
+
+function getToolbarWindowBounds(display = screen.getPrimaryDisplay()) {
+  const isHorizontal = state.toolbarOrientation === 'horizontal';
+  const width = isHorizontal
+    ? Math.min(820, display.workArea.width - 10)
+    : Math.min(430, Math.max(350, display.workArea.width - 10));
+  const height = isHorizontal ? 350 : Math.min(760, display.workArea.height - 10);
+  const x = isHorizontal
+    ? Math.round(display.bounds.x + (display.bounds.width - width) / 2)
+    : Math.round(display.bounds.x + display.bounds.width - width - 20);
+  const y = isHorizontal
+    ? Math.max(display.bounds.y + 20, display.workArea.y + 12)
+    : Math.round(display.bounds.y + Math.max(20, (display.bounds.height - height) / 2));
+  return { x, y, width, height };
+}
+
+function ensureToolbarWindowCapacity() {
+  if (!toolbarWindow || toolbarWindow.isDestroyed()) return;
+  const current = toolbarWindow.getBounds();
+  const display = screen.getDisplayMatching(current) || screen.getPrimaryDisplay();
+  const target = getToolbarWindowBounds(display);
+  if (state.toolbarOrientation === 'horizontal') {
+    if (current.width < target.width || current.height < target.height) {
+      toolbarWindow.setBounds({
+        x: Math.max(display.workArea.x, current.x - Math.max(0, target.width - current.width) / 2),
+        y: current.y,
+        width: Math.max(current.width, target.width),
+        height: Math.max(current.height, target.height),
+      });
+    }
+    return;
+  }
+  if (current.width < target.width) {
+    const rightEdge = current.x + current.width;
+    toolbarWindow.setBounds({
+      x: rightEdge - target.width,
+      y: current.y,
+      width: target.width,
+      height: current.height,
+    });
+  }
 }
 
 function createSettingsWindow() {
@@ -784,6 +831,25 @@ function setBoardColor(color) {
   broadcastScene();
 }
 
+function normalizeBoardViewport(viewport = {}) {
+  const x = Number(viewport.x);
+  const zoom = Number(viewport.zoom);
+  return {
+    x: Number.isFinite(x) ? Math.max(0, Math.round(x)) : 0,
+    zoom: Number.isFinite(zoom) ? Math.max(0.35, Math.min(3, Math.round(zoom * 100) / 100)) : 1,
+  };
+}
+
+function setBoardViewport(viewport = {}) {
+  state.boardViewport = normalizeBoardViewport({
+    ...state.boardViewport,
+    ...(viewport || {}),
+  });
+  broadcastState();
+  broadcastScene();
+  return getAppState();
+}
+
 function setClickHalo(enabled) {
   state.clickHalo = Boolean(enabled);
   broadcastState();
@@ -873,20 +939,7 @@ function setTool(tool) {
 function setToolbarOrientation(orientation) {
   state.toolbarOrientation = orientation === 'horizontal' ? 'horizontal' : 'vertical';
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
-    const primary = screen.getPrimaryDisplay();
-    if (state.toolbarOrientation === 'horizontal') {
-      const width = Math.min(760, primary.workArea.width - 10);
-      const height = 350;
-      const x = Math.round(primary.bounds.x + (primary.bounds.width - width) / 2);
-      const y = Math.max(primary.bounds.y + 20, primary.workArea.y + 12);
-      toolbarWindow.setBounds({ x, y, width, height });
-    } else {
-      const width = 350;
-      const height = Math.min(760, primary.workArea.height - 10);
-      const x = Math.round(primary.bounds.x + primary.bounds.width - width - 20);
-      const y = Math.round(primary.bounds.y + Math.max(20, (primary.bounds.height - height) / 2));
-      toolbarWindow.setBounds({ x, y, width, height });
-    }
+    toolbarWindow.setBounds(getToolbarWindowBounds(screen.getPrimaryDisplay()));
   }
   writePersistedState();
   broadcastState();
@@ -1020,6 +1073,7 @@ function setPage(index) {
     pages.push({ annotations: [], undoStack: [], redoStack: [] });
   }
   currentPageIndex = target;
+  state.boardViewport = normalizeBoardViewport({ ...state.boardViewport, x: 0 });
   const page = pages[currentPageIndex];
   annotations = page.annotations || [];
   undoStack = page.undoStack || [];
@@ -1197,6 +1251,7 @@ function newSession() {
   autoArchiveCurrentSession();
   pages = [{ annotations: [], undoStack: [], redoStack: [] }];
   currentPageIndex = 0;
+  state.boardViewport = { x: 0, zoom: 1 };
   if (state.backgroundMode === 'transparent') {
     desktopPage = { annotations: [], undoStack: [], redoStack: [] };
     annotations = desktopPage.annotations;
@@ -1213,10 +1268,7 @@ function newSession() {
 }
 
 async function exportPdf() {
-  const win = overlayWindows.values().next().value;
-  if (!win || win.isDestroyed()) {
-    return { ok: false, error: 'No active window to export' };
-  }
+  syncPageStore();
 
   const { filePath, canceled } = await showModalDialog('save', {
     title: 'Export Document as PDF',
@@ -1228,18 +1280,215 @@ async function exportPdf() {
   });
   if (canceled || !filePath) return { ok: false };
 
+  const display = screen.getPrimaryDisplay();
+  const bounds = display.bounds || { x: 0, y: 0, width: 1280, height: 720 };
+  const exportPages = state.backgroundMode && state.backgroundMode !== 'transparent'
+    ? pages.map((page) => page.annotations || [])
+    : [annotations || []];
+  const html = buildPdfExportHtml({
+    pages: exportPages,
+    bounds,
+    backgroundMode: state.backgroundMode || 'whiteboard',
+    boardColor: state.boardColor,
+  });
+  let pdfWindow = null;
   try {
-    const pdfData = await win.webContents.printToPDF({
+    pdfWindow = new BrowserWindow({
+      show: false,
+      width: Math.max(800, bounds.width),
+      height: Math.max(600, bounds.height),
+      webPreferences: {
+        sandbox: true,
+        nodeIntegration: false,
+        contextIsolation: true,
+      },
+    });
+    await pdfWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`);
+    const pdfData = await pdfWindow.webContents.printToPDF({
       printBackground: true,
       pageSize: 'A4',
-      landscape: true
+      landscape: true,
+      margins: {
+        marginType: 'none',
+      },
     });
     fs.writeFileSync(filePath, pdfData);
     return { ok: true, filePath };
   } catch (err) {
     console.error('Failed to export PDF:', err);
     return { ok: false, error: err.message };
+  } finally {
+    if (pdfWindow && !pdfWindow.isDestroyed()) {
+      pdfWindow.destroy();
+    }
   }
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function normalizeSvgColor(value, fallback = '#ff5a5f') {
+  return typeof value === 'string' && value.trim() ? value : fallback;
+}
+
+function toPdfPoint(point, bounds) {
+  return {
+    x: Number(point?.x || 0) - bounds.x,
+    y: Number(point?.y || 0) - bounds.y,
+  };
+}
+
+function getPdfPageBounds(pageAnnotations, baseBounds) {
+  const baseX = Number(baseBounds.x || 0);
+  const baseY = Number(baseBounds.y || 0);
+  const baseWidth = Math.max(1, Number(baseBounds.width || 1280));
+  const baseHeight = Math.max(1, Number(baseBounds.height || 720));
+  let maxRight = baseX + baseWidth;
+  const margin = 80;
+
+  const includePoint = (point, extra = 0) => {
+    if (!point) return;
+    const x = Number(point.x);
+    if (Number.isFinite(x)) {
+      maxRight = Math.max(maxRight, x + extra);
+    }
+  };
+
+  for (const stroke of pageAnnotations || []) {
+    const extra = Math.max(12, Number(stroke?.width || 0) / 2);
+    if (stroke?.tool === 'text' || stroke?.tool === 'image') {
+      includePoint({ x: stroke.x + Number(stroke.width || (stroke.tool === 'image' ? 400 : 200)) }, margin);
+      continue;
+    }
+    if (stroke?.tool === 'shapes' || stroke?.shapeType) {
+      includePoint(stroke.start, extra + margin);
+      includePoint(stroke.end, extra + margin);
+    }
+    if (Array.isArray(stroke?.points)) {
+      for (const point of stroke.points) {
+        includePoint(point, extra + margin);
+      }
+    }
+  }
+
+  return {
+    x: baseX,
+    y: baseY,
+    width: Math.max(baseWidth, Math.ceil(maxRight - baseX)),
+    height: baseHeight,
+  };
+}
+
+function renderPdfBackground(mode, color, width, height) {
+  const bg = normalizeSvgColor(color, mode === 'blackboard' ? '#18181c' : '#ffffff');
+  const parts = [`<rect x="0" y="0" width="${width}" height="${height}" fill="${escapeHtml(bg)}"/>`];
+  if (mode === 'grid') {
+    for (let x = 0; x <= width; x += 28) parts.push(`<line x1="${x}" y1="0" x2="${x}" y2="${height}" stroke="#e0e0e8" stroke-width="1"/>`);
+    for (let y = 0; y <= height; y += 28) parts.push(`<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="#e0e0e8" stroke-width="1"/>`);
+  } else if (mode === 'ruled') {
+    for (let y = 40; y <= height; y += 32) parts.push(`<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`);
+    parts.push(`<line x1="80" y1="0" x2="80" y2="${height}" stroke="#f87171" stroke-width="1"/>`);
+  } else if (mode === 'staff') {
+    for (let y = 60; y <= height; y += 140) {
+      for (let i = 0; i < 5; i += 1) {
+        const sy = y + i * 14;
+        parts.push(`<line x1="0" y1="${sy}" x2="${width}" y2="${sy}" stroke="#cbd5e1" stroke-width="1.5"/>`);
+      }
+    }
+  }
+  return parts.join('');
+}
+
+function renderPdfStroke(stroke, bounds) {
+  if (!stroke || stroke.tool === 'eraser') return '';
+  const color = escapeHtml(normalizeSvgColor(stroke.color));
+  const width = Math.max(1, Number(stroke.width || 4));
+  const opacity = typeof stroke.opacity === 'number' ? Math.max(0, Math.min(1, stroke.opacity)) : 1;
+
+  if (stroke.tool === 'text') {
+    const pt = toPdfPoint({ x: stroke.x, y: stroke.y }, bounds);
+    const lines = String(stroke.text || '').split(/\r?\n/);
+    const fontSizeMatch = String(stroke.font || '').match(/(\d+(?:\.\d+)?)px/);
+    const fontSize = fontSizeMatch ? Number(fontSizeMatch[1]) : 22;
+    const tspans = lines.map((line, index) => `<tspan x="${pt.x}" dy="${index === 0 ? fontSize : fontSize * 1.25}">${escapeHtml(line)}</tspan>`).join('');
+    return `<text x="${pt.x}" y="${pt.y + fontSize}" fill="${color}" opacity="${opacity}" font-family="Segoe UI, sans-serif" font-size="${fontSize}" font-weight="700">${tspans}</text>`;
+  }
+
+  if (stroke.tool === 'image' && stroke.dataUrl) {
+    const pt = toPdfPoint({ x: stroke.x, y: stroke.y }, bounds);
+    const w = Number(stroke.width || 400);
+    const h = Number(stroke.height || 300);
+    return `<image href="${escapeHtml(stroke.dataUrl)}" x="${pt.x}" y="${pt.y}" width="${w}" height="${h}" opacity="${opacity}"/>`;
+  }
+
+  if (stroke.tool === 'shapes' || stroke.shapeType) {
+    const start = toPdfPoint(stroke.start || stroke.points?.[0] || { x: 0, y: 0 }, bounds);
+    const end = toPdfPoint(stroke.end || stroke.points?.[stroke.points.length - 1] || start, bounds);
+    const shapeType = stroke.shapeType || 'rectangle';
+    const x = Math.min(start.x, end.x);
+    const y = Math.min(start.y, end.y);
+    const w = Math.abs(end.x - start.x);
+    const h = Math.abs(end.y - start.y);
+    const common = `fill="none" stroke="${color}" stroke-width="${width}" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round"`;
+    if (shapeType === 'circle') return `<ellipse cx="${x + w / 2}" cy="${y + h / 2}" rx="${w / 2}" ry="${h / 2}" ${common}/>`;
+    if (shapeType === 'line') return `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" ${common}/>`;
+    if (shapeType === 'triangle') return `<polygon points="${start.x},${end.y} ${x + w / 2},${start.y} ${end.x},${end.y}" ${common}/>`;
+    if (shapeType === 'arrow') {
+      const angle = Math.atan2(end.y - start.y, end.x - start.x);
+      const head = Math.max(12, width * 3);
+      const ax1 = end.x - head * Math.cos(angle - Math.PI / 6);
+      const ay1 = end.y - head * Math.sin(angle - Math.PI / 6);
+      const ax2 = end.x - head * Math.cos(angle + Math.PI / 6);
+      const ay2 = end.y - head * Math.sin(angle + Math.PI / 6);
+      return `<g ${common}><line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}"/><line x1="${end.x}" y1="${end.y}" x2="${ax1}" y2="${ay1}"/><line x1="${end.x}" y1="${end.y}" x2="${ax2}" y2="${ay2}"/></g>`;
+    }
+    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" ${common}/>`;
+  }
+
+  if (!Array.isArray(stroke.points) || stroke.points.length === 0) return '';
+  const points = stroke.points.map((point) => {
+    const pt = toPdfPoint(point, bounds);
+    return `${pt.x},${pt.y}`;
+  }).join(' ');
+  return `<polyline points="${points}" fill="none" stroke="${color}" stroke-width="${width}" opacity="${opacity}" stroke-linecap="round" stroke-linejoin="round"/>`;
+}
+
+function buildPdfExportHtml({ pages: pdfPages, bounds, backgroundMode, boardColor }) {
+  const mode = backgroundMode === 'transparent' ? 'whiteboard' : backgroundMode;
+  const pageHtml = (pdfPages.length ? pdfPages : [[]]).map((pageAnnotations, index) => {
+    const pageBounds = getPdfPageBounds(pageAnnotations, bounds);
+    const width = Math.max(1, Math.round(pageBounds.width || 1280));
+    const height = Math.max(1, Math.round(pageBounds.height || 720));
+    const strokes = (pageAnnotations || []).map((stroke) => renderPdfStroke(stroke, pageBounds)).join('');
+    return `
+      <section class="pdf-page" aria-label="Page ${index + 1}">
+        <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          ${renderPdfBackground(mode, boardColor, width, height)}
+          ${strokes}
+        </svg>
+      </section>`;
+  }).join('');
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    @page { size: A4 landscape; margin: 0; }
+    html, body { margin: 0; padding: 0; background: #fff; }
+    .pdf-page { width: 297mm; height: 210mm; page-break-after: always; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; }
+    .pdf-page:last-child { page-break-after: auto; }
+    svg { width: 100%; height: 100%; display: block; }
+  </style>
+</head>
+<body>${pageHtml}</body>
+</html>`;
 }
 
 function pointDistance(ax, ay, bx, by) {
@@ -1697,6 +1946,11 @@ function normalizeSettingsPayload(payload = {}) {
     brushDefaults: normalizeBrushDefaults(payload.brushDefaults),
     hotkeys: normalizeHotkeys(payload.hotkeys),
     exportDefaults: normalizeExportDefaults(payload.exportDefaults),
+    clickHalo: typeof payload.clickHalo === 'boolean' ? payload.clickHalo : state.clickHalo,
+    rememberContentAfterExit: typeof payload.rememberContentAfterExit === 'boolean' ? payload.rememberContentAfterExit : state.rememberContentAfterExit,
+    clearOnMinimize: typeof payload.clearOnMinimize === 'boolean' ? payload.clearOnMinimize : state.clearOnMinimize,
+    startOnLogin: typeof payload.startOnLogin === 'boolean' ? payload.startOnLogin : state.startOnLogin,
+    checkUpdatesOnStartup: typeof payload.checkUpdatesOnStartup === 'boolean' ? payload.checkUpdatesOnStartup : state.checkUpdatesOnStartup,
   };
 }
 
@@ -1704,17 +1958,36 @@ function applySettingsPayload(payload = {}) {
   const previousBrushDefaults = deepClone(state.brushDefaults);
   const previousHotkeys = deepClone(state.hotkeys);
   const previousExportDefaults = deepClone(state.exportDefaults);
+  const previousPreferences = {
+    clickHalo: state.clickHalo,
+    rememberContentAfterExit: state.rememberContentAfterExit,
+    clearOnMinimize: state.clearOnMinimize,
+    startOnLogin: state.startOnLogin,
+    checkUpdatesOnStartup: state.checkUpdatesOnStartup,
+  };
   const normalized = normalizeSettingsPayload(payload);
   state.brushDefaults = normalized.brushDefaults;
   state.exportDefaults = normalized.exportDefaults;
+  state.clickHalo = normalized.clickHalo;
+  state.rememberContentAfterExit = normalized.rememberContentAfterExit;
+  state.clearOnMinimize = normalized.clearOnMinimize;
+  state.startOnLogin = normalized.startOnLogin;
+  state.checkUpdatesOnStartup = normalized.checkUpdatesOnStartup;
   const hotkeyResult = applyHotkeys(normalized.hotkeys);
   if (!hotkeyResult.ok) {
     state.brushDefaults = previousBrushDefaults;
     state.hotkeys = previousHotkeys;
     state.exportDefaults = previousExportDefaults;
+    Object.assign(state, previousPreferences);
     registerShortcuts();
     return hotkeyResult;
   }
+  try {
+    app.setLoginItemSettings({ openAtLogin: state.startOnLogin });
+  } catch (err) {
+    console.error('Failed to update login item settings:', err);
+  }
+  broadcastState();
 
   return {
     ok: true,
@@ -1859,6 +2132,17 @@ ipcMain.handle('app:set-background-mode', (_, mode) => {
 ipcMain.handle('app:set-board-color', (_, color) => {
   setBoardColor(color);
   return getAppState();
+});
+
+ipcMain.handle('app:set-toolbar-settings-open', (_, open) => {
+  if (open) {
+    ensureToolbarWindowCapacity();
+  }
+  return getAppState();
+});
+
+ipcMain.handle('app:set-board-viewport', (_, viewport) => {
+  return setBoardViewport(viewport);
 });
 
 ipcMain.handle('app:set-click-halo', (_, enabled) => {
@@ -2015,6 +2299,14 @@ ipcMain.handle('settings:get', () => {
 
 ipcMain.handle('settings:save', (_, payload) => {
   return applySettingsPayload(payload);
+});
+
+ipcMain.handle('app:open-external', (_, url) => {
+  if (typeof url !== 'string' || !/^https:\/\/(github\.com|rehmanahmad\.pro)(\/|$)/.test(url)) {
+    return { ok: false };
+  }
+  shell.openExternal(url);
+  return { ok: true };
 });
 
 let pendingExportResolve = null;
@@ -2205,6 +2497,11 @@ ipcMain.handle('settings:reset', () => {
     brushDefaults: DEFAULT_STATE.brushDefaults,
     hotkeys: DEFAULT_STATE.hotkeys,
     exportDefaults: DEFAULT_STATE.exportDefaults,
+    clickHalo: DEFAULT_STATE.clickHalo,
+    rememberContentAfterExit: DEFAULT_STATE.rememberContentAfterExit,
+    clearOnMinimize: DEFAULT_STATE.clearOnMinimize,
+    startOnLogin: DEFAULT_STATE.startOnLogin,
+    checkUpdatesOnStartup: DEFAULT_STATE.checkUpdatesOnStartup,
   });
 });
 

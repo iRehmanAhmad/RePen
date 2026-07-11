@@ -29,6 +29,25 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
       </button>
       <div class="board-nav-separator"></div>
+      <div class="board-viewport-group" aria-label="Board View">
+        <button class="board-btn" id="boardPanLeftButton" title="Move Board View Left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/><path d="M21 12H9"/></svg>
+        </button>
+        <button class="board-btn" id="boardPanRightButton" title="Move Board View Right">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/><path d="M3 12h12"/></svg>
+        </button>
+        <button class="board-btn" id="boardZoomOutButton" title="Zoom Out (Ctrl + Mouse Wheel)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6"/></svg>
+        </button>
+        <span id="boardZoomLabel" class="board-zoom-count" title="Board Zoom">100%</span>
+        <button class="board-btn" id="boardZoomInButton" title="Zoom In (Ctrl + Mouse Wheel)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+        </button>
+        <button class="board-btn" id="boardZoomResetButton" title="Reset Board View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v6h6"/></svg>
+        </button>
+      </div>
+      <div class="board-nav-separator"></div>
       <div class="board-pattern-group" aria-label="Board Patterns">
         <button class="board-btn pattern-btn" data-pattern="whiteboard" title="Plain Whiteboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="14" x="3" y="3" rx="2" fill="#ffffff" stroke="#ccc"/></svg></button>
         <button class="board-btn pattern-btn" data-pattern="blackboard" title="Plain Blackboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="14" x="3" y="3" rx="2" fill="#18181c" stroke="#888"/></svg></button>

@@ -23,6 +23,8 @@ let lastMagnifierUrl = null;
 let lastAutoAdvanceTime = 0;
 let pageToastTimer = null;
 let cleanupScreenshotMode = null;
+const BOARD_MIN_ZOOM = 0.35;
+const BOARD_MAX_ZOOM = 3;
 
 function cancelScreenshotMode(notifyMain = true) {
   if (typeof cleanupScreenshotMode === 'function') {
@@ -81,6 +83,11 @@ function setupBoardNav() {
   const saveBtn = document.getElementById('saveSessionButton');
   const loadBtn = document.getElementById('loadSessionButton');
   const exportPdfBtn = document.getElementById('exportPdfButton');
+  const panLeftBtn = document.getElementById('boardPanLeftButton');
+  const panRightBtn = document.getElementById('boardPanRightButton');
+  const zoomOutBtn = document.getElementById('boardZoomOutButton');
+  const zoomInBtn = document.getElementById('boardZoomInButton');
+  const zoomResetBtn = document.getElementById('boardZoomResetButton');
 
   if (prevBtn) {
     prevBtn.addEventListener('click', (e) => {
@@ -117,6 +124,36 @@ function setupBoardNav() {
     exportPdfBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       window.appBridge?.exportPdf?.();
+    });
+  }
+  if (panLeftBtn) {
+    panLeftBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panBoardByScreen(-window.innerWidth * 0.75);
+    });
+  }
+  if (panRightBtn) {
+    panRightBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panBoardByScreen(window.innerWidth * 0.75);
+    });
+  }
+  if (zoomOutBtn) {
+    zoomOutBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      zoomBoardBy(0.85);
+    });
+  }
+  if (zoomInBtn) {
+    zoomInBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      zoomBoardBy(1.18);
+    });
+  }
+  if (zoomResetBtn) {
+    zoomResetBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setBoardViewport({ x: 0, zoom: 1 });
     });
   }
 
@@ -163,6 +200,26 @@ function setupBoardNav() {
       if (isBoard || !appState?.passThrough) {
         window.appBridge?.pasteImage?.();
       }
+    }
+    const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
+    if (!isBoard || document.activeElement?.tagName === 'TEXTAREA') return;
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === '+' || e.key === '=' ) {
+        e.preventDefault();
+        zoomBoardBy(1.18);
+      } else if (e.key === '-') {
+        e.preventDefault();
+        zoomBoardBy(0.85);
+      } else if (e.key === '0') {
+        e.preventDefault();
+        setBoardViewport({ x: 0, zoom: 1 });
+      }
+    } else if (e.key === 'ArrowRight' && e.shiftKey) {
+      e.preventDefault();
+      panBoardByScreen(window.innerWidth * 0.35);
+    } else if (e.key === 'ArrowLeft' && e.shiftKey) {
+      e.preventDefault();
+      panBoardByScreen(-window.innerWidth * 0.35);
     }
   });
 
@@ -219,6 +276,16 @@ function setupBoardNav() {
   window.addEventListener('wheel', (e) => {
     const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
     if (!isBoard) return;
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      zoomBoardBy(e.deltaY < 0 ? 1.08 : 0.92, e.clientX || window.innerWidth / 2);
+      return;
+    }
+    if (e.shiftKey) {
+      e.preventDefault();
+      panBoardByScreen(e.deltaY || e.deltaX || 0);
+      return;
+    }
     const now = Date.now();
     if (now - lastWheelTime < 350) return;
     if (e.deltaY > 30) {
@@ -235,6 +302,8 @@ function updateBoardNav() {
   const nav = document.getElementById('boardNav');
   const indicator = document.getElementById('pageIndicator');
   const prevBtn = document.getElementById('prevPageButton');
+  const panLeftBtn = document.getElementById('boardPanLeftButton');
+  const zoomLabel = document.getElementById('boardZoomLabel');
   if (!nav) return;
 
   const isBoard = appState && appState.backgroundMode && appState.backgroundMode !== 'transparent';
@@ -270,6 +339,12 @@ function updateBoardNav() {
   if (prevBtn && appState) {
     const current = typeof appState.currentPageIndex === 'number' ? appState.currentPageIndex : 0;
     prevBtn.disabled = current <= 0;
+  }
+  if (panLeftBtn && appState) {
+    panLeftBtn.disabled = getBoardViewport().x <= 0;
+  }
+  if (zoomLabel && appState) {
+    zoomLabel.textContent = `${Math.round(getBoardViewport().zoom * 100)}%`;
   }
 
   if (appState) {
@@ -323,6 +398,53 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${safeAlpha})`;
 }
 
+function isBoardMode() {
+  return !!(appState && appState.backgroundMode && appState.backgroundMode !== 'transparent');
+}
+
+function getBoardViewport() {
+  const viewport = appState?.boardViewport || {};
+  const x = Number(viewport.x);
+  const zoom = Number(viewport.zoom);
+  return {
+    x: Number.isFinite(x) ? Math.max(0, x) : 0,
+    zoom: Number.isFinite(zoom) ? Math.max(BOARD_MIN_ZOOM, Math.min(BOARD_MAX_ZOOM, zoom)) : 1,
+  };
+}
+
+function getRenderScale() {
+  return isBoardMode() ? getBoardViewport().zoom : 1;
+}
+
+function screenToWorldLength(value) {
+  return value / getRenderScale();
+}
+
+function worldToScreenLength(value) {
+  return value * getRenderScale();
+}
+
+function setBoardViewport(viewport) {
+  if (!window.appBridge?.setBoardViewport) return;
+  window.appBridge.setBoardViewport(viewport);
+}
+
+function panBoardByScreen(screenDelta) {
+  const viewport = getBoardViewport();
+  setBoardViewport({
+    x: Math.max(0, viewport.x + screenToWorldLength(screenDelta)),
+    zoom: viewport.zoom,
+  });
+}
+
+function zoomBoardBy(factor, anchorScreenX = window.innerWidth / 2) {
+  const viewport = getBoardViewport();
+  const nextZoom = Math.max(BOARD_MIN_ZOOM, Math.min(BOARD_MAX_ZOOM, viewport.zoom * factor));
+  const anchorWorldX = viewport.x + (anchorScreenX / viewport.zoom);
+  const nextX = Math.max(0, anchorWorldX - (anchorScreenX / nextZoom));
+  setBoardViewport({ x: nextX, zoom: nextZoom });
+}
+
 function scheduleRender() {
   if (renderQueued) {
     return;
@@ -347,6 +469,13 @@ function resizeCanvas() {
 }
 
 function globalToLocal(point) {
+  if (isBoardMode()) {
+    const viewport = getBoardViewport();
+    return {
+      x: (point.x - displayBounds.x - viewport.x) * viewport.zoom,
+      y: (point.y - displayBounds.y) * viewport.zoom,
+    };
+  }
   return {
     x: point.x - displayBounds.x,
     y: point.y - displayBounds.y,
@@ -354,6 +483,13 @@ function globalToLocal(point) {
 }
 
 function localToGlobal(point) {
+  if (isBoardMode()) {
+    const viewport = getBoardViewport();
+    return {
+      x: (point.x / viewport.zoom) + displayBounds.x + viewport.x,
+      y: (point.y / viewport.zoom) + displayBounds.y,
+    };
+  }
   return {
     x: point.x + displayBounds.x,
     y: point.y + displayBounds.y,
@@ -402,6 +538,7 @@ function getBrushStyle() {
 
 function createTextEditor(x, y, existingStroke = null) {
   const brush = getBrushStyle();
+  const scale = getRenderScale();
   const textarea = document.createElement('textarea');
   textarea.style.position = 'fixed';
 
@@ -412,8 +549,8 @@ function createTextEditor(x, y, existingStroke = null) {
     left = spt.x;
     top = spt.y;
     textarea.value = existingStroke.text || '';
-    if (existingStroke.width) textarea.style.width = `${existingStroke.width}px`;
-    if (existingStroke.height) textarea.style.height = `${existingStroke.height}px`;
+    if (existingStroke.width) textarea.style.width = `${worldToScreenLength(existingStroke.width)}px`;
+    if (existingStroke.height) textarea.style.height = `${worldToScreenLength(existingStroke.height)}px`;
   } else {
     textarea.style.left = `${left}px`;
     textarea.style.top = `${top}px`;
@@ -423,7 +560,8 @@ function createTextEditor(x, y, existingStroke = null) {
   textarea.style.left = `${left}px`;
   textarea.style.top = `${top}px`;
   textarea.style.color = existingStroke?.color || brush.color;
-  textarea.style.font = existingStroke?.font || 'bold 22px sans-serif';
+  const baseFont = existingStroke?.font || 'bold 22px sans-serif';
+  textarea.style.font = scale === 1 ? baseFont : baseFont.replace(/(\d+(?:\.\d+)?)px/, (_, size) => `${Number(size) * scale}px`);
   if (mode === 'sticky') {
     textarea.style.background = 'rgba(255, 255, 220, 0.95)';
     textarea.style.border = '2px dashed #666';
@@ -496,8 +634,8 @@ function createTextEditor(x, y, existingStroke = null) {
           ...existingStroke,
           text: text,
           textMode: existingStroke.textMode || appState.textMode || 'plain',
-          width: Math.max(20, textarea.offsetWidth),
-          height: Math.max(30, textarea.offsetHeight)
+          width: Math.max(20, screenToWorldLength(textarea.offsetWidth)),
+          height: Math.max(30, screenToWorldLength(textarea.offsetHeight))
         };
         if (window.appBridge.updateAnnotation) {
           await window.appBridge.updateAnnotation(updated);
@@ -514,8 +652,8 @@ function createTextEditor(x, y, existingStroke = null) {
         text: text,
         x: globalPt.x,
         y: globalPt.y,
-        width: Math.max(20, textarea.offsetWidth),
-        height: Math.max(30, textarea.offsetHeight)
+        width: Math.max(20, screenToWorldLength(textarea.offsetWidth)),
+        height: Math.max(30, screenToWorldLength(textarea.offsetHeight))
       });
     }
     if (textarea.parentNode) textarea.parentNode.removeChild(textarea);
@@ -532,11 +670,12 @@ function createTextEditor(x, y, existingStroke = null) {
 }
 
 function drawStroke(stroke, targetCtx = ctx) {
+  const scale = getRenderScale();
   if (stroke.tool === 'text' && stroke.text) {
     const pt = globalToLocal({ x: stroke.x, y: stroke.y });
     targetCtx.save();
-    const boxW = stroke.width || 200;
-    const boxH = stroke.height || 80;
+    const boxW = worldToScreenLength(stroke.width || 200);
+    const boxH = worldToScreenLength(stroke.height || 80);
     const mode = stroke.textMode || appState.textMode || 'plain';
     if (mode === 'sticky') {
       targetCtx.fillStyle = 'rgba(255, 255, 220, 0.95)';
@@ -546,7 +685,7 @@ function drawStroke(stroke, targetCtx = ctx) {
       targetCtx.fillRect(pt.x, pt.y, boxW, boxH);
       targetCtx.shadowColor = 'transparent';
       targetCtx.strokeStyle = '#e0e0b0';
-      targetCtx.lineWidth = 1;
+      targetCtx.lineWidth = Math.max(1, scale);
       targetCtx.strokeRect(pt.x, pt.y, boxW, boxH);
     } else {
       targetCtx.shadowColor = 'rgba(0, 0, 0, 0.75)';
@@ -556,16 +695,17 @@ function drawStroke(stroke, targetCtx = ctx) {
     }
 
     targetCtx.fillStyle = stroke.color || '#333';
-    targetCtx.font = stroke.font || 'bold 22px sans-serif';
+    const font = stroke.font || 'bold 22px sans-serif';
+    targetCtx.font = scale === 1 ? font : font.replace(/(\d+(?:\.\d+)?)px/, (_, size) => `${Number(size) * scale}px`);
     targetCtx.textBaseline = 'top';
-    const paddingX = mode === 'sticky' ? 10 : 4;
-    const paddingY = mode === 'sticky' ? 10 : 4;
+    const paddingX = (mode === 'sticky' ? 10 : 4) * scale;
+    const paddingY = (mode === 'sticky' ? 10 : 4) * scale;
     const maxLineWidth = Math.max(50, boxW - paddingX * 2);
     const rawLines = stroke.text.split('\n');
     let lineY = pt.y + paddingY;
     for (const rawLine of rawLines) {
       if (!rawLine) {
-        lineY += 26;
+        lineY += 26 * scale;
         continue;
       }
       const words = rawLine.split(' ');
@@ -576,14 +716,14 @@ function drawStroke(stroke, targetCtx = ctx) {
         const metrics = targetCtx.measureText(testLine);
         if (metrics.width > maxLineWidth && currentLine.length > 0) {
           targetCtx.fillText(currentLine, pt.x + paddingX, lineY);
-          lineY += 26;
+          lineY += 26 * scale;
           currentLine = word;
         } else {
           currentLine = testLine;
         }
       }
       targetCtx.fillText(currentLine, pt.x + paddingX, lineY);
-      lineY += 26;
+      lineY += 26 * scale;
     }
     targetCtx.restore();
     return;
@@ -591,8 +731,8 @@ function drawStroke(stroke, targetCtx = ctx) {
 
   if (stroke.tool === 'image' && stroke.dataUrl) {
     const pt = globalToLocal({ x: stroke.x, y: stroke.y });
-    const w = stroke.width || 400;
-    const h = stroke.height || 300;
+    const w = worldToScreenLength(stroke.width || 400);
+    const h = worldToScreenLength(stroke.height || 300);
     if (!stroke._cachedImg || stroke._cachedImgSrc !== stroke.dataUrl) {
       const img = new Image();
       img.src = stroke.dataUrl;
@@ -620,7 +760,7 @@ function drawStroke(stroke, targetCtx = ctx) {
     targetCtx.save();
     targetCtx.globalCompositeOperation = 'source-over';
     targetCtx.strokeStyle = hexToRgba(stroke.color || '#ff5a5f', stroke.opacity || 1);
-    targetCtx.lineWidth = stroke.width || 4;
+    targetCtx.lineWidth = worldToScreenLength(stroke.width || 4);
     targetCtx.lineCap = 'round';
     targetCtx.lineJoin = 'round';
 
@@ -657,7 +797,7 @@ function drawStroke(stroke, targetCtx = ctx) {
       targetCtx.stroke();
 
       const angle = Math.atan2(pEnd.y - pStart.y, pEnd.x - pStart.x);
-      const headLen = Math.max(12, (stroke.width || 4) * 3);
+      const headLen = Math.max(12, worldToScreenLength(stroke.width || 4) * 3);
       targetCtx.beginPath();
       targetCtx.moveTo(pEnd.x, pEnd.y);
       targetCtx.lineTo(pEnd.x - headLen * Math.cos(angle - Math.PI / 6), pEnd.y - headLen * Math.sin(angle - Math.PI / 6));
@@ -678,13 +818,13 @@ function drawStroke(stroke, targetCtx = ctx) {
   targetCtx.globalCompositeOperation = stroke.tool === 'eraser' ? 'destination-out' : 'source-over';
   targetCtx.strokeStyle = hexToRgba(stroke.color, stroke.opacity);
   targetCtx.fillStyle = hexToRgba(stroke.color, stroke.opacity);
-  targetCtx.lineWidth = stroke.width;
+  targetCtx.lineWidth = worldToScreenLength(stroke.width || 4);
   targetCtx.lineCap = 'round';
   targetCtx.lineJoin = 'round';
 
   if (stroke.tool === 'calligraphy' || stroke.brushType === 'calligraphy') {
     const angle = typeof stroke.angle === 'number' ? stroke.angle : Math.PI / 4;
-    const w = stroke.width || 4;
+    const w = worldToScreenLength(stroke.width || 4);
     const offsetX = Math.cos(angle) * (w / 2);
     const offsetY = -Math.sin(angle) * (w / 2);
     
@@ -692,7 +832,7 @@ function drawStroke(stroke, targetCtx = ctx) {
     targetCtx.beginPath();
     targetCtx.moveTo(points[0].x - offsetX, points[0].y - offsetY);
     targetCtx.lineTo(points[0].x + offsetX, points[0].y + offsetY);
-    targetCtx.lineWidth = 1;
+    targetCtx.lineWidth = Math.max(1, scale);
     targetCtx.stroke();
     
     for (let i = 0; i < points.length - 1; i++) {
@@ -713,7 +853,7 @@ function drawStroke(stroke, targetCtx = ctx) {
   if (points.length === 1) {
     const point = points[0];
     targetCtx.beginPath();
-    targetCtx.arc(point.x, point.y, stroke.width / 2, 0, Math.PI * 2);
+    targetCtx.arc(point.x, point.y, worldToScreenLength(stroke.width || 4) / 2, 0, Math.PI * 2);
     targetCtx.fill();
     targetCtx.restore();
     return;
@@ -759,6 +899,8 @@ function render() {
     ctx.save();
     const bg = appState.boardColor || (appState.backgroundMode === 'blackboard' ? '#18181c' : '#ffffff');
     const isDark = isColorDark(bg);
+    const viewport = getBoardViewport();
+    const zoom = viewport.zoom;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, width, height);
 
@@ -766,10 +908,13 @@ function render() {
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : '#e0e0e8';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      for (let x = 0; x < width; x += 28) {
+      const firstX = Math.floor(viewport.x / 28) * 28;
+      for (let worldX = firstX; (worldX - viewport.x) * zoom < width; worldX += 28) {
+        const x = (worldX - viewport.x) * zoom;
         ctx.moveTo(x, 0); ctx.lineTo(x, height);
       }
-      for (let y = 0; y < height; y += 28) {
+      for (let worldY = 0; worldY * zoom < height; worldY += 28) {
+        const y = worldY * zoom;
         ctx.moveTo(0, y); ctx.lineTo(width, y);
       }
       ctx.stroke();
@@ -777,21 +922,23 @@ function render() {
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.18)' : '#e2e8f0';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      for (let y = 40; y < height; y += 32) {
+      for (let worldY = 40; worldY * zoom < height; worldY += 32) {
+        const y = worldY * zoom;
         ctx.moveTo(0, y); ctx.lineTo(width, y);
       }
       ctx.stroke();
       ctx.strokeStyle = '#f87171';
       ctx.beginPath();
-      ctx.moveTo(80, 0); ctx.lineTo(80, height);
+      const marginX = (80 - viewport.x) * zoom;
+      ctx.moveTo(marginX, 0); ctx.lineTo(marginX, height);
       ctx.stroke();
     } else if (appState.backgroundMode === 'staff') {
       ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.25)' : '#cbd5e1';
       ctx.lineWidth = 1.5;
-      for (let y = 60; y < height; y += 140) {
+      for (let worldY = 60; worldY * zoom < height; worldY += 140) {
         ctx.beginPath();
         for (let i = 0; i < 5; i++) {
-          const sy = y + i * 14;
+          const sy = (worldY + i * 14) * zoom;
           ctx.moveTo(0, sy); ctx.lineTo(width, sy);
         }
         ctx.stroke();
@@ -1041,10 +1188,12 @@ function getSelectionBoundingBox(ids) {
     if (ids.includes(stroke.id)) {
       if (stroke.tool === 'text' || stroke.tool === 'image') {
         const pt = globalToLocal({ x: stroke.x, y: stroke.y });
+        const boxW = worldToScreenLength(stroke.width || (stroke.tool === 'image' ? 400 : 200));
+        const boxH = worldToScreenLength(stroke.height || (stroke.tool === 'image' ? 300 : 80));
         minX = Math.min(minX, pt.x - 4);
         minY = Math.min(minY, pt.y - 4);
-        maxX = Math.max(maxX, pt.x + (stroke.width || (stroke.tool === 'image' ? 400 : 200)) + 4);
-        maxY = Math.max(maxY, pt.y + (stroke.height || (stroke.tool === 'image' ? 300 : 80)) + 4);
+        maxX = Math.max(maxX, pt.x + boxW + 4);
+        maxY = Math.max(maxY, pt.y + boxH + 4);
       } else if (stroke.tool === 'shapes' || stroke.shapeType) {
         const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
         const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
@@ -1518,8 +1667,8 @@ canvas.addEventListener('pointerdown', (event) => {
       const stroke = scene.annotations[i];
       if (stroke.tool === 'text') {
         const spt = globalToLocal({ x: stroke.x, y: stroke.y });
-        const w = stroke.width || 200;
-        const h = stroke.height || 80;
+        const w = worldToScreenLength(stroke.width || 200);
+        const h = worldToScreenLength(stroke.height || 80);
         if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
           isDraggingText = {
             stroke: stroke,
@@ -1572,8 +1721,8 @@ canvas.addEventListener('pointerdown', (event) => {
       const stroke = scene.annotations[i];
       if (stroke.tool === 'text' || stroke.tool === 'image') {
         const spt = globalToLocal({ x: stroke.x, y: stroke.y });
-        const w = stroke.width || (stroke.tool === 'image' ? 400 : 200);
-        const h = stroke.height || (stroke.tool === 'image' ? 300 : 80);
+        const w = worldToScreenLength(stroke.width || (stroke.tool === 'image' ? 400 : 200));
+        const h = worldToScreenLength(stroke.height || (stroke.tool === 'image' ? 300 : 80));
         if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
           clickedId = stroke.id;
           break;
@@ -1693,8 +1842,8 @@ canvas.addEventListener('pointermove', (event) => {
   }
 
   if (isDraggingSelection && selectedIds.length > 0) {
-    const dx = event.offsetX - dragStartX;
-    const dy = event.offsetY - dragStartY;
+    const dx = screenToWorldLength(event.offsetX - dragStartX);
+    const dy = screenToWorldLength(event.offsetY - dragStartY);
     for (const stroke of scene.annotations) {
       if (selectedIds.includes(stroke.id)) {
         if (stroke.tool === 'text' || stroke.tool === 'image') {
@@ -1721,9 +1870,11 @@ canvas.addEventListener('pointermove', (event) => {
   }
 
   if (isDraggingText) {
-    const dx = event.offsetX - isDraggingText.startX;
-    const dy = event.offsetY - isDraggingText.startY;
-    if (Math.hypot(dx, dy) > 3 || isDraggingText.hasMoved) {
+    const screenDx = event.offsetX - isDraggingText.startX;
+    const screenDy = event.offsetY - isDraggingText.startY;
+    const dx = screenToWorldLength(screenDx);
+    const dy = screenToWorldLength(screenDy);
+    if (Math.hypot(screenDx, screenDy) > 3 || isDraggingText.hasMoved) {
       isDraggingText.hasMoved = true;
       isDraggingText.stroke.x += dx;
       isDraggingText.stroke.y += dy;
@@ -1741,8 +1892,8 @@ canvas.addEventListener('pointermove', (event) => {
       for (const stroke of scene.annotations) {
         if (stroke.tool === 'text' || stroke.tool === 'image') {
           const spt = globalToLocal({ x: stroke.x, y: stroke.y });
-          const w = stroke.width || (stroke.tool === 'image' ? 400 : 200);
-          const h = stroke.height || (stroke.tool === 'image' ? 300 : 80);
+          const w = worldToScreenLength(stroke.width || (stroke.tool === 'image' ? 400 : 200));
+          const h = worldToScreenLength(stroke.height || (stroke.tool === 'image' ? 300 : 80));
           if (event.offsetX >= spt.x && event.offsetX <= spt.x + w && event.offsetY >= spt.y && event.offsetY <= spt.y + h) {
             overText = true;
             break;
@@ -1797,7 +1948,12 @@ canvas.addEventListener('pointerup', async (event) => {
         let box = null;
         if (stroke.tool === 'text' || stroke.tool === 'image') {
           const pt = globalToLocal({ x: stroke.x, y: stroke.y });
-          box = { minX: pt.x, minY: pt.y, maxX: pt.x + (stroke.width || (stroke.tool === 'image' ? 400 : 200)), maxY: pt.y + (stroke.height || (stroke.tool === 'image' ? 300 : 80)) };
+          box = {
+            minX: pt.x,
+            minY: pt.y,
+            maxX: pt.x + worldToScreenLength(stroke.width || (stroke.tool === 'image' ? 400 : 200)),
+            maxY: pt.y + worldToScreenLength(stroke.height || (stroke.tool === 'image' ? 300 : 80))
+          };
         } else if (stroke.tool === 'shapes' || stroke.shapeType) {
           const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
           const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
@@ -1894,8 +2050,8 @@ canvas.addEventListener('dblclick', (event) => {
     const stroke = scene.annotations[i];
     if (stroke.tool === 'text') {
       const spt = globalToLocal({ x: stroke.x, y: stroke.y });
-      const w = stroke.width || 200;
-      const h = stroke.height || 80;
+      const w = worldToScreenLength(stroke.width || 200);
+      const h = worldToScreenLength(stroke.height || 80);
       if (pt.x >= spt.x && pt.x <= spt.x + w && pt.y >= spt.y && pt.y <= spt.y + h) {
         createTextEditor(event.clientX, event.clientY, stroke);
         break;

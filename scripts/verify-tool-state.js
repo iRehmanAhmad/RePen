@@ -2,12 +2,16 @@ const fs = require('fs');
 const path = require('path');
 
 const toolbarHtmlPath = path.join(__dirname, '../src/renderer/toolbar.html');
+const overlayHtmlPath = path.join(__dirname, '../src/renderer/overlay.html');
 const mainPath = path.join(__dirname, '../main.js');
 const toolbarJsPath = path.join(__dirname, '../src/renderer/toolbar.js');
+const preloadPath = path.join(__dirname, '../src/preload.js');
 
 const htmlContent = fs.readFileSync(toolbarHtmlPath, 'utf8');
+const overlayHtmlContent = fs.readFileSync(overlayHtmlPath, 'utf8');
 const mainContent = fs.readFileSync(mainPath, 'utf8');
 const toolbarJsContent = fs.readFileSync(toolbarJsPath, 'utf8');
+const preloadContent = fs.readFileSync(preloadPath, 'utf8');
 
 // Extract all data-tool="..." and data-subtool="..." attributes in toolbar.html
 const toolRegex = /data-(?:tool|subtool)=['"]([^'"]+)['"]/g;
@@ -91,6 +95,57 @@ if (!/segmentToSegmentDistance/.test(mainContent)) {
   hasError = true;
 } else {
   console.log('[PASS] main.js uses segmentToSegmentDistance for accurate erasing');
+}
+
+const exportPdfMatch = mainContent.match(/async\s+function\s+exportPdf\s*\([^)]*\)\s*\{([\s\S]*?)\n\}/);
+const exportPdfBody = exportPdfMatch ? exportPdfMatch[1] : '';
+if (!/syncPageStore\(\)/.test(exportPdfBody) || !/pages\.map/.test(exportPdfBody) || !/buildPdfExportHtml/.test(exportPdfBody)) {
+  console.error('[FAIL] exportPdf() must export all stored notebook pages via a dedicated PDF render document');
+  hasError = true;
+} else {
+  console.log('[PASS] exportPdf() exports stored notebook pages through a dedicated render document');
+}
+
+if (/async\s+function\s+exportPdf\s*\([^)]*\)\s*\{[\s\S]*overlayWindows[\s\S]*printToPDF/.test(mainContent)) {
+  console.error('[FAIL] exportPdf() must not print the live overlay window because it captures only the visible page and UI controls');
+  hasError = true;
+} else {
+  console.log('[PASS] exportPdf() avoids printing the live overlay window');
+}
+
+if (!/function\s+getPdfPageBounds\s*\([^)]*\)\s*\{[\s\S]*maxRight[\s\S]*pageAnnotations[\s\S]*width:\s*Math\.max/.test(mainContent) || !/buildPdfExportHtml[\s\S]*getPdfPageBounds\(pageAnnotations,\s*bounds\)/.test(mainContent)) {
+  console.error('[FAIL] PDF export must widen each page from its annotation extents so right-side board drawings are not clipped');
+  hasError = true;
+} else {
+  console.log('[PASS] PDF export expands each page to include right-side board drawings');
+}
+
+if (!/boardViewport:\s*\{[\s\S]*x:\s*0[\s\S]*zoom:\s*1/.test(mainContent) || !/function\s+normalizeBoardViewport/.test(mainContent) || !/ipcMain\.handle\(['"]app:set-board-viewport['"]/.test(mainContent)) {
+  console.error('[FAIL] main.js must own a clamped boardViewport state and IPC setter for board pan/zoom');
+  hasError = true;
+} else {
+  console.log('[PASS] main.js owns clamped board viewport state');
+}
+
+if (!/setBoardViewport:\s*\(viewport\)\s*=>\s*ipcRenderer\.invoke\(['"]app:set-board-viewport['"]/.test(preloadContent)) {
+  console.error('[FAIL] preload.js must expose setBoardViewport() to the overlay');
+  hasError = true;
+} else {
+  console.log('[PASS] preload.js exposes board viewport IPC');
+}
+
+if (!/function\s+globalToLocal\s*\([^)]*\)\s*\{[\s\S]*getBoardViewport\(\)[\s\S]*viewport\.zoom/.test(overlayContent) || !/function\s+localToGlobal\s*\([^)]*\)\s*\{[\s\S]*getBoardViewport\(\)[\s\S]*viewport\.zoom/.test(overlayContent)) {
+  console.error('[FAIL] overlay.js must map board coordinates through boardViewport for infinite-right drawing');
+  hasError = true;
+} else {
+  console.log('[PASS] overlay.js maps board drawing through boardViewport');
+}
+
+if (!/id=["']boardPanRightButton["']/.test(overlayHtmlContent) || !/id=["']boardZoomInButton["']/.test(overlayHtmlContent)) {
+  console.error('[FAIL] overlay.html must provide compact pan and zoom controls in the board toolbar');
+  hasError = true;
+} else {
+  console.log('[PASS] overlay.html provides compact board pan/zoom controls');
 }
 
 if (!/broadcastState\(\);\s*updateOverlayIgnoreMouse\(\);/.test(mainContent)) {

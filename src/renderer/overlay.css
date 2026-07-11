@@ -209,6 +209,20 @@ body {
   pointer-events: none;
 }
 
+.board-viewport-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.board-zoom-count {
+  min-width: 44px;
+  text-align: center;
+  color: #f8fafc;
+  font: 600 11px/1 "Segoe UI", sans-serif;
+  opacity: 0.9;
+}
+
 @media print {
   #boardNav, .board-nav {
     display: none !important;

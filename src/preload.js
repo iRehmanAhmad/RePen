@@ -19,8 +19,10 @@ contextBridge.exposeInMainWorld('appBridge', {
   setPassThrough: (enabled) => ipcRenderer.invoke('app:set-pass-through', enabled),
   setBackgroundMode: (mode) => ipcRenderer.invoke('app:set-background-mode', mode),
   setBoardColor: (color) => ipcRenderer.invoke('app:set-board-color', color),
+  setBoardViewport: (viewport) => ipcRenderer.invoke('app:set-board-viewport', viewport),
   setClickHalo: (enabled) => ipcRenderer.invoke('app:set-click-halo', enabled),
   setExportBg: (enabled) => ipcRenderer.invoke('app:set-export-bg', enabled),
+  openExternal: (url) => ipcRenderer.invoke('app:open-external', url),
   toggleVisibility: (forceValue) => ipcRenderer.invoke('app:toggle-visibility', forceValue),
   setColor: (color) => ipcRenderer.invoke('app:set-color', color),
   setWidth: (width) => ipcRenderer.invoke('app:set-width', width),
@@ -53,4 +55,5 @@ contextBridge.exposeInMainWorld('appBridge', {
   moveToolbar: (dx, dy) => ipcRenderer.send('app:move-toolbar', dx, dy),
   pasteImage: () => ipcRenderer.invoke('app:paste-image'),
   setToolbarHover: (hovered) => ipcRenderer.invoke('app:set-toolbar-hover', hovered),
+  setToolbarSettingsOpen: (open) => ipcRenderer.invoke('app:set-toolbar-settings-open', open),
 });

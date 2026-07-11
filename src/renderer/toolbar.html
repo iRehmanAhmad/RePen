@@ -193,19 +193,22 @@
 
           <div class="divider"></div>
 
-          <!-- 12. Current Color Chip + Quiet Palette -->
-          <div class="grouped-tool-container" id="colorContainer">
-            <button class="tool-button icon-tool grouped-main-btn color-chip-btn" id="colorChipBtn" title="Color Palette">
+          <!-- 12. Bottom Color Grid -->
+          <div class="grouped-tool-container color-grid-container" id="colorContainer">
+            <button class="color-current-btn" id="colorChipBtn" title="Pick Custom Color">
               <span class="current-color-chip" id="currentColorChip" style="background-color: #ff5a5f;"></span>
-              <span class="group-indicator" aria-hidden="true"></span>
             </button>
-            <div class="grouped-popover palette-popover" id="inlineColorSwatches" aria-label="Quick Color Palette">
+            <div class="bottom-color-grid" id="inlineColorSwatches" aria-label="Quick Color Palette">
               <div class="swatch-grid">
                 <button class="swatch-btn active" data-color="#ff5a5f" style="background-color: #ff5a5f;" title="Coral Red"></button>
+                <button class="swatch-btn" data-color="#f97316" style="background-color: #f97316;" title="Orange"></button>
                 <button class="swatch-btn" data-color="#ffe36d" style="background-color: #ffe36d;" title="Lemon Yellow"></button>
                 <button class="swatch-btn" data-color="#00d26a" style="background-color: #00d26a;" title="Emerald Green"></button>
+                <button class="swatch-btn" data-color="#22d3ee" style="background-color: #22d3ee;" title="Cyan"></button>
                 <button class="swatch-btn" data-color="#3b82f6" style="background-color: #3b82f6;" title="Electric Blue"></button>
+                <button class="swatch-btn" data-color="#a855f7" style="background-color: #a855f7;" title="Purple"></button>
                 <button class="swatch-btn" data-color="#ffffff" style="background-color: #ffffff;" title="White"></button>
+                <button class="swatch-btn" data-color="#111827" style="background-color: #111827;" title="Ink Black"></button>
                 <label class="custom-swatch-picker swatch-btn" title="Pick Custom Color">
                   <span class="custom-plus">+</span>
                   <input type="color" id="inlineCustomColorPicker" value="#ff5a5f">
@@ -219,8 +222,8 @@
       <aside class="toolbar-settings-panel" id="toolbarSettingsPanel" aria-hidden="true">
         <header class="toolbar-settings-head">
           <div>
-            <h2>Settings</h2>
-            <p>Toolbar-attached controls</p>
+            <h2>RePen</h2>
+            <p>Release settings</p>
           </div>
           <button class="settings-close-btn" id="toolbarSettingsClose" type="button" aria-label="Close settings">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -228,13 +231,116 @@
         </header>
 
         <nav class="toolbar-settings-tabs" aria-label="Settings tabs">
-          <button class="toolbar-settings-tab active" type="button" data-settings-tab="brush">Brush</button>
-          <button class="toolbar-settings-tab" type="button" data-settings-tab="export">Export</button>
-          <button class="toolbar-settings-tab" type="button" data-settings-tab="hotkeys">Keys</button>
+          <button class="toolbar-settings-tab active" type="button" data-settings-tab="general">General</button>
+          <button class="toolbar-settings-tab" type="button" data-settings-tab="customize">Customize</button>
+          <button class="toolbar-settings-tab" type="button" data-settings-tab="hotkeys">Shortcuts</button>
+          <button class="toolbar-settings-tab" type="button" data-settings-tab="about">About</button>
+          <button class="toolbar-settings-tab" type="button" data-settings-tab="help">Help</button>
         </nav>
 
         <section class="toolbar-settings-body">
-          <div class="toolbar-settings-page active" data-settings-page="brush">
+          <div class="toolbar-settings-page active" data-settings-page="general">
+            <article class="settings-mini-group">
+              <h3>Screenshot Storage</h3>
+              <div class="settings-segmented" role="group" aria-label="Screenshot storage">
+                <button class="settings-segment active" id="settingsStorageClipboard" type="button" data-storage-mode="clipboard">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><rect x="4" y="4" width="11" height="11" rx="2"/></svg>
+                  Clipboard
+                </button>
+                <button class="settings-segment" id="settingsStorageFolder" type="button" data-storage-mode="folder">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h6l2 2h10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                  Folder
+                </button>
+              </div>
+              <div class="settings-location-row">
+                <span id="settingsSaveLocationText">Choose folder when saving</span>
+                <button class="settings-inline-button" id="settingsBrowseFolder" type="button">Browse</button>
+              </div>
+              <label class="settings-check-row">
+                <input id="tsExportIncludeBackground" type="checkbox" />
+                <span>Include desktop background</span>
+              </label>
+            </article>
+
+            <article class="settings-mini-group">
+              <h3>Preferences</h3>
+              <label class="settings-toggle-row">
+                <span><strong>Remember content after exit</strong><small>Restore desktop drawings when RePen restarts</small></span>
+                <input id="prefRememberContent" type="checkbox" />
+              </label>
+              <label class="settings-toggle-row">
+                <span><strong>Clear when toolbar is minimized</strong><small>Auto-clear annotations when collapsing the toolbar</small></span>
+                <input id="prefClearOnMinimize" type="checkbox" />
+              </label>
+              <label class="settings-toggle-row">
+                <span><strong>Show cursor highlight</strong><small>Display a pulsing ring around clicks</small></span>
+                <input id="prefCursorHighlight" type="checkbox" />
+              </label>
+              <label class="settings-toggle-row">
+                <span><strong>Start on system login</strong><small>Launch RePen when Windows starts</small></span>
+                <input id="prefStartOnLogin" type="checkbox" />
+              </label>
+              <label class="settings-toggle-row">
+                <span><strong>Check for updates on startup</strong><small>Reserved for the public release updater</small></span>
+                <input id="prefCheckUpdates" type="checkbox" />
+              </label>
+            </article>
+          </div>
+
+          <div class="toolbar-settings-page about-page" data-settings-page="about">
+            <article class="about-card">
+              <div class="about-mark" aria-hidden="true">
+                <svg class="brand-pencil-icon" viewBox="0 0 512 512">
+                  <path fill="#22D3EE" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>
+                  <path fill="#F8FAFC" d="M215.15,172.495l-48.03,74.03c0.001,0.001,28.481,42.863,88.879,42.863V172.495H215.15z"/>
+                  <path fill="#0EA5E9" d="M344.877,246.524c-0.001,0.001-19.132,14.735-59.253,20.063v245.412h59.253V246.524z"/>
+                  <path fill="#F8FAFC" d="M167.12,246.524v265.475h59.253V266.588c-40.121-5.329-59.252-20.063-59.253-20.064z"/>
+                  <polygon fill="#FDE68A" points="271.673,0 255.999,0 245.55,29.546 255.999,59.091 271.673,59.091"/>
+                  <rect x="240.326" fill="#67E8F9" width="15.674" height="59.092"/>
+                </svg>
+              </div>
+              <div>
+                <h3>RePen</h3>
+                <p>Professional screen annotation, presenter tools, whiteboard, screenshots, and PDF export.</p>
+              </div>
+            </article>
+
+            <article class="about-card compact">
+              <div class="release-header">
+                <div>
+                  <h3>Release</h3>
+                  <p>Ready for GitHub and website publishing.</p>
+                </div>
+                <span class="release-badge">Stable</span>
+              </div>
+              <dl class="about-meta">
+                <div><dt>Version</dt><dd id="appVersionText">v1.0.0</dd></div>
+                <div><dt>Platform</dt><dd>Windows Desktop</dd></div>
+                <div><dt>License</dt><dd>ISC</dd></div>
+              </dl>
+            </article>
+
+            <article class="about-card compact">
+              <h3>Publisher</h3>
+              <p>Rehman Ahmad</p>
+              <div class="about-links">
+                <button class="about-link" type="button" data-external-link="https://rehmanahmad.pro">
+                  <span class="about-link-icon contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 6.5h15v11h-15z"/><path d="m5 7 7 6 7-6"/><path d="m8.5 11.5-3.5 4"/><path d="m15.5 11.5 3.5 4"/></svg>
+                  </span>
+                  Contact Me
+                </button>
+                <button class="about-link" type="button" data-external-link="https://github.com/iRehmanAhmad">
+                  <span class="about-link-icon github-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.8a10.2 10.2 0 0 0-3.23 19.88c.51.09.7-.22.7-.5v-1.78c-2.84.62-3.44-1.22-3.44-1.22-.46-1.18-1.13-1.5-1.13-1.5-.93-.64.07-.63.07-.63 1.03.07 1.57 1.06 1.57 1.06.92 1.57 2.4 1.12 2.99.85.09-.67.36-1.12.65-1.38-2.27-.26-4.65-1.14-4.65-5.05 0-1.12.4-2.03 1.05-2.75-.1-.26-.46-1.3.1-2.7 0 0 .86-.28 2.81 1.05a9.78 9.78 0 0 1 5.12 0c1.94-1.33 2.8-1.05 2.8-1.05.56 1.4.2 2.44.1 2.7.66.72 1.05 1.63 1.05 2.75 0 3.93-2.39 4.79-4.67 5.04.37.32.7.94.7 1.9v2.82c0 .28.18.6.71.5A10.2 10.2 0 0 0 12 1.8z"/></svg>
+                  </span>
+                  GitHub
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="toolbar-settings-page" data-settings-page="customize">
             <article class="settings-mini-group">
               <h3>Pen</h3>
               <label class="settings-row">
@@ -274,11 +380,9 @@
                 <input id="tsEraserRadius" type="range" min="4" max="60" step="1" />
               </label>
             </article>
-          </div>
 
-          <div class="toolbar-settings-page" data-settings-page="export">
             <article class="settings-mini-group">
-              <h3>Screenshot</h3>
+              <h3>Screenshot Export</h3>
               <label class="settings-row">
                 <span>Format</span>
                 <select id="tsExportFormat">
@@ -291,29 +395,49 @@
                 <span>Quality <strong id="tsExportQualityVal">90%</strong></span>
                 <input id="tsExportQuality" type="range" min="0.1" max="1" step="0.05" />
               </label>
-              <label class="settings-check-row">
-                <input id="tsExportIncludeBackground" type="checkbox" />
-                <span>Include desktop background</span>
-              </label>
-              <label class="settings-check-row">
-                <input id="tsExportCopyToClipboard" type="checkbox" />
-                <span>Copy screenshots to clipboard</span>
-              </label>
             </article>
           </div>
 
           <div class="toolbar-settings-page" data-settings-page="hotkeys">
             <div class="toolbar-hotkey-list" id="toolbarHotkeyList"></div>
           </div>
+
+          <div class="toolbar-settings-page" data-settings-page="help">
+            <article class="help-list">
+              <button class="help-item" type="button" data-external-link="https://rehmanahmad.pro">
+                <span class="help-icon">?</span>
+                <span><strong>User Guide</strong><small>Learn how to use RePen</small></span>
+                <span class="help-chevron">›</span>
+              </button>
+              <button class="help-item" type="button" data-external-link="https://rehmanahmad.pro">
+                <span class="help-icon">i</span>
+                <span><strong>FAQ</strong><small>Common setup and release questions</small></span>
+                <span class="help-chevron">›</span>
+              </button>
+              <button class="help-item" type="button" data-external-link="https://rehmanahmad.pro">
+                <span class="help-icon">@</span>
+                <span><strong>Contact Support</strong><small>Get help with issues</small></span>
+                <span class="help-chevron">›</span>
+              </button>
+              <div class="help-item static">
+                <span class="help-icon">§</span>
+                <span><strong>License</strong><small>ISC License for the RePen release</small></span>
+              </div>
+            </article>
+          </div>
         </section>
 
-        <footer class="toolbar-settings-foot">
-          <span class="toolbar-settings-message" id="toolbarSettingsMessage">Changes need saving.</span>
-          <div class="toolbar-settings-actions">
+        <footer class="toolbar-settings-foot about-foot">
+          <span class="toolbar-settings-message" id="toolbarSettingsMessage">Release profile ready.</span>
+          <div class="toolbar-settings-actions" id="toolbarSettingsActions">
             <button class="toolbar-settings-secondary" id="toolbarSettingsReset" type="button">Reset</button>
             <button class="toolbar-settings-primary" id="toolbarSettingsSave" type="button">Save</button>
           </div>
         </footer>
+
+        <div class="toolbar-settings-legacy" aria-hidden="true">
+          <input id="tsExportCopyToClipboard" type="checkbox" tabindex="-1" />
+        </div>
       </aside>
     </div>
     <script src="./toolbar.js"></script>
