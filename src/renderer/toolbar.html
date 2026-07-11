@@ -204,6 +204,106 @@
           </div>
         </div>
       </nav>
+
+      <aside class="toolbar-settings-panel" id="toolbarSettingsPanel" aria-hidden="true">
+        <header class="toolbar-settings-head">
+          <div>
+            <h2>Settings</h2>
+            <p>Toolbar-attached controls</p>
+          </div>
+          <button class="settings-close-btn" id="toolbarSettingsClose" type="button" aria-label="Close settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </header>
+
+        <nav class="toolbar-settings-tabs" aria-label="Settings tabs">
+          <button class="toolbar-settings-tab active" type="button" data-settings-tab="brush">Brush</button>
+          <button class="toolbar-settings-tab" type="button" data-settings-tab="export">Export</button>
+          <button class="toolbar-settings-tab" type="button" data-settings-tab="hotkeys">Keys</button>
+        </nav>
+
+        <section class="toolbar-settings-body">
+          <div class="toolbar-settings-page active" data-settings-page="brush">
+            <article class="settings-mini-group">
+              <h3>Pen</h3>
+              <label class="settings-row">
+                <span>Color</span>
+                <input id="tsPenColor" type="color" />
+              </label>
+              <label class="settings-row">
+                <span>Width <strong id="tsPenWidthVal">4px</strong></span>
+                <input id="tsPenWidth" type="range" min="1" max="24" step="1" />
+              </label>
+              <label class="settings-row">
+                <span>Opacity <strong id="tsPenOpacityVal">100%</strong></span>
+                <input id="tsPenOpacity" type="range" min="0.1" max="1" step="0.05" />
+              </label>
+            </article>
+
+            <article class="settings-mini-group">
+              <h3>Highlighter</h3>
+              <label class="settings-row">
+                <span>Color</span>
+                <input id="tsHighlighterColor" type="color" />
+              </label>
+              <label class="settings-row">
+                <span>Width <strong id="tsHighlighterWidthVal">18px</strong></span>
+                <input id="tsHighlighterWidth" type="range" min="8" max="40" step="1" />
+              </label>
+              <label class="settings-row">
+                <span>Opacity <strong id="tsHighlighterOpacityVal">30%</strong></span>
+                <input id="tsHighlighterOpacity" type="range" min="0.1" max="1" step="0.05" />
+              </label>
+            </article>
+
+            <article class="settings-mini-group">
+              <h3>Eraser</h3>
+              <label class="settings-row">
+                <span>Radius <strong id="tsEraserRadiusVal">18px</strong></span>
+                <input id="tsEraserRadius" type="range" min="4" max="60" step="1" />
+              </label>
+            </article>
+          </div>
+
+          <div class="toolbar-settings-page" data-settings-page="export">
+            <article class="settings-mini-group">
+              <h3>Screenshot</h3>
+              <label class="settings-row">
+                <span>Format</span>
+                <select id="tsExportFormat">
+                  <option value="png">PNG</option>
+                  <option value="jpeg">JPEG</option>
+                  <option value="webp">WebP</option>
+                </select>
+              </label>
+              <label class="settings-row" id="tsExportQualityRow">
+                <span>Quality <strong id="tsExportQualityVal">90%</strong></span>
+                <input id="tsExportQuality" type="range" min="0.1" max="1" step="0.05" />
+              </label>
+              <label class="settings-check-row">
+                <input id="tsExportIncludeBackground" type="checkbox" />
+                <span>Include desktop background</span>
+              </label>
+              <label class="settings-check-row">
+                <input id="tsExportCopyToClipboard" type="checkbox" />
+                <span>Copy screenshots to clipboard</span>
+              </label>
+            </article>
+          </div>
+
+          <div class="toolbar-settings-page" data-settings-page="hotkeys">
+            <div class="toolbar-hotkey-list" id="toolbarHotkeyList"></div>
+          </div>
+        </section>
+
+        <footer class="toolbar-settings-foot">
+          <span class="toolbar-settings-message" id="toolbarSettingsMessage">Changes need saving.</span>
+          <div class="toolbar-settings-actions">
+            <button class="toolbar-settings-secondary" id="toolbarSettingsReset" type="button">Reset</button>
+            <button class="toolbar-settings-primary" id="toolbarSettingsSave" type="button">Save</button>
+          </div>
+        </footer>
+      </aside>
     </div>
     <script src="./toolbar.js"></script>
   </body>

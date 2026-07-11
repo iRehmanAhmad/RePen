@@ -594,8 +594,8 @@ function createSettingsWindow() {
   }
 
   const primary = screen.getPrimaryDisplay();
-  const settingsWidth = 920;
-  const settingsHeight = 780;
+  const settingsWidth = 820;
+  const settingsHeight = 640;
   const x = Math.round(primary.bounds.x + primary.bounds.width / 2 - settingsWidth / 2);
   const y = Math.round(primary.bounds.y + primary.bounds.height / 2 - settingsHeight / 2);
 
@@ -641,12 +641,16 @@ function createSettingsWindow() {
 }
 
 function showSettingsWindow() {
-  const win = createSettingsWindow();
-  if (!win.isVisible()) {
-    win.show();
+  if (!toolbarWindow || toolbarWindow.isDestroyed()) {
+    createToolbarWindow();
   }
-  win.focus();
-  win.webContents.send('app:state-changed', getAppState());
+  if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+    if (!toolbarWindow.isVisible()) {
+      toolbarWindow.show();
+    }
+    toolbarWindow.moveTop();
+    toolbarWindow.webContents.send('toolbar:open-settings', getAppState());
+  }
 }
 
 function hideSettingsWindow() {

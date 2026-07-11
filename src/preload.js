@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   getBootstrap: () => ipcRenderer.invoke('bootstrap:get'),
   getSettings: () => ipcRenderer.invoke('settings:get'),
   onStateChanged: (callback) => on('app:state-changed', callback),
+  onToolbarSettingsOpen: (callback) => on('toolbar:open-settings', callback),
   onSceneChanged: (callback) => on('scene:changed', callback),
   setTool: (tool) => ipcRenderer.invoke('app:set-tool', tool),
   setShapeType: (shapeType) => ipcRenderer.invoke('app:set-shape-type', shapeType),

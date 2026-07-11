@@ -79,6 +79,8 @@ const elements = {
   toolStatus: document.getElementById('toolStatus'),
   passThroughStatus: document.getElementById('passThroughStatus'),
   closeButton: document.getElementById('closeButton'),
+  tabButtons: Array.from(document.querySelectorAll('.tab-button')),
+  tabPanels: Array.from(document.querySelectorAll('.settings-tab')),
   cancelButton: document.getElementById('cancelButton'),
   saveButton: document.getElementById('saveButton'),
   resetButton: document.getElementById('resetButton'),
@@ -86,11 +88,16 @@ const elements = {
   hotkeyList: document.getElementById('hotkeyList'),
   penColor: document.getElementById('penColor'),
   penWidth: document.getElementById('penWidth'),
+  penWidthVal: document.getElementById('penWidthVal'),
   penOpacity: document.getElementById('penOpacity'),
+  penOpacityVal: document.getElementById('penOpacityVal'),
   highlighterColor: document.getElementById('highlighterColor'),
   highlighterWidth: document.getElementById('highlighterWidth'),
+  highlighterWidthVal: document.getElementById('highlighterWidthVal'),
   highlighterOpacity: document.getElementById('highlighterOpacity'),
+  highlighterOpacityVal: document.getElementById('highlighterOpacityVal'),
   eraserRadius: document.getElementById('eraserRadius'),
+  eraserRadiusVal: document.getElementById('eraserRadiusVal'),
   exportFormat: document.getElementById('exportFormat'),
   exportQuality: document.getElementById('exportQuality'),
   qualityVal: document.getElementById('qualityVal'),
@@ -266,6 +273,24 @@ function setFieldValue(element, value) {
   element.value = String(value);
 }
 
+function updateSliderValueLabels() {
+  if (elements.penWidthVal) {
+    elements.penWidthVal.textContent = `${elements.penWidth.value}px`;
+  }
+  if (elements.penOpacityVal) {
+    elements.penOpacityVal.textContent = `${Math.round(Number(elements.penOpacity.value) * 100)}%`;
+  }
+  if (elements.highlighterWidthVal) {
+    elements.highlighterWidthVal.textContent = `${elements.highlighterWidth.value}px`;
+  }
+  if (elements.highlighterOpacityVal) {
+    elements.highlighterOpacityVal.textContent = `${Math.round(Number(elements.highlighterOpacity.value) * 100)}%`;
+  }
+  if (elements.eraserRadiusVal) {
+    elements.eraserRadiusVal.textContent = `${elements.eraserRadius.value}px`;
+  }
+}
+
 function renderBrushControls() {
   setFieldValue(elements.penColor, draft.brushDefaults.pen.color);
   setFieldValue(elements.penWidth, draft.brushDefaults.pen.width);
@@ -279,11 +304,12 @@ function renderBrushControls() {
     elements.exportFormat.value = draft.exportDefaults.format || 'png';
     elements.exportQuality.value = draft.exportDefaults.quality || 0.9;
     elements.qualityVal.textContent = Math.round((draft.exportDefaults.quality || 0.9) * 100) + '%';
-    elements.qualityContainer.style.display = draft.exportDefaults.format === 'png' ? 'none' : 'flex';
+    elements.qualityContainer.style.display = draft.exportDefaults.format === 'png' ? 'none' : 'grid';
     elements.exportIncludeBackground.checked = Boolean(draft.exportDefaults.includeBackground);
     elements.exportCopyToClipboard.checked = Boolean(draft.exportDefaults.copyToClipboard);
     elements.exportAutoSavePath.value = draft.exportDefaults.autoSavePath || '';
   }
+  updateSliderValueLabels();
 }
 
 function getHotkeyConflicts() {
@@ -480,6 +506,23 @@ function resetToDefaults() {
   updateSaveState();
 }
 
+function activateTab(tabName) {
+  for (const button of elements.tabButtons) {
+    const isActive = button.dataset.tab === tabName;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-selected', String(isActive));
+  }
+  for (const panel of elements.tabPanels) {
+    panel.classList.toggle('active', panel.dataset.panel === tabName);
+  }
+}
+
+for (const button of elements.tabButtons) {
+  button.addEventListener('click', () => {
+    activateTab(button.dataset.tab);
+  });
+}
+
 elements.penColor.addEventListener('input', () => {
   draft.brushDefaults.pen.color = elements.penColor.value;
   markDirty();
@@ -487,11 +530,13 @@ elements.penColor.addEventListener('input', () => {
 
 elements.penWidth.addEventListener('input', () => {
   draft.brushDefaults.pen.width = Number(elements.penWidth.value);
+  updateSliderValueLabels();
   markDirty();
 });
 
 elements.penOpacity.addEventListener('input', () => {
   draft.brushDefaults.pen.opacity = Number(elements.penOpacity.value);
+  updateSliderValueLabels();
   markDirty();
 });
 
@@ -502,16 +547,19 @@ elements.highlighterColor.addEventListener('input', () => {
 
 elements.highlighterWidth.addEventListener('input', () => {
   draft.brushDefaults.highlighter.width = Number(elements.highlighterWidth.value);
+  updateSliderValueLabels();
   markDirty();
 });
 
 elements.highlighterOpacity.addEventListener('input', () => {
   draft.brushDefaults.highlighter.opacity = Number(elements.highlighterOpacity.value);
+  updateSliderValueLabels();
   markDirty();
 });
 
 elements.eraserRadius.addEventListener('input', () => {
   draft.brushDefaults.eraser.radius = Number(elements.eraserRadius.value);
+  updateSliderValueLabels();
   markDirty();
 });
 
@@ -519,7 +567,7 @@ if (elements.exportFormat) {
   elements.exportFormat.addEventListener('change', () => {
     if (draft.exportDefaults) {
       draft.exportDefaults.format = elements.exportFormat.value;
-      elements.qualityContainer.style.display = elements.exportFormat.value === 'png' ? 'none' : 'flex';
+      elements.qualityContainer.style.display = elements.exportFormat.value === 'png' ? 'none' : 'grid';
       markDirty();
     }
   });

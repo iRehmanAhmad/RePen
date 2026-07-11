@@ -1,5 +1,53 @@
 const COLORS = ['#ff5a5f', '#ffe36d', '#00d26a', '#3b82f6', '#ffffff'];
 
+const TOOLBAR_SETTINGS_DEFAULTS = {
+  brushDefaults: {
+    pen: { color: '#ff5a5f', width: 4, opacity: 1 },
+    highlighter: { color: '#ffe36d', width: 18, opacity: 0.3 },
+    eraser: { radius: 18 },
+  },
+  exportDefaults: {
+    format: 'png',
+    quality: 0.9,
+    includeBackground: false,
+    copyToClipboard: true,
+    autoSavePath: '',
+  },
+  hotkeys: {
+    toggleOverlay: 'CommandOrControl+Alt+H',
+    togglePassThrough: 'CommandOrControl+Shift+P',
+    pen: 'CommandOrControl+Shift+1',
+    highlighter: 'CommandOrControl+Shift+2',
+    shapes: 'CommandOrControl+Shift+4',
+    laser: 'CommandOrControl+Shift+L',
+    text: 'CommandOrControl+Shift+T',
+    select: 'CommandOrControl+Alt+V',
+    eraser: 'CommandOrControl+Shift+3',
+    undo: 'CommandOrControl+Shift+Z',
+    redo: 'CommandOrControl+Shift+Y',
+    clear: 'CommandOrControl+Alt+C',
+    openSettings: 'CommandOrControl+Shift+O',
+    takeScreenshot: 'CommandOrControl+Shift+S',
+  },
+};
+
+const TOOLBAR_SETTINGS_ACTIONS = [
+  { key: 'toggleOverlay', label: 'Overlay' },
+  { key: 'togglePassThrough', label: 'Pass-through' },
+  { key: 'pen', label: 'Pen' },
+  { key: 'highlighter', label: 'Highlighter' },
+  { key: 'shapes', label: 'Shapes' },
+  { key: 'laser', label: 'Laser' },
+  { key: 'text', label: 'Text' },
+  { key: 'select', label: 'Select' },
+  { key: 'eraser', label: 'Eraser' },
+  { key: 'undo', label: 'Undo' },
+  { key: 'redo', label: 'Redo' },
+  { key: 'clear', label: 'Clear' },
+  { key: 'openSettings', label: 'Settings' },
+  { key: 'takeScreenshot', label: 'Screenshot' },
+];
+
 const INKING_TOOLS = ['pen', 'highlighter', 'calligraphy', 'laser', 'text'];
 const INKING_ICONS = {
   pen: '<path d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536L37.356,12.497z M8.364,51.39l33.941-33.942l4.243,4.243L12.606,55.632L8.364,51.39z M3.001,61.995c-0.553,0-1.001-0.446-1-0.999v-1.583l2.582,2.582H3.001z M7.411,61.996l-5.41-5.41l0.001-8.73l14.141,14.141H7.411z M17.557,60.582l-3.536-3.536l33.942-33.94l3.535,3.535L17.557,60.582z M52.912,25.227L38.771,11.083l2.828-2.828l14.143,14.143L52.912,25.227z M61.414,16.725l-4.259,4.259L43.013,6.841l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002l11.314,11.314C62.195,14.678,62.194,15.943,61.414,16.725z"/>',
@@ -47,6 +95,12 @@ const appState = {
   hotkeys: {},
 };
 
+let toolbarSettingsDraft = null;
+let toolbarSettingsDirty = false;
+let toolbarSettingsSaving = false;
+let toolbarSettingsCapture = null;
+const toolbarHotkeyButtons = new Map();
+
 const elements = {
   penBar: document.getElementById('penBar'),
   collapseBtn: document.getElementById('collapseBtn'),
@@ -59,6 +113,32 @@ const elements = {
   eyeIcon: document.getElementById('eyeIcon'),
   screenshotButton: document.getElementById('screenshotButton'),
   settingsButton: document.getElementById('settingsButton'),
+  toolbarSettingsPanel: document.getElementById('toolbarSettingsPanel'),
+  toolbarSettingsClose: document.getElementById('toolbarSettingsClose'),
+  toolbarSettingsTabs: Array.from(document.querySelectorAll('.toolbar-settings-tab')),
+  toolbarSettingsPages: Array.from(document.querySelectorAll('.toolbar-settings-page')),
+  toolbarSettingsMessage: document.getElementById('toolbarSettingsMessage'),
+  toolbarSettingsSave: document.getElementById('toolbarSettingsSave'),
+  toolbarSettingsReset: document.getElementById('toolbarSettingsReset'),
+  toolbarHotkeyList: document.getElementById('toolbarHotkeyList'),
+  tsPenColor: document.getElementById('tsPenColor'),
+  tsPenWidth: document.getElementById('tsPenWidth'),
+  tsPenWidthVal: document.getElementById('tsPenWidthVal'),
+  tsPenOpacity: document.getElementById('tsPenOpacity'),
+  tsPenOpacityVal: document.getElementById('tsPenOpacityVal'),
+  tsHighlighterColor: document.getElementById('tsHighlighterColor'),
+  tsHighlighterWidth: document.getElementById('tsHighlighterWidth'),
+  tsHighlighterWidthVal: document.getElementById('tsHighlighterWidthVal'),
+  tsHighlighterOpacity: document.getElementById('tsHighlighterOpacity'),
+  tsHighlighterOpacityVal: document.getElementById('tsHighlighterOpacityVal'),
+  tsEraserRadius: document.getElementById('tsEraserRadius'),
+  tsEraserRadiusVal: document.getElementById('tsEraserRadiusVal'),
+  tsExportFormat: document.getElementById('tsExportFormat'),
+  tsExportQuality: document.getElementById('tsExportQuality'),
+  tsExportQualityVal: document.getElementById('tsExportQualityVal'),
+  tsExportQualityRow: document.getElementById('tsExportQualityRow'),
+  tsExportIncludeBackground: document.getElementById('tsExportIncludeBackground'),
+  tsExportCopyToClipboard: document.getElementById('tsExportCopyToClipboard'),
   undoButton: document.getElementById('undoButton'),
   clearButton: document.getElementById('clearButton'),
   toolButtons: Array.from(document.querySelectorAll('.tool-button[data-tool]')),
@@ -391,6 +471,283 @@ function renderSwatches() {
   ensureActiveSwatch();
 }
 
+function toolbarSettingsClone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
+function normalizeToolbarSettings(nextState = {}) {
+  return {
+    brushDefaults: {
+      pen: {
+        ...TOOLBAR_SETTINGS_DEFAULTS.brushDefaults.pen,
+        ...(((nextState.brushDefaults || {}).pen) || {}),
+      },
+      highlighter: {
+        ...TOOLBAR_SETTINGS_DEFAULTS.brushDefaults.highlighter,
+        ...(((nextState.brushDefaults || {}).highlighter) || {}),
+      },
+      eraser: {
+        ...TOOLBAR_SETTINGS_DEFAULTS.brushDefaults.eraser,
+        ...(((nextState.brushDefaults || {}).eraser) || {}),
+      },
+    },
+    exportDefaults: {
+      ...TOOLBAR_SETTINGS_DEFAULTS.exportDefaults,
+      ...(nextState.exportDefaults || {}),
+    },
+    hotkeys: {
+      ...TOOLBAR_SETTINGS_DEFAULTS.hotkeys,
+      ...(nextState.hotkeys || {}),
+    },
+  };
+}
+
+function formatToolbarAccelerator(accelerator) {
+  if (!accelerator) return 'Not set';
+  return accelerator
+    .replaceAll('CommandOrControl', 'Ctrl')
+    .replaceAll('Control', 'Ctrl')
+    .replaceAll('Super', 'Win')
+    .replaceAll('Option', 'Alt');
+}
+
+function toolbarKeyFromEvent(event) {
+  const codeMap = {
+    Escape: 'Esc',
+    Space: 'Space',
+    Enter: 'Enter',
+    Tab: 'Tab',
+    Backspace: 'Backspace',
+    Delete: 'Delete',
+    Insert: 'Insert',
+    Home: 'Home',
+    End: 'End',
+    PageUp: 'PageUp',
+    PageDown: 'PageDown',
+    ArrowUp: 'Up',
+    ArrowDown: 'Down',
+    ArrowLeft: 'Left',
+    ArrowRight: 'Right',
+    Minus: '-',
+    Equal: '=',
+    Comma: ',',
+    Period: '.',
+    Slash: '/',
+    Backslash: '\\',
+    Semicolon: ';',
+    Quote: "'",
+    BracketLeft: '[',
+    BracketRight: ']',
+    Backquote: '`',
+  };
+  if (codeMap[event.code]) return codeMap[event.code];
+  if (/^Key[A-Z]$/.test(event.code)) return event.code.slice(3);
+  if (/^Digit[0-9]$/.test(event.code)) return event.code.slice(5);
+  if (/^F([1-9]|1[0-9]|2[0-4])$/.test(event.code)) return event.code;
+  if (/^Numpad[0-9]$/.test(event.code)) return event.code.replace('Numpad', 'Num');
+  return null;
+}
+
+function toolbarEventToAccelerator(event) {
+  const modifiers = [];
+  if (event.ctrlKey || event.metaKey) modifiers.push('CommandOrControl');
+  if (event.altKey) modifiers.push('Alt');
+  if (event.shiftKey) modifiers.push('Shift');
+  const key = toolbarKeyFromEvent(event);
+  if (!key || ['Shift', 'Control', 'Alt', 'Meta', 'Command', 'CommandOrControl'].includes(key)) return null;
+  return [...modifiers, key].join('+');
+}
+
+function setToolbarSettingsMessage(message, kind = 'info') {
+  if (!elements.toolbarSettingsMessage) return;
+  elements.toolbarSettingsMessage.textContent = message;
+  elements.toolbarSettingsMessage.dataset.kind = kind;
+}
+
+function setToolbarSettingsDirty(isDirty = true) {
+  toolbarSettingsDirty = isDirty;
+  if (isDirty) {
+    setToolbarSettingsMessage('Unsaved changes.', 'info');
+  }
+}
+
+function updateToolbarSettingsValueLabels() {
+  if (!toolbarSettingsDraft) return;
+  if (elements.tsPenWidthVal) elements.tsPenWidthVal.textContent = `${elements.tsPenWidth.value}px`;
+  if (elements.tsPenOpacityVal) elements.tsPenOpacityVal.textContent = `${Math.round(Number(elements.tsPenOpacity.value) * 100)}%`;
+  if (elements.tsHighlighterWidthVal) elements.tsHighlighterWidthVal.textContent = `${elements.tsHighlighterWidth.value}px`;
+  if (elements.tsHighlighterOpacityVal) elements.tsHighlighterOpacityVal.textContent = `${Math.round(Number(elements.tsHighlighterOpacity.value) * 100)}%`;
+  if (elements.tsEraserRadiusVal) elements.tsEraserRadiusVal.textContent = `${elements.tsEraserRadius.value}px`;
+  if (elements.tsExportQualityVal) elements.tsExportQualityVal.textContent = `${Math.round(Number(elements.tsExportQuality.value) * 100)}%`;
+  if (elements.tsExportQualityRow) {
+    elements.tsExportQualityRow.style.display = elements.tsExportFormat.value === 'png' ? 'none' : 'grid';
+  }
+}
+
+function renderToolbarSettingsForm() {
+  if (!toolbarSettingsDraft) return;
+  elements.tsPenColor.value = toolbarSettingsDraft.brushDefaults.pen.color;
+  elements.tsPenWidth.value = String(toolbarSettingsDraft.brushDefaults.pen.width);
+  elements.tsPenOpacity.value = String(toolbarSettingsDraft.brushDefaults.pen.opacity);
+  elements.tsHighlighterColor.value = toolbarSettingsDraft.brushDefaults.highlighter.color;
+  elements.tsHighlighterWidth.value = String(toolbarSettingsDraft.brushDefaults.highlighter.width);
+  elements.tsHighlighterOpacity.value = String(toolbarSettingsDraft.brushDefaults.highlighter.opacity);
+  elements.tsEraserRadius.value = String(toolbarSettingsDraft.brushDefaults.eraser.radius);
+  elements.tsExportFormat.value = toolbarSettingsDraft.exportDefaults.format || 'png';
+  elements.tsExportQuality.value = String(toolbarSettingsDraft.exportDefaults.quality || 0.9);
+  elements.tsExportIncludeBackground.checked = Boolean(toolbarSettingsDraft.exportDefaults.includeBackground);
+  elements.tsExportCopyToClipboard.checked = Boolean(toolbarSettingsDraft.exportDefaults.copyToClipboard);
+  updateToolbarSettingsValueLabels();
+  renderToolbarHotkeys();
+}
+
+function collectToolbarSettingsDraft() {
+  toolbarSettingsDraft.brushDefaults.pen.color = elements.tsPenColor.value;
+  toolbarSettingsDraft.brushDefaults.pen.width = Number(elements.tsPenWidth.value);
+  toolbarSettingsDraft.brushDefaults.pen.opacity = Number(elements.tsPenOpacity.value);
+  toolbarSettingsDraft.brushDefaults.highlighter.color = elements.tsHighlighterColor.value;
+  toolbarSettingsDraft.brushDefaults.highlighter.width = Number(elements.tsHighlighterWidth.value);
+  toolbarSettingsDraft.brushDefaults.highlighter.opacity = Number(elements.tsHighlighterOpacity.value);
+  toolbarSettingsDraft.brushDefaults.eraser.radius = Number(elements.tsEraserRadius.value);
+  toolbarSettingsDraft.exportDefaults.format = elements.tsExportFormat.value;
+  toolbarSettingsDraft.exportDefaults.quality = Number(elements.tsExportQuality.value);
+  toolbarSettingsDraft.exportDefaults.includeBackground = elements.tsExportIncludeBackground.checked;
+  toolbarSettingsDraft.exportDefaults.copyToClipboard = elements.tsExportCopyToClipboard.checked;
+}
+
+function getToolbarHotkeyConflicts() {
+  const counts = new Map();
+  for (const accelerator of Object.values(toolbarSettingsDraft?.hotkeys || {})) {
+    if (!accelerator) continue;
+    const normalized = accelerator.toLowerCase();
+    counts.set(normalized, (counts.get(normalized) || 0) + 1);
+  }
+  const conflicts = new Set();
+  for (const [key, accelerator] of Object.entries(toolbarSettingsDraft?.hotkeys || {})) {
+    if (accelerator && counts.get(accelerator.toLowerCase()) > 1) conflicts.add(key);
+  }
+  return conflicts;
+}
+
+function updateToolbarHotkeyButton(actionKey) {
+  const button = toolbarHotkeyButtons.get(actionKey);
+  if (!button || !toolbarSettingsDraft) return;
+  button.textContent = toolbarSettingsCapture === actionKey
+    ? 'Press keys...'
+    : formatToolbarAccelerator(toolbarSettingsDraft.hotkeys[actionKey]);
+  button.classList.toggle('capturing', toolbarSettingsCapture === actionKey);
+  const conflicts = getToolbarHotkeyConflicts();
+  button.classList.toggle('conflict', conflicts.has(actionKey));
+}
+
+function renderToolbarHotkeys() {
+  if (!elements.toolbarHotkeyList || !toolbarSettingsDraft) return;
+  elements.toolbarHotkeyList.innerHTML = '';
+  toolbarHotkeyButtons.clear();
+  for (const action of TOOLBAR_SETTINGS_ACTIONS) {
+    const row = document.createElement('div');
+    row.className = 'toolbar-hotkey-row';
+    const title = document.createElement('div');
+    title.className = 'toolbar-hotkey-title';
+    title.textContent = action.label;
+    const captureButton = document.createElement('button');
+    captureButton.type = 'button';
+    captureButton.className = 'toolbar-hotkey-capture';
+    captureButton.addEventListener('click', () => {
+      toolbarSettingsCapture = action.key;
+      setToolbarSettingsMessage('Press shortcut. Esc cancels, Backspace clears.', 'info');
+      updateToolbarHotkeyButton(action.key);
+    });
+    const clearButton = document.createElement('button');
+    clearButton.type = 'button';
+    clearButton.className = 'toolbar-hotkey-clear';
+    clearButton.textContent = 'x';
+    clearButton.title = 'Clear shortcut';
+    clearButton.addEventListener('click', () => {
+      toolbarSettingsDraft.hotkeys[action.key] = '';
+      toolbarSettingsCapture = null;
+      setToolbarSettingsDirty(true);
+      updateToolbarHotkeyButton(action.key);
+    });
+    row.appendChild(title);
+    row.appendChild(captureButton);
+    row.appendChild(clearButton);
+    elements.toolbarHotkeyList.appendChild(row);
+    toolbarHotkeyButtons.set(action.key, captureButton);
+    updateToolbarHotkeyButton(action.key);
+  }
+}
+
+function activateToolbarSettingsTab(tabName) {
+  for (const tab of elements.toolbarSettingsTabs) {
+    tab.classList.toggle('active', tab.dataset.settingsTab === tabName);
+  }
+  for (const page of elements.toolbarSettingsPages) {
+    page.classList.toggle('active', page.dataset.settingsPage === tabName);
+  }
+}
+
+async function loadToolbarSettingsDraft() {
+  const payload = await window.appBridge.getSettings();
+  toolbarSettingsDraft = normalizeToolbarSettings((payload && payload.appState) || appState);
+  toolbarSettingsDirty = false;
+  toolbarSettingsCapture = null;
+  renderToolbarSettingsForm();
+  setToolbarSettingsMessage('Attached to toolbar.', 'info');
+}
+
+async function openToolbarSettingsPanel() {
+  if (!elements.toolbarSettingsPanel) return;
+  closeAllPopovers();
+  await loadToolbarSettingsDraft();
+  elements.toolbarSettingsPanel.classList.add('open');
+  elements.toolbarSettingsPanel.setAttribute('aria-hidden', 'false');
+  elements.settingsButton?.classList.add('active');
+  window.appBridge.setToolbarHover(true);
+}
+
+function closeToolbarSettingsPanel() {
+  if (!elements.toolbarSettingsPanel) return;
+  elements.toolbarSettingsPanel.classList.remove('open');
+  elements.toolbarSettingsPanel.setAttribute('aria-hidden', 'true');
+  elements.settingsButton?.classList.remove('active');
+  toolbarSettingsCapture = null;
+}
+
+async function saveToolbarSettings() {
+  if (!toolbarSettingsDraft || toolbarSettingsSaving) return;
+  collectToolbarSettingsDraft();
+  if (getToolbarHotkeyConflicts().size > 0) {
+    setToolbarSettingsMessage('Resolve duplicate hotkeys first.', 'error');
+    renderToolbarHotkeys();
+    return;
+  }
+  toolbarSettingsSaving = true;
+  elements.toolbarSettingsSave.disabled = true;
+  setToolbarSettingsMessage('Saving...', 'info');
+  const result = await window.appBridge.saveSettings(toolbarSettingsClone(toolbarSettingsDraft));
+  toolbarSettingsSaving = false;
+  elements.toolbarSettingsSave.disabled = false;
+  if (!result.ok) {
+    const failed = (result.failures || []).map((entry) => formatToolbarAccelerator(entry.accelerator)).join(', ');
+    setToolbarSettingsMessage(`Could not register: ${failed}`, 'error');
+    await loadToolbarSettingsDraft();
+    return;
+  }
+  toolbarSettingsDirty = false;
+  setToolbarSettingsMessage('Saved.', 'success');
+}
+
+async function resetToolbarSettings() {
+  const result = await window.appBridge.resetSettings();
+  if (!result.ok) {
+    setToolbarSettingsMessage('Reset failed.', 'error');
+    return;
+  }
+  await loadToolbarSettingsDraft();
+  setToolbarSettingsMessage('Defaults restored.', 'success');
+}
+
 if (elements.eraserBtn) {
   elements.eraserBtn.addEventListener('click', async () => {
     console.log('[Renderer] eraserBtn clicked');
@@ -432,10 +789,68 @@ if (elements.screenshotButton) {
 }
 
 if (elements.settingsButton) {
-  elements.settingsButton.addEventListener('click', async () => {
-    await window.appBridge.openSettings();
+  elements.settingsButton.addEventListener('click', async (event) => {
+    event.stopPropagation();
+    if (elements.toolbarSettingsPanel?.classList.contains('open')) {
+      closeToolbarSettingsPanel();
+    } else {
+      await openToolbarSettingsPanel();
+    }
   });
 }
+
+if (elements.toolbarSettingsClose) {
+  elements.toolbarSettingsClose.addEventListener('click', closeToolbarSettingsPanel);
+}
+
+if (elements.toolbarSettingsTabs) {
+  elements.toolbarSettingsTabs.forEach((tab) => {
+    tab.addEventListener('click', () => activateToolbarSettingsTab(tab.dataset.settingsTab));
+  });
+}
+
+[
+  elements.tsPenWidth,
+  elements.tsPenOpacity,
+  elements.tsHighlighterWidth,
+  elements.tsHighlighterOpacity,
+  elements.tsEraserRadius,
+  elements.tsExportQuality,
+].forEach((input) => {
+  input?.addEventListener('input', () => {
+    updateToolbarSettingsValueLabels();
+    setToolbarSettingsDirty(true);
+  });
+});
+
+[
+  elements.tsPenColor,
+  elements.tsHighlighterColor,
+  elements.tsExportFormat,
+  elements.tsExportIncludeBackground,
+  elements.tsExportCopyToClipboard,
+].forEach((input) => {
+  input?.addEventListener('input', () => {
+    updateToolbarSettingsValueLabels();
+    setToolbarSettingsDirty(true);
+  });
+  input?.addEventListener('change', () => {
+    updateToolbarSettingsValueLabels();
+    setToolbarSettingsDirty(true);
+  });
+});
+
+if (elements.toolbarSettingsSave) {
+  elements.toolbarSettingsSave.addEventListener('click', saveToolbarSettings);
+}
+
+if (elements.toolbarSettingsReset) {
+  elements.toolbarSettingsReset.addEventListener('click', resetToolbarSettings);
+}
+
+window.appBridge.onToolbarSettingsOpen?.(() => {
+  openToolbarSettingsPanel();
+});
 
 if (elements.undoButton) {
   elements.undoButton.addEventListener('click', async () => {
@@ -485,7 +900,7 @@ if (elements.opacityRange) {
 
 const appContainer = document.querySelector('.app-container');
 if (appContainer) {
-  const interactiveElements = Array.from(document.querySelectorAll('.pen-bar, .grouped-popover, #inlineColorSwatches, .modal-overlay, .mark-mini, .collapse-btn'));
+  const interactiveElements = Array.from(document.querySelectorAll('.pen-bar, .grouped-popover, #inlineColorSwatches, .toolbar-settings-panel, .modal-overlay, .mark-mini, .collapse-btn'));
   interactiveElements.forEach((el) => {
     el.addEventListener('mouseenter', () => {
       console.log('[Renderer] toolbar interactive element mouseenter:', el.id || el.className);
@@ -631,7 +1046,38 @@ window.appBridge.getBootstrap().then((bootstrap) => {
 });
 
 window.addEventListener('keydown', (event) => {
+  if (toolbarSettingsCapture) {
+    event.preventDefault();
+    event.stopPropagation();
+    const actionKey = toolbarSettingsCapture;
+    if (event.key === 'Escape') {
+      toolbarSettingsCapture = null;
+      setToolbarSettingsMessage('Shortcut capture cancelled.', 'info');
+      updateToolbarHotkeyButton(actionKey);
+      return;
+    }
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      toolbarSettingsDraft.hotkeys[actionKey] = '';
+      toolbarSettingsCapture = null;
+      setToolbarSettingsDirty(true);
+      updateToolbarHotkeyButton(actionKey);
+      return;
+    }
+    const accelerator = toolbarEventToAccelerator(event);
+    if (!accelerator) return;
+    toolbarSettingsDraft.hotkeys[actionKey] = accelerator;
+    toolbarSettingsCapture = null;
+    setToolbarSettingsDirty(true);
+    setToolbarSettingsMessage(`Captured ${formatToolbarAccelerator(accelerator)}.`, 'success');
+    updateToolbarHotkeyButton(actionKey);
+    return;
+  }
+
   if (event.key === 'Escape') {
+    if (elements.toolbarSettingsPanel?.classList.contains('open')) {
+      closeToolbarSettingsPanel();
+      return;
+    }
     window.appBridge.toggleVisibility(false);
   }
 });
@@ -648,7 +1094,7 @@ function closeAllPopovers() {
 }
 
 document.addEventListener('click', (event) => {
-  if (!event.target.closest('.grouped-tool-container')) {
+  if (!event.target.closest('.grouped-tool-container') && !event.target.closest('.toolbar-settings-panel') && !event.target.closest('#settingsButton')) {
     closeAllPopovers();
   }
 });

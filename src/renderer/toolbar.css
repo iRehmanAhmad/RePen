@@ -1405,3 +1405,319 @@ html, body {
   outline: 2px solid rgba(242, 243, 245, 0.82);
   outline-offset: 2px;
 }
+
+/* Toolbar-attached Settings Panel */
+.toolbar-settings-panel {
+  pointer-events: auto;
+  position: absolute;
+  z-index: 1200;
+  width: 286px;
+  max-height: calc(100% - 8px);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px !important;
+  background: rgba(18, 19, 21, 0.97);
+  color: var(--text);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.toolbar-settings-panel.open {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.app-container.dock-right:not(.horizontal) .toolbar-settings-panel {
+  right: 50px;
+  top: 4px;
+}
+
+.app-container:not(.dock-right):not(.horizontal) .toolbar-settings-panel,
+.app-container.dock-left:not(.horizontal) .toolbar-settings-panel {
+  left: 50px;
+  top: 4px;
+}
+
+.app-container.horizontal .toolbar-settings-panel {
+  left: 4px;
+  top: 60px;
+  width: min(420px, calc(100% - 8px));
+  max-height: 282px;
+}
+
+.app-container.horizontal.dock-bottom .toolbar-settings-panel {
+  top: auto;
+  bottom: 60px;
+}
+
+.toolbar-settings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.toolbar-settings-head h2,
+.settings-mini-group h3 {
+  margin: 0;
+}
+
+.toolbar-settings-head h2 {
+  font-size: 15px;
+  line-height: 1.15;
+}
+
+.toolbar-settings-head p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.settings-close-btn,
+.toolbar-settings-tab,
+.toolbar-settings-secondary,
+.toolbar-settings-primary,
+.toolbar-hotkey-capture,
+.toolbar-hotkey-clear {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.settings-close-btn {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.settings-close-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.toolbar-settings-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.toolbar-settings-tab {
+  min-height: 29px;
+  border-color: transparent;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toolbar-settings-tab.active,
+.toolbar-settings-tab:hover,
+.settings-close-btn:hover,
+.toolbar-settings-secondary:hover,
+.toolbar-hotkey-capture:hover,
+.toolbar-hotkey-clear:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.toolbar-settings-body {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.toolbar-settings-page {
+  display: none;
+  min-height: 0;
+  height: 100%;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.toolbar-settings-page.active {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.settings-mini-group {
+  display: grid;
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.settings-mini-group h3 {
+  font-size: 12px;
+  color: #fff;
+}
+
+.settings-row {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.settings-row > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.settings-row strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.settings-row input[type='color'] {
+  width: 100%;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px !important;
+  background: rgba(0, 0, 0, 0.14);
+  padding: 3px;
+}
+
+.settings-row input[type='range'] {
+  width: 100%;
+  height: 16px;
+  accent-color: #f2f3f5;
+}
+
+.settings-row select {
+  width: 100%;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px !important;
+  background: #15161a;
+  color: var(--text);
+  padding: 0 8px;
+  font: inherit;
+  font-size: 12px;
+}
+
+.settings-check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.settings-check-row input {
+  width: 16px;
+  height: 16px;
+  accent-color: #f2f3f5;
+}
+
+.toolbar-hotkey-list {
+  display: grid;
+  gap: 6px;
+}
+
+.toolbar-hotkey-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px 28px;
+  align-items: center;
+  gap: 5px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px !important;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.toolbar-hotkey-title {
+  min-width: 0;
+  color: var(--text);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolbar-hotkey-capture {
+  min-height: 28px;
+  padding: 0 7px;
+  font-size: 10px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolbar-hotkey-capture.capturing {
+  border-color: rgba(242, 243, 245, 0.75);
+  box-shadow: 0 0 0 2px rgba(242, 243, 245, 0.12);
+}
+
+.toolbar-hotkey-clear {
+  min-height: 28px;
+  padding: 0;
+  font-size: 12px;
+}
+
+.toolbar-settings-foot {
+  display: grid;
+  gap: 7px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+}
+
+.toolbar-settings-message {
+  min-height: 15px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.toolbar-settings-message[data-kind='success'] {
+  color: #8de7ad;
+}
+
+.toolbar-settings-message[data-kind='error'] {
+  color: #ffb3b3;
+}
+
+.toolbar-settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.toolbar-settings-secondary,
+.toolbar-settings-primary {
+  min-height: 30px;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.toolbar-settings-primary {
+  background: #f2f3f5;
+  border-color: #f2f3f5;
+  color: #101114;
+  font-weight: 700;
+}
+
+.toolbar-settings-primary:hover {
+  background: #fff;
+  border-color: #fff;
+}
