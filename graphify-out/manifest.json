@@ -5,13 +5,13 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783506546.5052333,
-    "ast_hash": "fe65bf82bb2193dc3e7d8a3ded585cf7",
+    "mtime": 1783707761.9441607,
+    "ast_hash": "0cb549fc8215bbb0c7a5245a2745b64a",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783503921.8742988,
-    "ast_hash": "d7cdcad8e70c7a8466d3f9cf2db629f0",
+    "mtime": 1783707761.9502907,
+    "ast_hash": "2284374aabfdaa2d23427509b8c8db19",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -25,33 +25,33 @@
     "semantic_hash": ""
   },
   "scripts/verify-ipc-contract.js": {
-    "mtime": 1783181112.075477,
-    "ast_hash": "0d01f95e51efefeb3f78e937ce793c4c",
+    "mtime": 1783707761.9502907,
+    "ast_hash": "0f4059104ffd32c2d201ff6c500ba955",
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783501241.6869996,
-    "ast_hash": "0c67f840e5870adac3d559273f1de466",
+    "mtime": 1783707761.9502907,
+    "ast_hash": "cc6624aa047afbffa5147cf41a4f915e",
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1783506555.118598,
-    "ast_hash": "e49b28dd67eaeac8611c7413e3cb83f7",
+    "mtime": 1783707761.9502907,
+    "ast_hash": "9b3612c5b673f64131e4afee2b56a5a9",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783506555.1518056,
-    "ast_hash": "0d65bcb6b6c76ac48ecef06707aa01ca",
+    "mtime": 1783707761.958328,
+    "ast_hash": "1f736c52563d6f7747a4e5976fad1100",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
-    "mtime": 1783243252.9771347,
-    "ast_hash": "0d64f05b7f2937b1401b87b9f09b942f",
+    "mtime": 1783707761.958328,
+    "ast_hash": "60956c2f21e16d59dbb60f989c6b6963",
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783506397.2307892,
-    "ast_hash": "b81a1b63214bcc6bb725a4d556dbdb52",
+    "mtime": 1783707761.958328,
+    "ast_hash": "5937a4b4affb4e1796cc05ea2024e311",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -175,18 +175,18 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.html": {
-    "mtime": 1783252261.8726878,
-    "ast_hash": "caa760d915bcd8049fd38efe8868ac5c",
+    "mtime": 1783707761.9502907,
+    "ast_hash": "be49fe89095867ec44ca63b50dd847e3",
     "semantic_hash": ""
   },
   "src/renderer/settings.html": {
-    "mtime": 1783242243.80111,
-    "ast_hash": "732d53f81b7fcc4fa61297b4801cf160",
+    "mtime": 1783707761.958328,
+    "ast_hash": "9fa161b4e920b1e80c35cd6f3f503d1f",
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783506365.72011,
-    "ast_hash": "87fe44348c4bc17d4720f596cce8deb1",
+    "mtime": 1783707761.958328,
+    "ast_hash": "65383aa946a812459d1e558da41485ac",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
