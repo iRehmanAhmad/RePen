@@ -1510,8 +1510,8 @@ html, body {
   pointer-events: auto;
   position: absolute;
   z-index: 1200;
-  width: 360px;
-  max-height: calc(100% - 8px);
+  width: 300px;
+  height: 330px;
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: 8px;
@@ -1648,7 +1648,24 @@ html, body {
   min-height: 0;
   height: 100%;
   overflow: auto;
-  padding-right: 2px;
+  padding-right: 4px;
+}
+
+.toolbar-settings-page::-webkit-scrollbar {
+  width: 4px;
+}
+
+.toolbar-settings-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toolbar-settings-page::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.toolbar-settings-page::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .toolbar-settings-page.active {
