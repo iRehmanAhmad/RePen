@@ -1203,7 +1203,31 @@ html, body {
   position: relative;
   border-radius: 6px !important;
   color: rgba(242, 243, 245, 0.86);
-  transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+  border: none !important;
+  transition: background 0.14s ease, color 0.14s ease;
+}
+
+.pen-bar:not(.horizontal) .tool-button,
+.pen-bar:not(.horizontal) .action-icon-btn {
+  width: calc(100% + 4px);
+  margin: 0 -2px;
+  border-radius: 0 !important;
+}
+
+.pen-bar:not(.horizontal) .action-column .action-icon-btn:last-child {
+  border-radius: 0 0 8px 8px !important;
+}
+
+.pen-bar.horizontal .tool-button,
+.pen-bar.horizontal .action-icon-btn {
+  height: calc(100% + 8px);
+  margin: -4px 0;
+  width: 44px;
+  border-radius: 0 !important;
+}
+
+.pen-bar.horizontal .action-column .action-icon-btn:last-child {
+  border-radius: 0 8px 8px 0 !important;
 }
 
 .tool-button svg,
@@ -1218,7 +1242,6 @@ html, body {
 .action-icon-btn:hover,
 .popover-btn:hover {
   background: var(--quiet-hover);
-  border-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   transform: none;
 }
@@ -1227,7 +1250,6 @@ html, body {
 .popover-btn.active {
   background: color-mix(in srgb, var(--dynamic-active-color, var(--accent)) 10%, var(--quiet-active));
   color: color-mix(in srgb, var(--dynamic-active-color, var(--accent)) 72%, #ffffff);
-  border-color: color-mix(in srgb, var(--dynamic-active-color, var(--accent)) 26%, rgba(255, 255, 255, 0.14));
   transform: none;
   box-shadow: none;
 }
