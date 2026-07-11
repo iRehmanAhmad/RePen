@@ -82,6 +82,31 @@ if (!/function\s+captureMagnifierBackground\s*\([^)]*\)\s*\{[\s\S]*state\.active
   console.log('[PASS] captureMagnifierBackground() ignores stale captures outside magnifier mode');
 }
 
+const updateOverlayIgnoreMouseMatch = mainContent.match(/function\s+updateOverlayIgnoreMouse\s*\([^)]*\)\s*\{([\s\S]*?)\n\}/);
+const updateOverlayIgnoreMouseBody = updateOverlayIgnoreMouseMatch ? updateOverlayIgnoreMouseMatch[1] : '';
+if (/activeTool\s*===\s*['"](laser|spotlight|magnifier)['"]/.test(updateOverlayIgnoreMouseBody)) {
+  console.error('[FAIL] laser, spotlight, and magnifier must receive pointer events; do not ignore overlay mouse input for those tools');
+  hasError = true;
+} else {
+  console.log('[PASS] pointer-driven presentation tools keep overlay mouse input enabled');
+}
+
+for (const [fnName, field] of [
+  ['setColor', 'color'],
+  ['setWidth', 'width'],
+  ['setOpacity', 'opacity'],
+]) {
+  const fnMatch = mainContent.match(new RegExp(`function\\s+${fnName}\\s*\\([^)]*\\)\\s*\\{([\\s\\S]*?)\\n\\}`));
+  const fnBody = fnMatch ? fnMatch[1] : '';
+  const expected = new RegExp(`state\\.activeTool\\s*===\\s*['"]calligraphy['"][\\s\\S]*state\\.brushDefaults\\.calligraphy\\.${field}`);
+  if (!expected.test(fnBody)) {
+    console.error(`[FAIL] ${fnName}() must update calligraphy ${field} when calligraphy is active`);
+    hasError = true;
+  } else {
+    console.log(`[PASS] ${fnName}() updates calligraphy ${field}`);
+  }
+}
+
 if (hasError) {
   console.error('Tool State verification failed!');
   process.exit(1);

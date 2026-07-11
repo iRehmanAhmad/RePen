@@ -13,9 +13,21 @@
         <!-- Drag Grip Header -->
         <div class="drag-header" id="dragHeader">
           <button class="mark-mini" id="collapseBtn" title="Minimize / Expand / Drag">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M5 19.25 15.8 8.45l-2.25-2.25L2.75 17v4.25H7l10.8-10.8-2-2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="m15.2 4.55 1.15-1.15a1.9 1.9 0 0 1 2.7 0l1.55 1.55a1.9 1.9 0 0 1 0 2.7L19.45 8.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            <svg class="brand-pencil-icon" viewBox="0 0 512 512" aria-hidden="true">
+              <polygon fill="#424242" points="255.999,109.533 235.1,193.394 296.848,172.495"/>
+              <polygon fill="#707070" points="215.15,172.495 255.999,193.394 255.999,109.533"/>
+              <path fill="#FFBA00" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>
+              <path fill="#FDE09C" d="M215.15,172.495l-48.03,74.03c0.001,0.001,28.481,42.863,88.879,42.863V172.495H215.15z"/>
+              <path fill="#424242" d="M285.625,266.588c-8.852,1.176-18.71,1.9-29.626,1.9L235.1,389.293l20.899,122.706h29.626l20.899-122.706L285.625,266.588z"/>
+              <path fill="#FF8E00" d="M344.877,246.524c-0.001,0.001-19.132,14.735-59.253,20.063v245.412h59.253V246.524z"/>
+              <path fill="#707070" d="M226.373,266.588l-20.899,122.706L226.373,512h29.626V268.488c-10.917,0-20.775-0.724-29.626-1.9z"/>
+              <path fill="#FFBA00" d="M167.12,246.524v265.475h59.253V266.588c-40.121-5.329-59.252-20.063-59.253-20.064z"/>
+              <polygon fill="#003DA8" points="271.673,0 255.999,0 245.55,29.546 255.999,59.091 271.673,59.091"/>
+              <rect x="310.673" y="29.136" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 515.6158 330.9375)" fill="#003DA8" width="31.348" height="59.091"/>
+              <rect x="126.96" y="113.366" fill="#2F91ED" width="59.092" height="31.348"/>
+              <rect x="325.949" y="113.366" fill="#003DA8" width="59.092" height="31.348"/>
+              <rect x="156.105" y="43.008" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 275.4308 231.4505)" fill="#2F91ED" width="59.091" height="31.348"/>
+              <rect x="240.326" fill="#2F91ED" width="15.674" height="59.092"/>
             </svg>
           </button>
         </div>
@@ -73,15 +85,15 @@
           <!-- 2. Inking Group (Pen, Highlighter, Laser, Text, Spotlight, Magnifier) -->
           <div class="grouped-tool-container" id="inkingGroupContainer">
             <button class="tool-button icon-tool active grouped-main-btn" data-tool="pen" id="inkingGroupBtn" title="Inking Tools (Pen active)">
-              <svg id="inkingGroupIcon" viewBox="0 0 64 64" fill="currentColor" stroke="none"><path d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536L37.356,12.497z M8.364,51.39l33.941-33.942l4.243,4.243L12.606,55.632L8.364,51.39z M3.001,61.995c-0.553,0-1.001-0.446-1-0.999v-1.583l2.582,2.582H3.001z M7.411,61.996l-5.41-5.41l0.001-8.73l14.141,14.141H7.411z M17.557,60.582l-3.536-3.536l33.942-33.94l3.535,3.535L17.557,60.582z M52.912,25.227L38.771,11.083l2.828-2.828l14.143,14.143L52.912,25.227z M61.414,16.725l-4.259,4.259L43.013,6.841l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002l11.314,11.314C62.195,14.678,62.194,15.943,61.414,16.725z"/></svg>
+              <svg id="inkingGroupIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.6 4.8 14.9 12 22l7.2-7.1L12 2.6z"/><path d="M12 6.8 8.2 15l3.8 3.7 3.8-3.7L12 6.8z" fill="#101114"/><circle cx="12" cy="14.6" r="1.6"/><path d="M12 16.2v4.3" fill="none" stroke="#101114" stroke-width="1.6" stroke-linecap="round"/></svg>
               <span class="group-indicator" aria-hidden="true"></span>
             </button>
             <div class="grouped-popover" id="inkingGroupPopover">
               <button class="popover-btn active" data-subtool="pen" title="Pen Tool (Ctrl+Shift+1)">
-                <svg viewBox="0 0 64 64" fill="currentColor" stroke="none"><path d="M62.828,12.482L51.514,1.168c-1.562-1.562-4.093-1.562-5.657,0.001c0,0-44.646,44.646-45.255,45.255C-0.006,47.031,0,47.996,0,47.996l0.001,13.999c0,1.105,0.896,2,1.999,2.001h4.99c0.003,0,9.01,0,9.01,0s0.963,0.008,1.572-0.602s45.256-45.257,45.256-45.257C64.392,16.575,64.392,14.046,62.828,12.482z M37.356,12.497l3.535,3.536L6.95,49.976l-3.536-3.536L37.356,12.497z M8.364,51.39l33.941-33.942l4.243,4.243L12.606,55.632L8.364,51.39z M3.001,61.995c-0.553,0-1.001-0.446-1-0.999v-1.583l2.582,2.582H3.001z M7.411,61.996l-5.41-5.41l0.001-8.73l14.141,14.141H7.411z M17.557,60.582l-3.536-3.536l33.942-33.94l3.535,3.535L17.557,60.582z M52.912,25.227L38.771,11.083l2.828-2.828l14.143,14.143L52.912,25.227z M61.414,16.725l-4.259,4.259L43.013,6.841l4.258-4.257c0.782-0.782,2.049-0.782,2.829-0.002l11.314,11.314C62.195,14.678,62.194,15.943,61.414,16.725z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2.6 4.8 14.9 12 22l7.2-7.1L12 2.6z"/><path d="M12 6.8 8.2 15l3.8 3.7 3.8-3.7L12 6.8z" fill="#101114"/><circle cx="12" cy="14.6" r="1.6"/><path d="M12 16.2v4.3" fill="none" stroke="#101114" stroke-width="1.6" stroke-linecap="round"/></svg>
               </button>
               <button class="popover-btn" data-subtool="calligraphy" title="Calligraphy Pen">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20,4l-4-4l-3,3l2,2l-9,9c-1,1-2,3-2,5v2h2c2,0 4-1 5-2l9-9l2,2l3-3L20,4z M6.4,18.6C5.8,19,5.1,19.4,4.6,19.4v-0.1c0-0.6,0.3-1.3,0.7-1.9L13.6,9l1.4,1.4L6.4,18.6z M16.4,7.6l-1.4-1.4l1.4-1.4l1.4,1.4L16.4,7.6z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.8 2.8 21.2 5.2 17 11.8l-4.8-4.8 6.6-4.2z"/><path d="M11.2 8 16 12.8 8.6 20.2 3 21l.8-5.6L11.2 8z"/><path d="M7.1 16.9 4.8 19.2l3.2-.5L7.1 16.9z" fill="#101114"/><path d="M11.2 8 16 12.8" fill="none" stroke="#101114" stroke-width="1.3" stroke-linecap="round"/></svg>
               </button>
               <button class="popover-btn" data-subtool="highlighter" title="Highlighter (Ctrl+Shift+2)">
                 <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M3.293,20.707a1,1,0,0,1,0-1.414l16-16a1,1,0,1,1,1.414,1.414l-16,16A1,1,0,0,1,3.293,20.707Z"/></svg>
