@@ -41,41 +41,7 @@
             <svg viewBox="0 0 100 100" fill="none"><path d="M 5,5 90,30 65,50 95,80 80,95 50,65 30,90 z" fill="#ffffff" stroke="#000000" stroke-width="7" stroke-linejoin="miter"/></svg>
           </button>
 
-          <!-- 1b. View Group (Hide/Show Overlay + Presentation) -->
-          <div class="grouped-tool-container" id="selectGroupContainer">
-            <button class="tool-button icon-tool grouped-main-btn" id="selectButton" data-tool="spotlight" title="View / Presenter Tools" aria-label="View and presenter tools">
-              <svg id="selectGroupIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 4C5 4 1 12 1 12s4 8 11 8 11-8 11-8-4-8-11-8zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
-              <span class="group-indicator" aria-hidden="true"></span>
-            </button>
-            <div class="grouped-popover" id="selectGroupPopover">
-              <button class="popover-btn" id="toggleOverlayBtn" title="Hide Overlay (Ctrl+Alt+H)" aria-label="Toggle overlay visibility">
-                <svg id="eyeIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 4C5 4 1 12 1 12s4 8 11 8 11-8 11-8-4-8-11-8zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
-              </button>
-              <button class="popover-btn" data-subtool="spotlight" title="Presenter Spotlight">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 3l1.8 3.6L18 10l-3.2 2.4L16 16l-4-2.5L8 16l1.2-3.6L6 10l4.2-1.4L12 5z"/></svg>
-              </button>
-              <button class="popover-btn" data-subtool="magnifier" title="Magnifier Tool">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M10.5 2a8.5 8.5 0 0 1 6.6 13.7l4.6 4.6a1 1 0 0 1-1.4 1.4l-4.6-4.6A8.5 8.5 0 1 1 10.5 2zm0 2a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm1 3a1 1 0 0 0-2 0v2.5H7a1 1 0 0 0 0 2h2.5V14a1 1 0 0 0 2 0v-2.5H14a1 1 0 0 0 0-2h-2.5V7z"/></svg>
-              </button>
-              <div class="popover-row-divider" id="spotlightControlsDivider" style="display: none;"></div>
-              <div class="popover-row slider-row" id="spotlightControls" style="display: none;">
-                <div class="slider-control-item">
-                  <div class="slider-label-row">
-                    <span class="slider-label-text">Radius</span>
-                    <span id="spotlightRadiusVal" class="slider-val">150px</span>
-                  </div>
-                  <input type="range" id="spotlightRadiusRange" min="50" max="400" step="10" value="150" class="mini-slider" />
-                </div>
-                <div class="slider-control-item">
-                  <div class="slider-label-row">
-                    <span class="slider-label-text">Darkness</span>
-                    <span id="spotlightAlphaVal" class="slider-val">75%</span>
-                  </div>
-                  <input type="range" id="spotlightAlphaRange" min="0.2" max="0.95" step="0.05" value="0.75" class="mini-slider" />
-                </div>
-              </div>
-            </div>
-          </div>
+
 
           <div class="divider"></div>
 
@@ -148,6 +114,42 @@
                     <span id="opacityValDisplay" class="slider-val">100%</span>
                   </div>
                   <input id="inlineOpacityRange" type="range" min="0.1" max="1" step="0.05" value="1" class="mini-slider" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1b. View Group (Hide/Show Overlay + Presentation) -->
+          <div class="grouped-tool-container" id="selectGroupContainer">
+            <button class="tool-button icon-tool grouped-main-btn" id="selectButton" data-tool="spotlight" title="View / Presenter Tools" aria-label="View and presenter tools">
+              <svg id="selectGroupIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 4C5 4 1 12 1 12s4 8 11 8 11-8 11-8-4-8-11-8zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              <span class="group-indicator" aria-hidden="true"></span>
+            </button>
+            <div class="grouped-popover" id="selectGroupPopover">
+              <button class="popover-btn" id="toggleOverlayBtn" title="Hide Overlay (Ctrl+Alt+H)" aria-label="Toggle overlay visibility">
+                <svg id="eyeIcon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 4C5 4 1 12 1 12s4 8 11 8 11-8 11-8-4-8-11-8zm0 13a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="spotlight" title="Presenter Spotlight">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 3l1.8 3.6L18 10l-3.2 2.4L16 16l-4-2.5L8 16l1.2-3.6L6 10l4.2-1.4L12 5z"/></svg>
+              </button>
+              <button class="popover-btn" data-subtool="magnifier" title="Magnifier Tool">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M10.5 2a8.5 8.5 0 0 1 6.6 13.7l4.6 4.6a1 1 0 0 1-1.4 1.4l-4.6-4.6A8.5 8.5 0 1 1 10.5 2zm0 2a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm1 3a1 1 0 0 0-2 0v2.5H7a1 1 0 0 0 0 2h2.5V14a1 1 0 0 0 2 0v-2.5H14a1 1 0 0 0 0-2h-2.5V7z"/></svg>
+              </button>
+              <div class="popover-row-divider" id="spotlightControlsDivider" style="display: none;"></div>
+              <div class="popover-row slider-row" id="spotlightControls" style="display: none;">
+                <div class="slider-control-item">
+                  <div class="slider-label-row">
+                    <span class="slider-label-text">Radius</span>
+                    <span id="spotlightRadiusVal" class="slider-val">150px</span>
+                  </div>
+                  <input type="range" id="spotlightRadiusRange" min="50" max="400" step="10" value="150" class="mini-slider" />
+                </div>
+                <div class="slider-control-item">
+                  <div class="slider-label-row">
+                    <span class="slider-label-text">Darkness</span>
+                    <span id="spotlightAlphaVal" class="slider-val">75%</span>
+                  </div>
+                  <input type="range" id="spotlightAlphaRange" min="0.2" max="0.95" step="0.05" value="0.75" class="mini-slider" />
                 </div>
               </div>
             </div>

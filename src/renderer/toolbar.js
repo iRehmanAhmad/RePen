@@ -57,9 +57,8 @@ const INKING_ICONS = {
   text: '<path d="M5 4h14a1 1 0 0 1 0 2h-6v13h3a1 1 0 0 1 0 2H8a1 1 0 0 1 0-2h3V6H5a1 1 0 0 1 0-2z"/>'
 };
 
-const SELECT_TOOLS = ['select', 'spotlight', 'magnifier'];
+const SELECT_TOOLS = ['spotlight', 'magnifier'];
 const SELECT_ICONS = {
-  select: '<path d="M11 1a1.5 1.5 0 0 0-1.5 1.5V9h-1V5a1.5 1.5 0 0 0-3 0v9l-2-3a1.5 1.5 0 0 0-2.6 1.6l3 5C6 20 8.5 22 12 22h1a7.5 7.5 0 0 0 7.5-7.5v-7a1.5 1.5 0 0 0-3 0V11h-1V4a1.5 1.5 0 0 0-3 0v7h-1V2.5A1.5 1.5 0 0 0 11 1z"/>',
   spotlight: '<path fill-rule="evenodd" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 3l1.8 3.6L18 10l-3.2 2.4L16 16l-4-2.5L8 16l1.2-3.6L6 10l4.2-1.4L12 5z"/>',
   magnifier: '<path fill-rule="evenodd" d="M10.5 2a8.5 8.5 0 0 1 6.6 13.7l4.6 4.6a1 1 0 0 1-1.4 1.4l-4.6-4.6A8.5 8.5 0 1 1 10.5 2zm0 2a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm1 3a1 1 0 0 0-2 0v2.5H7a1 1 0 0 0 0 2h2.5V14a1 1 0 0 0 2 0v-2.5H14a1 1 0 0 0 0-2h-2.5V7z"/>'
 };
@@ -234,11 +233,11 @@ function updateToolButtons() {
     const isSelectActive = !appState.passThrough && SELECT_TOOLS.includes(appState.activeTool);
     elements.selectButton.classList.toggle('active', isSelectActive);
     if (SELECT_TOOLS.includes(appState.activeTool) && elements.selectGroupIcon) {
-      elements.selectGroupIcon.innerHTML = SELECT_ICONS[appState.activeTool] || SELECT_ICONS.select;
+      elements.selectGroupIcon.innerHTML = SELECT_ICONS[appState.activeTool] || SELECT_ICONS.spotlight;
       elements.selectButton.dataset.tool = appState.activeTool;
     } else if (elements.selectGroupIcon) {
-      elements.selectGroupIcon.innerHTML = SELECT_ICONS.select;
-      elements.selectButton.dataset.tool = 'select';
+      elements.selectGroupIcon.innerHTML = SELECT_ICONS.spotlight;
+      elements.selectButton.dataset.tool = 'spotlight';
     }
     if (elements.selectSubButtons) {
       for (const btn of elements.selectSubButtons) {
@@ -1130,7 +1129,7 @@ if (elements.selectButton) {
       }
     } else {
       closeAllPopovers();
-      const toolToSet = elements.selectButton.dataset.tool || 'select';
+      const toolToSet = elements.selectButton.dataset.tool || 'spotlight';
       await window.appBridge.setTool(toolToSet);
     }
   });

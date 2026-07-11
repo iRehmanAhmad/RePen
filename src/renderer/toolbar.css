@@ -1253,25 +1253,7 @@ html, body {
   box-shadow: none;
 }
 
-.tool-button.active::after {
-  content: '';
-  position: absolute;
-  left: 3px;
-  top: 9px;
-  width: 2px;
-  height: 18px;
-  border-radius: 2px;
-  background: currentColor;
-  opacity: 0.85;
-}
 
-.pen-bar.horizontal .tool-button.active::after {
-  left: 9px;
-  top: auto;
-  bottom: 3px;
-  width: 18px;
-  height: 2px;
-}
 
 .tool-button.active svg {
   filter: none !important;
