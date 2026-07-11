@@ -28,7 +28,7 @@ function getBaseCursor() {
   if (appState.activeTool === 'select') return 'default';
   if (appState.activeTool === 'text') return 'text';
   if (appState.activeTool === 'eraser') {
-    const eraserSvg = encodeURIComponent('<svg width="24" height="24" viewBox="-4.7 0 142.706 142.706" xmlns="http://www.w3.org/2000/svg"><path d="M280.413,784.444l-25.207-28.152a11,11,0,0,0-15.48-.9L156.3,829.128a11.009,11.009,0,0,0-3.607,6.7l2.663,18.815a10.979,10.979,0,0,0,2.7,8.88l25.208,28.152a11.016,11.016,0,0,0,8.2,3.661h0a10.988,10.988,0,0,0,7.282-2.757l83.429-73.74a11.009,11.009,0,0,0,3.607-6.7l2.662-18.815A10.975,10.975,0,0,0,280.413,784.444Zm-92.3,102.141a2.962,2.962,0,0,1-1.984.752h0a2.964,2.964,0,0,1-2.237-1l-25.207-28.153a2.988,2.988,0,0,1-.736-2.421l2.663-18.816a3.006,3.006,0,0,1,.984-1.827L198.62,802.4a6.965,6.965,0,0,1,2.976,1.96l22.529,25.16-38.24,33.5,5.272,6.017L228.5,836.318a7.017,7.017,0,0,1-.01,1.808l-2.067,14.6Z" transform="translate(-149.918 -752.63)" fill="black" stroke="white" stroke-width="3" stroke-linejoin="round"/></svg>');
+    const eraserSvg = encodeURIComponent('<svg width="24" height="24" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M16.998 4.18l-3.154-2.425a2.01 2.01 0 0 0-2.807.365l-8.4 10.897a2.003 2.003 0 0 0 .365 2.803l3.153 2.425a2.01 2.01 0 0 0 2.807-.365l8.401-10.897a2.003 2.003 0 0 0-.365-2.803zm-8.45 12.287l-.537.681a.8.8 0 0 1-.639.31.793.793 0 0 1-.485-.164l-3.153-2.425a.792.792 0 0 1-.303-.53.788.788 0 0 1 .157-.589l.537-.681a.801.801 0 0 1 .64-.311c.124 0 .309.029.485.164l3.154 2.425a.802.802 0 0 1 .144 1.12z" fill="black" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg>');
     return `url('data:image/svg+xml;utf8,${eraserSvg}') 0 24, crosshair`;
   }
   return 'crosshair';
