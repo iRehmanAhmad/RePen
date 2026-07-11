@@ -1144,6 +1144,36 @@
       "norm_label": "electron"
     },
     {
+      "label": "patch-bg.js",
+      "file_type": "code",
+      "source_file": "patch-bg.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch_bg",
+      "community": 68,
+      "norm_label": "patch-bg.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "patch-bg.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "patch_bg_fs",
+      "community": 68,
+      "norm_label": "fs"
+    },
+    {
+      "label": "patchCSS()",
+      "file_type": "code",
+      "source_file": "patch-bg.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "patch_bg_patchcss",
+      "community": 68,
+      "norm_label": "patchcss()"
+    },
+    {
       "label": "agent-hub.js",
       "file_type": "code",
       "source_file": "scripts/agent-hub.js",
@@ -10346,6 +10376,26 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "patch-bg.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "patch_bg",
+      "target": "patch_bg_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "patch-bg.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "patch_bg",
+      "target": "patch_bg_patchcss",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scripts/agent-hub.js",
       "source_location": "L14",
       "weight": 1.0,
@@ -17729,5 +17779,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b202ce5fc134f27ccb939e10cb467d53f5ffc78a"
+  "built_at_commit": "262e7f500258b794f17432c9fa6b52dedb3bc897"
 }

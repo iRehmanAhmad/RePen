@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783755353.9775424,
-    "ast_hash": "e500936cd45bf7eebcea0c8005ee0490",
+    "mtime": 1783758916.944441,
+    "ast_hash": "a80a0c7f70fe984208b599a030d11f8f",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -280,8 +280,8 @@
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260711-123406-prominent-nib-icons.md": {
-    "mtime": 1783756328.991138,
-    "ast_hash": "e6522c59811fdf445e991c011ce2ca7f",
+    "mtime": 1783758937.283196,
+    "ast_hash": "3cfa44cb7486e5c8358ff30c7f9efd54",
     "semantic_hash": ""
   },
   "patch-bg.js": {
