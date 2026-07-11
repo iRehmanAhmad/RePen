@@ -263,20 +263,5 @@
     "mtime": 1783503911.206218,
     "ast_hash": "fa5452fcdf838d5dad39d24bf891c340",
     "semantic_hash": ""
-  },
-  "patch-js.js": {
-    "mtime": 1783747900.4475124,
-    "ast_hash": "5ad1839a4208f6c03477c9580d9f2b25",
-    "semantic_hash": ""
-  },
-  "patch-ui.js": {
-    "mtime": 1783747830.6453843,
-    "ast_hash": "e6a7b363c02ba118e206601e10234a0a",
-    "semantic_hash": ""
-  },
-  "patch3.js": {
-    "mtime": 1783747965.1791868,
-    "ast_hash": "a5624eac2ee650e84f96f14fa091ab54",
-    "semantic_hash": ""
   }
 }

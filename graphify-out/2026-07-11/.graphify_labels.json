@@ -63,8 +63,5 @@
   "61": "Fix main icon click drag behavior",
   "62": "Fix cursor clearing grouped tools",
   "63": "verify-dialog-routing.js",
-  "64": "verify-eraser-geometry.js",
-  "65": "patch3.js",
-  "66": "patch-ui.js",
-  "67": "patch-js.js"
+  "64": "verify-eraser-geometry.js"
 }

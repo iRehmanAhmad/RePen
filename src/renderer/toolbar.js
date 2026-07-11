@@ -117,6 +117,13 @@ function currentBrushValue() {
 }
 
 function updateToolButtons() {
+  const activeColor = currentBrushValue().color || '#ff5a5f';
+  if (appState && appState.activeTool && !appState.passThrough) {
+    document.documentElement.style.setProperty('--dynamic-active-color', activeColor);
+  } else {
+    document.documentElement.style.setProperty('--dynamic-active-color', 'var(--accent)');
+  }
+
   for (const button of elements.toolButtons) {
     button.classList.toggle('active', !appState.passThrough && button.dataset.tool === appState.activeTool);
   }
