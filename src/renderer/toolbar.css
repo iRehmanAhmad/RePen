@@ -1390,6 +1390,7 @@ html, body {
   display: grid;
   grid-template-columns: repeat(2, 14px);
   gap: 2px;
+  justify-content: center;
 }
 
 .app-container.horizontal .color-grid-container {
@@ -1402,6 +1403,7 @@ html, body {
 .app-container.horizontal .bottom-color-grid .swatch-grid {
   grid-template-columns: repeat(2, 14px);
   gap: 2px;
+  justify-content: center;
 }
 
 .bottom-color-grid .swatch-btn,
