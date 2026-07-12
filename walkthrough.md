@@ -132,6 +132,11 @@ Ran the full test suite (`npm test`) which verified:
   - `dist/RePen 1.0.0.exe` (Portable Single Executable)
   - `dist/RePen Setup 1.0.0.exe` (Standard NSIS Installer)
 - **Taskbar Double Preview Fix**: Updated [main.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/main.js#L502) to add `type: 'utility'` to the overlay window and settings window constructors. Under Windows, utility windows (tool windows) are completely bypassed from taskbar preview lists and Alt-Tab tabs even when they receive focus. This resolves the double preview glitch, displaying only the main toolbar preview in the taskbar.
+- **GitHub Documentation & Release Funnels**: Created high-converting community assets designed to redirect user traffic to the official product website `https://rehmanahmad.pro`:
+  - [README.md](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/README.md): Beautiful landing page highlighting app capabilities, shortcuts cheat sheet, and custom badges pointing to the website downloads.
+  - [.github/ISSUE_TEMPLATE/bug_report.md](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/.github/ISSUE_TEMPLATE/bug_report.md): Structured bug report form with troubleshooting links to the website.
+  - [.github/ISSUE_TEMPLATE/feature_request.md](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/.github/ISSUE_TEMPLATE/feature_request.md): Enhancements template directing users to the roadmap and votes page.
+  - Copy-paste templates generated: [draft_mind_mapping_issue.md](file:///C:/Users/TOSHIBA/.gemini/antigravity/brain/c839d96b-9370-497e-b3fa-9224f9a13b4d/draft_mind_mapping_issue.md) (Mind Mapping tool request) and [release_notes.md](file:///C:/Users/TOSHIBA/.gemini/antigravity/brain/c839d96b-9370-497e-b3fa-9224f9a13b4d/release_notes.md) (Launch template).
 
 
 

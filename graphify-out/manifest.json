@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1783850254.3915074,
-    "ast_hash": "55d790158815e9d68fb2392752f7ee2f",
+    "mtime": 1783850911.7933981,
+    "ast_hash": "a4bbb19a2d95f2b6bc0aed5d932577c2",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
@@ -367,6 +367,21 @@
   "src/renderer/assets/app-icon.png": {
     "mtime": 1783846472.3179224,
     "ast_hash": "42a22a5c86b1e4f76200c23685c304ba",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/bug_report.md": {
+    "mtime": 1783850841.1840737,
+    "ast_hash": "da228c782be30071c170938f69303a19",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/feature_request.md": {
+    "mtime": 1783850852.9834104,
+    "ast_hash": "7595cf2e8459a11e45d3c489b14d2ace",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1783850837.0734992,
+    "ast_hash": "7841f4777247c68179a7cfb36a6f80e3",
     "semantic_hash": ""
   }
 }

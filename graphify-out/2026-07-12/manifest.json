@@ -10,8 +10,8 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1783848410.789079,
-    "ast_hash": "59dea27ede65a00bf4840a3b8135e371",
+    "mtime": 1783850034.8994305,
+    "ast_hash": "2f60c71821e8713be2ac0dabc815b88e",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1783849211.4180758,
-    "ast_hash": "a8d18ffe9ec7927137c5128b043ca64f",
+    "mtime": 1783850254.3915074,
+    "ast_hash": "55d790158815e9d68fb2392752f7ee2f",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
