@@ -1203,7 +1203,7 @@ html, body {
   margin: 0;
   height: 44px;
   border-radius: 0 !important;
-  background: radial-gradient(circle at 70% 30%, #c1121f 0%, #1a0003 100%) !important;
+  background: radial-gradient(circle at 70% 30%, #500006 0%, #100002 100%) !important;
   border: none !important;
   outline: none !important;
   color: rgba(242, 243, 245, 0.9);
@@ -1216,7 +1216,7 @@ html, body {
 
 
 .mark-mini:hover {
-  background: radial-gradient(circle at 70% 30%, #e63946 0%, #2b0006 100%) !important;
+  background: radial-gradient(circle at 70% 30%, #70000a 0%, #1a0003 100%) !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff;
   transform: none;
@@ -1224,7 +1224,7 @@ html, body {
 }
 
 .mark-mini:active {
-  background: radial-gradient(circle at 70% 30%, #b70915 0%, #100002 100%) !important;
+  background: radial-gradient(circle at 70% 30%, #400004 0%, #080001 100%) !important;
   transform: none;
 }
 
