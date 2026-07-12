@@ -40,8 +40,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783836259.2218196,
-    "ast_hash": "50a02a476bc58905406a573c32fb312c",
+    "mtime": 1783846495.1181247,
+    "ast_hash": "aa0f9dbc961c4bc50daeef02ed4ae44e",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1783846112.3695183,
-    "ast_hash": "ae6b5d11151ffb2d74cc6a6d2154ef2c",
+    "mtime": 1783846522.3762794,
+    "ast_hash": "c84fd5446d4cceff0372f5f0dbbd1381",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
@@ -360,13 +360,13 @@
     "semantic_hash": ""
   },
   "src/renderer/assets/tray-icon.png": {
-    "mtime": 1783845618.634906,
-    "ast_hash": "b79bedeedceb9f68e0c01de0fc5b6e29",
+    "mtime": 1783846472.3179224,
+    "ast_hash": "42a22a5c86b1e4f76200c23685c304ba",
     "semantic_hash": ""
   },
   "src/renderer/assets/app-icon.png": {
-    "mtime": 1783845618.634906,
-    "ast_hash": "b79bedeedceb9f68e0c01de0fc5b6e29",
+    "mtime": 1783846472.3179224,
+    "ast_hash": "42a22a5c86b1e4f76200c23685c304ba",
     "semantic_hash": ""
   }
 }

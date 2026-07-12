@@ -1131,7 +1131,7 @@ function render() {
         ctx.translate(currentMousePos.x, currentMousePos.y);
         ctx.scale(zoom, zoom);
         ctx.translate(-currentMousePos.x, -currentMousePos.y);
-        ctx.drawImage(magnifierImg, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(magnifierImg, 0, 0, window.innerWidth, window.innerHeight);
         ctx.restore();
       } else {
         ctx.save();

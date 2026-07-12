@@ -115,8 +115,8 @@ Ran the full test suite (`npm test`) which verified:
   - Verified that all premium icons resize cleanly and scale automatically in horizontal mode.
 
 ### 🖼️ Tray & Taskbar Icons
-- **Premium Radial Gradient Assets (Sharp Corners + Fat Pencil)**:
-  - Re-generated the PNG icon assets with a significantly thicker, fatter, and more prominent drawing pencil inside the center to ensure maximum visibility at low tray/taskbar resolutions.
+- **Premium Radial Gradient Assets (Sharp Corners + Giant Pencil)**:
+  - Re-generated the PNG icon assets with a giant, frame-filling pencil (occupying 95% of the frame) and removed all background padding margins. This ensures the pencil is huge and prominent even when Windows scales the icons down to small taskbar and system tray slots.
   - Replaced [app-icon.png](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/assets/app-icon.png) and [tray-icon.png](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/assets/tray-icon.png).
 
 ### 📐 SVG Icons & Layout Upgraded
@@ -125,6 +125,8 @@ Ran the full test suite (`npm test`) which verified:
 - **Highlighter Icon**: Replaced with the requested highlighter SVG from [SVGrepo 501220](https://www.svgrepo.com/svg/501220/highlighter) in both [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L61) and [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js#L60).
 - **Magic Shapes Icon**: Replaced with the requested magic shapes vector SVG from [SVGrepo 497512](https://www.svgrepo.com/svg/497512/shapes-2) in [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L78).
 - **Dynamic ViewBox Fix**: Added dynamic `viewBox` attribute scaling to [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js#L236-L260) to support varied coordinate boundaries (`0 0 906 906` for Spotlight, `0 0 1920 1920` for Highlighter, and `0 0 24 24` for others), preventing icons from rendering outside display bounds and resolving the empty presenter tools slot.
+- **Magnifier Tool Alignment Fix**: Updated [src/renderer/overlay.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/overlay.js#L1134) to render the magnifier background capture using logical window coordinates (`window.innerWidth`, `window.innerHeight`) instead of physical canvas dimensions (`canvas.width`, `canvas.height`). This fixes coordinate scale drift under high-DPI (scaled) displays, aligning the magnification point exactly with the crosshairs.
+
 
 
 
