@@ -128,6 +128,10 @@ Ran the full test suite (`npm test`) which verified:
 - **Magnifier Tool Alignment Fix**: Updated [src/renderer/overlay.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/overlay.js#L1134) to render the magnifier background capture using logical window coordinates (`window.innerWidth`, `window.innerHeight`) instead of physical canvas dimensions (`canvas.width`, `canvas.height`). This fixes coordinate scale drift under high-DPI (scaled) displays, aligning the magnification point exactly with the crosshairs.
 - **Presenter Spotlight Settings Fix**: Updated [src/renderer/overlay.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/overlay.js#L1105-L1118) to read spotlight radius and opacity (darkness) values dynamically from the application state (`appState.spotlight.radius` and `appState.spotlight.alpha`) instead of using hardcoded numbers (`150` and `0.75`). This enables real-time adjustments of the spotlight radius and background dimming values from the presenter popover.
 - **Brand Icon Darkened Background**: Updated [src/renderer/toolbar.css](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.css#L1206) to darken the radial gradient of the `.mark-mini` brand pencil button (switching from a bright crimson `#c1121f` to a much darker maroon/burgundy `#500006`). This ensures the header element blends subtly with the dark toolbar palette and does not distract the user.
+- **Production Executables Compiled**: Added `build` configurations and a `dist` script in [package.json](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/package.json#L14) using `electron-builder`. Successfully built production Windows targets outputted in the `dist/` directory:
+  - `dist/RePen 1.0.0.exe` (Portable Single Executable)
+  - `dist/RePen Setup 1.0.0.exe` (Standard NSIS Installer)
+
 
 
 

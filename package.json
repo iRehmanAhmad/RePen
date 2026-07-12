@@ -9,7 +9,27 @@
     "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js && node scripts/verify-scene-store-separation.js && node scripts/verify-eraser-geometry.js && node scripts/verify-dialog-routing.js",
     "postinstall": "git config core.hooksPath .githooks",
     "prepare": "git config core.hooksPath .githooks",
-    "graphify:update": "graphify update ."
+    "graphify:update": "graphify update .",
+    "dist": "npx electron-builder --win"
+  },
+  "build": {
+    "appId": "com.reman.repen",
+    "productName": "RePen",
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "src/renderer/assets/app-icon.png"
+    },
+    "files": [
+      "main.js",
+      "src/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    }
   },
   "keywords": [
     "annotation",
