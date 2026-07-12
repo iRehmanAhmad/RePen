@@ -15,6 +15,7 @@
   "build": {
     "appId": "com.reman.repen",
     "productName": "RePen",
+    "compression": "maximum",
     "win": {
       "target": [
         "nsis",

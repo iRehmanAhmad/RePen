@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-12)
 
 ## Corpus Check
-- 68 files · ~79,622 words
+- 68 files · ~79,629 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 902 nodes · 1188 edges · 89 communities (85 shown, 4 thin omitted)
+- 903 nodes · 1189 edges · 89 communities (85 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8a3d5446`
+- Built from commit: `96c04f1a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -156,7 +156,7 @@ Nodes (43): activateToolbarSettingsTab(), appContainer, appState, closeAllPopove
 
 ### Community 5 - "package.json"
 Cohesion: 0.07
-Nodes (27): author, build, appId, directories, files, productName, win, description (+19 more)
+Nodes (28): author, build, appId, compression, directories, files, productName, win (+20 more)
 
 ### Community 6 - "Multi-Agent Collaboration Protocol"
 Cohesion: 0.17
@@ -475,7 +475,7 @@ Cohesion: 0.67
 Nodes (3): 19. Security Model, Network posture, Required security decisions
 
 ## Knowledge Gaps
-- **540 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+535 more)
+- **541 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+536 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -489,7 +489,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path` to the rest of the system?**
-  _540 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _541 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.09269162210338681 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
