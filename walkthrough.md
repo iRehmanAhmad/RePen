@@ -131,6 +131,8 @@ Ran the full test suite (`npm test`) which verified:
 - **Production Executables Compiled**: Added `build` configurations and a `dist` script in [package.json](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/package.json#L14) using `electron-builder`. Successfully built production Windows targets outputted in the `dist/` directory:
   - `dist/RePen 1.0.0.exe` (Portable Single Executable)
   - `dist/RePen Setup 1.0.0.exe` (Standard NSIS Installer)
+- **Taskbar Double Preview Fix**: Updated [main.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/main.js#L502) to add `type: 'utility'` to the overlay window and settings window constructors. Under Windows, utility windows (tool windows) are completely bypassed from taskbar preview lists and Alt-Tab tabs even when they receive focus. This resolves the double preview glitch, displaying only the main toolbar preview in the taskbar.
+
 
 
 
