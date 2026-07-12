@@ -1190,10 +1190,7 @@ html, body {
   margin: 0;
   height: 44px;
   border-radius: 0 !important;
-  background:
-    radial-gradient(circle at 72% 24%, rgba(250, 204, 21, 0.22), transparent 31%),
-    radial-gradient(circle at 20% 82%, rgba(255, 255, 255, 0.14), transparent 36%),
-    linear-gradient(145deg, #06b6d4 0%, #2563eb 56%, #7c3aed 100%);
+  background: radial-gradient(circle at 70% 30%, #c1121f 0%, #1a0003 100%) !important;
   border: none !important;
   outline: none !important;
   color: rgba(242, 243, 245, 0.9);
@@ -1206,17 +1203,15 @@ html, body {
 
 
 .mark-mini:hover {
-  background:
-    radial-gradient(circle at 72% 24%, rgba(250, 204, 21, 0.28), transparent 31%),
-    radial-gradient(circle at 20% 82%, rgba(255, 255, 255, 0.18), transparent 36%),
-    linear-gradient(145deg, #22d3ee 0%, #3b82f6 56%, #8b5cf6 100%);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: radial-gradient(circle at 70% 30%, #e63946 0%, #2b0006 100%) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff;
   transform: none;
   box-shadow: none;
 }
 
 .mark-mini:active {
+  background: radial-gradient(circle at 70% 30%, #b70915 0%, #100002 100%) !important;
   transform: none;
 }
 
@@ -2281,10 +2276,7 @@ html, body {
 
 .pen-bar.collapsed .mark-mini,
 .mark-mini.is-minimized {
-  background:
-    radial-gradient(circle at 72% 24%, rgba(250, 204, 21, 0.22), transparent 31%),
-    radial-gradient(circle at 20% 82%, rgba(255, 255, 255, 0.14), transparent 36%),
-    linear-gradient(145deg, #06b6d4 0%, #2563eb 56%, #7c3aed 100%);
+  background: radial-gradient(circle at 70% 30%, #c1121f 0%, #1a0003 100%) !important;
   border: none !important;
   border-radius: 0 !important;
   outline: none !important;

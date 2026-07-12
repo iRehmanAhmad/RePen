@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-12)
 
 ## Corpus Check
-- 68 files · ~50,106 words
+- 68 files · ~74,499 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 888 nodes · 1174 edges · 83 communities (79 shown, 4 thin omitted)
+- 892 nodes · 1178 edges · 89 communities (85 shown, 4 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `43f4a648`
+- Built from commit: `3b7dfbe8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -98,6 +98,12 @@
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
 - [[_COMMUNITY_20260711-181000 Tray Cursor Settings Polish|20260711-181000 Tray Cursor Settings Polish]]
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
+- [[_COMMUNITY_broadcastState|broadcastState]]
+- [[_COMMUNITY_init|init]]
+- [[_COMMUNITY_syncPageStore|syncPageStore]]
+- [[_COMMUNITY_applyHotkeys|applyHotkeys]]
+- [[_COMMUNITY_createToolbarWindow|createToolbarWindow]]
+- [[_COMMUNITY_19. Security Model|19. Security Model]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `broadcastState()` - 28 edges
@@ -112,16 +118,25 @@
 10. `Sprint 1 and 2 Features Complete` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
-- None detected - all connections are within the same source files.
+- `broadcastScene()` --calls--> `syncPageStore()`  [EXTRACTED]
+  main.js → main.js  _Bridges community 85 → community 82_
+- `applyHotkeys()` --calls--> `deepClone()`  [EXTRACTED]
+  main.js → main.js  _Bridges community 82 → community 86_
+- `createOverlayWindow()` --calls--> `deepClone()`  [EXTRACTED]
+  main.js → main.js  _Bridges community 82 → community 87_
+- `loadState()` --calls--> `deepClone()`  [EXTRACTED]
+  main.js → main.js  _Bridges community 82 → community 84_
+- `writePersistedState()` --calls--> `getStateFilePath()`  [EXTRACTED]
+  main.js → main.js  _Bridges community 84 → community 83_
 
 ## Import Cycles
 - None detected.
 
-## Communities (83 total, 4 thin omitted)
+## Communities (89 total, 4 thin omitted)
 
 ### Community 0 - "main.js"
-Cohesion: 0.05
-Nodes (100): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, applyHotkeys(), applySettingsPayload(), autoArchiveCurrentSession(), broadcastScene(), broadcastState(), buildPdfExportHtml() (+92 more)
+Cohesion: 0.09
+Nodes (27): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, buildPdfExportHtml(), ccw(), DEFAULT_STATE, desktopPage, erasePath(), eraseStrokeSegments() (+19 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.12
@@ -205,7 +220,7 @@ Nodes (11): declaredElementKeys, elementsObject, fs, htmlContent, htmlIds, jsCon
 
 ### Community 21 - "verify-tool-state.js"
 Cohesion: 0.09
-Nodes (21): cursorButtonHandler, exportPdfMatch, fs, htmlContent, htmlTools, knownToolsInMain, mainContent, mainPath (+13 more)
+Nodes (22): appIconPath, cursorButtonHandler, exportPdfMatch, fs, htmlContent, htmlTools, knownToolsInMain, mainContent (+14 more)
 
 ### Community 22 - "Task: Magnifier Background, Enhanced Auto-Shapes, and Highlighter Blending"
 Cohesion: 0.25
@@ -344,8 +359,8 @@ Cohesion: 0.20
 Nodes (9): Acceptance Checks, Constraints, Context Read, Current Phase, Fix toolbar layout overflows, Goal, Owners, Plan (+1 more)
 
 ### Community 59 - "2. Product Objectives"
-Cohesion: 0.22
-Nodes (8): Automated Tests, Changes Made, 🎨 CSS & Vector Aesthetics, ⚙️ JavaScript Interaction & Hover Click-Through, Manual Verification, Verification Results, ✨ Visual Upgrades (Header & Active Selection Highlights), Walkthrough — Toolbar Layout & Premium Aesthetics
+Cohesion: 0.18
+Nodes (10): Automated Tests, Changes Made, 🎨 CSS & Vector Aesthetics, ⚙️ JavaScript Interaction & Hover Click-Through, Manual Verification, 📐 SVG Icons Upgraded, 🖼️ Tray & Taskbar Icons, Verification Results (+2 more)
 
 ### Community 60 - "Toolbar controls functionality audit and fix plan"
 Cohesion: 0.15
@@ -432,11 +447,35 @@ Cohesion: 0.29
 Nodes (6): 20260711-181000 Tray Cursor Settings Polish, Analysis, Handoff, Intake, Plan, Verification
 
 ### Community 82 - "19. Security Model"
+Cohesion: 0.20
+Nodes (21): broadcastScene(), clearScene(), deepClone(), getAppState(), getBootstrapData(), getDockSide(), getSceneState(), getShortcutActions() (+13 more)
+
+### Community 83 - "broadcastState"
+Cohesion: 0.15
+Nodes (17): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setBoardColor(), setClickHalo(), setColor() (+9 more)
+
+### Community 84 - "init"
+Cohesion: 0.21
+Nodes (12): createOverlayWindows(), createTray(), createTrayIcon(), getStateFilePath(), hideOverlayWindows(), init(), loadState(), readPersistedState() (+4 more)
+
+### Community 85 - "syncPageStore"
+Cohesion: 0.24
+Nodes (11): autoArchiveCurrentSession(), cycleBackgroundMode(), exportPdf(), loadSession(), newSession(), saveSession(), setBackgroundMode(), setPassThrough() (+3 more)
+
+### Community 86 - "applyHotkeys"
+Cohesion: 0.43
+Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
+
+### Community 87 - "createToolbarWindow"
+Cohesion: 0.47
+Nodes (6): createAppIcon(), createOverlayWindow(), createSettingsWindow(), createToolbarWindow(), pasteClipboardImage(), windowUrl()
+
+### Community 88 - "19. Security Model"
 Cohesion: 0.67
 Nodes (3): 19. Security Model, Network posture, Required security decisions
 
 ## Knowledge Gaps
-- **530 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+525 more)
+- **533 isolated node(s):** `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }`, `DEFAULT_STATE` (+528 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -450,9 +489,9 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `21. Milestone-Based Implementation Plan` connect `21. Milestone-Based Implementation Plan` to `Screen Annotation App Technical Architecture`?**
   _High betweenness centrality (0.001) - this node is a cross-community bridge._
 - **What connects `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path` to the rest of the system?**
-  _530 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _533 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.050608358314230294 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09269162210338681 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.11932773109243698 - nodes in this community are weakly interconnected._
 - **Should `agent-hub.js` be split into smaller, more focused modules?**

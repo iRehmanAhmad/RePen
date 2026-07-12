@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1783834998.9527433,
-    "ast_hash": "1e8c0b86f09f70166b0dbc55bf942fb3",
+    "mtime": 1783836562.5526476,
+    "ast_hash": "630339caad6f969eb816b0073f60dc6e",
     "semantic_hash": ""
   },
   "package.json": {
@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
-    "mtime": 1783788619.2078936,
-    "ast_hash": "00466042c2dc7f90cc19539a8fceae57",
+    "mtime": 1783836572.5916498,
+    "ast_hash": "51e990cbc2ecc7069caa4e0203d858fe",
     "semantic_hash": ""
   },
   "src/preload.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783834299.6284275,
-    "ast_hash": "2a93aa84a5940d4c4d0911a7a92446a6",
+    "mtime": 1783845841.9072938,
+    "ast_hash": "9a8548648ed68d3d9900496367667c36",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783834876.416568,
-    "ast_hash": "b77c8d9e3690dc45fd4ad8f247ee60fa",
+    "mtime": 1783846083.0849054,
+    "ast_hash": "722ffbb523c4d0897dbb4ae872d4da59",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1783834357.2801983,
-    "ast_hash": "088ec7385197acbc94efa65a7fb9f5cb",
+    "mtime": 1783846112.3695183,
+    "ast_hash": "ae6b5d11151ffb2d74cc6a6d2154ef2c",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
@@ -350,8 +350,8 @@
     "semantic_hash": ""
   },
   "src/renderer/icon.svg": {
-    "mtime": 1783787551.739091,
-    "ast_hash": "5e929cbf6a9dd0e9b8c2511afdc9235d",
+    "mtime": 1783836499.1863737,
+    "ast_hash": "3754264e8594380f7a83131e22ebc130",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260711-181000-tray-cursor-settings-polish.md": {
@@ -360,8 +360,13 @@
     "semantic_hash": ""
   },
   "src/renderer/assets/tray-icon.png": {
-    "mtime": 1783788601.8071144,
-    "ast_hash": "f442fca5c6219ef9643025f587a9fc1e",
+    "mtime": 1783845618.634906,
+    "ast_hash": "b79bedeedceb9f68e0c01de0fc5b6e29",
+    "semantic_hash": ""
+  },
+  "src/renderer/assets/app-icon.png": {
+    "mtime": 1783845618.634906,
+    "ast_hash": "b79bedeedceb9f68e0c01de0fc5b6e29",
     "semantic_hash": ""
   }
 }

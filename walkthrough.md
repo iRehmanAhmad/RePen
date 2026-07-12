@@ -113,3 +113,19 @@ Ran the full test suite (`npm test`) which verified:
   - Verified that toggling to horizontal mode renders the 6-column swatches grid at the original `21px` square sizes.
   - Verified that the orientation toggle and minimize button return to side-by-side layout.
   - Verified that all premium icons resize cleanly and scale automatically in horizontal mode.
+
+### 🖼️ Tray & Taskbar Icons
+- **Premium Radial Gradient Assets (Sharp Corners + Fat Pencil)**:
+  - Re-generated the PNG icon assets with a significantly thicker, fatter, and more prominent drawing pencil inside the center to ensure maximum visibility at low tray/taskbar resolutions.
+  - Replaced [app-icon.png](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/assets/app-icon.png) and [tray-icon.png](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/assets/tray-icon.png).
+
+### 📐 SVG Icons & Layout Upgraded
+- **Spotlight Icon**: Replaced with the requested spotlight icon SVG from [SVGrepo 147804](https://www.svgrepo.com/svg/147804/spotlight) in both [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L134) and dynamic selectors in [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js#L68).
+- **Freehand Arrow Icon**: Replaced with the requested zig-zag right arrow SVG from [SVGrepo 467002](https://www.svgrepo.com/svg/467002/zig-zag-right-arrow) in [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L85).
+- **Highlighter Icon**: Replaced with the requested highlighter SVG from [SVGrepo 501220](https://www.svgrepo.com/svg/501220/highlighter) in both [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L61) and [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js#L60).
+- **Magic Shapes Icon**: Replaced with the requested magic shapes vector SVG from [SVGrepo 497512](https://www.svgrepo.com/svg/497512/shapes-2) in [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L78).
+- **Dynamic ViewBox Fix**: Added dynamic `viewBox` attribute scaling to [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js#L236-L260) to support varied coordinate boundaries (`0 0 906 906` for Spotlight, `0 0 1920 1920` for Highlighter, and `0 0 24 24` for others), preventing icons from rendering outside display bounds and resolving the empty presenter tools slot.
+
+
+
+

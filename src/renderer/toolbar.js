@@ -65,7 +65,7 @@ const INKING_ICONS = {
 
 const SELECT_TOOLS = ['spotlight', 'magnifier'];
 const SELECT_ICONS = {
-  spotlight: '<path fill-rule="evenodd" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 3l1.8 3.6L18 10l-3.2 2.4L16 16l-4-2.5L8 16l1.2-3.6L6 10l4.2-1.4L12 5z"/>',
+  spotlight: '<path d="M251.79,0c-13.975,0-23.641,13.967-18.717,27.046l69.353,184.234c12.632-7.878,25.889-14.781,39.731-20.637c35.121-14.855,72.414-22.387,110.843-22.387s75.722,7.532,110.843,22.387c13.715,5.801,26.854,12.631,39.379,20.418l71.577-183.803C679.905,14.146,670.234,0,656.163,0H251.79z"/><path d="M878.742,231.201l-183.803,71.577c7.786,12.527,14.616,25.665,20.418,39.379c14.854,35.121,22.387,72.414,22.387,110.843s-7.532,75.722-22.387,110.843c-5.855,13.843-12.76,27.1-20.638,39.731l184.234,69.354C892.033,677.851,906,668.185,906,654.21V249.837C906,235.766,891.854,226.095,878.742,231.201z"/><path d="M563.843,715.357c-35.121,14.854-72.414,22.387-110.843,22.387s-75.722-7.532-110.843-22.387c-13.715-5.802-26.854-12.632-39.379-20.418l-71.577,183.803C226.095,891.854,235.766,906,249.837,906H654.21c13.975,0,23.641-13.967,18.717-27.046L603.574,694.72C590.942,702.598,577.686,709.502,563.843,715.357z"/><path d="M27.258,674.799l183.803-71.577c-7.787-12.526-14.617-25.665-20.418-39.379c-14.854-35.121-22.387-72.414-22.387-110.843s7.532-75.722,22.387-110.843c5.855-13.843,12.759-27.099,20.637-39.731L27.046,233.073C13.967,228.149,0,237.815,0,251.79v404.372C0,670.234,14.146,679.906,27.258,674.799z"/><path d="M712.744,453c0-42.3-10.119-82.234-28.057-117.526c-24.956-49.101-65.061-89.204-114.161-114.161C535.234,203.375,495.3,193.256,453,193.256s-82.234,10.119-117.526,28.057c-49.101,24.957-89.205,65.06-114.161,114.161C203.375,370.766,193.256,410.7,193.256,453s10.119,82.234,28.057,117.526c24.957,49.101,65.06,89.204,114.161,114.161C370.766,702.625,410.7,712.744,453,712.744s82.234-10.119,117.526-28.057c49.101-24.957,89.205-65.061,114.161-114.161C702.625,535.234,712.744,495.3,712.744,453z M453,589c-75.111,0-136-60.889-136-136s60.889-136,136-136s136,60.889,136,136S528.111,589,453,589z"/>',
   magnifier: '<path fill-rule="evenodd" d="M10.5 2a8.5 8.5 0 0 1 6.6 13.7l4.6 4.6a1 1 0 0 1-1.4 1.4l-4.6-4.6A8.5 8.5 0 1 1 10.5 2zm0 2a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm1 3a1 1 0 0 0-2 0v2.5H7a1 1 0 0 0 0 2h2.5V14a1 1 0 0 0 2 0v-2.5H14a1 1 0 0 0 0-2h-2.5V7z"/>'
 };
 
@@ -238,7 +238,7 @@ function updateToolButtons() {
       elements.inkingGroupBtn.dataset.tool = appState.activeTool;
       let viewBox = '0 0 24 24';
       if (appState.activeTool === 'pen') viewBox = '0 0 512 512';
-      else if (appState.activeTool === 'highlighter') viewBox = '0 0 490 490';
+      else if (appState.activeTool === 'highlighter') viewBox = '0 0 1920 1920';
       else if (appState.activeTool === 'calligraphy') viewBox = '0 0 16 16';
       elements.inkingGroupIcon.setAttribute('viewBox', viewBox);
     }
@@ -252,9 +252,14 @@ function updateToolButtons() {
     const isSelectActive = !appState.passThrough && SELECT_TOOLS.includes(appState.activeTool);
     elements.selectButton.classList.toggle('active', isSelectActive);
     if (SELECT_TOOLS.includes(appState.activeTool) && elements.selectGroupIcon) {
-      elements.selectGroupIcon.innerHTML = SELECT_ICONS[appState.activeTool] || SELECT_ICONS.spotlight;
-      elements.selectButton.dataset.tool = appState.activeTool;
+      const activeTool = appState.activeTool;
+      let viewBox = '0 0 24 24';
+      if (activeTool === 'spotlight') viewBox = '0 0 906 906';
+      elements.selectGroupIcon.setAttribute('viewBox', viewBox);
+      elements.selectGroupIcon.innerHTML = SELECT_ICONS[activeTool] || SELECT_ICONS.spotlight;
+      elements.selectButton.dataset.tool = activeTool;
     } else if (elements.selectGroupIcon) {
+      elements.selectGroupIcon.setAttribute('viewBox', '0 0 906 906');
       elements.selectGroupIcon.innerHTML = SELECT_ICONS.spotlight;
       elements.selectButton.dataset.tool = 'spotlight';
     }
