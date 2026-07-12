@@ -82,6 +82,7 @@
               <button class="popover-btn active" data-subshape="rectangle" title="Rectangle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg></button>
               <button class="popover-btn" data-subshape="circle" title="Circle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16zM2 12C2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10S2 17.5 2 12z"/></svg></button>
               <button class="popover-btn" data-subshape="line" title="Straight Line"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="3" y="11" width="22" height="2.5" rx="1" transform="rotate(-45 12 12)"/></svg></button>
+              <button class="popover-btn" data-subshape="freehand_arrow" title="Freehand Arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17c2-5 5-7 9-7h6"/><path d="m16 7 3 3-3 3"/></svg></button>
               <button class="popover-btn" data-subshape="arrow" title="Arrow"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 11h12.2l-4.6-4.6a1 1 0 0 1 1.4-1.4l6.7 6.7a1 1 0 0 1 0 1.4l-6.7 6.7a1 1 0 0 1-1.4-1.4L16.2 13H4a1 1 0 0 1 0-2z"/></svg></button>
               <button class="popover-btn" data-subshape="triangle" title="Triangle"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path fill-rule="evenodd" d="M12 3l10 17H2L12 3zm0 4.5L5.5 18h13L12 7.5z"/></svg></button>
             </div>
@@ -212,11 +213,44 @@
             </div>
             <div class="grouped-popover" id="colorPopover">
               <div class="color-popover-grid">
-                <button class="swatch-btn" data-color="#f97316" style="background-color: #f97316;" title="Orange"></button>
-                <button class="swatch-btn" data-color="#22d3ee" style="background-color: #22d3ee;" title="Cyan"></button>
-                <button class="swatch-btn" data-color="#a855f7" style="background-color: #a855f7;" title="Purple"></button>
-                <button class="swatch-btn" data-color="#6b7280" style="background-color: #6b7280;" title="Slate Grey"></button>
-                <button class="swatch-btn" data-color="#111827" style="background-color: #111827;" title="Ink Black"></button>
+                <!-- Row 1: Red family -->
+                <button class="swatch-btn" data-color="#e11d48" style="background-color: #e11d48;" title="Rose Red"></button>
+                <button class="swatch-btn" data-color="#f43f5e" style="background-color: #f43f5e;" title="Coral Red"></button>
+                <button class="swatch-btn" data-color="#fb7185" style="background-color: #fb7185;" title="Light Rose"></button>
+
+                <!-- Row 2: Orange family -->
+                <button class="swatch-btn" data-color="#c2410c" style="background-color: #c2410c;" title="Rust Orange"></button>
+                <button class="swatch-btn" data-color="#ea580c" style="background-color: #ea580c;" title="Orange"></button>
+                <button class="swatch-btn" data-color="#f97316" style="background-color: #f97316;" title="Light Orange"></button>
+
+                <!-- Row 3: Yellow family -->
+                <button class="swatch-btn" data-color="#d97706" style="background-color: #d97706;" title="Amber Gold"></button>
+                <button class="swatch-btn" data-color="#eab308" style="background-color: #eab308;" title="Yellow"></button>
+                <button class="swatch-btn" data-color="#fde047" style="background-color: #fde047;" title="Pale Yellow"></button>
+
+                <!-- Row 4: Green family -->
+                <button class="swatch-btn" data-color="#0f766e" style="background-color: #0f766e;" title="Teal Green"></button>
+                <button class="swatch-btn" data-color="#16a34a" style="background-color: #16a34a;" title="Emerald Green"></button>
+                <button class="swatch-btn" data-color="#4ade80" style="background-color: #4ade80;" title="Mint Green"></button>
+
+                <!-- Row 5: Blue family -->
+                <button class="swatch-btn" data-color="#1d4ed8" style="background-color: #1d4ed8;" title="Cobalt Blue"></button>
+                <button class="swatch-btn" data-color="#2563eb" style="background-color: #2563eb;" title="Sky Blue"></button>
+                <button class="swatch-btn" data-color="#06b6d4" style="background-color: #06b6d4;" title="Cyan"></button>
+
+                <!-- Row 6: Purple family -->
+                <button class="swatch-btn" data-color="#4338ca" style="background-color: #4338ca;" title="Deep Indigo"></button>
+                <button class="swatch-btn" data-color="#7c3aed" style="background-color: #7c3aed;" title="Violet"></button>
+                <button class="swatch-btn" data-color="#a78bfa" style="background-color: #a78bfa;" title="Lavender"></button>
+
+                <!-- Row 7: Pink family -->
+                <button class="swatch-btn" data-color="#be185d" style="background-color: #be185d;" title="Magenta"></button>
+                <button class="swatch-btn" data-color="#db2777" style="background-color: #db2777;" title="Hot Pink"></button>
+                <button class="swatch-btn" data-color="#f472b6" style="background-color: #f472b6;" title="Pastel Pink"></button>
+
+                <!-- Row 8: Grayscale & Custom picker -->
+                <button class="swatch-btn" data-color="#ffffff" style="background-color: #ffffff;" title="White"></button>
+                <button class="swatch-btn" data-color="#4b5563" style="background-color: #4b5563;" title="Charcoal Gray"></button>
                 <label class="custom-swatch-picker swatch-btn" title="Pick Custom Color">
                   <span class="custom-plus">+</span>
                   <input type="color" id="inlineCustomColorPicker" value="#ff5a5f">

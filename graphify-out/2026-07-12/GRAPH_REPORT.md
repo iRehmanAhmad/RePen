@@ -1,7 +1,7 @@
 # Graph Report - epic-pen-clone  (2026-07-12)
 
 ## Corpus Check
-- 68 files · ~50,137 words
+- 68 files · ~50,106 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

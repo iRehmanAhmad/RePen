@@ -1,5 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="104" fill="#101114"/>
+  <defs>
+    <linearGradient id="repen-app-bg" x1="64" y1="32" x2="448" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#06B6D4"/>
+      <stop offset="0.55" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="104" fill="url(#repen-app-bg)"/>
+  <circle cx="392" cy="112" r="76" fill="#FACC15" opacity="0.18"/>
+  <circle cx="112" cy="408" r="92" fill="#FFFFFF" opacity="0.12"/>
   <polygon fill="#111827" points="255.999,109.533 235.1,193.394 296.848,172.495"/>
   <polygon fill="#64748B" points="215.15,172.495 255.999,193.394 255.999,109.533"/>
   <path fill="#22D3EE" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>

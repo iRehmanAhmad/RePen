@@ -404,7 +404,7 @@ function updateTrayMenu() {
         { label: 'Magic Shapes', type: 'radio', checked: state.activeTool === 'shapes', click: () => setTool('shapes') },
         { label: 'Laser Pointer', type: 'radio', checked: state.activeTool === 'laser', click: () => setTool('laser') },
         { label: 'Text Tool', type: 'radio', checked: state.activeTool === 'text', click: () => setTool('text') },
-        { label: 'Cursor / Move Annotations', type: 'radio', checked: state.activeTool === 'select', click: () => setTool('select') },
+        { label: 'Desktop Cursor', type: 'radio', checked: state.passThrough || state.activeTool === 'cursor', click: () => setPassThrough(true) },
         { label: 'Spotlight', type: 'radio', checked: state.activeTool === 'spotlight', click: () => setTool('spotlight') },
         { label: 'Magnifier', type: 'radio', checked: state.activeTool === 'magnifier', click: () => setTool('magnifier') },
         { label: 'Eraser', type: 'radio', checked: state.activeTool === 'eraser', click: () => setTool('eraser') },
@@ -412,6 +412,7 @@ function updateTrayMenu() {
     },
     { type: 'separator' },
     { label: 'Settings...', click: () => showSettingsWindow() },
+    { label: 'Visit Website...', click: () => shell.openExternal('https://rehmanahmad.pro') },
     { type: 'separator' },
     { label: 'Undo', click: () => undo() },
     { label: 'Redo', click: () => redo() },
@@ -424,9 +425,48 @@ function updateTrayMenu() {
 }
 
 function createTrayIcon() {
-  const iconPath = path.join(__dirname, 'src', 'renderer', 'icon.svg');
-  const img = nativeImage.createFromPath(iconPath);
-  return img.resize({ width: 20, height: 20, quality: 'best' });
+  const trayPngPath = path.join(__dirname, 'src', 'renderer', 'assets', 'tray-icon.png');
+  const pngIcon = nativeImage.createFromPath(trayPngPath);
+  if (!pngIcon.isEmpty()) {
+    const resizedPng = pngIcon.resize({ width: 20, height: 20, quality: 'best' });
+    resizedPng.setTemplateImage(false);
+    return resizedPng;
+  }
+
+  const traySvg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="14" fill="#0b1220"/>
+      <path d="M32 6 22 28l10 7 10-7L32 6Z" fill="#facc15"/>
+      <path d="M22 28v26h8V34l-8-6Z" fill="#f8fafc"/>
+      <path d="M42 28v26h-8V34l8-6Z" fill="#22d3ee"/>
+      <path d="M26 48h12l-3 10h-6l-3-10Z" fill="#38bdf8"/>
+      <path d="M27 25h10l-5 10-5-10Z" fill="#111827"/>
+      <path d="M16 51h8" stroke="#67e8f9" stroke-width="3" stroke-linecap="round"/>
+      <path d="M40 51h8" stroke="#facc15" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  `.trim();
+  const img = nativeImage.createFromDataURL(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(traySvg)}`);
+  if (!img.isEmpty()) {
+    const resized = img.resize({ width: 20, height: 20, quality: 'best' });
+    resized.setTemplateImage(false);
+    return resized;
+  }
+  const fallback = nativeImage.createFromPath(path.join(__dirname, 'src', 'renderer', 'icon.svg'));
+  const resizedFallback = fallback.resize({ width: 20, height: 20, quality: 'best' });
+  resizedFallback.setTemplateImage(false);
+  return resizedFallback;
+}
+
+function createAppIcon() {
+  const appPngPath = path.join(__dirname, 'src', 'renderer', 'assets', 'app-icon.png');
+  const pngIcon = nativeImage.createFromPath(appPngPath);
+  if (!pngIcon.isEmpty()) {
+    pngIcon.setTemplateImage(false);
+    return pngIcon;
+  }
+  const fallback = nativeImage.createFromPath(path.join(__dirname, 'src', 'renderer', 'icon.svg'));
+  fallback.setTemplateImage(false);
+  return fallback;
 }
 
 function createTray() {
@@ -527,7 +567,7 @@ function createToolbarWindow() {
     maximizable: false,
     skipTaskbar: false,
     hasShadow: false,
-    icon: createTrayIcon(),
+    icon: createAppIcon(),
     backgroundColor: '#00000000',
     show: true,
     alwaysOnTop: true,
@@ -653,7 +693,7 @@ function createSettingsWindow() {
     maximizable: false,
     skipTaskbar: true,
     hasShadow: false,
-    icon: createTrayIcon(),
+    icon: createAppIcon(),
     backgroundColor: '#00000000',
     show: false,
     alwaysOnTop: true,
@@ -762,7 +802,7 @@ function setPassThrough(enabled) {
     state.activeTool = 'cursor';
     state.magnifierBgUrls = null;
   } else if (state.activeTool === 'cursor') {
-    state.activeTool = 'select';
+    state.activeTool = 'pen';
   }
   updateOverlayIgnoreMouse();
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
@@ -1529,7 +1569,7 @@ function strokeHitsEraserPath(stroke, erasePoints, radius) {
     return false;
   }
 
-  if (stroke.tool === 'shapes' || stroke.shapeType) {
+  if ((stroke.tool === 'shapes' || stroke.shapeType) && stroke.shapeType !== 'freehand_arrow') {
     const sx = stroke.start?.x || 0, sy = stroke.start?.y || 0;
     const ex = stroke.end?.x || 0, ey = stroke.end?.y || 0;
     

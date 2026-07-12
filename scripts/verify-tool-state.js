@@ -45,6 +45,22 @@ for (const t of htmlTools) {
 
 const overlayPath = path.join(__dirname, '../src/renderer/overlay.js');
 const overlayContent = fs.readFileSync(overlayPath, 'utf8');
+const trayIconPath = path.join(__dirname, '../src/renderer/assets/tray-icon.png');
+const appIconPath = path.join(__dirname, '../src/renderer/assets/app-icon.png');
+
+if (!fs.existsSync(trayIconPath) || fs.statSync(trayIconPath).size < 512 || !/tray-icon\.png/.test(mainContent)) {
+  console.error('[FAIL] Windows tray must use a real PNG asset before SVG fallback');
+  hasError = true;
+} else {
+  console.log('[PASS] Windows tray uses a real PNG icon asset');
+}
+
+if (!fs.existsSync(appIconPath) || fs.statSync(appIconPath).size < 1024 || !/function\s+createAppIcon/.test(mainContent) || !/app-icon\.png/.test(mainContent)) {
+  console.error('[FAIL] Main app windows must use a distinct app PNG icon instead of the compact tray icon');
+  hasError = true;
+} else {
+  console.log('[PASS] Main app windows use a distinct PNG app icon');
+}
 
 if (/const\s+SELECT_TOOLS\s*=\s*\[[^\]]*['"]select['"]/.test(toolbarJsContent)) {
   console.error('[FAIL] Select/move should be routed through the cursor button, not exposed as a separate view-group primary tool');
@@ -55,11 +71,11 @@ if (/const\s+SELECT_TOOLS\s*=\s*\[[^\]]*['"]select['"]/.test(toolbarJsContent)) 
 
 const cursorButtonHandler = toolbarJsContent.match(/elements\.togglePassThrough\.addEventListener\('click',\s*async\s*\(\)\s*=>\s*\{([\s\S]*?)\n\s*\}\);/);
 const cursorButtonBody = cursorButtonHandler ? cursorButtonHandler[1] : '';
-if (!/setTool\(['"]select['"]\)/.test(cursorButtonBody) || !/setPassThrough\(true\)/.test(cursorButtonBody)) {
-  console.error('[FAIL] Cursor button must enter select/move mode and toggle back to desktop pass-through from select mode');
+if (!/setPassThrough\(true\)/.test(cursorButtonBody) || /setTool\(['"]select['"]\)/.test(cursorButtonBody)) {
+  console.error('[FAIL] Cursor button must enable desktop pass-through directly instead of entering select/move mode');
   hasError = true;
 } else {
-  console.log('[PASS] Cursor button owns select/move and desktop pass-through transitions');
+  console.log('[PASS] Cursor button enables desktop pass-through directly');
 }
 
 if (!/resetInteractionState\('background mode changed'\)/.test(overlayContent)) {
@@ -160,6 +176,13 @@ if (!/function\s+setPassThrough\s*\([^)]*\)\s*\{[\s\S]*state\.activeTool\s*=\s*[
   hasError = true;
 } else {
   console.log('[PASS] setPassThrough() clears active tools by switching to cursor mode');
+}
+
+if (/state\.activeTool\s*=\s*['"]select['"]/.test(mainContent.match(/function\s+setPassThrough\s*\([^)]*\)\s*\{([\s\S]*?)\n\}/)?.[1] || '')) {
+  console.error('[FAIL] setPassThrough(false) must not restore select/move from cursor mode');
+  hasError = true;
+} else {
+  console.log('[PASS] setPassThrough(false) does not restore select/move from cursor mode');
 }
 
 if (!/function\s+setPassThrough\s*\([^)]*\)\s*\{[\s\S]*state\.magnifierBgUrls\s*=\s*null/.test(mainContent)) {

@@ -791,6 +791,29 @@ function drawStroke(stroke, targetCtx = ctx) {
       targetCtx.moveTo(pStart.x, pStart.y);
       targetCtx.lineTo(pEnd.x, pEnd.y);
       targetCtx.stroke();
+    } else if (shapeType === 'freehand_arrow') {
+      const localPts = stroke.points ? stroke.points.map(globalToLocal) : [];
+      if (localPts.length >= 2) {
+        targetCtx.moveTo(localPts[0].x, localPts[0].y);
+        for (let i = 1; i < localPts.length; i++) {
+          targetCtx.lineTo(localPts[i].x, localPts[i].y);
+        }
+        targetCtx.stroke();
+
+        const pLast = localPts[localPts.length - 1];
+        const pPrev = localPts[localPts.length - 2];
+        const angle = Math.atan2(pLast.y - pPrev.y, pLast.x - pPrev.x);
+        const headLen = Math.max(12, worldToScreenLength(stroke.width || 4) * 3);
+        targetCtx.beginPath();
+        targetCtx.moveTo(pLast.x, pLast.y);
+        targetCtx.lineTo(pLast.x - headLen * Math.cos(angle - Math.PI / 6), pLast.y - headLen * Math.sin(angle - Math.PI / 6));
+        targetCtx.moveTo(pLast.x, pLast.y);
+        targetCtx.lineTo(pLast.x - headLen * Math.cos(angle + Math.PI / 6), pLast.y - headLen * Math.sin(angle + Math.PI / 6));
+        targetCtx.stroke();
+      } else if (localPts.length === 1) {
+        targetCtx.arc(localPts[0].x, localPts[0].y, worldToScreenLength(stroke.width || 4) / 2, 0, Math.PI * 2);
+        targetCtx.fill();
+      }
     } else if (shapeType === 'arrow') {
       targetCtx.moveTo(pStart.x, pStart.y);
       targetCtx.lineTo(pEnd.x, pEnd.y);
@@ -1194,7 +1217,7 @@ function getSelectionBoundingBox(ids) {
         minY = Math.min(minY, pt.y - 4);
         maxX = Math.max(maxX, pt.x + boxW + 4);
         maxY = Math.max(maxY, pt.y + boxH + 4);
-      } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+      } else if ((stroke.tool === 'shapes' || stroke.shapeType) && stroke.shapeType !== 'freehand_arrow') {
         const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
         const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
         minX = Math.min(minX, pStart.x - 10, pEnd.x - 10);
@@ -1231,6 +1254,17 @@ function createStrokeFromEvent(event) {
   const globalPoint = localToGlobal({ x: event.offsetX, y: event.offsetY });
 
   if (appState.activeTool === 'shapes') {
+    if (appState.activeShapeType === 'freehand_arrow') {
+      return {
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        tool: 'shapes',
+        shapeType: 'freehand_arrow',
+        color: brush.color,
+        width: brush.width,
+        opacity: brush.opacity,
+        points: [globalPoint],
+      };
+    }
     return {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       tool: 'shapes',
@@ -1613,7 +1647,14 @@ async function finalizeStroke() {
   currentStroke = null;
 
   if (stroke.tool === 'shapes') {
-    if (stroke.start && stroke.end && Math.hypot(stroke.end.x - stroke.start.x, stroke.end.y - stroke.start.y) >= 4) {
+    if (stroke.shapeType === 'freehand_arrow') {
+      if (stroke.points && stroke.points.length >= 2) {
+        stroke.start = { ...stroke.points[0] };
+        stroke.end = { ...stroke.points[stroke.points.length - 1] };
+        await window.appBridge.addStroke(stroke);
+        await checkAutoAdvance(stroke);
+      }
+    } else if (stroke.start && stroke.end && Math.hypot(stroke.end.x - stroke.start.x, stroke.end.y - stroke.start.y) >= 4) {
       await window.appBridge.addStroke(stroke);
       await checkAutoAdvance(stroke);
     }
@@ -1727,7 +1768,7 @@ canvas.addEventListener('pointerdown', (event) => {
           clickedId = stroke.id;
           break;
         }
-      } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+      } else if ((stroke.tool === 'shapes' || stroke.shapeType) && stroke.shapeType !== 'freehand_arrow') {
         const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
         const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
         const minX = Math.min(pStart.x, pEnd.x) - 10;
@@ -1906,6 +1947,12 @@ canvas.addEventListener('pointermove', (event) => {
   }
 
   if (currentStroke.tool === 'shapes') {
+    if (currentStroke.shapeType === 'freehand_arrow') {
+      const globalPoint = localToGlobal({ x: event.offsetX, y: event.offsetY });
+      addPointToStroke(currentStroke, globalPoint);
+      scheduleRender();
+      return;
+    }
     currentStroke.end = localToGlobal({ x: event.offsetX, y: event.offsetY });
     scheduleRender();
     return;
@@ -1954,7 +2001,7 @@ canvas.addEventListener('pointerup', async (event) => {
             maxX: pt.x + worldToScreenLength(stroke.width || (stroke.tool === 'image' ? 400 : 200)),
             maxY: pt.y + worldToScreenLength(stroke.height || (stroke.tool === 'image' ? 300 : 80))
           };
-        } else if (stroke.tool === 'shapes' || stroke.shapeType) {
+        } else if ((stroke.tool === 'shapes' || stroke.shapeType) && stroke.shapeType !== 'freehand_arrow') {
           const pStart = stroke.start ? globalToLocal(stroke.start) : (stroke.points?.[0] ? globalToLocal(stroke.points[0]) : { x: 0, y: 0 });
           const pEnd = stroke.end ? globalToLocal(stroke.end) : (stroke.points?.[stroke.points.length - 1] ? globalToLocal(stroke.points[stroke.points.length - 1]) : pStart);
           box = { minX: Math.min(pStart.x, pEnd.x), minY: Math.min(pStart.y, pEnd.y), maxX: Math.max(pStart.x, pEnd.x), maxY: Math.max(pStart.y, pEnd.y) };

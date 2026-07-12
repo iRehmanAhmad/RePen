@@ -228,7 +228,7 @@ function updateToolButtons() {
     button.classList.toggle('active', !appState.passThrough && button.dataset.tool === appState.activeTool);
   }
   if (elements.togglePassThrough) {
-    elements.togglePassThrough.classList.toggle('active', appState.passThrough || appState.activeTool === 'select');
+    elements.togglePassThrough.classList.toggle('active', appState.passThrough || appState.activeTool === 'cursor');
   }
   if (elements.inkingGroupBtn) {
     const isInkingActive = !appState.passThrough && INKING_TOOLS.includes(appState.activeTool);
@@ -306,6 +306,7 @@ function updatePills() {
     shapes: 'Magic Shapes',
     laser: 'Laser',
     text: 'Text Note',
+    cursor: 'Desktop Cursor',
     select: 'Move Tool',
     spotlight: 'Spotlight',
     magnifier: 'Magnify',
@@ -328,8 +329,9 @@ function updatePills() {
   }
   if (elements.togglePassThrough) {
     elements.togglePassThrough.title = appState.passThrough
-      ? 'Cursor / Move Annotations (Ctrl+Shift+P)'
+      ? 'Desktop Click-through On (Ctrl+Shift+P)'
       : 'Enable Desktop Click-through (Ctrl+Shift+P)';
+    elements.togglePassThrough.setAttribute('aria-label', 'Desktop Cursor');
   }
 
   if (elements.bgModeButton) {
@@ -746,7 +748,7 @@ function activateToolbarSettingsTab(tabName) {
       general: 'General preferences ready.',
       customize: 'Customize defaults, then save.',
       hotkeys: 'Edit shortcuts, then save.',
-      about: 'Release profile ready.',
+      about: 'Product information.',
       help: 'Help and support links.',
     };
     setToolbarSettingsMessage(messages[nextTab] || 'Ready.', 'info');
@@ -861,11 +863,7 @@ if (elements.textModeButtons) {
 
 if (elements.togglePassThrough) {
   elements.togglePassThrough.addEventListener('click', async () => {
-    if (appState.activeTool === 'select' && !appState.passThrough) {
-      await window.appBridge.setPassThrough(true);
-    } else {
-      await window.appBridge.setTool('select');
-    }
+    await window.appBridge.setPassThrough(true);
   });
 }
 
@@ -1476,6 +1474,9 @@ if (elements.inlineSwatches) {
       if (color) {
         await window.appBridge.setColor(color);
       }
+      if (swatch.closest('#colorPopover')) {
+        closeAllPopovers();
+      }
     });
   });
 }
@@ -1486,6 +1487,7 @@ if (elements.inlineCustomColorPicker) {
   });
   elements.inlineCustomColorPicker.addEventListener('change', async (event) => {
     await window.appBridge.setColor(event.target.value);
+    closeAllPopovers();
   });
 }
 
