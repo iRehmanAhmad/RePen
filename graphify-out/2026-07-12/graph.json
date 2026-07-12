@@ -7784,6 +7784,126 @@
       "norm_label": "workflow: graphify"
     },
     {
+      "label": "bug_report.md",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report",
+      "community": 88,
+      "norm_label": "bug_report.md"
+    },
+    {
+      "label": "Describe the Bug",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report_describe_the_bug",
+      "community": 88,
+      "norm_label": "describe the bug"
+    },
+    {
+      "label": "Steps to Reproduce",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report_steps_to_reproduce",
+      "community": 88,
+      "norm_label": "steps to reproduce"
+    },
+    {
+      "label": "Expected Behavior",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report_expected_behavior",
+      "community": 88,
+      "norm_label": "expected behavior"
+    },
+    {
+      "label": "Screenshots",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report_screenshots",
+      "community": 88,
+      "norm_label": "screenshots"
+    },
+    {
+      "label": "Environment Info",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report_environment_info",
+      "community": 88,
+      "norm_label": "environment info"
+    },
+    {
+      "label": "Additional Context",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "github_issue_template_bug_report_additional_context",
+      "community": 88,
+      "norm_label": "additional context"
+    },
+    {
+      "label": "feature_request.md",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "github_issue_template_feature_request",
+      "community": 90,
+      "norm_label": "feature_request.md"
+    },
+    {
+      "label": "Is your feature request related to a problem?",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "github_issue_template_feature_request_is_your_feature_request_related_to_a_problem",
+      "community": 90,
+      "norm_label": "is your feature request related to a problem?"
+    },
+    {
+      "label": "Describe the Proposed Solution",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "github_issue_template_feature_request_describe_the_proposed_solution",
+      "community": 90,
+      "norm_label": "describe the proposed solution"
+    },
+    {
+      "label": "Describe Alternatives You've Considered",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "github_issue_template_feature_request_describe_alternatives_you_ve_considered",
+      "community": 90,
+      "norm_label": "describe alternatives you've considered"
+    },
+    {
+      "label": "Additional Context",
+      "file_type": "document",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "github_issue_template_feature_request_additional_context",
+      "community": 90,
+      "norm_label": "additional context"
+    },
+    {
       "label": "AGENTS.md",
       "file_type": "document",
       "source_file": "AGENTS.md",
@@ -7862,6 +7982,66 @@
       "id": "agents_done_criteria",
       "community": 24,
       "norm_label": "done criteria"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "readme",
+      "community": 89,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "RePen \ud83d\udd8c\ufe0f",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "readme_repen",
+      "community": 89,
+      "norm_label": "repen \ud83d\udd8c\ufe0f"
+    },
+    {
+      "label": "Key Features",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "readme_key_features",
+      "community": 89,
+      "norm_label": "key features"
+    },
+    {
+      "label": "\u2328\ufe0f Keyboard Shortcuts Cheat Sheet",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "readme_keyboard_shortcuts_cheat_sheet",
+      "community": 89,
+      "norm_label": "\u2328\ufe0f keyboard shortcuts cheat sheet"
+    },
+    {
+      "label": "\ud83d\ude80 How to Run",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "readme_how_to_run",
+      "community": 89,
+      "norm_label": "\ud83d\ude80 how to run"
+    },
+    {
+      "label": "\ud83e\udd1d Community & Support",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L62",
+      "_origin": "ast",
+      "id": "readme_community_support",
+      "community": 89,
+      "norm_label": "\ud83e\udd1d community & support"
     },
     {
       "label": "qa-checklist.md",
@@ -8750,7 +8930,7 @@
       "source_location": "L681",
       "_origin": "ast",
       "id": "docs_technical_architecture_19_security_model",
-      "community": 88,
+      "community": 17,
       "norm_label": "19. security model"
     },
     {
@@ -8760,7 +8940,7 @@
       "source_location": "L685",
       "_origin": "ast",
       "id": "docs_technical_architecture_required_security_decisions",
-      "community": 88,
+      "community": 17,
       "norm_label": "required security decisions"
     },
     {
@@ -8770,7 +8950,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "docs_technical_architecture_network_posture",
-      "community": 88,
+      "community": 17,
       "norm_label": "network posture"
     },
     {
@@ -20074,6 +20254,106 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_report",
+      "target": "github_issue_template_bug_report_additional_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_report",
+      "target": "github_issue_template_bug_report_describe_the_bug",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_report",
+      "target": "github_issue_template_bug_report_environment_info",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_report",
+      "target": "github_issue_template_bug_report_expected_behavior",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_report",
+      "target": "github_issue_template_bug_report_screenshots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/bug_report.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "github_issue_template_bug_report",
+      "target": "github_issue_template_bug_report_steps_to_reproduce",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_request",
+      "target": "github_issue_template_feature_request_additional_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_request",
+      "target": "github_issue_template_feature_request_describe_alternatives_you_ve_considered",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_request",
+      "target": "github_issue_template_feature_request_describe_the_proposed_solution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/ISSUE_TEMPLATE/feature_request.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "github_issue_template_feature_request",
+      "target": "github_issue_template_feature_request_is_your_feature_request_related_to_a_problem",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -20139,6 +20419,56 @@
       "weight": 1.0,
       "source": "agents_agent_operating_rules",
       "target": "agents_working_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "readme",
+      "target": "readme_repen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "readme_repen",
+      "target": "readme_community_support",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "readme_repen",
+      "target": "readme_how_to_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "readme_repen",
+      "target": "readme_key_features",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "readme_repen",
+      "target": "readme_keyboard_shortcuts_cheat_sheet",
       "confidence_score": 1.0
     },
     {
@@ -21283,5 +21613,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "96c04f1a8e66d4a72ec17bfcfe3a6b74d917f24f"
+  "built_at_commit": "1f036a140aa95ce449142b510f66477cbae23c38"
 }

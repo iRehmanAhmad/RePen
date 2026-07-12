@@ -15,6 +15,21 @@
 
 ---
 
+## ⌨️ Keyboard Shortcuts Cheat Sheet
+
+| Shortcut | Description |
+| :--- | :--- |
+| `Ctrl+Shift+P` | Toggle Desktop Pass-Through (Cursor/Move mode) |
+| `Ctrl+Alt+H` | Toggle Toolbar Visibility (Hide/Show overlay) |
+| `Ctrl+Alt+N` | Start a New Notebook Board Page |
+| `Ctrl+Alt+S` | Save Notebook Drawing Session (`.rpen`) |
+| `Ctrl+Alt+O` | Open/Load a Saved Session |
+| `Ctrl+Alt+E` | Export Active Notebook to PDF |
+| `Ctrl+Alt+Left` | Switch to the Previous Page |
+| `Ctrl+Alt+Right` | Switch to the Next Page (or create one) |
+
+---
+
 ## Key Features
 
 * **🎨 Advanced Brushes**:
@@ -33,21 +48,6 @@
   * **Ruled Notebook Lines / Grid Graph / Music Staff**
   * Custom background color swatches.
 * **💾 Sessions & PDF Export**: Save your whiteboard drawing pages and export them into high-quality PDFs.
-
----
-
-## ⌨️ Keyboard Shortcuts Cheat Sheet
-
-| Shortcut | Description |
-| :--- | :--- |
-| `Ctrl+Shift+P` | Toggle Desktop Pass-Through (Cursor/Move mode) |
-| `Ctrl+Alt+H` | Toggle Toolbar Visibility (Hide/Show overlay) |
-| `Ctrl+Alt+N` | Start a New Notebook Board Page |
-| `Ctrl+Alt+S` | Save Notebook Drawing Session (`.rpen`) |
-| `Ctrl+Alt+O` | Open/Load a Saved Session |
-| `Ctrl+Alt+E` | Export Active Notebook to PDF |
-| `Ctrl+Alt+Left` | Switch to the Previous Page |
-| `Ctrl+Alt+Right` | Switch to the Next Page (or create one) |
 
 ---
 
