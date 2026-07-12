@@ -780,6 +780,19 @@ html, body {
   min-width: 108px;
 }
 
+.spotlight-settings-row {
+  display: flex;
+  flex-direction: row !important;
+  gap: 12px !important;
+  width: 100%;
+  min-width: 190px;
+}
+
+.spotlight-settings-row .slider-control-item {
+  flex: 1;
+  min-width: 80px;
+}
+
 .slider-control-item {
   display: flex;
   flex-direction: column;

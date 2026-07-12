@@ -269,6 +269,9 @@ function updateToolButtons() {
       }
     }
     const isSpotlight = appState.activeTool === 'spotlight';
+    if (elements.selectGroupPopover) {
+      elements.selectGroupPopover.classList.toggle('popover-stacked', isSpotlight);
+    }
     const divider = document.getElementById('spotlightControlsDivider');
     const controls = document.getElementById('spotlightControls');
     if (divider) divider.style.display = isSpotlight ? 'block' : 'none';
