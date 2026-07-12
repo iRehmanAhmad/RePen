@@ -1103,16 +1103,18 @@ function render() {
   }
 
   if (appState && appState.activeTool === 'spotlight' && currentMousePos) {
+    const radius = appState.spotlight?.radius || 150;
+    const alpha = appState.spotlight?.alpha || 0.75;
     ctx.save();
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
     ctx.beginPath();
     ctx.rect(0, 0, width, height);
-    ctx.arc(currentMousePos.x, currentMousePos.y, 150, 0, Math.PI * 2, true);
+    ctx.arc(currentMousePos.x, currentMousePos.y, radius, 0, Math.PI * 2, true);
     ctx.fill('evenodd');
     ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(currentMousePos.x, currentMousePos.y, 150, 0, Math.PI * 2);
+    ctx.arc(currentMousePos.x, currentMousePos.y, radius, 0, Math.PI * 2);
     ctx.stroke();
     ctx.restore();
   }

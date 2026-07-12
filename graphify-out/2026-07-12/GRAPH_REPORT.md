@@ -1,7 +1,7 @@
 # Graph Report - epic-pen-clone  (2026-07-12)
 
 ## Corpus Check
-- 68 files · ~74,499 words
+- 68 files · ~74,540 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -360,7 +360,7 @@ Nodes (9): Acceptance Checks, Constraints, Context Read, Current Phase, Fix tool
 
 ### Community 59 - "2. Product Objectives"
 Cohesion: 0.18
-Nodes (10): Automated Tests, Changes Made, 🎨 CSS & Vector Aesthetics, ⚙️ JavaScript Interaction & Hover Click-Through, Manual Verification, 📐 SVG Icons Upgraded, 🖼️ Tray & Taskbar Icons, Verification Results (+2 more)
+Nodes (10): Automated Tests, Changes Made, 🎨 CSS & Vector Aesthetics, ⚙️ JavaScript Interaction & Hover Click-Through, Manual Verification, 📐 SVG Icons & Layout Upgraded, 🖼️ Tray & Taskbar Icons, Verification Results (+2 more)
 
 ### Community 60 - "Toolbar controls functionality audit and fix plan"
 Cohesion: 0.15

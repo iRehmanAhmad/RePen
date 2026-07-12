@@ -126,6 +126,8 @@ Ran the full test suite (`npm test`) which verified:
 - **Magic Shapes Icon**: Replaced with the requested magic shapes vector SVG from [SVGrepo 497512](https://www.svgrepo.com/svg/497512/shapes-2) in [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html#L78).
 - **Dynamic ViewBox Fix**: Added dynamic `viewBox` attribute scaling to [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js#L236-L260) to support varied coordinate boundaries (`0 0 906 906` for Spotlight, `0 0 1920 1920` for Highlighter, and `0 0 24 24` for others), preventing icons from rendering outside display bounds and resolving the empty presenter tools slot.
 - **Magnifier Tool Alignment Fix**: Updated [src/renderer/overlay.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/overlay.js#L1134) to render the magnifier background capture using logical window coordinates (`window.innerWidth`, `window.innerHeight`) instead of physical canvas dimensions (`canvas.width`, `canvas.height`). This fixes coordinate scale drift under high-DPI (scaled) displays, aligning the magnification point exactly with the crosshairs.
+- **Presenter Spotlight Settings Fix**: Updated [src/renderer/overlay.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/overlay.js#L1105-L1118) to read spotlight radius and opacity (darkness) values dynamically from the application state (`appState.spotlight.radius` and `appState.spotlight.alpha`) instead of using hardcoded numbers (`150` and `0.75`). This enables real-time adjustments of the spotlight radius and background dimming values from the presenter popover.
+
 
 
 

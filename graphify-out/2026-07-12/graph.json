@@ -8914,14 +8914,14 @@
       "norm_label": "\ud83d\uddbc\ufe0f tray & taskbar icons"
     },
     {
-      "label": "\ud83d\udcd0 SVG Icons Upgraded",
+      "label": "\ud83d\udcd0 SVG Icons & Layout Upgraded",
       "file_type": "document",
       "source_file": "walkthrough.md",
       "source_location": "L122",
       "_origin": "ast",
-      "id": "walkthrough_svg_icons_upgraded",
+      "id": "walkthrough_svg_icons_layout_upgraded",
       "community": 59,
-      "norm_label": "\ud83d\udcd0 svg icons upgraded"
+      "norm_label": "\ud83d\udcd0 svg icons & layout upgraded"
     }
   ],
   "links": [
@@ -21048,7 +21048,7 @@
       "source_location": "L122",
       "weight": 1.0,
       "source": "walkthrough_verification_results",
-      "target": "walkthrough_svg_icons_upgraded",
+      "target": "walkthrough_svg_icons_layout_upgraded",
       "confidence_score": 1.0
     },
     {

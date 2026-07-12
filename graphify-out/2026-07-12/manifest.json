@@ -40,8 +40,8 @@
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
-    "mtime": 1783836259.2218196,
-    "ast_hash": "50a02a476bc58905406a573c32fb312c",
+    "mtime": 1783846495.1181247,
+    "ast_hash": "aa0f9dbc961c4bc50daeef02ed4ae44e",
     "semantic_hash": ""
   },
   "src/renderer/settings.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1783845606.0311844,
-    "ast_hash": "096f95f40f12290abceaded93ec99fd2",
+    "mtime": 1783845841.9072938,
+    "ast_hash": "9a8548648ed68d3d9900496367667c36",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.html": {
-    "mtime": 1783845339.4640903,
-    "ast_hash": "091029d19f7b83078aff897186733377",
+    "mtime": 1783846083.0849054,
+    "ast_hash": "722ffbb523c4d0897dbb4ae872d4da59",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260705-scrble-whiteboard-pagination.md": {
@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1783845382.3165524,
-    "ast_hash": "199de00b7e84ef0b681010dbce0b3f4b",
+    "mtime": 1783846522.3762794,
+    "ast_hash": "c84fd5446d4cceff0372f5f0dbbd1381",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
@@ -360,13 +360,13 @@
     "semantic_hash": ""
   },
   "src/renderer/assets/tray-icon.png": {
-    "mtime": 1783845618.634906,
-    "ast_hash": "b79bedeedceb9f68e0c01de0fc5b6e29",
+    "mtime": 1783846472.3179224,
+    "ast_hash": "42a22a5c86b1e4f76200c23685c304ba",
     "semantic_hash": ""
   },
   "src/renderer/assets/app-icon.png": {
-    "mtime": 1783845618.634906,
-    "ast_hash": "b79bedeedceb9f68e0c01de0fc5b6e29",
+    "mtime": 1783846472.3179224,
+    "ast_hash": "42a22a5c86b1e4f76200c23685c304ba",
     "semantic_hash": ""
   }
 }
