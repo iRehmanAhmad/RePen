@@ -57,6 +57,7 @@ type Waiter<T> = {
   reject: (error: Error) => void;
   settled: boolean;
   timer: NodeJS.Timeout;
+  extendTimeout?: (ms: number) => void;
 };
 
 const MAX_LOG_BYTES = 1024 * 1024;
@@ -67,7 +68,7 @@ const STOP_TIMEOUT_MS = 30_000;
 function createWaiter<T>(timeoutMs: number, timeoutMessage: string): Waiter<T> {
   let resolvePromise!: (value: T) => void;
   let rejectPromise!: (error: Error) => void;
-  const waiter = {
+  const waiter: Waiter<T> = {
     promise: new Promise<T>((resolve, reject) => {
       resolvePromise = resolve;
       rejectPromise = reject;
@@ -77,6 +78,8 @@ function createWaiter<T>(timeoutMs: number, timeoutMessage: string): Waiter<T> {
     settled: false,
     timer: null as unknown as NodeJS.Timeout,
   };
+
+  let currentTimeoutMs = timeoutMs;
 
   waiter.resolve = (value: T) => {
     if (waiter.settled) return;
@@ -89,6 +92,12 @@ function createWaiter<T>(timeoutMs: number, timeoutMessage: string): Waiter<T> {
     waiter.settled = true;
     clearTimeout(waiter.timer);
     rejectPromise(error);
+  };
+  waiter.extendTimeout = (extraMs: number) => {
+    if (waiter.settled) return;
+    clearTimeout(waiter.timer);
+    currentTimeoutMs = extraMs;
+    waiter.timer = setTimeout(() => waiter.reject(new Error(timeoutMessage)), extraMs);
   };
   waiter.timer = setTimeout(() => waiter.reject(new Error(timeoutMessage)), timeoutMs);
   return waiter;
@@ -138,6 +147,74 @@ export class RecorderService extends EventEmitter {
   constructor(helperPath?: string) {
     super();
     this.helperPath = helperPath ?? this.resolveHelperPath();
+  }
+
+  redactLogs(text: string): string {
+    return text.replace(/(?:[a-zA-Z]:\\Users\\)([^\\]+)/gi, 'C:\\Users\\<User>');
+  }
+
+  writeDiagnosticsLog(message: string) {
+    let logDir = '.';
+    if (this.currentOutputPath) {
+      logDir = path.dirname(this.currentOutputPath);
+    } else if (app && typeof app.getPath === 'function') {
+      try {
+        logDir = app.getPath('videos');
+      } catch {
+        logDir = '.';
+      }
+    }
+    const logPath = path.join(logDir, 'recording-diagnostics.log');
+    const timestamp = new Date().toISOString();
+    const redactedMessage = this.redactLogs(message);
+    try {
+      fs.mkdirSync(logDir, { recursive: true });
+      fs.appendFileSync(logPath, `[${timestamp}] ${redactedMessage}\n`);
+    } catch (e) {
+      try {
+        const fallbackDir = path.join(process.env.TEMP || process.env.TMP || '.', 'repen-diagnostics');
+        fs.mkdirSync(fallbackDir, { recursive: true });
+        fs.appendFileSync(path.join(fallbackDir, 'recording-diagnostics.log'), `[${timestamp}] ${redactedMessage}\n`);
+      } catch {
+        // fail silently to keep test output clean
+      }
+    }
+  }
+
+  getManifestPath(): string | null {
+    if (!this.currentOutputPath) return null;
+    return this.currentOutputPath + '.session.json';
+  }
+
+  writeSessionManifest(status: 'recording' | 'interrupted') {
+    const manifestPath = this.getManifestPath();
+    if (!manifestPath) return;
+    const manifest = {
+      sessionId: this.currentSessionId,
+      status,
+      outputPath: this.currentOutputPath,
+      webcamOutputPath: this.currentWebcamOutputPath,
+      startTime: new Date().toISOString(),
+    };
+    try {
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+      this.writeDiagnosticsLog(`Session manifest written with status "${status}": ${manifestPath}`);
+    } catch (e) {
+      this.writeDiagnosticsLog(`Failed to write session manifest: ${String(e)}`);
+    }
+  }
+
+  deleteSessionManifest() {
+    const manifestPath = this.getManifestPath();
+    if (!manifestPath) return;
+    try {
+      if (fs.existsSync(manifestPath)) {
+        fs.unlinkSync(manifestPath);
+        this.writeDiagnosticsLog(`Session manifest deleted: ${manifestPath}`);
+      }
+    } catch (e) {
+      this.writeDiagnosticsLog(`Failed to delete session manifest: ${String(e)}`);
+    }
   }
 
   private resolveHelperPath(): string {
@@ -410,10 +487,13 @@ export class RecorderService extends EventEmitter {
 
     try {
       await this.startWaiter.promise;
+      this.writeDiagnosticsLog(`Recording started successfully. Session ID: ${recordingId}`);
+      this.writeSessionManifest('recording');
     } catch (error) {
       if (!proc.killed) proc.kill();
       this.cleanupPartialFiles();
       this.clearCurrentSession();
+      this.writeDiagnosticsLog(`Recording failed to start: ${error instanceof Error ? error.message : String(error)}`);
       throw error;
     } finally {
       this.startWaiter = null;
@@ -456,15 +536,48 @@ export class RecorderService extends EventEmitter {
     }
     if (this.stopWaiter) return this.stopWaiter.promise;
     this.expectedExit = 'stop';
+    this.writeDiagnosticsLog('Stopping recording, waiting for finalization...');
     this.stopWaiter = createWaiter<string>(STOP_TIMEOUT_MS, 'Timeout waiting for native recorder to finalize.');
     this.writeCommand('stop', this.stopWaiter);
+
+    let lastSize = 0;
+    let totalExtendedMs = 0;
+    const maxExtensionMs = 30_000;
+    const pollInterval = setInterval(() => {
+      if (!this.currentOutputPath) {
+        clearInterval(pollInterval);
+        return;
+      }
+      try {
+        if (fs.existsSync(this.currentOutputPath)) {
+          const stats = fs.statSync(this.currentOutputPath);
+          const currentSize = stats.size;
+          if (currentSize > lastSize && lastSize > 0) {
+            if (totalExtendedMs < maxExtensionMs && this.stopWaiter) {
+              this.stopWaiter.extendTimeout?.(5000);
+              totalExtendedMs += 5000;
+              this.writeDiagnosticsLog(`Recording file size increased from ${lastSize} to ${currentSize} bytes. Extending finalization timeout by 5000ms (total extended: ${totalExtendedMs}ms).`);
+            }
+          }
+          lastSize = currentSize;
+        }
+      } catch (e) {
+        // ignore errors during size checks
+      }
+    }, 2000);
+
     try {
       const outputPath = await this.stopWaiter.promise;
+      clearInterval(pollInterval);
+      this.writeDiagnosticsLog(`Recording stopped cleanly. Output path: ${outputPath}`);
       this.clearCurrentSession();
       return outputPath;
     } catch (error) {
+      clearInterval(pollInterval);
+      this.writeDiagnosticsLog(`Recording stop failed: ${error instanceof Error ? error.message : String(error)}`);
       if (this.activeProcess && !this.activeProcess.killed) this.activeProcess.kill();
-      this.cleanupPartialFiles();
+      // Preserve partial media for recovery by NOT calling cleanupPartialFiles
+      this.writeSessionManifest('interrupted');
       this.clearCurrentSession();
       throw error;
     } finally {
@@ -473,6 +586,8 @@ export class RecorderService extends EventEmitter {
   }
 
   async cancel(): Promise<void> {
+    this.writeDiagnosticsLog('Cancelling/discarding recording session...');
+    this.deleteSessionManifest();
     if (!this.activeProcess) {
       this.cleanupPartialFiles();
       this.clearCurrentSession();
@@ -484,8 +599,11 @@ export class RecorderService extends EventEmitter {
     this.writeCommand('cancel', this.cancelWaiter);
     try {
       await this.cancelWaiter.promise;
+      this.cleanupPartialFiles();
       this.clearCurrentSession();
+      this.writeDiagnosticsLog('Recording session cancelled and partial files deleted.');
     } catch (error) {
+      this.writeDiagnosticsLog(`Recording cancellation failed: ${error instanceof Error ? error.message : String(error)}`);
       if (this.activeProcess && !this.activeProcess.killed) this.activeProcess.kill();
       this.cleanupPartialFiles();
       this.clearCurrentSession();
@@ -595,19 +713,26 @@ export class RecorderService extends EventEmitter {
 
     if (this.expectedExit === 'stop' && this.stopWaiter) {
       if (code !== 0) {
+        this.writeSessionManifest('interrupted');
         this.stopWaiter.reject(this.processExitError('while finalizing', code, signal));
       } else if (!this.completionEvent?.screenPath) {
+        this.writeSessionManifest('interrupted');
         this.stopWaiter.reject(new Error(`Native recorder exited without a valid completion marker.${this.logSuffix()}`));
       } else if (!this.samePath(this.completionEvent.screenPath, this.currentOutputPath)) {
+        this.writeSessionManifest('interrupted');
         this.stopWaiter.reject(new Error('Native recorder completion path did not match the requested output path.'));
       } else if (this.currentWebcamOutputPath &&
         !this.samePath(this.completionEvent.webcamPath, this.currentWebcamOutputPath)) {
+        this.writeSessionManifest('interrupted');
         this.stopWaiter.reject(new Error('Native recorder webcam completion path did not match the requested output path.'));
       } else if (!this.isNonEmptyFile(this.currentOutputPath)) {
+        this.writeSessionManifest('interrupted');
         this.stopWaiter.reject(new Error('Native recorder reported success but the output file is missing or empty.'));
       } else if (this.currentWebcamOutputPath && !this.isNonEmptyFile(this.currentWebcamOutputPath)) {
+        this.writeSessionManifest('interrupted');
         this.stopWaiter.reject(new Error('Native recorder reported success but the webcam output is missing or empty.'));
       } else {
+        this.deleteSessionManifest();
         this.stopWaiter.resolve(this.currentOutputPath as string);
         this.emit('stop', this.currentOutputPath);
       }
@@ -622,8 +747,9 @@ export class RecorderService extends EventEmitter {
         this.emit('cancel');
       }
     } else if (wasRecording) {
+      this.writeSessionManifest('interrupted');
       const error = this.processExitError('unexpectedly', code, signal);
-      this.cleanupPartialFiles();
+      // Preserve partial media by NOT calling cleanupPartialFiles()
       this.clearCurrentSession();
       this.emit('crash', error);
       this.emit('exit', code);
