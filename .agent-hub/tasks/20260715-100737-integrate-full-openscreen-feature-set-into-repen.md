@@ -705,7 +705,29 @@ Planning verification completed on 2026-07-15:
 - Confirmed RePen's documented Agent Hub npm script is absent; used `node scripts/agent-hub.js` directly.
 - Ran `npm test`; all JavaScript syntax, DOM ID, IPC contract, tool-state, scene-separation, eraser-geometry, and dialog-routing checks passed.
 - Ran `git diff --check`; it completed without whitespace errors (Git reported only the existing LF-to-CRLF working-copy warnings for Agent Hub state files).
-- No product source code has been changed.
+- At planning time no product source code had been changed; implementation began after the user's approval.
+
+Corrective implementation verification completed on 2026-07-15:
+
+- Hardened the modular BrowserWindow foundation, production asset loading, CSP, navigation restrictions, capture exclusion, display readiness, and package contents.
+- Reworked the native recorder lifecycle around structured acknowledgements, validated source/device options, non-empty output checks, crash cleanup, packaged-helper discovery, capability probing, and awaited pause/resume/stop/cancel behavior.
+- Added a durable versioned presentation-track schema with source/DPI metadata, monotonic sequencing, checkpoints, replay/seek support, buffered writes, surfaced failures, and awaited finalization/discard.
+- Connected the legacy RePen runtime to authoritative scene diffs, presentation samples, recorder state broadcasts, source validation, content protection, native crash handling, and app-shutdown cleanup.
+- Replaced unbounded synchronous renderer file logging with opt-in asynchronous logging capped at 1 MiB. `REPEN_DEBUG_LOG=1` enables it for diagnostics.
+- Restored the documented `npm run agent -- <command>` workflow and made `npm start` compile Electron services before launching from a clean checkout.
+- `npm test` passed all legacy checks and 13 Vitest files / 45 unit tests; `npm run electron:build`, `npm run build:all`, and `git diff --check` passed.
+- `electron-builder 26.15.3 --win --dir` passed. The unpacked app contains the WGC and cursor helpers outside ASAR, all six renderer entry pages, recorder/presentation services, and both packaged OpenScreen notices.
+- A prior `start:new` launch smoke passed. Live screen/microphone/system-audio/webcam capture and long-duration A/V synchronization were deliberately not exercised because they would capture user content and require hardware-aware manual QA.
+- This corrective pass stabilizes the implemented foundation/recorder/presentation-track slice. It does not claim completion of the later full OpenScreen editor, captions, export, updater, localization, CI, accessibility, or cross-platform phases.
+
+Recorder-toolbar lifecycle correction completed on 2026-07-15:
+
+- Reproduced the visible packaged toolbar and traced start/stop/discard failures to input routing: starting a recording explicitly hid `#penBar`, and `.recording-hud` was absent from the hover-interactive regions, causing Electron to restore click-through while the HUD was visible.
+- The full RePen toolbar now remains visible beside the recording HUD. Active recorder phases force the protected toolbar window visible, topmost, and mouse-interactive; stop and discard remain clickable even when pointer-leave events occur during state transitions.
+- The modular shell applies the same visible/topmost/interactive policy during active recording phases.
+- Added `tests/unit/recordingToolbar.test.ts` to prevent reintroducing toolbar hiding or click-through recorder controls.
+- `npm test` passed 14 files / 48 tests; `npm run electron:build`, `npm run build:all`, Windows unpacked packaging, and `git diff --check` passed.
+- A real packaged-helper display smoke test with audio/webcam disabled emitted `recording-started` and `recording-stopped`, exited with code 0, and produced a non-empty 963,795-byte MP4. The temporary test recording was removed afterward.
 
 ## Handoff Notes
 

@@ -334,7 +334,6 @@ void WebcamCapture::captureLoop() {
             &timestamp,
             &sample);
         (void)streamIndex;
-        (void)timestamp;
 
         if (FAILED(hr)) {
             std::cerr << "WARNING: Failed to read webcam sample (hr=0x" << std::hex << hr << std::dec << ")"
@@ -366,6 +365,7 @@ void WebcamCapture::captureLoop() {
             std::scoped_lock lock(frameMutex_);
             latestFrame_.assign(data, data + expectedLength);
             latestFrameSequence_ += 1;
+            latestFrameTimestampHns_ = timestamp;
         }
 
         buffer->Unlock();
@@ -387,6 +387,7 @@ bool WebcamCapture::copyLatestFrame(WebcamFrameSnapshot& destination) {
     destination.width = width_;
     destination.height = height_;
     destination.sequence = latestFrameSequence_;
+    destination.timestampHns = latestFrameTimestampHns_;
     return true;
 }
 

@@ -64,6 +64,10 @@ export class PlaybackCoordinator {
     if (!this.screenVideo) return 0;
     return Math.round(this.screenVideo.currentTime * 1000);
   }
+
+  getIsPlaying(): boolean {
+    return this.isPlaying;
+  }
   
   getSpeedAtTime(timeMs: number): number {
     const active = this.speedRegions.find(r => timeMs >= r.startMs && timeMs < r.endMs);

@@ -1,10 +1,16 @@
-import { screen } from 'electron';
+import { app, screen } from 'electron';
 import EventEmitter from 'events';
 
 export class DisplayManager extends EventEmitter {
+  private listenersRegistered = false;
+
   constructor() {
     super();
-    this.registerListeners();
+    if (app.isReady()) {
+      this.registerListeners();
+    } else {
+      app.once('ready', () => this.registerListeners());
+    }
   }
 
   getDisplays() {
@@ -20,6 +26,9 @@ export class DisplayManager extends EventEmitter {
   }
 
   private registerListeners() {
+    if (this.listenersRegistered) return;
+    this.listenersRegistered = true;
+
     screen.on('display-added', () => {
       this.emit('change');
     });

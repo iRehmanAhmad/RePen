@@ -1,9 +1,8 @@
 import { BaseWindow } from './baseWindow';
 import { loadWindowContent } from './loader';
 import { createAppIcon } from './icons';
-import fs from 'fs';
-import path from 'path';
-import { ipcMain, app } from 'electron';
+import { ipcMain } from 'electron';
+import { appendRendererDebugLog } from '../services/debugLog';
 
 export class ToolbarWindow extends BaseWindow {
   private moveTimeout: NodeJS.Timeout | null = null;
@@ -28,7 +27,9 @@ export class ToolbarWindow extends BaseWindow {
   protected loadContent() {
     if (!this.window) return;
     loadWindowContent(this.window, 'toolbar.html');
-    this.window.setIgnoreMouseEvents(true, { forward: true });
+    // The modular shell does not yet have the legacy hover router. Keep the
+    // toolbar interactive until that state adapter is connected.
+    this.window.setIgnoreMouseEvents(false);
     this.window.setAlwaysOnTop(true, 'screen-saver');
     this.window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   }
@@ -37,14 +38,10 @@ export class ToolbarWindow extends BaseWindow {
     super.setupListeners();
     if (!this.window) return;
 
-    const logPath = path.join(app.getPath('userData'), 'rep-debug.log');
-
     this.window.webContents.on('console-message', (event, level, message, line, sourceId) => {
       const logLine = `[Renderer Console] ${message} (${sourceId}:${line})\n`;
       console.log(logLine.trim());
-      try {
-        fs.appendFileSync(logPath, logLine);
-      } catch (e) {}
+      appendRendererDebugLog('Renderer Console', message, line, sourceId);
     });
 
     this.window.webContents.on('before-input-event', (event, input) => {

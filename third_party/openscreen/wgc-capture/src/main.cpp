@@ -6,6 +6,7 @@
 #include "wgc_session.h"
 
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Graphics.Capture.h>
 
 #include <algorithm>
 #include <atomic>
@@ -14,6 +15,7 @@
 #include <cctype>
 #include <cstdint>
 #include <functional>
+#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <mutex>
@@ -53,6 +55,7 @@ struct CaptureConfig {
 
 struct CaptureControl {
     std::atomic<bool> stopRequested = false;
+    std::atomic<bool> cancelRequested = false;
     std::atomic<bool> paused = false;
     std::mutex mutex;
     std::condition_variable cv;
@@ -320,6 +323,9 @@ bool parseConfig(const std::string& json, CaptureConfig& config) {
     if (config.sourceType.empty()) {
         config.sourceType = "display";
     }
+    if (config.sourceType == "screen") {
+        config.sourceType = "display";
+    }
     config.sourceId = findString(json, "sourceId");
     config.windowHandle = findString(json, "windowHandle");
     if (config.windowHandle.empty()) {
@@ -359,6 +365,13 @@ void readCaptureCommands(CaptureControl& control, const std::function<void(bool)
             control.cv.notify_all();
             return;
         }
+        if (line == "cancel") {
+            control.cancelRequested = true;
+            control.stopRequested = true;
+            std::cout << "{\"event\":\"recording-cancelling\",\"schemaVersion\":2}" << std::endl;
+            control.cv.notify_all();
+            return;
+        }
         if (line == "pause") {
             control.setPaused(true);
             onPauseChanged(true);
@@ -387,6 +400,19 @@ int main(int argc, char* argv[]) {
     }
 
     winrt::init_apartment(winrt::apartment_type::multi_threaded);
+
+    if (std::string(argv[1]) == "--probe") {
+        bool wgcSupported = false;
+        try {
+            wgcSupported = winrt::Windows::Graphics::Capture::GraphicsCaptureSession::IsSupported();
+        } catch (...) {
+            wgcSupported = false;
+        }
+        std::cout << "{\"event\":\"capabilities\",\"schemaVersion\":2,\"wgcSupported\":"
+                  << (wgcSupported ? "true" : "false")
+                  << ",\"systemAudio\":true,\"microphone\":true,\"webcam\":true}" << std::endl;
+        return wgcSupported ? 0 : 2;
+    }
 
     CaptureConfig config;
     if (!parseConfig(argv[1], config)) {
@@ -545,6 +571,7 @@ int main(int argc, char* argv[]) {
     int latestWebcamWidth = 0;
     int latestWebcamHeight = 0;
     uint64_t latestWebcamSequence = 0;
+    int64_t latestWebcamTimestampHns = 0;
     bool hasVisibleWebcamFrame = false;
 
     session.setFrameCallback([&](ID3D11Texture2D* texture, int64_t timestampHns) {
@@ -579,8 +606,9 @@ int main(int argc, char* argv[]) {
             std::chrono::duration<double>(1.0 / config.fps));
         uint64_t frameIndex = 0;
         uint64_t lastWrittenWebcamSequence = 0;
-        uint64_t webcamOutputFrameIndex = 0;
         int64_t lastEncodedVideoTimestampHns = -1;
+        int64_t firstWebcamTimestampHns = -1;
+        int64_t lastEncodedWebcamTimestampHns = -1;
 
         while (!control.stopRequested && !encodeFailed) {
             {
@@ -602,6 +630,7 @@ int main(int argc, char* argv[]) {
                         latestWebcamWidth = candidateWebcamFrame.width;
                         latestWebcamHeight = candidateWebcamFrame.height;
                         latestWebcamSequence = candidateWebcamFrame.sequence;
+                        latestWebcamTimestampHns = candidateWebcamFrame.timestampHns;
                         hasVisibleWebcamFrame = true;
                     }
                 }
@@ -628,8 +657,17 @@ int main(int argc, char* argv[]) {
                 }
                 if (writeSeparateWebcam && webcamFrame.data &&
                     latestWebcamSequence != lastWrittenWebcamSequence) {
-                    const int64_t webcamTimestampHns = static_cast<int64_t>(
-                        (webcamOutputFrameIndex * 10'000'000ULL) / std::max(1, webcamCapture.fps()));
+                    if (firstWebcamTimestampHns < 0) {
+                        firstWebcamTimestampHns = latestWebcamTimestampHns;
+                    }
+                    int64_t webcamTimestampHns = std::max<int64_t>(
+                        0,
+                        latestWebcamTimestampHns - firstWebcamTimestampHns - control.pausedDurationHns());
+                    if (lastEncodedWebcamTimestampHns >= 0 &&
+                        webcamTimestampHns <= lastEncodedWebcamTimestampHns) {
+                        webcamTimestampHns = lastEncodedWebcamTimestampHns +
+                            static_cast<int64_t>(10'000'000ULL / std::max(1, webcamCapture.fps()));
+                    }
                     if (!webcamEncoder.writeBgraFrame(webcamFrame, webcamTimestampHns)) {
                         encodeFailed = true;
                         control.stopRequested = true;
@@ -637,7 +675,7 @@ int main(int argc, char* argv[]) {
                         return;
                     }
                     lastWrittenWebcamSequence = latestWebcamSequence;
-                    webcamOutputFrameIndex += 1;
+                    lastEncodedWebcamTimestampHns = webcamTimestampHns;
                 }
                 if (latestFrameTexture && !encoder.writeFrame(
                         latestFrameTexture.Get(),
@@ -757,6 +795,7 @@ int main(int argc, char* argv[]) {
                 latestWebcamWidth = candidateWebcamFrame.width;
                 latestWebcamHeight = candidateWebcamFrame.height;
                 latestWebcamSequence = candidateWebcamFrame.sequence;
+                latestWebcamTimestampHns = candidateWebcamFrame.timestampHns;
                 hasVisibleWebcamFrame = true;
                 break;
             }
@@ -831,11 +870,13 @@ int main(int argc, char* argv[]) {
     }
     stopVideoWriter();
     session.stop();
+    bool screenFinalized = false;
+    bool webcamFinalized = true;
     {
         std::scoped_lock lock(mutex);
-        encoder.finalize();
+        screenFinalized = encoder.finalize();
         if (writeSeparateWebcam) {
-            webcamEncoder.finalize();
+            webcamFinalized = webcamEncoder.finalize();
         }
     }
 
@@ -843,8 +884,27 @@ int main(int argc, char* argv[]) {
         stdinThread.detach();
     }
 
+    if (control.cancelRequested) {
+        std::error_code screenRemoveError;
+        std::filesystem::remove(utf8ToWide(config.outputPath), screenRemoveError);
+        std::error_code webcamRemoveError;
+        if (writeSeparateWebcam) {
+            std::filesystem::remove(utf8ToWide(config.webcamOutputPath), webcamRemoveError);
+        }
+        if (screenRemoveError || webcamRemoveError) {
+            std::cerr << "ERROR: Failed to remove cancelled recording output" << std::endl;
+            return 1;
+        }
+        std::cout << "{\"event\":\"recording-cancelled\",\"schemaVersion\":2}" << std::endl;
+        return 0;
+    }
+
     if (encodeFailed) {
         std::cerr << "ERROR: Failed to encode WGC frame" << std::endl;
+        return 1;
+    }
+    if (!screenFinalized || !webcamFinalized) {
+        std::cerr << "ERROR: Failed to finalize native recording output" << std::endl;
         return 1;
     }
 

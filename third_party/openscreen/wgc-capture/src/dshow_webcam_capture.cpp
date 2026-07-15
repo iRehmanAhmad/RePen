@@ -395,6 +395,8 @@ void DirectShowWebcamCapture::storeFrame(const BYTE* buffer, long length) {
     std::scoped_lock lock(frameMutex_);
     latestFrame_ = std::move(frame);
     latestFrameSequence_ += 1;
+    latestFrameTimestampHns_ = std::chrono::duration_cast<std::chrono::nanoseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count() / 100;
 }
 
 bool DirectShowWebcamCapture::copyLatestFrame(WebcamFrameSnapshot& destination) {
@@ -407,6 +409,7 @@ bool DirectShowWebcamCapture::copyLatestFrame(WebcamFrameSnapshot& destination) 
     destination.width = width_;
     destination.height = height_;
     destination.sequence = latestFrameSequence_;
+    destination.timestampHns = latestFrameTimestampHns_;
     return true;
 }
 

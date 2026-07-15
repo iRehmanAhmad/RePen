@@ -22,25 +22,31 @@ export const PresenterToolbar: React.FC<ToolbarProps> = ({
   const [activeTool, setActiveTool] = useState('pen');
   const [selectedColor, setSelectedColor] = useState('#ff5a5f');
   const [showColorPopover, setShowColorPopover] = useState(false);
-  const [showSizePopover, setShowSizePopover] = useState(false);
-  const [strokeWidth, setStrokeWidth] = useState(4);
-  const [opacity, setOpacity] = useState(1);
   const [recordingState, setRecordingState] = useState({ isRecording: false, isPaused: false });
   const [recordingTime, setRecordingTime] = useState('00:00');
 
   useEffect(() => {
-    // Listen to timer ticks if registered
-    if ((window as any).appBridge?.onRecordingTimerTick) {
-      (window as any).appBridge.onRecordingTimerTick((timeStr: string) => {
+    const bridge = (window as any).appBridge;
+    const unsubscribeTimer = bridge?.onRecordingTimerTick
+      ? bridge.onRecordingTimerTick((timeStr: string) => {
         setRecordingTime(timeStr);
-      });
-    }
+      })
+      : undefined;
 
-    if ((window as any).appBridge?.onRecordingStateChanged) {
-      (window as any).appBridge.onRecordingStateChanged((state: any) => {
+    const unsubscribeState = bridge?.onRecordingStateChanged
+      ? bridge.onRecordingStateChanged((state: { isRecording: boolean; isPaused: boolean }) => {
         setRecordingState(state);
-      });
-    }
+      })
+      : undefined;
+
+    void bridge?.getRecordingState?.().then((state: { isRecording: boolean; isPaused: boolean }) => {
+      setRecordingState(state);
+    });
+
+    return () => {
+      unsubscribeTimer?.();
+      unsubscribeState?.();
+    };
   }, []);
 
   const handleToolClick = async (tool: string) => {
@@ -77,8 +83,8 @@ export const PresenterToolbar: React.FC<ToolbarProps> = ({
   const startRecord = async () => {
     if ((window as any).appBridge?.startRecording) {
       await (window as any).appBridge.startRecording({
-        sourceId: 'screen:0',
-        sourceType: 'screen',
+        sourceId: 'display:0',
+        sourceType: 'display',
         width: 1920,
         height: 1080,
         fps: 30,

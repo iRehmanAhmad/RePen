@@ -51,6 +51,7 @@ private:
     std::mutex frameMutex_;
     std::vector<BYTE> latestFrame_;
     uint64_t latestFrameSequence_ = 0;
+    int64_t latestFrameTimestampHns_ = 0;
     int width_ = 0;
     int height_ = 0;
     int fps_ = 30;

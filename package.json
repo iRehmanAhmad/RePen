@@ -4,20 +4,25 @@
   "description": "Free Windows screen annotation and presentation overlay tool",
   "main": "main.js",
   "scripts": {
+    "prestart": "npm run electron:build",
     "start": "electron .",
     "dev": "electron .",
-    "test": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js && node scripts/verify-scene-store-separation.js && node scripts/verify-eraser-geometry.js && node scripts/verify-dialog-routing.js",
+    "test": "npm run test:legacy && npm run test:types:foundation && npm run test:unit",
+    "test:legacy": "node scripts/verify-js-syntax.js && node scripts/verify-dom-ids.js && node scripts/verify-ipc-contract.js && node scripts/verify-tool-state.js && node scripts/verify-scene-store-separation.js && node scripts/verify-eraser-geometry.js && node scripts/verify-dialog-routing.js",
+    "test:types:foundation": "tsc -p tsconfig.node.json --noEmit",
     "test:unit": "vitest run",
     "postinstall": "git config core.hooksPath .githooks",
     "prepare": "git config core.hooksPath .githooks",
     "graphify:update": "graphify update .",
+    "agent": "node scripts/agent-hub.js",
     "vite:dev": "vite",
     "vite:build": "vite build",
     "ts:check": "tsc --noEmit",
     "electron:build": "tsc -p tsconfig.node.json",
-    "build:all": "npm run vite:build && npm run electron:build",
+    "native:build": "node scripts/build-native-helper.js",
+    "build:all": "npm run test:types:foundation && npm run vite:build && npm run electron:build",
     "start:new": "npm run build:all && electron dist-electron/main.js",
-    "dist": "npx electron-builder --win"
+    "dist": "npm run build:all && npm run native:build && electron-builder --win"
   },
   "build": {
     "appId": "com.reman.repen",
@@ -33,7 +38,19 @@
     "files": [
       "main.js",
       "src/**/*",
+      "dist-electron/**/*",
+      "dist-renderer/**/*",
+      "third_party/openscreen/NOTICE.md",
       "package.json"
+    ],
+    "asarUnpack": [
+      "dist-electron/native/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "third_party/openscreen/NOTICE.md",
+        "to": "licenses/OpenScreen-MIT.md"
+      }
     ],
     "directories": {
       "output": "dist"
@@ -67,6 +84,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "electron": "^42.5.0",
+    "electron-builder": "26.15.3",
     "happy-dom": "^20.10.6",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

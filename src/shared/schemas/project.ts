@@ -1,3 +1,15 @@
+import type { PresentationTrackV2 } from '../contracts/presentationTrack';
+
+export type {
+  BoardSnapshot,
+  BoardViewport,
+  PresentationEvent,
+  PresentationTrackV2,
+  SceneAnnotation,
+  SceneScope,
+  SpotlightState,
+} from '../contracts/presentationTrack';
+
 export interface CaptureSourceDescriptor {
   id: string;
   name: string;
@@ -14,45 +26,7 @@ export interface CursorTrack {
   }>;
 }
 
-export type SceneAnnotation = any; // Will hold custom geometry / paths / strokes
-export type SceneScope = 'current' | 'all';
-export interface BoardSnapshot {
-  backgroundMode: string;
-  boardColor: string;
-  viewport: { panX: number; panY: number; zoom: number };
-}
-export interface BoardViewport {
-  panX: number;
-  panY: number;
-  zoom: number;
-}
-export interface SpotlightState {
-  x: number;
-  y: number;
-  radius: number;
-  alpha: number;
-}
-
-export type PresentationEvent =
-  | { timeMs: number; type: 'annotation/add'; annotation: SceneAnnotation }
-  | { timeMs: number; type: 'annotation/update'; annotation: SceneAnnotation }
-  | { timeMs: number; type: 'annotation/delete'; annotationIds: string[] }
-  | { timeMs: number; type: 'scene/clear'; scope: SceneScope }
-  | { timeMs: number; type: 'board/change'; board: BoardSnapshot }
-  | { timeMs: number; type: 'viewport/change'; viewport: BoardViewport }
-  | { timeMs: number; type: 'spotlight/update'; state: SpotlightState }
-  | { timeMs: number; type: 'laser/sample'; point: { x: number; y: number } };
-
-export interface PresentationTrack {
-  schemaVersion: 1;
-  initialScene: {
-    annotations: SceneAnnotation[];
-    boardMode: string;
-    boardColor: string;
-    viewport: BoardViewport;
-  };
-  events: PresentationEvent[];
-}
+export type PresentationTrack = PresentationTrackV2;
 
 export interface EditorState {
   trims: Array<{ startMs: number; endMs: number }>;

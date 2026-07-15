@@ -227,7 +227,30 @@ bool MFEncoder::copyFrameToBuffer(
         return false;
     }
 
-    context_->CopyResource(stagingTexture_.Get(), texture);
+    D3D11_TEXTURE2D_DESC sourceDesc{};
+    texture->GetDesc(&sourceDesc);
+    if (sourceDesc.Width < static_cast<UINT>(width_) || sourceDesc.Height < static_cast<UINT>(height_)) {
+        std::cerr << "ERROR: WGC source texture is smaller than the encoder frame" << std::endl;
+        return false;
+    }
+
+    // H.264 encoders commonly require even dimensions. WGC can return an
+    // odd-sized window texture, so copy the even top-left encoding region
+    // instead of using CopyResource, which requires identical dimensions.
+    if (sourceDesc.Width == static_cast<UINT>(width_) &&
+        sourceDesc.Height == static_cast<UINT>(height_)) {
+        context_->CopyResource(stagingTexture_.Get(), texture);
+    } else {
+        const D3D11_BOX sourceBox{
+            0,
+            0,
+            0,
+            static_cast<UINT>(width_),
+            static_cast<UINT>(height_),
+            1,
+        };
+        context_->CopySubresourceRegion(stagingTexture_.Get(), 0, 0, 0, 0, texture, 0, &sourceBox);
+    }
 
     D3D11_MAPPED_SUBRESOURCE mapped{};
     if (!succeeded(context_->Map(stagingTexture_.Get(), 0, D3D11_MAP_READ, 0, &mapped), "Map")) {

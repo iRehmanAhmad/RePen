@@ -155,6 +155,8 @@
   "153": "read_pixi_setup.js",
   "154": "read_videoplayback.js",
   "155": "view_pixi_init.js",
+  "156": "find_main_cpp_source_type.js",
   "157": "find_ffmpeg_openscreen.js",
-  "158": "find_main_js_export.js"
+  "158": "find_main_js_export.js",
+  "159": "find_main_js_recorder_start.js"
 }

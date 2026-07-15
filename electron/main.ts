@@ -1,4 +1,4 @@
-import { app, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, desktopCapturer, screen } from 'electron';
 import { initializeSingleInstanceLock } from './bootstrap/instance';
 import { StateManager } from './services/state';
 import { DisplayManager } from './services/display';
@@ -17,11 +17,23 @@ let shortcutManager: ShortcutManager;
 let windowRegistry: WindowRegistry;
 let recorderService: RecorderService;
 let presentationTrackService: PresentationTrackService;
+let lastEnumeratedSources = new Map<string, any>();
 
 let recordingTimer: NodeJS.Timeout | null = null;
 let recordingSeconds = 0;
 
-function startRecordingTimer(event: Electron.IpcMainInvokeEvent) {
+function broadcastRecordingTimer(timeStr: string) {
+  for (const overlay of windowRegistry.getOverlays()) {
+    const win = overlay.getWindow();
+    if (win && !win.isDestroyed()) win.webContents.send('recording:timer-tick', timeStr);
+  }
+  const toolbar = windowRegistry.getToolbar()?.getWindow();
+  if (toolbar && !toolbar.isDestroyed()) toolbar.webContents.send('recording:timer-tick', timeStr);
+  const settings = windowRegistry.getSettings()?.getWindow();
+  if (settings && !settings.isDestroyed()) settings.webContents.send('recording:timer-tick', timeStr);
+}
+
+function startRecordingTimer() {
   recordingSeconds = 0;
   if (recordingTimer) clearInterval(recordingTimer);
   
@@ -31,7 +43,7 @@ function startRecordingTimer(event: Electron.IpcMainInvokeEvent) {
     const mm = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
     const ss = String(recordingSeconds % 60).padStart(2, '0');
     const timeStr = `${mm}:${ss}`;
-    event.sender.send('recording:timer-tick', timeStr);
+    broadcastRecordingTimer(timeStr);
   }, 1000);
 }
 
@@ -51,6 +63,12 @@ function broadcastRecordingState(recordingState: any) {
   }
   const tb = windowRegistry.getToolbar()?.getWindow();
   if (tb && !tb.isDestroyed()) {
+    const controlsActive = ['starting', 'recording', 'paused', 'finalizing'].includes(recordingState?.phase);
+    if (controlsActive) {
+      tb.setIgnoreMouseEvents(false);
+      tb.showInactive();
+      tb.moveTop();
+    }
     tb.webContents.send('recording:state-changed', recordingState);
   }
   const st = windowRegistry.getSettings()?.getWindow();
@@ -94,84 +112,248 @@ function bootstrap() {
   recorderService = new RecorderService();
   presentationTrackService = new PresentationTrackService();
 
+  const isTrustedRecordingSender = (event: Electron.IpcMainInvokeEvent) => {
+    const senderWindow = BrowserWindow.fromWebContents(event.sender);
+    return senderWindow === windowRegistry.getToolbar()?.getWindow() || 
+           senderWindow === windowRegistry.getSettings()?.getWindow() ||
+           senderWindow === windowRegistry.getSelector()?.getWindow() ||
+           senderWindow === windowRegistry.getCountdown()?.getWindow();
+  };
+
+  const handleRecordingFailure = async (error: unknown) => {
+    stopRecordingTimer();
+    try {
+      if (recorderService.getState().isRecording) await recorderService.cancel();
+    } catch (cancelError) {
+      console.error('Failed to cancel recorder after failure:', cancelError);
+    }
+    try {
+      await presentationTrackService.discardTrack();
+    } catch (trackError) {
+      console.error('Failed to discard presentation track after failure:', trackError);
+    }
+    broadcastRecordingState({
+      isRecording: false,
+      isPaused: false,
+      phase: 'failed',
+      error: error instanceof Error ? error.message : String(error),
+    });
+  };
+
+  recorderService.on('crash', (error) => void handleRecordingFailure(error));
+  presentationTrackService.on('failure', (error) => void handleRecordingFailure(error));
+
+  ipcMain.handle('recording:open-setup', async () => {
+    const win = windowRegistry.createSelector();
+    win.getWindow()?.show();
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:close-setup', async () => {
+    windowRegistry.destroySelector();
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:get-sources', async (_, opts) => {
+    const sources = await desktopCapturer.getSources(opts || {
+      types: ['screen', 'window'],
+      thumbnailSize: { width: 320, height: 180 },
+      fetchWindowIcons: true,
+    });
+    lastEnumeratedSources = new Map(sources.map((source) => [source.id, source]));
+    return sources.map((source) => ({
+      id: source.id,
+      name: source.name,
+      display_id: source.display_id,
+      thumbnail: source.thumbnail ? source.thumbnail.toDataURL() : null,
+      appIcon: source.appIcon ? source.appIcon.toDataURL() : null,
+    }));
+  });
+
+  ipcMain.handle('recording:get-system-info', async () => {
+    const displays = screen.getAllDisplays().map((d) => ({
+      id: d.id,
+      name: d.label || `Display ${d.id}`,
+      bounds: d.bounds,
+      scaleFactor: d.scaleFactor,
+      isPrimary: d.id === screen.getPrimaryDisplay().id,
+    }));
+
+    const defaultDir = app.getPath('videos');
+    let freeSpaceBytes = 0;
+    try {
+      const stats = fs.statfsSync(defaultDir);
+      freeSpaceBytes = stats.bavail * stats.bsize;
+    } catch (err) {
+      console.error('Failed to get disk space:', err);
+    }
+
+    return {
+      displays,
+      defaultDestination: defaultDir,
+      freeSpaceBytes,
+    };
+  });
+
+  ipcMain.handle('recording:select-directory', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory', 'createDirectory'],
+    });
+    if (result.canceled || result.filePaths.length === 0) {
+      return null;
+    }
+    const dir = result.filePaths[0];
+    let freeSpaceBytes = 0;
+    try {
+      const stats = fs.statfsSync(dir);
+      freeSpaceBytes = stats.bavail * stats.bsize;
+    } catch (err) {
+      console.error('Failed to get disk space for selected dir:', err);
+    }
+    return {
+      path: dir,
+      freeSpaceBytes,
+    };
+  });
+
+  ipcMain.handle('recording:start-countdown', async (event, { displayId, seconds }) => {
+    const selectedDisplay = screen.getAllDisplays().find(d => d.id === displayId) || screen.getPrimaryDisplay();
+    const win = windowRegistry.createCountdown(selectedDisplay);
+    win.getWindow()?.show();
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:close-countdown', async () => {
+    windowRegistry.destroyCountdown();
+    return { success: true };
+  });
+
   ipcMain.handle('recording:start', async (event, options) => {
+    if (!isTrustedRecordingSender(event)) {
+      return { success: false, error: 'This window is not allowed to control recording.' };
+    }
     try {
       const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
       const outputPath = options.outputPath || defaultPath;
-      
+      const sourceType = options.sourceType === 'window' ? 'window' : 'display';
+      const selectedDisplay = displayManager.getPrimaryDisplay();
+      const sessionId = `recording-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
       await recorderService.start({
-        sourceId: options.sourceId || 'screen:0',
-        sourceType: options.sourceType || 'screen',
+        sourceId: sourceType === 'display' ? `screen:${selectedDisplay.id}:0` : options.sourceId,
+        sourceType,
         windowHandle: options.windowHandle || null,
-        displayId: options.displayId || 0,
+        displayId: selectedDisplay.id,
         width: options.width || 1920,
         height: options.height || 1080,
         fps: options.fps || 30,
         captureSystemAudio: options.captureSystemAudio ?? true,
         captureMic: options.captureMic ?? false,
         microphoneDeviceId: options.microphoneDeviceId || null,
+        microphoneDeviceName: options.microphoneDeviceName || null,
+        microphoneGain: options.microphoneGain ?? 1,
         webcamEnabled: options.webcamEnabled ?? false,
         webcamDeviceId: options.webcamDeviceId || null,
+        webcamDeviceName: options.webcamDeviceName || null,
+        webcamDirectShowClsid: options.webcamDirectShowClsid || null,
         captureCursor: options.captureCursor ?? true,
         outputPath: outputPath,
         webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
       });
       
       const appState = stateManager.getState();
-      presentationTrackService.startTrack(
-        outputPath,
-        [],
-        appState.backgroundMode || 'transparent',
-        appState.boardColor || '#ffffff',
-        appState.boardViewport || { panX: 0, panY: 0, zoom: 1 }
-      );
-      
-      startRecordingTimer(event);
-      broadcastRecordingState({ isRecording: true, isPaused: false });
-      return { success: true };
+      presentationTrackService.startTrack(outputPath, {
+        sessionId,
+        createdAtEpochMs: Date.now(),
+        source: {
+          id: sourceType === 'display' ? `screen:${selectedDisplay.id}:0` : options.sourceId,
+          name: options.sourceName || (sourceType === 'display' ? `Display ${selectedDisplay.id}` : 'Selected window'),
+          type: sourceType,
+          displayId: sourceType === 'display' ? selectedDisplay.id : null,
+          windowHandle: options.windowHandle || null,
+          bounds: options.sourceBounds || selectedDisplay.bounds,
+          scaleFactor: selectedDisplay.scaleFactor || 1,
+        },
+        canvas: {
+          width: (options.sourceBounds || selectedDisplay.bounds).width,
+          height: (options.sourceBounds || selectedDisplay.bounds).height,
+          originX: (options.sourceBounds || selectedDisplay.bounds).x,
+          originY: (options.sourceBounds || selectedDisplay.bounds).y,
+          coordinateSpace: 'desktop-dip',
+        },
+        initialScene: {
+          annotations: [],
+          board: {
+            backgroundMode: appState.backgroundMode || 'transparent',
+            boardColor: appState.boardColor || '#ffffff',
+            viewport: {
+              panX: appState.boardViewport?.x ?? 0,
+              panY: 0,
+              zoom: appState.boardViewport?.zoom ?? 1,
+            },
+          },
+          page: { id: 'board-page-0', index: 0 },
+          spotlight: null,
+          laserPoints: [],
+        },
+      });
+
+      startRecordingTimer();
+      broadcastRecordingState({ isRecording: true, isPaused: false, phase: 'recording', sessionId });
+      return { success: true, sessionId };
     } catch (err: any) {
+      await handleRecordingFailure(err);
       return { success: false, error: err.message || String(err) };
     }
   });
 
-  ipcMain.handle('recording:pause', async () => {
-    recorderService.pause();
+  ipcMain.handle('recording:pause', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+    await recorderService.pause();
     presentationTrackService.pauseTrack();
-    broadcastRecordingState({ isRecording: true, isPaused: true });
+    broadcastRecordingState({ isRecording: true, isPaused: true, phase: 'paused' });
     return { success: true };
   });
 
-  ipcMain.handle('recording:resume', async () => {
-    recorderService.resume();
+  ipcMain.handle('recording:resume', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+    await recorderService.resume();
     presentationTrackService.resumeTrack();
-    broadcastRecordingState({ isRecording: true, isPaused: false });
+    broadcastRecordingState({ isRecording: true, isPaused: false, phase: 'recording' });
     return { success: true };
   });
 
-  ipcMain.handle('recording:stop', async () => {
+  ipcMain.handle('recording:stop', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
     try {
       stopRecordingTimer();
       const outputPath = await recorderService.stop();
-      presentationTrackService.stopTrack();
-      broadcastRecordingState({ isRecording: false, isPaused: false });
-      return { success: true, outputPath };
+      const trackSummary = await presentationTrackService.finalizeTrack();
+      broadcastRecordingState({ isRecording: false, isPaused: false, phase: 'idle' });
+      return { success: true, outputPath, presentationTrackPath: trackSummary.sidecarPath };
     } catch (err: any) {
-      presentationTrackService.stopTrack();
-      broadcastRecordingState({ isRecording: false, isPaused: false });
+      await handleRecordingFailure(err);
       return { success: false, error: err.message || String(err) };
     }
   });
 
-  ipcMain.handle('recording:cancel', async () => {
+  ipcMain.handle('recording:cancel', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
     stopRecordingTimer();
-    recorderService.cancel();
-    presentationTrackService.cancelTrack();
-    broadcastRecordingState({ isRecording: false, isPaused: false });
+    await recorderService.cancel();
+    await presentationTrackService.discardTrack();
+    broadcastRecordingState({ isRecording: false, isPaused: false, phase: 'idle' });
     return { success: true };
   });
 
-  ipcMain.handle('recording:get-state', async () => {
+  ipcMain.handle('recording:get-state', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { isRecording: false, isPaused: false, phase: 'idle' };
     return recorderService.getState();
+  });
+
+  ipcMain.handle('recording:get-capabilities', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { available: false, supported: false };
+    return recorderService.probeCapabilities();
   });
 
   let currentProjectPath: string | null = null;
@@ -302,6 +484,35 @@ function bootstrap() {
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
       app.quit();
+    }
+  });
+
+  let recordingCleanupComplete = false;
+  let recordingCleanup: Promise<void> | null = null;
+  app.on('before-quit', (event) => {
+    const needsCleanup = !recordingCleanupComplete && (
+      recorderService.getState().isRecording || presentationTrackService.isRecording()
+    );
+    if (!needsCleanup) return;
+
+    event.preventDefault();
+    if (!recordingCleanup) {
+      recordingCleanup = (async () => {
+        try {
+          await recorderService.cancel();
+        } catch (error) {
+          console.error('Failed to cancel native recorder during shutdown:', error);
+        }
+        try {
+          await presentationTrackService.discardTrack();
+        } catch (error) {
+          console.error('Failed to discard presentation track during shutdown:', error);
+        }
+      })().finally(() => {
+        recordingCleanupComplete = true;
+        recordingCleanup = null;
+        app.quit();
+      });
     }
   });
 

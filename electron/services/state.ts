@@ -51,7 +51,7 @@ export const DEFAULT_STATE = {
     zoom: 1,
   },
   recordingDefaults: {
-    sourceType: 'screen',
+    sourceType: 'display',
     fps: 30,
     resolution: '1080p',
     systemAudio: true,

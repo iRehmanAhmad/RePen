@@ -2,19 +2,41 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
+
+const rendererRoot = path.resolve(__dirname, 'src/renderer');
+const rendererOut = path.resolve(__dirname, 'dist-renderer');
+
+function copyLegacyRendererAssets() {
+  const files = ['overlay.js', 'toolbar.js', 'settings.js', 'selector.js', 'countdown.js'];
+
+  return {
+    name: 'copy-legacy-renderer-assets',
+    closeBundle() {
+      fs.mkdirSync(rendererOut, { recursive: true });
+      for (const file of files) {
+        fs.copyFileSync(path.join(rendererRoot, file), path.join(rendererOut, file));
+      }
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  root: path.resolve(__dirname, 'src/renderer'),
+  plugins: [react(), copyLegacyRendererAssets()],
+  root: rendererRoot,
   base: './',
   build: {
-    outDir: path.resolve(__dirname, 'dist-renderer'),
+    outDir: rendererOut,
     emptyOutDir: true,
     rollupOptions: {
       input: {
         overlay: path.resolve(__dirname, 'src/renderer/overlay.html'),
-        toolbar: path.resolve(__dirname, 'src/renderer/toolbar.html')
+        toolbar: path.resolve(__dirname, 'src/renderer/toolbar.html'),
+        settings: path.resolve(__dirname, 'src/renderer/settings.html'),
+        selector: path.resolve(__dirname, 'src/renderer/selector.html'),
+        countdown: path.resolve(__dirname, 'src/renderer/countdown.html'),
+        editor: path.resolve(__dirname, 'src/renderer/editor.html')
       }
     }
   },

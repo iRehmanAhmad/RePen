@@ -14,6 +14,7 @@ struct WebcamFrameSnapshot {
     int width = 0;
     int height = 0;
     uint64_t sequence = 0;
+    int64_t timestampHns = 0;
 };
 
 class DirectShowWebcamCapture {
@@ -57,6 +58,7 @@ private:
     std::mutex frameMutex_;
     std::vector<BYTE> latestFrame_;
     uint64_t latestFrameSequence_ = 0;
+    int64_t latestFrameTimestampHns_ = 0;
     int width_ = 0;
     int height_ = 0;
     int fps_ = 30;

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'none'" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RePen · Recording Setup</title>
+    <link rel="stylesheet" href="./settings.css" />
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        overflow: hidden;
+      }
+      .shell {
+        height: 100vh;
+        border-radius: 12px;
+        grid-template-rows: auto 1fr auto;
+        gap: 8px;
+        background: rgba(16, 17, 20, 0.95);
+        backdrop-filter: blur(20px);
+      }
+      .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 16px;
+        height: 100%;
+        min-height: 0;
+      }
+      .sources-column {
+        display: flex;
+        flex-col: column;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .sources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+        overflow-y: auto;
+        padding-right: 4px;
+        flex-grow: 1;
+        min-height: 0;
+      }
+      .source-card {
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+      }
+      .source-card:hover {
+        background: var(--surface-3);
+        border-color: rgba(255,255,255,0.2);
+      }
+      .source-card.selected {
+        border-color: var(--success);
+        background: rgba(141, 231, 173, 0.08);
+      }
+      .source-thumbnail {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        background: #000;
+        border-bottom: 1px solid var(--line);
+      }
+      .source-info {
+        padding: 6px 8px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+      .source-icon {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+      .source-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .check-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 16px;
+        height: 16px;
+        background: var(--success);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000;
+        font-weight: bold;
+        font-size: 10px;
+      }
+      .controls-column {
+        border-left: 1px solid var(--line);
+        padding-left: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow-y: auto;
+      }
+      .settings-group {
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .settings-group h3 {
+        font-size: 12px;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .setting-row {
+        font-size: 11px;
+      }
+      .webcam-preview-container {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: #000;
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        position: relative;
+      }
+      .webcam-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .level-meter-bar {
+        height: 6px;
+        background: var(--line);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 4px;
+      }
+      .level-meter-fill {
+        height: 100%;
+        width: 0%;
+        background: var(--success);
+        transition: width 0.05s ease;
+      }
+      .disk-space-warning {
+        font-size: 10px;
+        color: var(--danger);
+        margin-top: 2px;
+      }
+      .disk-space-ok {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="titlebar">
+        <div class="title-block">
+          <h1>Recording Setup</h1>
+          <p>Choose screens, windows, webcam, and audio configurations.</p>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="main-grid">
+          <div class="sources-column">
+            <nav class="section-tabs" aria-label="Source types" style="margin-bottom: 10px;">
+              <button class="tab-button active" type="button" id="tabScreens">Screens</button>
+              <button class="tab-button" type="button" id="tabWindows">Windows</button>
+            </nav>
+            <div class="sources-grid" id="sourcesGrid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <div class="controls-column">
+            <!-- Audio Settings -->
+            <article class="settings-group">
+              <h3>Audio Inputs</h3>
+              <label class="checkbox-label">
+                <input id="systemAudio" type="checkbox" checked />
+                <span>System Audio</span>
+              </label>
+              <label class="setting-row">
+                <span>Microphone</span>
+                <select id="micDevice" class="select-field" style="width: 100%; margin-top: 4px;">
+                  <option value="none">Disabled</option>
+                </select>
+              </label>
+              <div id="micMeter" class="level-meter-bar" style="display: none;">
+                <div id="micMeterFill" class="level-meter-fill"></div>
+              </div>
+            </article>
+
+            <!-- Webcam Settings -->
+            <article class="settings-group">
+              <h3>Webcam / Overlay</h3>
+              <label class="setting-row">
+                <span>Camera Device</span>
+                <select id="webcamDevice" class="select-field" style="width: 100%; margin-top: 4px;">
+                  <option value="none">Disabled</option>
+                </select>
+              </label>
+              <div class="webcam-preview-container" id="webcamPreviewBox" style="display: none; margin-top: 4px;">
+                <video class="webcam-preview" id="webcamVideo" autoplay muted></video>
+              </div>
+            </article>
+
+            <!-- Destination & Quality -->
+            <article class="settings-group">
+              <h3>Destination &amp; Quality</h3>
+              <label class="setting-row">
+                <span>Folder</span>
+                <div class="path-input-group" style="margin-top: 4px;">
+                  <input id="destinationPath" type="text" readonly style="flex-grow: 1; min-width: 0;" />
+                  <button id="browsePath" class="secondary-button" type="button" style="padding: 2px 6px;">...</button>
+                </div>
+                <div id="diskSpaceInfo" class="disk-space-ok">Checking disk space...</div>
+              </label>
+              <label class="setting-row">
+                <span>Quality &amp; FPS</span>
+                <select id="fpsQuality" class="select-field" style="width: 100%; margin-top: 4px;">
+                  <option value="30_high">1080p / 30 FPS / High</option>
+                  <option value="60_high">1080p / 60 FPS / High</option>
+                  <option value="30_standard">720p / 30 FPS / Standard</option>
+                </select>
+              </label>
+              <label class="checkbox-label" style="margin-top: 4px;">
+                <input id="captureCursor" type="checkbox" checked />
+                <span>Show Cursor in Recording</span>
+              </label>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer" style="padding: 0;">
+        <div class="message" id="setupMessage" style="color: var(--muted);">Ready to configure recording.</div>
+        <div class="actions">
+          <button class="secondary-button" id="cancelButton" type="button">Cancel</button>
+          <button class="primary-button" id="startButton" type="button" disabled>Start Recording</button>
+        </div>
+      </footer>
+    </main>
+
+    <script src="./selector.js"></script>
+  </body>
+</html>

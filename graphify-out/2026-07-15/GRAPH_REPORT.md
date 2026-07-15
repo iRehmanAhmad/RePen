@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 160 files · ~118,613 words
+- 162 files · ~118,695 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1888 nodes · 2716 edges · 158 communities (147 shown, 11 thin omitted)
+- 1896 nodes · 2722 edges · 160 communities (149 shown, 11 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `962b2c47`
+- Built from commit: `2440ed26`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -168,8 +168,10 @@
 - [[_COMMUNITY_read_pixi_setup.js|read_pixi_setup.js]]
 - [[_COMMUNITY_read_videoplayback.js|read_videoplayback.js]]
 - [[_COMMUNITY_view_pixi_init.js|view_pixi_init.js]]
+- [[_COMMUNITY_find_main_cpp_source_type.js|find_main_cpp_source_type.js]]
 - [[_COMMUNITY_find_ffmpeg_openscreen.js|find_ffmpeg_openscreen.js]]
 - [[_COMMUNITY_find_main_js_export.js|find_main_js_export.js]]
+- [[_COMMUNITY_find_main_js_recorder_start.js|find_main_js_recorder_start.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 38 edges
@@ -186,19 +188,19 @@
 ## Surprising Connections (you probably didn't know these)
 - `bootstrap()` --calls--> `migrateProjectData()`  [INFERRED]
   electron/main.ts → src/shared/editor/projectPersistence.ts
-- `main()` --calls--> `inputFormat_`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/wasapi_loopback_capture.h
-- `main()` --calls--> `selectedDeviceName_`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/wasapi_loopback_capture.h
-- `main()` --calls--> `selectedDeviceName_`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/webcam_capture.h
 - `main()` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
   third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
+- `configureAudioStream` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/mf_encoder.h → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
+- `main()` --calls--> `finalize`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/mf_encoder.h
+- `main()` --calls--> `initialize`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/mf_encoder.h
 
 ## Import Cycles
 - None detected.
 
-## Communities (158 total, 11 thin omitted)
+## Communities (160 total, 11 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -525,8 +527,8 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 85 - "syncPageStore"
-Cohesion: 0.16
-Nodes (15): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice(), applySessionOptions (+7 more)
+Cohesion: 0.22
+Nodes (17): audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice, WAVEFORMATEX, wstring, getDeviceFriendlyName() (+9 more)
 
 ### Community 86 - "applyHotkeys"
 Cohesion: 0.43
@@ -549,8 +551,8 @@ Cohesion: 0.40
 Nodes (4): Additional Context, Describe Alternatives You've Considered, Describe the Proposed Solution, Is your feature request related to a problem?
 
 ### Community 91 - "main.cpp"
-Cohesion: 0.14
-Nodes (14): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), FrameCallback (+6 more)
+Cohesion: 0.17
+Nodes (12): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+4 more)
 
 ### Community 92 - "AudioMixer"
 Cohesion: 0.05
@@ -561,8 +563,8 @@ Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.08
-Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ComPtr, Direct3D11CaptureFramePool, FrameCallback, ID3D11Device (+17 more)
+Cohesion: 0.06
+Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -570,11 +572,11 @@ Nodes (46): Acceptance Checks, Analysis Summary, Architecture decision, Automate
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
-Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
+Nodes (41): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+33 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.06
-Nodes (47): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+39 more)
+Cohesion: 0.08
+Nodes (26): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, atomic, AudioCallback, BYTE, ComPtr, IMMDevice (+18 more)
 
 ### Community 99 - "CaptureConfig"
 Cohesion: 0.08
@@ -772,28 +774,36 @@ Nodes (3): content, fs, lines
 Cohesion: 0.50
 Nodes (3): content, fs, lines
 
+### Community 156 - "find_main_cpp_source_type.js"
+Cohesion: 0.50
+Nodes (3): content, fs, lines
+
 ### Community 158 - "find_main_js_export.js"
 Cohesion: 0.50
 Nodes (3): content, fs, lines
 
+### Community 159 - "find_main_js_recorder_start.js"
+Cohesion: 0.50
+Nodes (3): content, fs, lines
+
 ## Knowledge Gaps
-- **929 isolated node(s):** `Point`, `BoardViewport`, `SceneAnnotation`, `PresentationTrackEvent`, `RecorderOptions` (+924 more)
+- **935 isolated node(s):** `Point`, `BoardViewport`, `SceneAnnotation`, `PresentationTrackEvent`, `RecorderOptions` (+930 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `main()` connect `main.cpp` to `WebcamCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `syncPageStore`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`, `WgcSession`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `migrateProjectData()` connect `projectPersistence.ts` to `main.ts`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `main()` connect `main.cpp` to `WebcamCapture`, `WasapiLoopbackCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `syncPageStore`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Point`, `BoardViewport`, `SceneAnnotation` to the rest of the system?**
-  _929 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _935 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08258258258258258 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

@@ -1,8 +1,7 @@
-import { Display, ipcMain, app } from 'electron';
+import { Display, ipcMain } from 'electron';
 import { BaseWindow } from './baseWindow';
 import { loadWindowContent } from './loader';
-import fs from 'fs';
-import path from 'path';
+import { appendRendererDebugLog } from '../services/debugLog';
 
 export class OverlayWindow extends BaseWindow {
   public display: Display;
@@ -44,14 +43,10 @@ export class OverlayWindow extends BaseWindow {
     super.setupListeners();
     if (!this.window) return;
 
-    const logPath = path.join(app.getPath('userData'), 'rep-debug.log');
-    
     this.window.webContents.on('console-message', (event, level, message, line, sourceId) => {
       const logLine = `[Overlay Console] ${message} (${sourceId}:${line})\n`;
       console.log(logLine.trim());
-      try {
-        fs.appendFileSync(logPath, logLine);
-      } catch (e) {}
+      appendRendererDebugLog('Overlay Console', message, line, sourceId);
     });
 
     this.window.webContents.on('before-input-event', (event, input) => {

@@ -23,6 +23,7 @@ let lastMagnifierUrl = null;
 let lastAutoAdvanceTime = 0;
 let pageToastTimer = null;
 let cleanupScreenshotMode = null;
+let lastPresentationSampleAt = 0;
 const BOARD_MIN_ZOOM = 0.35;
 const BOARD_MAX_ZOOM = 3;
 
@@ -1818,13 +1819,30 @@ canvas.addEventListener('pointerdown', (event) => {
 
 canvas.addEventListener('pointermove', (event) => {
   currentMousePos = { x: event.offsetX, y: event.offsetY };
+  const sampleTime = Date.now();
   if (appState && (appState.activeTool === 'spotlight' || appState.activeTool === 'magnifier')) {
+    if (appState.activeTool === 'spotlight' && sampleTime - lastPresentationSampleAt >= 33) {
+      lastPresentationSampleAt = sampleTime;
+      const globalPt = localToGlobal(currentMousePos);
+      window.appBridge.recordPresentationSample?.({
+        type: 'spotlight',
+        active: true,
+        x: globalPt.x,
+        y: globalPt.y,
+        radius: appState.spotlight?.radius || 150,
+        alpha: appState.spotlight?.alpha || 0.75,
+      });
+    }
     scheduleRender();
   }
 
   if (appState && appState.activeTool === 'laser') {
     const globalPt = localToGlobal({ x: event.offsetX, y: event.offsetY });
     laserPoints.push({ x: globalPt.x, y: globalPt.y, time: Date.now() });
+    if (sampleTime - lastPresentationSampleAt >= 16) {
+      lastPresentationSampleAt = sampleTime;
+      window.appBridge.recordPresentationSample?.({ type: 'laser', x: globalPt.x, y: globalPt.y });
+    }
     scheduleRender();
     return;
   }
@@ -2151,6 +2169,11 @@ async function bootstrapApp() {
     const prevPassThrough = appState ? appState.passThrough : false;
     const prevBackgroundMode = appState ? appState.backgroundMode : 'transparent';
     
+    if (prevTool === 'spotlight' && nextState.activeTool !== 'spotlight' && currentMousePos) {
+      const globalPt = localToGlobal(currentMousePos);
+      window.appBridge.recordPresentationSample?.({ type: 'spotlight', active: false, x: globalPt.x, y: globalPt.y });
+    }
+
     appState = nextState;
     canvas.style.cursor = getBaseCursor();
     updateMagnifierImg();

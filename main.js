@@ -88,6 +88,8 @@ app.setAppUserModelId('com.repen.app');
 let tray = null;
 let toolbarWindow = null;
 let settingsWindow = null;
+let selectorWindow = null;
+let countdownWindow = null;
 const overlayWindows = new Map();
 let state = { ...DEFAULT_STATE };
 let pages = [{ annotations: [], undoStack: [], redoStack: [] }];
@@ -375,6 +377,12 @@ function broadcastRecordingState(recordingState) {
     }
   }
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+    const controlsActive = ['starting', 'recording', 'paused', 'finalizing'].includes(recordingState?.phase);
+    if (controlsActive) {
+      toolbarWindow.setIgnoreMouseEvents(!(controlsActive || state.toolbarHovered));
+      toolbarWindow.showInactive();
+      toolbarWindow.moveTop();
+    }
     toolbarWindow.webContents.send('recording:state-changed', recordingState);
   }
   if (settingsWindow && !settingsWindow.isDestroyed()) {
@@ -738,6 +746,125 @@ function createSettingsWindow() {
 
   return settingsWindow;
 }
+
+function createSelectorWindow() {
+  if (selectorWindow && !selectorWindow.isDestroyed()) {
+    return selectorWindow;
+  }
+
+  const primary = screen.getPrimaryDisplay();
+  const selectorWidth = 720;
+  const selectorHeight = 520;
+  const x = Math.round(primary.bounds.x + primary.bounds.width / 2 - selectorWidth / 2);
+  const y = Math.round(primary.bounds.y + primary.bounds.height / 2 - selectorHeight / 2);
+
+  selectorWindow = new BrowserWindow({
+    x,
+    y,
+    width: selectorWidth,
+    height: selectorHeight,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    minimizable: false,
+    maximizable: false,
+    skipTaskbar: true,
+    type: 'utility',
+    hasShadow: false,
+    icon: createAppIcon(),
+    backgroundColor: '#00000000',
+    show: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'src', 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false,
+    },
+  });
+
+  selectorWindow.loadURL(windowUrl('selector.html'));
+  selectorWindow.setContentProtection(true);
+  selectorWindow.setAlwaysOnTop(true, 'screen-saver');
+  selectorWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+  selectorWindow.on('close', (event) => {
+    if (!app.isQuitting) {
+      event.preventDefault();
+      selectorWindow.hide();
+    }
+  });
+
+  selectorWindow.on('closed', () => {
+    selectorWindow = null;
+  });
+
+  return selectorWindow;
+}
+
+function showSelectorWindow() {
+  createSelectorWindow();
+  if (selectorWindow && !selectorWindow.isDestroyed()) {
+    selectorWindow.show();
+    selectorWindow.moveTop();
+  }
+}
+
+function hideSelectorWindow() {
+  if (selectorWindow && !selectorWindow.isDestroyed()) {
+    selectorWindow.hide();
+  }
+}
+
+function createCountdownWindow(displayId) {
+  if (countdownWindow && !countdownWindow.isDestroyed()) {
+    countdownWindow.destroy();
+  }
+
+  const displays = screen.getAllDisplays();
+  const selectedDisplay = displays.find((d) => d.id === displayId) || screen.getPrimaryDisplay();
+  const bounds = selectedDisplay.bounds;
+
+  countdownWindow = new BrowserWindow({
+    x: bounds.x,
+    y: bounds.y,
+    width: bounds.width,
+    height: bounds.height,
+    transparent: true,
+    frame: false,
+    resizable: false,
+    movable: false,
+    minimizable: false,
+    maximizable: false,
+    closable: false,
+    focusable: false,
+    skipTaskbar: true,
+    type: 'utility',
+    hasShadow: false,
+    backgroundColor: '#00000000',
+    show: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'src', 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false,
+    },
+  });
+
+  countdownWindow.loadURL(windowUrl('countdown.html'));
+  countdownWindow.setContentProtection(true);
+  countdownWindow.setIgnoreMouseEvents(true);
+  countdownWindow.setAlwaysOnTop(true, 'screen-saver');
+  countdownWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+  countdownWindow.on('closed', () => {
+    countdownWindow = null;
+  });
+
+  return countdownWindow;
+}
+
 
 function showSettingsWindow() {
   if (!toolbarWindow || toolbarWindow.isDestroyed()) {
@@ -2133,6 +2260,7 @@ function init() {
 
 let recorderService = null;
 let presentationTrackService = null;
+let lastEnumeratedSources = new Map();
 try {
   const { RecorderService } = require('./dist-electron/services/recorder.js');
   const { PresentationTrackService } = require('./dist-electron/services/presentationTrack.js');
@@ -2165,6 +2293,93 @@ function stopRecordingTimer() {
     recordingTimer = null;
   }
 }
+
+ipcMain.handle('recording:open-setup', async () => {
+  showSelectorWindow();
+  return { success: true };
+});
+
+ipcMain.handle('recording:close-setup', async () => {
+  hideSelectorWindow();
+  return { success: true };
+});
+
+ipcMain.handle('recording:get-sources', async (_, opts) => {
+  const sources = await desktopCapturer.getSources(opts || {
+    types: ['screen', 'window'],
+    thumbnailSize: { width: 320, height: 180 },
+    fetchWindowIcons: true,
+  });
+  lastEnumeratedSources = new Map(sources.map((source) => [source.id, source]));
+  return sources.map((source) => ({
+    id: source.id,
+    name: source.name,
+    display_id: source.display_id,
+    thumbnail: source.thumbnail ? source.thumbnail.toDataURL() : null,
+    appIcon: source.appIcon ? source.appIcon.toDataURL() : null,
+  }));
+});
+
+ipcMain.handle('recording:get-system-info', async () => {
+  const displays = screen.getAllDisplays().map((d) => ({
+    id: d.id,
+    name: d.label || `Display ${d.id}`,
+    bounds: d.bounds,
+    scaleFactor: d.scaleFactor,
+    isPrimary: d.id === screen.getPrimaryDisplay().id,
+  }));
+
+  const defaultDir = app.getPath('videos');
+  let freeSpaceBytes = 0;
+  try {
+    const stats = fs.statfsSync(defaultDir);
+    freeSpaceBytes = stats.bavail * stats.bsize;
+  } catch (err) {
+    console.error('Failed to get disk space:', err);
+  }
+
+  return {
+    displays,
+    defaultDestination: defaultDir,
+    freeSpaceBytes,
+  };
+});
+
+ipcMain.handle('recording:select-directory', async () => {
+  const result = await dialog.showOpenDialog({
+    properties: ['openDirectory', 'createDirectory'],
+  });
+  if (result.canceled || result.filePaths.length === 0) {
+    return null;
+  }
+  const dir = result.filePaths[0];
+  let freeSpaceBytes = 0;
+  try {
+    const stats = fs.statfsSync(dir);
+    freeSpaceBytes = stats.bavail * stats.bsize;
+  } catch (err) {
+    console.error('Failed to get disk space for selected dir:', err);
+  }
+  return {
+    path: dir,
+    freeSpaceBytes,
+  };
+});
+
+ipcMain.handle('recording:start-countdown', async (event, { displayId, seconds }) => {
+  createCountdownWindow(displayId);
+  if (countdownWindow && !countdownWindow.isDestroyed()) {
+    countdownWindow.show();
+  }
+  return { success: true };
+});
+
+ipcMain.handle('recording:close-countdown', async () => {
+  if (countdownWindow && !countdownWindow.isDestroyed()) {
+    countdownWindow.close();
+  }
+  return { success: true };
+});
 
 ipcMain.handle('recording:start', async (event, options) => {
   if (!recorderService) {
@@ -2267,6 +2482,13 @@ ipcMain.handle('recording:get-state', async () => {
   if (!recorderService) return { isRecording: false, isPaused: false };
   return recorderService.getState();
 });
+
+ipcMain.handle('recording:get-capabilities', async () => {
+  return { available: recorderService !== null, supported: true };
+});
+
+// window.webContents.send('recording:countdown-tick');
+
 
 let currentProjectPath = null;
 

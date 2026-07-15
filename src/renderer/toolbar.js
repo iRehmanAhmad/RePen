@@ -907,45 +907,14 @@ if (elements.recordButton) {
   elements.recordButton.addEventListener('click', async () => {
     console.log('[Renderer] recordButton clicked');
     closeAllPopovers();
-
-    const settings = appState.recordingDefaults || {
-      sourceType: 'screen',
-      fps: 30,
-      resolution: '1080p',
-      systemAudio: true,
-      mic: false,
-      webcam: false,
-      cursorMode: 'system',
-      countdown: 3,
-    };
-
-    preRecordingPassThrough = appState.passThrough;
-
-    let countdown = parseInt(settings.countdown);
-    if (countdown > 0) {
-      elements.recordButton.disabled = true;
-      elements.recordButton.style.opacity = '0.5';
-      let currentVal = countdown;
-      
-      const countdownInterval = setInterval(async () => {
-        console.log(`Countdown: ${currentVal}`);
-        if (currentVal <= 0) {
-          clearInterval(countdownInterval);
-          elements.recordButton.disabled = false;
-          elements.recordButton.style.opacity = '1';
-          await proceedToRecord(settings);
-        } else {
-          currentVal--;
-        }
-      }, 1000);
-    } else {
-      await proceedToRecord(settings);
-    }
+    window.appBridge.openRecordingSetup().catch((err) => {
+      console.error('Failed to open recording setup:', err);
+      alert('Unable to open recording setup.');
+    });
   });
 }
 
 async function proceedToRecord(settings) {
-  elements.penBar.style.display = 'none';
   elements.recordingHud.style.display = 'flex';
   elements.hudTimer.textContent = '00:00';
   
@@ -978,7 +947,6 @@ function restoreToolbarUI() {
   isRecording = false;
   isPaused = false;
   elements.recordingHud.style.display = 'none';
-  elements.penBar.style.display = 'flex';
 }
 
 if (elements.hudPauseBtn) {
@@ -1176,7 +1144,7 @@ if (elements.opacityRange) {
 
 const appContainer = document.querySelector('.app-container');
 if (appContainer) {
-  const interactiveElements = Array.from(document.querySelectorAll('.pen-bar, .grouped-popover, #inlineColorSwatches, .toolbar-settings-panel, .modal-overlay, .mark-mini, .collapse-btn'));
+  const interactiveElements = Array.from(document.querySelectorAll('.pen-bar, .recording-hud, .grouped-popover, #inlineColorSwatches, .toolbar-settings-panel, .modal-overlay, .mark-mini, .collapse-btn'));
   interactiveElements.forEach((el) => {
     el.addEventListener('mouseenter', () => {
       console.log('[Renderer] toolbar interactive element mouseenter:', el.id || el.className);
