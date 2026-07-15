@@ -39,6 +39,15 @@ Use this structured 7-step manual testing checklist before releasing any new bui
 - [ ] Choose a save destination when prompted.
 - [ ] Open the saved file in an image viewer. Verify the output format matches settings (PNG or JPEG) and desktop background is included if configured.
 
-## 8. 🤖 Automated Knowledge Graph & Git Verification
+## 8. 🎥 Recorder & Editor Post-Production
+- [ ] Select **Record Screen** ON. Verify the recording settings panel opens.
+- [ ] Start recording. Verify the floating glassmorphic Recording HUD displays the elapsed time timer correctly.
+- [ ] Pause recording. Verify the timer pauses. Resume and verify it advances.
+- [ ] Stop recording. Verify it prompts to save the resulting `.repen-project` file.
+- [ ] Open the project in the editor. Verify the video, synchronized webcam PiP, and smoothed cursor track play together.
+- [ ] Crop, trim, or adjust playback speeds. Verify the playback coordinator updates rates and skips trimmed sections.
+- [ ] Trigger export and verify a clean H.264/AAC output MP4 is generated.
+
+## 9. 🤖 Automated Knowledge Graph & Git Verification
 - [ ] Run automated tests via `npm test` and verify all DOM IDs, IPC contracts, tool states, and scene store separation (`scripts/verify-scene-store-separation.js`) pass.
 - [ ] Commit or push code via `git commit` / `git push`. Verify Git hooks (`.githooks/pre-commit` and `.githooks/pre-push`) automatically trigger `graphify update .` and stage/commit updated `.md` reports (`GRAPH_REPORT.md`, `.agents/rules/graphify.md`).
