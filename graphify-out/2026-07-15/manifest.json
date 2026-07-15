@@ -975,13 +975,18 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784134460.9800801,
-    "ast_hash": "bbd47fe0a9c30de394380ae0e7b9e68f",
+    "mtime": 1784134797.1118772,
+    "ast_hash": "42d69ee2a1b36881b4e45c345612c1f3",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
     "mtime": 1784134491.1302977,
     "ast_hash": "720f39a95cd07e4d52ce0ade2fb50976",
+    "semantic_hash": ""
+  },
+  "tests/unit/editorEffects.test.ts": {
+    "mtime": 1784134803.01686,
+    "ast_hash": "803a4401409d65852a648d2ff9df75fc",
     "semantic_hash": ""
   }
 }

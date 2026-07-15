@@ -71,6 +71,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   closeRecordingSetup: () => ipcRenderer.invoke('recording:close-setup'),
   openRecordingEditor: (initialPath = null) => ipcRenderer.invoke('recording:open-editor', initialPath),
   closeRecordingEditor: () => ipcRenderer.invoke('recording:close-editor'),
+  transcribeRecording: (filePath) => ipcRenderer.invoke('recording:transcribe', filePath),
   getRecordingSources: () => ipcRenderer.invoke('recording:get-sources'),
   getSystemInfo: () => ipcRenderer.invoke('recording:get-system-info'),
   selectRecordingDirectory: () => ipcRenderer.invoke('recording:select-directory'),

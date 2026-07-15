@@ -31,9 +31,14 @@ const EditorApp: React.FC = () => {
   const [timelineZoom, setTimelineZoom] = useState(1.0);
 
   // UI States
-  const [activeTab, setActiveTab] = useState<'layout' | 'motion' | 'webcam' | 'annotations'>('layout');
+  const [activeTab, setActiveTab] = useState<'layout' | 'motion' | 'webcam' | 'annotations' | 'captions'>('layout');
   const [selectedZoomId, setSelectedZoomId] = useState<string | null>(null);
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
+  const [selectedCaptionId, setSelectedCaptionId] = useState<string | null>(null);
+
+  // Transcription loading state
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [transcriptionProgress, setTranscriptionProgress] = useState(0);
 
   // Snap, tracks controls
   const [timelineSnap, setTimelineSnap] = useState(true);
@@ -78,7 +83,6 @@ const EditorApp: React.FC = () => {
     if ((window as any).appBridge?.loadProjectFileFromPath) {
       const res = await (window as any).appBridge.loadProjectFileFromPath(path);
       if (res.success) {
-        // Ensure regions arrays exist in editor state
         const proj = res.project;
         if (!proj.editor) proj.editor = {};
         if (!proj.editor.zoomRegions) proj.editor.zoomRegions = [];
@@ -179,7 +183,7 @@ const EditorApp: React.FC = () => {
     }
   };
 
-  // Draw overlay annotations onto canvas
+  // Draw overlay annotations & subtitles onto canvas
   const drawAnnotations = (timeMs: number) => {
     const canvas = canvasRef.current;
     const video = videoRef.current;
@@ -214,7 +218,7 @@ const EditorApp: React.FC = () => {
       ctx.restore();
     }
 
-    // 2. Draw Editor custom text/blur annotations
+    // 2. Draw Editor custom text annotations & subtitles
     const customAnnotations = project.editor.annotationRegions || [];
     const activeAnns = customAnnotations.filter(ann => timeMs >= ann.startMs && timeMs <= ann.endMs);
     
@@ -227,6 +231,17 @@ const EditorApp: React.FC = () => {
         
         const posX = (ann.position.x / 100) * rect.width;
         const posY = (ann.position.y / 100) * rect.height;
+        
+        // Draw subtitle background border if it is an auto-caption
+        if (ann.annotationSource === 'auto-caption') {
+          ctx.font = `bold ${18 * (rect.height / 800)}px sans-serif`;
+          ctx.textAlign = 'center';
+          const textWidth = ctx.measureText(ann.content).width;
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+          ctx.fillRect(posX - textWidth / 2 - 10, posY - 20, textWidth + 20, 30);
+          ctx.fillStyle = '#ffffff';
+        }
+        
         ctx.fillText(ann.content, posX, posY);
       }
     }
@@ -301,7 +316,6 @@ const EditorApp: React.FC = () => {
     if (!project?.editor) return {};
     const editor = project.editor;
 
-    // Background color/wallpaper
     const style: React.CSSProperties = {
       padding: `${editor.padding || 0}px`,
       borderRadius: `${editor.borderRadius || 0}px`,
@@ -314,7 +328,6 @@ const EditorApp: React.FC = () => {
       justifyContent: 'center',
     };
 
-    // Zoom/3D Rotation regions mapping
     const zoomRegions = editor.zoomRegions || [];
     const activeZoom = zoomRegions.find(r => currentTimeMs >= r.startMs && currentTimeMs <= r.endMs);
     
@@ -325,7 +338,6 @@ const EditorApp: React.FC = () => {
       
       let transformStr = `scale(${depth})`;
       
-      // Add 3D Rotation transforms
       if (activeZoom.rotationPreset === 'iso') {
         transformStr = `${transformStr} perspective(1000px) rotateX(-10deg) rotateY(-16deg)`;
       } else if (activeZoom.rotationPreset === 'left') {
@@ -417,6 +429,115 @@ const EditorApp: React.FC = () => {
     if (selectedAnnotationId === id) setSelectedAnnotationId(null);
   };
 
+  // Offline Transcription Generator
+  const handleTranscribe = async () => {
+    if (!project) return;
+    setIsTranscribing(true);
+    setTranscriptionProgress(10);
+    
+    const videoPath = project.media?.screenVideoPath || project.videoPath || '';
+    if ((window as any).appBridge?.transcribeRecording) {
+      setTranscriptionProgress(40);
+      const res = await (window as any).appBridge.transcribeRecording(videoPath);
+      setTranscriptionProgress(80);
+      if (res.success && res.segments) {
+        const updated = JSON.parse(JSON.stringify(project));
+        // Clear any previous auto-captions
+        updated.editor.annotationRegions = updated.editor.annotationRegions.filter(
+          (ann: any) => ann.annotationSource !== 'auto-caption'
+        );
+        // Append transcription segments
+        for (const seg of res.segments) {
+          updated.editor.annotationRegions.push({
+            id: seg.id,
+            startMs: seg.startMs,
+            endMs: seg.endMs,
+            type: 'text',
+            content: seg.content,
+            annotationSource: 'auto-caption',
+            position: { x: 50, y: 85 }, // lower centered
+            size: { width: 40, height: 10 },
+            style: {
+              color: '#ffffff',
+              backgroundColor: 'transparent',
+              fontSize: 24,
+              fontFamily: 'Inter',
+              fontWeight: 'bold',
+              fontStyle: 'normal',
+              textDecoration: 'none',
+              textAlign: 'center',
+              textAnimation: 'none',
+            },
+            zIndex: 100,
+          });
+        }
+        updateProject(updated);
+        setTranscriptionProgress(100);
+        setTimeout(() => {
+          setIsTranscribing(false);
+          setActiveTab('captions');
+        }, 500);
+      } else {
+        alert('Transcription failed.');
+        setIsTranscribing(false);
+      }
+    }
+  };
+
+  // Split Active Caption
+  const handleSplitCaption = () => {
+    if (!project || !selectedCaptionId) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    const list = updated.editor.annotationRegions;
+    const idx = list.findIndex((a: any) => a.id === selectedCaptionId);
+    if (idx === -1) return;
+    const target = list[idx];
+    
+    if (currentTimeMs > target.startMs && currentTimeMs < target.endMs) {
+      const originalEnd = target.endMs;
+      target.endMs = currentTimeMs;
+      
+      const nextCaption: AnnotationRegion = {
+        ...JSON.parse(JSON.stringify(target)),
+        id: `ann-split-${Date.now()}`,
+        startMs: currentTimeMs,
+        endMs: originalEnd,
+        content: 'Split text here',
+      };
+      
+      list.push(nextCaption);
+      updateProject(updated);
+      setSelectedCaptionId(nextCaption.id);
+    }
+  };
+
+  // Merge Active Caption with the Next Adjacent Caption
+  const handleMergeCaption = () => {
+    if (!project || !selectedCaptionId) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    const list = updated.editor.annotationRegions;
+    const idx = list.findIndex((a: any) => a.id === selectedCaptionId);
+    if (idx === -1) return;
+    const target = list[idx];
+    
+    // Find next adjacent caption chronologically
+    const autoCaptions = list.filter((a: any) => a.annotationSource === 'auto-caption');
+    autoCaptions.sort((a: any, b: any) => a.startMs - b.startMs);
+    const currIdxInSorted = autoCaptions.findIndex((a: any) => a.id === selectedCaptionId);
+    if (currIdxInSorted === -1 || currIdxInSorted === autoCaptions.length - 1) return;
+    
+    const nextTarget = autoCaptions[currIdxInSorted + 1];
+    
+    // Update target duration to end of next, and combine content
+    target.endMs = nextTarget.endMs;
+    target.content = `${target.content} ${nextTarget.content}`;
+    
+    // Delete nextTarget from master list
+    updated.editor.annotationRegions = list.filter((a: any) => a.id !== nextTarget.id);
+    
+    updateProject(updated);
+  };
+
   const activeVideoSrc = project?.media?.screenVideoPath || project?.videoPath || '';
 
   return (
@@ -465,11 +586,12 @@ const EditorApp: React.FC = () => {
 
         {/* Sidebar settings panel */}
         <aside className="properties-panel">
-          <div className="tab-buttons" style={{display: 'flex', gap: 6, marginBottom: 12}}>
+          <div className="tab-buttons" style={{display: 'flex', gap: 4, marginBottom: 12, overflowX: 'auto'}}>
             <button className={`menu-btn ${activeTab === 'layout' ? 'active' : ''}`} onClick={() => setActiveTab('layout')}>Layout</button>
             <button className={`menu-btn ${activeTab === 'motion' ? 'active' : ''}`} onClick={() => setActiveTab('motion')}>Motion</button>
             <button className={`menu-btn ${activeTab === 'webcam' ? 'active' : ''}`} onClick={() => setActiveTab('webcam')}>Webcam</button>
             <button className={`menu-btn ${activeTab === 'annotations' ? 'active' : ''}`} onClick={() => setActiveTab('annotations')}>Overlay</button>
+            <button className={`menu-btn ${activeTab === 'captions' ? 'active' : ''}`} onClick={() => setActiveTab('captions')}>Captions</button>
           </div>
 
           {project && activeTab === 'layout' && (
@@ -693,7 +815,7 @@ const EditorApp: React.FC = () => {
               <button className="btn-primary" onClick={handleAddAnnotation}>+ Add Text Overlay</button>
               
               <div style={{maxHeight: 180, overflowY: 'auto', border: '1px solid var(--line)', padding: 6, borderRadius: 6}}>
-                {project.editor.annotationRegions.map((ann: any) => (
+                {project.editor.annotationRegions.filter(a => a.annotationSource !== 'auto-caption').map((ann: any) => (
                   <div 
                     key={ann.id} 
                     style={{display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--line)', cursor: 'pointer', background: selectedAnnotationId === ann.id ? 'var(--surface-3)' : 'transparent'}}
@@ -764,6 +886,53 @@ const EditorApp: React.FC = () => {
                   </div>
                 );
               })()}
+            </div>
+          )}
+
+          {project && activeTab === 'captions' && (
+            <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+              {isTranscribing ? (
+                <div style={{textAlign: 'center', padding: 20}}>
+                  <h3>Generating Captions...</h3>
+                  <div style={{width: '100%', height: 10, background: 'var(--surface-2)', borderRadius: 5, overflow: 'hidden', marginTop: 10}}>
+                    <div style={{width: `${transcriptionProgress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.2s'}} />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <button className="btn-primary" onClick={handleTranscribe}>🎙️ Auto Transcribe Offline</button>
+                  
+                  <div style={{display: 'flex', gap: 6}}>
+                    <button className="btn-secondary" style={{flex: 1}} onClick={handleSplitCaption} disabled={!selectedCaptionId}>Split</button>
+                    <button className="btn-secondary" style={{flex: 1}} onClick={handleMergeCaption} disabled={!selectedCaptionId}>Merge Next</button>
+                  </div>
+
+                  <div style={{maxHeight: 220, overflowY: 'auto', border: '1px solid var(--line)', padding: 6, borderRadius: 6}}>
+                    {project.editor.annotationRegions.filter(a => a.annotationSource === 'auto-caption').map((ann: any) => (
+                      <div 
+                        key={ann.id} 
+                        style={{display: 'flex', flexDirection: 'column', padding: 8, borderBottom: '1px solid var(--line)', cursor: 'pointer', background: selectedCaptionId === ann.id ? 'var(--surface-3)' : 'transparent'}}
+                        onClick={() => setSelectedCaptionId(ann.id)}
+                      >
+                        <span style={{fontSize: 10, color: 'var(--muted)'}}>{Math.round(ann.startMs / 1000)}s - {Math.round(ann.endMs / 1000)}s</span>
+                        <input 
+                          type="text"
+                          style={{background: 'transparent', border: 'none', color: 'var(--text)', outline: 'none', fontSize: 13, marginTop: 4}}
+                          value={ann.content}
+                          onChange={(e) => {
+                            const updated = JSON.parse(JSON.stringify(project));
+                            const targetIdx = updated.editor.annotationRegions.findIndex((a: any) => a.id === ann.id);
+                            if (targetIdx !== -1) {
+                              updated.editor.annotationRegions[targetIdx].content = e.target.value;
+                              updateProject(updated);
+                            }
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           )}
 
@@ -843,6 +1012,23 @@ const EditorApp: React.FC = () => {
                 style={{
                   left: `${(z.startMs / durationMs) * 100}%`,
                   width: `${((z.endMs - z.startMs) / durationMs) * 100}%`
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="timeline-track">
+            <span className="track-label">Captions Track</span>
+            {project?.editor.annotationRegions?.filter((a: any) => a.annotationSource === 'auto-caption').map((c: any) => (
+              <div 
+                key={c.id}
+                className="speed-region-visual"
+                style={{
+                  left: `${(c.startMs / durationMs) * 100}%`,
+                  width: `${((c.endMs - c.startMs) / durationMs) * 100}%`,
+                  background: 'rgba(255, 209, 102, 0.35)',
+                  borderLeft: '2px solid var(--warning)',
+                  borderRight: '2px solid var(--warning)',
                 }}
               />
             ))}

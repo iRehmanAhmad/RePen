@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 185 files · ~135,974 words
+- 186 files · ~137,491 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2170 nodes · 3194 edges · 181 communities (169 shown, 12 thin omitted)
+- 2171 nodes · 3198 edges · 182 communities (170 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 54 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9350eec8`
+- Built from commit: `b0a72985`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -153,6 +153,7 @@
 - [[_COMMUNITY_main.ts|main.ts]]
 - [[_COMMUNITY_StateManager|StateManager]]
 - [[_COMMUNITY_DisplayManager|DisplayManager]]
+- [[_COMMUNITY_audio_sample_utils.h|audio_sample_utils.h]]
 - [[_COMMUNITY_find_main_js_handlers.js|find_main_js_handlers.js]]
 - [[_COMMUNITY_types.ts|types.ts]]
 - [[_COMMUNITY_editorDefaults.ts|editorDefaults.ts]]
@@ -190,7 +191,6 @@
 - [[_COMMUNITY_Phase 3 — Recording session UX and recovery|Phase 3 — Recording session UX and recovery]]
 - [[_COMMUNITY_Phase 8 — Product completeness|Phase 8 — Product completeness]]
 - [[_COMMUNITY_native-recorder-helper.test.ts|native-recorder-helper.test.ts]]
-- [[_COMMUNITY_broadcastScene|broadcastScene]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -219,7 +219,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (181 total, 12 thin omitted)
+## Communities (182 total, 12 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -290,8 +290,8 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.18
-Nodes (11): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 5. System Overview, Conceptual architecture (+3 more)
+Cohesion: 0.14
+Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -546,8 +546,8 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 85 - "syncPageStore"
-Cohesion: 0.67
-Nodes (3): 2. Product Objectives, Non-objectives for the first release, Primary objectives
+Cohesion: 0.21
+Nodes (18): CLSID, HCURSOR, LPARAM, LRESULT, base64Encode(), buildAssetJson(), HWND, string (+10 more)
 
 ### Community 86 - "applyHotkeys"
 Cohesion: 0.43
@@ -574,16 +574,16 @@ Cohesion: 0.12
 Nodes (16): Acceptance Checks, Complete OpenScreen integration after recorder foundation, Completed Baseline, Constraints, Cross-Phase Test Policy, Current Phase, Delivery Strategy, Feature Parity Definition (+8 more)
 
 ### Community 92 - "AudioMixer"
-Cohesion: 0.05
-Nodes (79): CLSID, HCURSOR, LPARAM, LRESULT, T, AudioMixer, append, beginTimeline (+71 more)
+Cohesion: 0.07
+Nodes (57): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+49 more)
 
 ### Community 93 - "MFEncoder"
 Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.07
-Nodes (29): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ID3D11Device, ID3D11DeviceContext, ComPtr, Direct3D11CaptureFramePool (+21 more)
+Cohesion: 0.06
+Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -745,6 +745,10 @@ Nodes (15): enumerateAVDevices(), init(), loadSystemInfo(), refreshSources(), re
 Cohesion: 0.16
 Nodes (16): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setClickHalo(), setColor(), setExportIncludeBackground() (+8 more)
 
+### Community 139 - "audio_sample_utils.h"
+Cohesion: 0.53
+Nodes (4): atomic, mutex, thread, vector
+
 ### Community 140 - "find_main_js_handlers.js"
 Cohesion: 0.50
 Nodes (3): content, fs, lines
@@ -754,12 +758,12 @@ Cohesion: 0.05
 Nodes (31): AnnotationPosition, AnnotationSize, AnnotationTextAnimation, AnnotationTextStyle, AnnotationType, ArrowDirection, BlurColor, BlurData (+23 more)
 
 ### Community 143 - "editorDefaults.ts"
-Cohesion: 0.13
-Nodes (21): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+13 more)
+Cohesion: 0.14
+Nodes (18): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+10 more)
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.19
-Nodes (18): EditorApp(), rootEl, clamp(), EditorProjectData, fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor() (+10 more)
+Cohesion: 0.17
+Nodes (21): EditorApp(), rootEl, clamp(), EditorProjectData, fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor() (+13 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -873,12 +877,8 @@ Nodes (3): Exit gate, Implementation, Phase 3 — Recording session UX and recov
 Cohesion: 0.67
 Nodes (3): Exit gate, Implementation, Phase 8 — Product completeness
 
-### Community 181 - "broadcastScene"
-Cohesion: 0.13
-Nodes (18): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice() (+10 more)
-
 ## Knowledge Gaps
-- **1043 isolated node(s):** `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION`, `Point`, `PresentationBounds` (+1038 more)
+- **1044 isolated node(s):** `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION`, `Point`, `PresentationBounds` (+1039 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -886,15 +886,15 @@ Nodes (18): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `migrateProjectData()` connect `projectPersistence.ts` to `main.ts`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `RecorderService` connect `main.ts` to `main.ts`?**
-  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `main()` connect `resolveInputFormat` to `WebcamCapture`, `WasapiLoopbackCapture`, `CaptureConfig`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `AudioMixer`, `MFEncoder`, `WgcSession`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` to the rest of the system?**
-  _1043 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1044 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08108108108108109 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

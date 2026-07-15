@@ -2555,6 +2555,19 @@ ipcMain.handle('recording:close-editor', async () => {
   return { success: true };
 });
 
+ipcMain.handle('recording:transcribe', async (_, filePath) => {
+  // Simulate offline whisper-like model audio processing
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  return {
+    success: true,
+    segments: [
+      { id: 'c1', startMs: 500, endMs: 2500, content: 'Welcome to this RePen session!' },
+      { id: 'c2', startMs: 3000, endMs: 5500, content: 'Today we will draw shapes and highlights.' },
+      { id: 'c3', startMs: 6000, endMs: 8500, content: 'Thank you for watching this presentation!' }
+    ]
+  };
+});
+
 ipcMain.handle('recording:get-sources', async (_, opts) => {
   const sources = await desktopCapturer.getSources(opts || {
     types: ['screen', 'window'],
