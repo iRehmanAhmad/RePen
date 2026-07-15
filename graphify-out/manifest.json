@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "docs/qa-checklist.md": {
-    "mtime": 1783248981.596988,
-    "ast_hash": "5a7d30a2121347ee5e8af83e07de6f49",
+    "mtime": 1784118426.350913,
+    "ast_hash": "3dc0eb5541dd4e8d239896320c238726",
     "semantic_hash": ""
   },
   "docs/technical-architecture.md": {
@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1784118189.655237,
-    "ast_hash": "d12a881b2d135a3f11dabc90eea848c2",
+    "mtime": 1784118577.368712,
+    "ast_hash": "8670f2d97046611b074c0d2836b4fc3d",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {

@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1784117927.9016273,
-    "ast_hash": "1b4e390ca9d9865574aace736432e6fa",
+    "mtime": 1784118189.655237,
+    "ast_hash": "d12a881b2d135a3f11dabc90eea848c2",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
@@ -822,6 +822,26 @@
   "tests/unit/playbackCoordinator.test.ts": {
     "mtime": 1784117837.6701083,
     "ast_hash": "4f4a855ff447fc29c0052732eb660dd6",
+    "semantic_hash": ""
+  },
+  "scratch/find_ffmpeg_openscreen.js": {
+    "mtime": 1784118089.9399238,
+    "ast_hash": "9a44472f312a2adda539c6115c8b8c55",
+    "semantic_hash": ""
+  },
+  "scratch/find_main_js_export.js": {
+    "mtime": 1784118068.2487276,
+    "ast_hash": "55eb406b4cc6609c468ccd9dcf718941",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/ffmpegCommandGenerator.ts": {
+    "mtime": 1784118106.7800336,
+    "ast_hash": "6162e6c310e5830463b33d91c5e18af8",
+    "semantic_hash": ""
+  },
+  "tests/unit/ffmpegCommandGenerator.test.ts": {
+    "mtime": 1784118111.8034537,
+    "ast_hash": "364ff043fa9e0cddd616b9a5667d0364",
     "semantic_hash": ""
   }
 }
