@@ -161,16 +161,13 @@ Ran the full test suite (`npm test`) which verified:
   - **Settings & Persistence**: Added recording configuration fields (source type, FPS, resolution, mic, webcam, system audio, cursor recording, countdown delay, save path) to state schemas in [state.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/state.ts).
   - **IPC Wiring & State Broadcast**: Exposed contextBridge functions in [preload.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/preload.js), registered recording handlers in [main.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/main.ts) & [main.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/main.js), and implemented elapsed timers and overlay state changes propagation.
   - **User Interactions**: Wired click events and status timers in [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js) to automate toolbar collapse, toggle overlays, and proceed to WGC capture sessions.
-
-
-
-
-
-
-
-
-
-
+- **RePen Presenter Engine Porting (Phase 5)**: Ported and modularized the core presenter logic into clean, type-safe TypeScript and React modules:
+  - **Drawing Scene Schemas**: Created [scene.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/shared/schemas/scene.ts) defining strongly-typed unions for all drawing annotations.
+  - **Geometry Hit-Testing**: Developed [geometry.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/presenter/geometry.ts) containing eraser segment-to-segment overlap equations.
+  - **Undo/Redo Transactions**: Created [history.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/presenter/history.ts) managing the undo/redo stack transitions.
+  - **Canvas Renderer**: Developed [presenterRenderer.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/presenter/presenterRenderer.ts) modularizing the HTML5 Canvas context loops and calligraphy ribbon geometry.
+  - **React Toolbar Component**: Created [presenterToolbar.tsx](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/presenter/components/presenterToolbar.tsx) implementing the vertical/horizontal orientation states.
+  - **Unit Verification Suites**: Added [geometry.test.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/tests/unit/geometry.test.ts), [history.test.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/tests/unit/history.test.ts), and [presenterToolbar.test.tsx](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/tests/unit/presenterToolbar.test.tsx), all compiling and passing fully.
 
 
 
