@@ -180,5 +180,6 @@
   "178": "native-recorder-helper.test.ts",
   "179": "selector.test.ts",
   "180": "editorEffects.test.ts",
+  "181": "editorCaptions.test.ts",
   "182": "sessionUX.test.ts"
 }

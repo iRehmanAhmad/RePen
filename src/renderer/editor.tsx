@@ -36,9 +36,18 @@ const EditorApp: React.FC = () => {
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
   const [selectedCaptionId, setSelectedCaptionId] = useState<string | null>(null);
 
-  // Transcription loading state
+  // Transcription state
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcriptionProgress, setTranscriptionProgress] = useState(0);
+
+  // Export states
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportFormat, setExportFormat] = useState<'mp4' | 'gif'>('mp4');
+  const [exportFps, setExportFps] = useState(30);
+  const [exportLoop, setExportLoop] = useState(true);
+  const [exportProgress, setExportProgress] = useState<number | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportOutputPath, setExportOutputPath] = useState('');
 
   // Snap, tracks controls
   const [timelineSnap, setTimelineSnap] = useState(true);
@@ -63,6 +72,12 @@ const EditorApp: React.FC = () => {
     if ((window as any).ipcRenderer) {
       (window as any).ipcRenderer.on('editor:load-project', (_: any, path: string) => {
         loadProject(path);
+      });
+    }
+
+    if ((window as any).appBridge?.onExportProgress) {
+      (window as any).appBridge.onExportProgress((_: any, progressData: any) => {
+        setExportProgress(progressData.progress);
       });
     }
   }, []);
@@ -232,7 +247,6 @@ const EditorApp: React.FC = () => {
         const posX = (ann.position.x / 100) * rect.width;
         const posY = (ann.position.y / 100) * rect.height;
         
-        // Draw subtitle background border if it is an auto-caption
         if (ann.annotationSource === 'auto-caption') {
           ctx.font = `bold ${18 * (rect.height / 800)}px sans-serif`;
           ctx.textAlign = 'center';
@@ -442,11 +456,9 @@ const EditorApp: React.FC = () => {
       setTranscriptionProgress(80);
       if (res.success && res.segments) {
         const updated = JSON.parse(JSON.stringify(project));
-        // Clear any previous auto-captions
         updated.editor.annotationRegions = updated.editor.annotationRegions.filter(
           (ann: any) => ann.annotationSource !== 'auto-caption'
         );
-        // Append transcription segments
         for (const seg of res.segments) {
           updated.editor.annotationRegions.push({
             id: seg.id,
@@ -455,7 +467,7 @@ const EditorApp: React.FC = () => {
             type: 'text',
             content: seg.content,
             annotationSource: 'auto-caption',
-            position: { x: 50, y: 85 }, // lower centered
+            position: { x: 50, y: 85 },
             size: { width: 40, height: 10 },
             style: {
               color: '#ffffff',
@@ -520,7 +532,6 @@ const EditorApp: React.FC = () => {
     if (idx === -1) return;
     const target = list[idx];
     
-    // Find next adjacent caption chronologically
     const autoCaptions = list.filter((a: any) => a.annotationSource === 'auto-caption');
     autoCaptions.sort((a: any, b: any) => a.startMs - b.startMs);
     const currIdxInSorted = autoCaptions.findIndex((a: any) => a.id === selectedCaptionId);
@@ -528,14 +539,56 @@ const EditorApp: React.FC = () => {
     
     const nextTarget = autoCaptions[currIdxInSorted + 1];
     
-    // Update target duration to end of next, and combine content
     target.endMs = nextTarget.endMs;
     target.content = `${target.content} ${nextTarget.content}`;
     
-    // Delete nextTarget from master list
     updated.editor.annotationRegions = list.filter((a: any) => a.id !== nextTarget.id);
     
     updateProject(updated);
+  };
+
+  // Trigger export flow
+  const handleStartExport = async () => {
+    if (!project) return;
+    
+    let pathSuggested = `RePen_Export.${exportFormat}`;
+    if (projectPath) {
+      const folder = projectPath.substring(0, projectPath.lastIndexOf('/'));
+      pathSuggested = `${folder}/export.${exportFormat}`;
+    }
+    
+    setExportOutputPath(pathSuggested);
+    setIsExporting(true);
+    setExportProgress(0);
+    
+    if ((window as any).appBridge?.exportProject) {
+      const res = await (window as any).appBridge.exportProject(project, {
+        outputPath: pathSuggested,
+        format: exportFormat,
+        fps: exportFps,
+        loop: exportLoop,
+        durationMs: durationMs,
+      });
+      
+      setIsExporting(false);
+      setExportProgress(null);
+      setShowExportModal(false);
+      
+      if (res.success) {
+        alert(`Export completed successfully!\nSaved to: ${res.path}`);
+      } else {
+        alert(`Export failed: ${res.error}`);
+      }
+    }
+  };
+
+  const handleCancelExport = async () => {
+    if ((window as any).appBridge?.cancelExport) {
+      await (window as any).appBridge.cancelExport(exportOutputPath);
+      setIsExporting(false);
+      setExportProgress(null);
+      alert('Export canceled.');
+    }
   };
 
   const activeVideoSrc = project?.media?.screenVideoPath || project?.videoPath || '';
@@ -553,6 +606,7 @@ const EditorApp: React.FC = () => {
           <button className="menu-btn" onClick={handleSave} disabled={!isDirty}>Save</button>
           <button className="menu-btn" onClick={handleUndo} disabled={history.length === 0}>Undo</button>
           <button className="menu-btn" onClick={handleRedo} disabled={future.length === 0}>Redo</button>
+          <button className="menu-btn" onClick={() => setShowExportModal(true)}>Export</button>
           <button className="menu-btn" onClick={() => (window as any).appBridge?.closeRecordingEditor()}>Close</button>
         </div>
       </header>
@@ -1035,6 +1089,93 @@ const EditorApp: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Export Setup Modal Dialog */}
+      {showExportModal && (
+        <div className="dialog-overlay">
+          <div className="dialog-container" style={{maxWidth: 380}}>
+            <h2 className="dialog-title">🎬 Export Presentation Project</h2>
+            
+            <div className="dialog-body" style={{display: 'flex', flexDirection: 'column', gap: 12}}>
+              <div className="property-group">
+                <span className="property-label">Export Format</span>
+                <select 
+                  className="property-control"
+                  value={exportFormat}
+                  onChange={(e) => setExportFormat(e.target.value as 'mp4' | 'gif')}
+                >
+                  <option value="mp4">Video MP4 (H.264 / AAC)</option>
+                  <option value="gif">Animated GIF (lanczos palette)</option>
+                </select>
+              </div>
+
+              {exportFormat === 'mp4' ? (
+                <div className="property-group">
+                  <span className="property-label">Target FPS</span>
+                  <select 
+                    className="property-control"
+                    value={exportFps}
+                    onChange={(e) => setExportFps(parseInt(e.target.value))}
+                  >
+                    <option value="30">30 FPS (Standard)</option>
+                    <option value="60">60 FPS (Ultra Smooth)</option>
+                  </select>
+                </div>
+              ) : (
+                <>
+                  <div className="property-group">
+                    <span className="property-label">GIF Framerate</span>
+                    <select 
+                      className="property-control"
+                      value={exportFps}
+                      onChange={(e) => setExportFps(parseInt(e.target.value))}
+                    >
+                      <option value="10">10 FPS (Lightweight)</option>
+                      <option value="15">15 FPS (Recommended)</option>
+                      <option value="24">24 FPS (Cinematic)</option>
+                    </select>
+                  </div>
+                  <label style={{display: 'flex', gap: 8, alignItems: 'center'}}>
+                    <input 
+                      type="checkbox" 
+                      checked={exportLoop}
+                      onChange={(e) => setExportLoop(e.target.checked)}
+                    />
+                    Loop Animation Infinitely
+                  </label>
+                </>
+              )}
+            </div>
+
+            <div className="dialog-footer" style={{display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 16}}>
+              <button className="btn-secondary" onClick={() => setShowExportModal(false)}>Cancel</button>
+              <button className="btn-primary" onClick={handleStartExport}>Start Render</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Live Rendering Export Progress Overlay */}
+      {isExporting && (
+        <div className="dialog-overlay" style={{background: 'rgba(0,0,0,0.85)', zIndex: 1000}}>
+          <div className="dialog-container" style={{maxWidth: 400, textAlign: 'center'}}>
+            <h2>🎨 Rendering Video Composites...</h2>
+            <p style={{fontSize: 13, opacity: 0.8, margin: '8px 0 16px 0'}}>
+              Applying layout overlays, annotations, skews, and background fills offline.
+            </p>
+            <div style={{width: '100%', height: 16, background: 'var(--surface-2)', borderRadius: 8, overflow: 'hidden', margin: '16px 0'}}>
+              <div style={{width: `${exportProgress || 0}%`, height: '100%', background: 'linear-gradient(90deg, var(--accent), #8b5cf6)', transition: 'width 0.1s'}} />
+            </div>
+            <div style={{display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--muted)', marginBottom: 20}}>
+              <span>Status: {exportProgress || 0}% Completed</span>
+              <span>ETA: {exportProgress ? Math.round(((100 - exportProgress) / (exportProgress || 1)) * 3) : 'Calculating...'}s</span>
+            </div>
+            <button className="btn-primary" style={{background: 'var(--danger)'}} onClick={handleCancelExport}>
+              Cancel Render
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

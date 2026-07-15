@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 186 files · ~137,491 words
+- 187 files · ~138,522 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2171 nodes · 3198 edges · 182 communities (170 shown, 12 thin omitted)
+- 2172 nodes · 3198 edges · 183 communities (171 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 54 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b0a72985`
+- Built from commit: `68cc15e4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -219,7 +219,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (182 total, 12 thin omitted)
+## Communities (183 total, 12 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -890,7 +890,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
   _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **Why does `main()` connect `resolveInputFormat` to `WebcamCapture`, `WasapiLoopbackCapture`, `CaptureConfig`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `AudioMixer`, `MFEncoder`, `WgcSession`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` to the rest of the system?**

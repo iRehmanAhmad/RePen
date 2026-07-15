@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, sc
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
+const { spawn } = require('child_process');
 
 const APP_NAME = 'RePen';
 const DEFAULT_STATE = {
@@ -2568,6 +2569,130 @@ ipcMain.handle('recording:transcribe', async (_, filePath) => {
   };
 });
 
+ipcMain.handle('project:export', async (event, project, options) => {
+  if (activeExportProcess) {
+    return { success: false, error: 'Export already in progress' };
+  }
+
+  const durationMs = options.durationMs || 10000;
+  const command = generateExportFFmpegCommand({
+    videoPath: project.media?.screenVideoPath || project.videoPath || '',
+    webcamVideoPath: project.media?.webcamVideoPath || '',
+    outputPath: options.outputPath,
+    format: options.format || 'mp4',
+    fps: options.fps || 30,
+    loop: options.loop !== false,
+    cropRegion: project.editor?.cropRegion,
+    webcamLayoutPreset: project.editor?.webcamLayoutPreset,
+    webcamSizePreset: project.editor?.webcamSizePreset,
+    webcamPosition: project.editor?.webcamPosition,
+  });
+
+  return new Promise((resolve) => {
+    activeExportProcess = spawn(command, { shell: true });
+
+    activeExportProcess.stderr.on('data', (data) => {
+      const log = data.toString();
+      const match = log.match(/time=(\d{2}):(\d{2}):(\d{2})\.(\d{2})/);
+      if (match) {
+        const hh = parseInt(match[1]);
+        const mm = parseInt(match[2]);
+        const ss = parseFloat(match[3] + '.' + match[4]);
+        const currentMs = (hh * 3600 + mm * 60 + ss) * 1000;
+        const progress = Math.min(100, Math.round((currentMs / durationMs) * 100));
+        
+        if (editorWindow && !editorWindow.isDestroyed()) {
+          editorWindow.webContents.send('project:export-progress', { progress });
+        }
+      }
+    });
+
+    activeExportProcess.on('close', (code) => {
+      activeExportProcess = null;
+      if (code === 0) {
+        resolve({ success: true, path: options.outputPath });
+      } else {
+        resolve({ success: false, error: `FFmpeg exited with code ${code}` });
+      }
+    });
+  });
+});
+
+ipcMain.handle('project:export-cancel', async (_, outputPath) => {
+  if (activeExportProcess) {
+    activeExportProcess.kill();
+    activeExportProcess = null;
+  }
+  if (outputPath && fs.existsSync(outputPath)) {
+    try {
+      fs.unlinkSync(outputPath);
+    } catch (e) {
+      // Ignore cleanup error
+    }
+  }
+  return { success: true };
+});
+
+function generateExportFFmpegCommand(options) {
+  const parts = ['ffmpeg', '-y'];
+
+  parts.push('-i', `"${options.videoPath}"`);
+
+  let filterGraph = [];
+  let videoOut = '0:v';
+  let audioOut = '0:a';
+
+  if (options.cropRegion) {
+    const crop = options.cropRegion;
+    filterGraph.push(`[${videoOut}]crop=w=iw*${crop.width}:h=ih*${crop.height}:x=iw*${crop.x}:y=ih*${crop.y}[cropped_v]`);
+    videoOut = 'cropped_v';
+  }
+
+  if (options.webcamVideoPath && options.webcamLayoutPreset !== 'no-webcam') {
+    parts.push('-i', `"${options.webcamVideoPath}"`);
+    const sizePct = (options.webcamSizePreset || 25) / 100;
+    filterGraph.push(`[1:v]scale=iw*${sizePct}:-1[scaled_webcam]`);
+    
+    let overlayX = 'main_w-w-20';
+    let overlayY = 'main_h-h-20';
+    if (options.webcamPosition) {
+      overlayX = `main_w*${options.webcamPosition.cx}-w/2`;
+      overlayY = `main_h*${options.webcamPosition.cy}-h/2`;
+    }
+    filterGraph.push(`[${videoOut}][scaled_webcam]overlay=x=${overlayX}:y=${overlayY}:shortest=1[webcam_overlay_v]`);
+    videoOut = 'webcam_overlay_v';
+  }
+
+  if (options.format === 'gif') {
+    const fps = options.fps || 15;
+    filterGraph.push(`[${videoOut}]fps=${fps},scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse[gif_v]`);
+    videoOut = 'gif_v';
+  }
+
+  if (filterGraph.length > 0) {
+    parts.push('-filter_complex', `"${filterGraph.join('; ')}"`);
+    parts.push('-map', `"[${videoOut}]"`);
+    if (options.format !== 'gif') {
+      parts.push('-map', `"${audioOut}"`);
+    }
+  } else {
+    parts.push('-map', '0:v');
+    if (options.format !== 'gif') {
+      parts.push('-map', '0:a');
+    }
+  }
+
+  if (options.format === 'gif') {
+    parts.push('-loop', options.loop ? '0' : '-1');
+  } else {
+    parts.push('-c:v', 'libx264', '-pix_fmt', 'yuv420p');
+    parts.push('-c:a', 'aac', '-b:a', '192k');
+  }
+
+  parts.push(`"${options.outputPath}"`);
+  return parts.join(' ');
+}
+
 ipcMain.handle('recording:get-sources', async (_, opts) => {
   const sources = await desktopCapturer.getSources(opts || {
     types: ['screen', 'window'],
@@ -3204,6 +3329,7 @@ ipcMain.handle('app:open-external', (_, url) => {
 });
 
 let pendingExportResolve = null;
+let activeExportProcess = null;
 
 ipcMain.handle('app:render-export', async (_, payload) => {
   if (!payload || !payload.dataUrl) {
