@@ -155,6 +155,13 @@ Ran the full test suite (`npm test`) which verified:
   - **Build Script Integration**: Created [build-native-helper.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/scripts/build-native-helper.js) utilizing Visual Studio Build Tools, Ninja, and CMake configurations to build the helper executable targets locally on Windows.
   - **Spawning Service**: Developed [recorder.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/recorder.ts) as a secure Electron wrapper to launch the helper processes, stream logs, write output MP4 files, and send control stdin strings (`pause`, `resume`, `stop`).
   - **Test Verification**: Created [recorder.test.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/tests/unit/recorder.test.ts) to verify start operations and log events, with both unit and legacy tests fully passing.
+- **Recorder Controls inside RePen (Phase 4)**: Integrated recording control UI elements, device settings, and HUD toggles:
+  - **Toolbar Additions**: Added the "Record Screen" button to [toolbar.html](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.html) and a premium, glassmorphic floating Recording HUD to display elapsed duration, pause/resume, stop, and cancel buttons.
+  - **Recording Layout & Styles**: Appended custom layout styles and pulsing CSS animations for active recording state indicators inside [toolbar.css](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.css).
+  - **Settings & Persistence**: Added recording configuration fields (source type, FPS, resolution, mic, webcam, system audio, cursor recording, countdown delay, save path) to state schemas in [state.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/state.ts).
+  - **IPC Wiring & State Broadcast**: Exposed contextBridge functions in [preload.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/preload.js), registered recording handlers in [main.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/main.ts) & [main.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/main.js), and implemented elapsed timers and overlay state changes propagation.
+  - **User Interactions**: Wired click events and status timers in [toolbar.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/src/renderer/toolbar.js) to automate toolbar collapse, toggle overlays, and proceed to WGC capture sessions.
+
 
 
 

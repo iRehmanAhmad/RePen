@@ -56,4 +56,13 @@ contextBridge.exposeInMainWorld('appBridge', {
   pasteImage: () => ipcRenderer.invoke('app:paste-image'),
   setToolbarHover: (hovered) => ipcRenderer.invoke('app:set-toolbar-hover', hovered),
   setToolbarSettingsOpen: (open) => ipcRenderer.invoke('app:set-toolbar-settings-open', open),
+  startRecording: (options) => ipcRenderer.invoke('recording:start', options),
+  pauseRecording: () => ipcRenderer.invoke('recording:pause'),
+  resumeRecording: () => ipcRenderer.invoke('recording:resume'),
+  stopRecording: () => ipcRenderer.invoke('recording:stop'),
+  cancelRecording: () => ipcRenderer.invoke('recording:cancel'),
+  getRecordingState: () => ipcRenderer.invoke('recording:get-state'),
+  onRecordingStateChanged: (callback) => on('recording:state-changed', callback),
+  onRecordingTimerTick: (callback) => on('recording:timer-tick', callback),
 });
+

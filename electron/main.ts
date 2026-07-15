@@ -5,11 +5,56 @@ import { DisplayManager } from './services/display';
 import { ShortcutManager } from './services/shortcuts';
 import { WindowRegistry } from './windows/registry';
 
+import { RecorderService } from './services/recorder';
+import path from 'path';
+
 // Global singleton instances
 let stateManager: StateManager;
 let displayManager: DisplayManager;
 let shortcutManager: ShortcutManager;
 let windowRegistry: WindowRegistry;
+let recorderService: RecorderService;
+
+let recordingTimer: NodeJS.Timeout | null = null;
+let recordingSeconds = 0;
+
+function startRecordingTimer(event: Electron.IpcMainInvokeEvent) {
+  recordingSeconds = 0;
+  if (recordingTimer) clearInterval(recordingTimer);
+  
+  recordingTimer = setInterval(() => {
+    if (recorderService.getState().isPaused) return;
+    recordingSeconds++;
+    const mm = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+    const ss = String(recordingSeconds % 60).padStart(2, '0');
+    const timeStr = `${mm}:${ss}`;
+    event.sender.send('recording:timer-tick', timeStr);
+  }, 1000);
+}
+
+function stopRecordingTimer() {
+  if (recordingTimer) {
+    clearInterval(recordingTimer);
+    recordingTimer = null;
+  }
+}
+
+function broadcastRecordingState(recordingState: any) {
+  for (const win of windowRegistry.getOverlays()) {
+    const w = win.getWindow();
+    if (w && !w.isDestroyed()) {
+      w.webContents.send('recording:state-changed', recordingState);
+    }
+  }
+  const tb = windowRegistry.getToolbar()?.getWindow();
+  if (tb && !tb.isDestroyed()) {
+    tb.webContents.send('recording:state-changed', recordingState);
+  }
+  const st = windowRegistry.getSettings()?.getWindow();
+  if (st && !st.isDestroyed()) {
+    st.webContents.send('recording:state-changed', recordingState);
+  }
+}
 
 function calculateToolbarBounds(display: any, orientation: string) {
   const isHorizontal = orientation === 'horizontal';
@@ -43,6 +88,73 @@ function bootstrap() {
   displayManager = new DisplayManager();
   shortcutManager = new ShortcutManager();
   windowRegistry = new WindowRegistry();
+  recorderService = new RecorderService();
+
+  ipcMain.handle('recording:start', async (event, options) => {
+    try {
+      const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
+      const outputPath = options.outputPath || defaultPath;
+      
+      await recorderService.start({
+        sourceId: options.sourceId || 'screen:0',
+        sourceType: options.sourceType || 'screen',
+        windowHandle: options.windowHandle || null,
+        displayId: options.displayId || 0,
+        width: options.width || 1920,
+        height: options.height || 1080,
+        fps: options.fps || 30,
+        captureSystemAudio: options.captureSystemAudio ?? true,
+        captureMic: options.captureMic ?? false,
+        microphoneDeviceId: options.microphoneDeviceId || null,
+        webcamEnabled: options.webcamEnabled ?? false,
+        webcamDeviceId: options.webcamDeviceId || null,
+        captureCursor: options.captureCursor ?? true,
+        outputPath: outputPath,
+        webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
+      });
+      
+      startRecordingTimer(event);
+      broadcastRecordingState({ isRecording: true, isPaused: false });
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err.message || String(err) };
+    }
+  });
+
+  ipcMain.handle('recording:pause', async () => {
+    recorderService.pause();
+    broadcastRecordingState({ isRecording: true, isPaused: true });
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:resume', async () => {
+    recorderService.resume();
+    broadcastRecordingState({ isRecording: true, isPaused: false });
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:stop', async () => {
+    try {
+      stopRecordingTimer();
+      const outputPath = await recorderService.stop();
+      broadcastRecordingState({ isRecording: false, isPaused: false });
+      return { success: true, outputPath };
+    } catch (err: any) {
+      broadcastRecordingState({ isRecording: false, isPaused: false });
+      return { success: false, error: err.message || String(err) };
+    }
+  });
+
+  ipcMain.handle('recording:cancel', async () => {
+    stopRecordingTimer();
+    recorderService.cancel();
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:get-state', async () => {
+    return recorderService.getState();
+  });
 
   app.whenReady().then(() => {
     // 1. Build overlays per screen

@@ -2300,3 +2300,71 @@ html, body {
 .mark-mini.is-minimized .brand-pencil-icon {
   transform: rotate(0deg) translateY(-3px);
 }
+
+/* Recording HUD Layout */
+.recording-hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-bar);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px 12px;
+  pointer-events: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-timer {
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ff4a4a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hud-timer::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #ff4a4a;
+  border-radius: 50%;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.hud-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.hud-btn:hover {
+  background: var(--quiet-hover);
+}
+
+.hud-btn.danger:hover {
+  color: var(--quiet-danger);
+}
+

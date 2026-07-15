@@ -368,6 +368,20 @@ function broadcastState() {
   writePersistedState();
 }
 
+function broadcastRecordingState(recordingState) {
+  for (const win of overlayWindows.values()) {
+    if (!win.isDestroyed()) {
+      win.webContents.send('recording:state-changed', recordingState);
+    }
+  }
+  if (toolbarWindow && !toolbarWindow.isDestroyed()) {
+    toolbarWindow.webContents.send('recording:state-changed', recordingState);
+  }
+  if (settingsWindow && !settingsWindow.isDestroyed()) {
+    settingsWindow.webContents.send('recording:state-changed', recordingState);
+  }
+}
+
 function broadcastScene() {
   syncPageStore();
   const payload = getSceneState();
@@ -2095,6 +2109,115 @@ function init() {
     hideOverlayWindows();
   }
 }
+
+let recorderService = null;
+try {
+  const { RecorderService } = require('./dist-electron/services/recorder.js');
+  recorderService = new RecorderService();
+} catch (err) {
+  console.error('Failed to initialize RecorderService in legacy main.js:', err);
+}
+
+let recordingTimer = null;
+let recordingSeconds = 0;
+
+function startRecordingTimer(event) {
+  recordingSeconds = 0;
+  if (recordingTimer) clearInterval(recordingTimer);
+  
+  recordingTimer = setInterval(() => {
+    if (recorderService && recorderService.getState().isPaused) return;
+    recordingSeconds++;
+    const mm = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+    const ss = String(recordingSeconds % 60).padStart(2, '0');
+    const timeStr = `${mm}:${ss}`;
+    event.sender.send('recording:timer-tick', timeStr);
+  }, 1000);
+}
+
+function stopRecordingTimer() {
+  if (recordingTimer) {
+    clearInterval(recordingTimer);
+    recordingTimer = null;
+  }
+}
+
+ipcMain.handle('recording:start', async (event, options) => {
+  if (!recorderService) {
+    return { success: false, error: 'RecorderService is not available.' };
+  }
+  try {
+    const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
+    const outputPath = options.outputPath || defaultPath;
+    
+    await recorderService.start({
+      sourceId: options.sourceId || 'screen:0',
+      sourceType: options.sourceType || 'screen',
+      windowHandle: options.windowHandle || null,
+      displayId: options.displayId || 0,
+      width: options.width || 1920,
+      height: options.height || 1080,
+      fps: options.fps || 30,
+      captureSystemAudio: options.captureSystemAudio ?? true,
+      captureMic: options.captureMic ?? false,
+      microphoneDeviceId: options.microphoneDeviceId || null,
+      webcamEnabled: options.webcamEnabled ?? false,
+      webcamDeviceId: options.webcamDeviceId || null,
+      captureCursor: options.captureCursor ?? true,
+      outputPath: outputPath,
+      webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
+    });
+    
+    startRecordingTimer(event);
+    broadcastRecordingState({ isRecording: true, isPaused: false });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: err.message || String(err) };
+  }
+});
+
+ipcMain.handle('recording:pause', async () => {
+  if (recorderService) {
+    recorderService.pause();
+    broadcastRecordingState({ isRecording: true, isPaused: true });
+  }
+  return { success: true };
+});
+
+ipcMain.handle('recording:resume', async () => {
+  if (recorderService) {
+    recorderService.resume();
+    broadcastRecordingState({ isRecording: true, isPaused: false });
+  }
+  return { success: true };
+});
+
+ipcMain.handle('recording:stop', async () => {
+  if (!recorderService) return { success: false, error: 'RecorderService is not available.' };
+  try {
+    stopRecordingTimer();
+    const outputPath = await recorderService.stop();
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+    return { success: true, outputPath };
+  } catch (err) {
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+    return { success: false, error: err.message || String(err) };
+  }
+});
+
+ipcMain.handle('recording:cancel', async () => {
+  stopRecordingTimer();
+  if (recorderService) {
+    recorderService.cancel();
+  }
+  broadcastRecordingState({ isRecording: false, isPaused: false });
+  return { success: true };
+});
+
+ipcMain.handle('recording:get-state', async () => {
+  if (!recorderService) return { isRecording: false, isPaused: false };
+  return recorderService.getState();
+});
 
 ipcMain.handle('bootstrap:get', (event) => {
   const win = BrowserWindow.fromWebContents(event.sender);

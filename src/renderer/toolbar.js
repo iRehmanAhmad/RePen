@@ -195,10 +195,17 @@ const elements = {
   widthValueBadge: null,
   flyoutPanel: null,
   swatches: null,
+  recordButton: document.getElementById('recordButton'),
+  recordingHud: document.getElementById('recordingHud'),
+  hudTimer: document.getElementById('hudTimer'),
+  hudPauseBtn: document.getElementById('hudPauseBtn'),
+  hudStopBtn: document.getElementById('hudStopBtn'),
+  hudCancelBtn: document.getElementById('hudCancelBtn'),
   shapeButtons: [],
   textModeButtons: [],
   sizePresets: [],
 };
+
 
 function currentBrushValue() {
   if (appState.activeTool === 'pen') {
@@ -891,6 +898,145 @@ if (elements.settingsButton) {
     }
   });
 }
+
+let preRecordingPassThrough = false;
+let isRecording = false;
+let isPaused = false;
+
+if (elements.recordButton) {
+  elements.recordButton.addEventListener('click', async () => {
+    console.log('[Renderer] recordButton clicked');
+    closeAllPopovers();
+
+    const settings = appState.recordingDefaults || {
+      sourceType: 'screen',
+      fps: 30,
+      resolution: '1080p',
+      systemAudio: true,
+      mic: false,
+      webcam: false,
+      cursorMode: 'system',
+      countdown: 3,
+    };
+
+    preRecordingPassThrough = appState.passThrough;
+
+    let countdown = parseInt(settings.countdown);
+    if (countdown > 0) {
+      elements.recordButton.disabled = true;
+      elements.recordButton.style.opacity = '0.5';
+      let currentVal = countdown;
+      
+      const countdownInterval = setInterval(async () => {
+        console.log(`Countdown: ${currentVal}`);
+        if (currentVal <= 0) {
+          clearInterval(countdownInterval);
+          elements.recordButton.disabled = false;
+          elements.recordButton.style.opacity = '1';
+          await proceedToRecord(settings);
+        } else {
+          currentVal--;
+        }
+      }, 1000);
+    } else {
+      await proceedToRecord(settings);
+    }
+  });
+}
+
+async function proceedToRecord(settings) {
+  elements.penBar.style.display = 'none';
+  elements.recordingHud.style.display = 'flex';
+  elements.hudTimer.textContent = '00:00';
+  
+  isRecording = true;
+  isPaused = false;
+  
+  const width = settings.resolution === '1080p' ? 1920 : 1280;
+  const height = settings.resolution === '1080p' ? 1080 : 720;
+
+  const result = await window.appBridge.startRecording({
+    sourceId: 'screen:0',
+    sourceType: settings.sourceType,
+    width,
+    height,
+    fps: parseInt(settings.fps),
+    captureSystemAudio: settings.systemAudio,
+    captureMic: settings.mic,
+    webcamEnabled: settings.webcam,
+    captureCursor: settings.cursorMode === 'system',
+    outputPath: '',
+  });
+
+  if (!result.success) {
+    alert(`Recording failed to start: ${result.error}`);
+    restoreToolbarUI();
+  }
+}
+
+function restoreToolbarUI() {
+  isRecording = false;
+  isPaused = false;
+  elements.recordingHud.style.display = 'none';
+  elements.penBar.style.display = 'flex';
+}
+
+if (elements.hudPauseBtn) {
+  elements.hudPauseBtn.addEventListener('click', async () => {
+    if (!isRecording) return;
+    if (isPaused) {
+      await window.appBridge.resumeRecording();
+      isPaused = false;
+      elements.hudPauseBtn.title = 'Pause Recording';
+      elements.hudPauseBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+      `;
+    } else {
+      await window.appBridge.pauseRecording();
+      isPaused = true;
+      elements.hudPauseBtn.title = 'Resume Recording';
+      elements.hudPauseBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      `;
+    }
+  });
+}
+
+if (elements.hudStopBtn) {
+  elements.hudStopBtn.addEventListener('click', async () => {
+    if (!isRecording) return;
+    elements.hudStopBtn.disabled = true;
+    const result = await window.appBridge.stopRecording();
+    elements.hudStopBtn.disabled = false;
+    
+    if (result.success) {
+      console.log(`Recording saved to: ${result.outputPath}`);
+    } else {
+      alert(`Failed to save recording: ${result.error}`);
+    }
+    restoreToolbarUI();
+  });
+}
+
+if (elements.hudCancelBtn) {
+  elements.hudCancelBtn.addEventListener('click', async () => {
+    if (!isRecording) return;
+    if (confirm('Are you sure you want to discard this recording?')) {
+      await window.appBridge.cancelRecording();
+      restoreToolbarUI();
+    }
+  });
+}
+
+window.appBridge.onRecordingTimerTick((timeStr) => {
+  if (elements.hudTimer) {
+    elements.hudTimer.textContent = timeStr;
+  }
+});
 
 if (elements.toolbarSettingsClose) {
   elements.toolbarSettingsClose.addEventListener('click', closeToolbarSettingsPanel);

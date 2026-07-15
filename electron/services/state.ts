@@ -50,6 +50,18 @@ export const DEFAULT_STATE = {
     x: 0,
     zoom: 1,
   },
+  recordingDefaults: {
+    sourceType: 'screen',
+    fps: 30,
+    resolution: '1080p',
+    systemAudio: true,
+    mic: false,
+    micDevice: 'default',
+    webcam: false,
+    cursorMode: 'system',
+    countdown: 3,
+    saveLocation: '',
+  },
   hotkeys: {
     toggleOverlay: 'CommandOrControl+Alt+H',
     togglePassThrough: 'CommandOrControl+Shift+P',
@@ -73,9 +85,12 @@ export const DEFAULT_STATE = {
     prevPage: 'CommandOrControl+Alt+Left',
     nextPage: 'CommandOrControl+Alt+Right',
     pasteImage: 'CommandOrControl+Alt+I',
+    toggleRecording: 'CommandOrControl+Shift+F10',
+    pauseRecording: 'CommandOrControl+Shift+F9',
   },
   toolbarHovered: false,
 };
+
 
 export class StateManager {
   private state: any;
@@ -107,6 +122,10 @@ export class StateManager {
         ...this.state.exportDefaults,
         ...(updates.exportDefaults || {}),
       },
+      recordingDefaults: {
+        ...this.state.recordingDefaults,
+        ...(updates.recordingDefaults || {}),
+      },
     };
     this.save();
   }
@@ -133,6 +152,10 @@ export class StateManager {
           exportDefaults: {
             ...DEFAULT_STATE.exportDefaults,
             ...(parsed.state.exportDefaults || {}),
+          },
+          recordingDefaults: {
+            ...DEFAULT_STATE.recordingDefaults,
+            ...(parsed.state.recordingDefaults || {}),
           },
         };
       }
