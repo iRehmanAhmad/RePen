@@ -6527,7 +6527,7 @@
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L418",
+      "source_location": "L856",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 144,
@@ -9160,7 +9160,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_editor_types_webcamlayoutpreset",
-      "community": 143,
+      "community": 144,
       "norm_label": "webcamlayoutpreset"
     },
     {
@@ -9180,7 +9180,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_shared_editor_types_webcammaskshape",
-      "community": 143,
+      "community": 144,
       "norm_label": "webcammaskshape"
     },
     {
@@ -9280,7 +9280,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_shared_editor_types_zoomregion",
-      "community": 143,
+      "community": 144,
       "norm_label": "zoomregion"
     },
     {
@@ -9802,6 +9802,16 @@
       "id": "tests_unit_contracts_test",
       "community": 118,
       "norm_label": "contracts.test.ts"
+    },
+    {
+      "label": "editorEffects.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/editorEffects.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_editoreffects_test",
+      "community": 180,
+      "norm_label": "editoreffects.test.ts"
     },
     {
       "label": "editorWorkspace.test.ts",
@@ -10330,7 +10340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 92,
+      "community": 139,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -10530,7 +10540,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 92,
+      "community": 139,
       "norm_label": "mutex"
     },
     {
@@ -10570,7 +10580,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 92,
+      "community": 139,
       "norm_label": "vector"
     },
     {
@@ -10620,7 +10630,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 92,
+      "community": 139,
       "norm_label": "thread"
     },
     {
@@ -10640,7 +10650,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 92,
+      "community": 139,
       "norm_label": "atomic"
     },
     {
@@ -10690,7 +10700,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler",
-      "community": 92,
+      "community": 85,
       "norm_label": "cursor-sampler.cpp"
     },
     {
@@ -10700,7 +10710,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_lowlevelmouseproc",
-      "community": 92,
+      "community": 85,
       "norm_label": "lowlevelmouseproc()"
     },
     {
@@ -10710,7 +10720,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lresult",
-      "community": 92,
+      "community": 85,
       "norm_label": "lresult"
     },
     {
@@ -10720,7 +10730,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wparam",
-      "community": 92,
+      "community": 85,
       "norm_label": "wparam"
     },
     {
@@ -10730,7 +10740,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lparam",
-      "community": 92,
+      "community": 85,
       "norm_label": "lparam"
     },
     {
@@ -10740,7 +10750,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_nowms",
-      "community": 92,
+      "community": 85,
       "norm_label": "nowms()"
     },
     {
@@ -10750,7 +10760,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_writejsonline",
-      "community": 92,
+      "community": 85,
       "norm_label": "writejsonline()"
     },
     {
@@ -10760,7 +10770,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_string",
-      "community": 92,
+      "community": 85,
       "norm_label": "string"
     },
     {
@@ -10770,7 +10780,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_jsonescape",
-      "community": 92,
+      "community": 85,
       "norm_label": "jsonescape()"
     },
     {
@@ -10780,7 +10790,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_base64encode",
-      "community": 92,
+      "community": 85,
       "norm_label": "base64encode()"
     },
     {
@@ -10790,7 +10800,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_getpngclsid",
-      "community": 92,
+      "community": 85,
       "norm_label": "getpngclsid()"
     },
     {
@@ -10800,7 +10810,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "clsid",
-      "community": 92,
+      "community": 85,
       "norm_label": "clsid"
     },
     {
@@ -10810,7 +10820,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_standardcursortype",
-      "community": 92,
+      "community": 85,
       "norm_label": "standardcursortype()"
     },
     {
@@ -10820,7 +10830,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hcursor",
-      "community": 92,
+      "community": 85,
       "norm_label": "hcursor"
     },
     {
@@ -10830,7 +10840,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_detectcustomcursortype",
-      "community": 92,
+      "community": 85,
       "norm_label": "detectcustomcursortype()"
     },
     {
@@ -10840,7 +10850,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_buildassetjson",
-      "community": 92,
+      "community": 85,
       "norm_label": "buildassetjson()"
     },
     {
@@ -10850,7 +10860,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_runsamplingloop",
-      "community": 92,
+      "community": 85,
       "norm_label": "runsamplingloop()"
     },
     {
@@ -10860,7 +10870,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_hwnd",
-      "community": 92,
+      "community": 85,
       "norm_label": "hwnd"
     },
     {
@@ -10870,7 +10880,7 @@
       "source_location": "L412",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_main",
-      "community": 92,
+      "community": 85,
       "norm_label": "main()"
     },
     {
@@ -11160,7 +11170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 92,
+      "community": 139,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -12330,7 +12340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 92,
+      "community": 139,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -13060,7 +13070,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 92,
+      "community": 139,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -13550,7 +13560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 92,
+      "community": 139,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -13900,7 +13910,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 181,
+      "community": 94,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -13910,7 +13920,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_createdirect3d11devicefromdxgidevice",
-      "community": 181,
+      "community": 94,
       "norm_label": "createdirect3d11devicefromdxgidevice()"
     },
     {
@@ -13920,7 +13930,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hresult",
-      "community": 181,
+      "community": 94,
       "norm_label": "hresult"
     },
     {
@@ -13930,7 +13940,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "idxgidevice",
-      "community": 181,
+      "community": 94,
       "norm_label": "idxgidevice"
     },
     {
@@ -13940,7 +13950,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "iinspectable",
-      "community": 181,
+      "community": 94,
       "norm_label": "iinspectable"
     },
     {
@@ -13950,7 +13960,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 181,
+      "community": 94,
       "norm_label": "hmonitor"
     },
     {
@@ -13960,7 +13970,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 181,
+      "community": 94,
       "norm_label": "hwnd"
     },
     {
@@ -13970,7 +13980,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_framecallback",
-      "community": 181,
+      "community": 94,
       "norm_label": "framecallback"
     },
     {
@@ -13980,7 +13990,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_direct3d11captureframepool",
-      "community": 181,
+      "community": 94,
       "norm_label": "direct3d11captureframepool"
     },
     {
@@ -14010,7 +14020,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 181,
+      "community": 94,
       "norm_label": "wgc_session.h"
     },
     {
@@ -14030,7 +14040,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 181,
+      "community": 94,
       "norm_label": ".wgcsession()"
     },
     {
@@ -14040,7 +14050,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 181,
+      "community": 94,
       "norm_label": "initialize"
     },
     {
@@ -14050,7 +14060,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_setframecallback",
-      "community": 181,
+      "community": 94,
       "norm_label": "setframecallback"
     },
     {
@@ -14060,7 +14070,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 181,
+      "community": 94,
       "norm_label": "start"
     },
     {
@@ -14070,7 +14080,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 181,
+      "community": 94,
       "norm_label": "stop"
     },
     {
@@ -14080,7 +14090,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 181,
+      "community": 94,
       "norm_label": "capturewidth"
     },
     {
@@ -14090,7 +14100,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 181,
+      "community": 94,
       "norm_label": "captureheight"
     },
     {
@@ -14120,7 +14130,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_created3ddevice",
-      "community": 181,
+      "community": 94,
       "norm_label": "created3ddevice"
     },
     {
@@ -14130,7 +14140,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 181,
+      "community": 94,
       "norm_label": "createcaptureitem"
     },
     {
@@ -14140,7 +14150,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 181,
+      "community": 94,
       "norm_label": "applysessionoptions"
     },
     {
@@ -14150,7 +14160,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_onframearrived",
-      "community": 181,
+      "community": 94,
       "norm_label": "onframearrived"
     },
     {
@@ -20630,7 +20640,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "docs_technical_architecture_2_product_objectives",
-      "community": 85,
+      "community": 17,
       "norm_label": "2. product objectives"
     },
     {
@@ -20640,7 +20650,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "docs_technical_architecture_primary_objectives",
-      "community": 85,
+      "community": 17,
       "norm_label": "primary objectives"
     },
     {
@@ -20650,7 +20660,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "docs_technical_architecture_non_objectives_for_the_first_release",
-      "community": 85,
+      "community": 17,
       "norm_label": "non-objectives for the first release"
     },
     {
@@ -33155,7 +33165,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L418",
+      "source_location": "L856",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
@@ -33276,17 +33286,6 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "src_renderer_editor",
-      "target": "src_shared_editor_projectpersistence_projectmedia",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/renderer/editor.tsx",
       "source_location": "L6",
       "weight": 1.0,
       "source": "src_renderer_editor",
@@ -33323,6 +33322,17 @@
       "source_location": "L8",
       "weight": 1.0,
       "source": "src_renderer_editor",
+      "target": "src_shared_editor_types_annotationregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_renderer_editor",
       "target": "src_shared_editor_types_speedregion",
       "confidence_score": 1.0
     },
@@ -33338,12 +33348,56 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_renderer_editor",
+      "target": "src_shared_editor_types_webcamlayoutpreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_renderer_editor",
+      "target": "src_shared_editor_types_webcammaskshape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_renderer_editor",
+      "target": "src_shared_editor_types_webcamposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_renderer_editor",
+      "target": "src_shared_editor_types_zoomregion",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L197",
+      "source_location": "L200",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_presenter_presentationtrackreplay_seekpresentationtrack"
@@ -33354,7 +33408,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L209",
+      "source_location": "L211",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_presenter_presenterrenderer_presenterrenderer_drawstroke"
@@ -33365,7 +33419,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L53",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_selector_init"
@@ -33376,7 +33430,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L317",
+      "source_location": "L454",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_projectpersistence_tofileurl"
@@ -55123,5 +55177,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9350eec81adad3563e4e4438ab6d952fdcfa6a94"
+  "built_at_commit": "b0a72985c9323061cdd09a8b0073ed9bcc894c6b"
 }

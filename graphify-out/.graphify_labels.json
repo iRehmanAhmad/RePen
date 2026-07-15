@@ -138,6 +138,7 @@
   "136": "main.ts",
   "137": "StateManager",
   "138": "DisplayManager",
+  "139": "audio_sample_utils.h",
   "140": "find_main_js_handlers.js",
   "141": "scene.js",
   "142": "types.ts",
@@ -178,6 +179,6 @@
   "177": "countdown.js",
   "178": "native-recorder-helper.test.ts",
   "179": "selector.test.ts",
-  "181": "broadcastScene",
+  "180": "editorEffects.test.ts",
   "182": "sessionUX.test.ts"
 }
