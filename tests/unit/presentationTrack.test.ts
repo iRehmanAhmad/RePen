@@ -43,10 +43,11 @@ describe('PresentationTrackService Unit Test', () => {
 
     // Pause tracking
     tracker.pauseTrack();
+    const tPaused = tracker.getCurrentTimeMs();
     await new Promise(resolve => setTimeout(resolve, 50));
     const t2 = tracker.getCurrentTimeMs();
     // Time should remain constant during pause
-    expect(t2).toBeLessThanOrEqual(t1 + 5);
+    expect(t2).toBe(tPaused);
 
     // Resume tracking
     tracker.resumeTrack();

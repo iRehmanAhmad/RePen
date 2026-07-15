@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 136 files · ~111,030 words
+- 140 files · ~112,091 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1720 nodes · 2462 edges · 135 communities (130 shown, 5 thin omitted)
+- 1740 nodes · 2481 edges · 142 communities (133 shown, 9 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 52 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `66d6667c`
+- Built from commit: `081d1066`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -148,6 +148,12 @@
 - [[_COMMUNITY_find_overlay_drawing.js|find_overlay_drawing.js]]
 - [[_COMMUNITY_find_phase5.js|find_phase5.js]]
 - [[_COMMUNITY_find_shape_text_properties.js|find_shape_text_properties.js]]
+- [[_COMMUNITY_PresentationTrackService|PresentationTrackService]]
+- [[_COMMUNITY_main.ts|main.ts]]
+- [[_COMMUNITY_StateManager|StateManager]]
+- [[_COMMUNITY_DisplayManager|DisplayManager]]
+- [[_COMMUNITY_ShortcutManager|ShortcutManager]]
+- [[_COMMUNITY_find_main_js_handlers.js|find_main_js_handlers.js]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 38 edges
@@ -162,21 +168,21 @@
 10. `broadcastState()` - 28 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `main()` --calls--> `inputFormat_`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/wasapi_loopback_capture.h
-- `main()` --calls--> `selectedDeviceName_`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/wasapi_loopback_capture.h
 - `main()` --calls--> `selectedDeviceName_`  [INFERRED]
   third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/webcam_capture.h
 - `main()` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
   third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
 - `configureAudioStream` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
   third_party/openscreen/wgc-capture/src/mf_encoder.h → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
+- `main()` --calls--> `finalize`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/mf_encoder.h
+- `main()` --calls--> `initialize`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/mf_encoder.h
 
 ## Import Cycles
 - None detected.
 
-## Communities (135 total, 5 thin omitted)
+## Communities (142 total, 9 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -503,8 +509,8 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 85 - "syncPageStore"
-Cohesion: 0.16
-Nodes (15): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice(), applySessionOptions (+7 more)
+Cohesion: 0.15
+Nodes (16): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice(), applySessionOptions (+8 more)
 
 ### Community 86 - "applyHotkeys"
 Cohesion: 0.43
@@ -546,17 +552,13 @@ Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DD
 Cohesion: 0.04
 Nodes (46): Acceptance Checks, Analysis Summary, Architecture decision, Automated layers, Capture-window policy, Constraints, Context Read, Core Data Contracts (+38 more)
 
-### Community 96 - "main.ts"
-Cohesion: 0.06
-Nodes (13): initializeSingleInstanceLock(), bootstrap(), broadcastRecordingState(), calculateToolbarBounds(), rebuildOverlays(), startRecordingTimer(), stopRecordingTimer(), DisplayManager (+5 more)
-
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
 Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.06
-Nodes (47): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+39 more)
+Cohesion: 0.07
+Nodes (43): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+35 more)
 
 ### Community 99 - "CaptureConfig"
 Cohesion: 0.08
@@ -627,8 +629,8 @@ Cohesion: 0.22
 Nodes (9): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, width (+1 more)
 
 ### Community 116 - "main"
-Cohesion: 0.14
-Nodes (14): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), FrameCallback (+6 more)
+Cohesion: 0.12
+Nodes (17): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+9 more)
 
 ### Community 117 - "getAppState"
 Cohesion: 0.48
@@ -690,24 +692,36 @@ Nodes (3): content, fs, lines
 Cohesion: 0.50
 Nodes (3): content, fs, lines
 
+### Community 135 - "PresentationTrackService"
+Cohesion: 0.16
+Nodes (5): BoardViewport, Point, PresentationTrackEvent, PresentationTrackService, SceneAnnotation
+
+### Community 136 - "main.ts"
+Cohesion: 0.42
+Nodes (7): initializeSingleInstanceLock(), bootstrap(), broadcastRecordingState(), calculateToolbarBounds(), rebuildOverlays(), startRecordingTimer(), stopRecordingTimer()
+
+### Community 140 - "find_main_js_handlers.js"
+Cohesion: 0.50
+Nodes (3): content, fs, lines
+
 ## Knowledge Gaps
-- **864 isolated node(s):** `RecorderOptions`, `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs`, `path`, `{ pathToFileURL }` (+859 more)
+- **871 isolated node(s):** `Point`, `BoardViewport`, `SceneAnnotation`, `PresentationTrackEvent`, `RecorderOptions` (+866 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `main()` connect `main` to `WebcamCapture`, `WasapiLoopbackCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `syncPageStore`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **Why does `DirectShowWebcamCapture` connect `DirectShowWebcamCapture` to `WebcamCapture`, `impl_`, `dshow_webcam_capture.cpp`, `initialize`, `WebcamFrameSnapshot`, `AudioMixer`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `WasapiLoopbackCapture` connect `WasapiLoopbackCapture` to `AudioMixer`?**
-  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `main()` connect `main` to `WebcamCapture`, `WasapiLoopbackCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `syncPageStore`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `impl_` connect `impl_` to `dshow_webcam_capture.cpp`, `DirectShowWebcamCapture`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `RecorderOptions`, `{ app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }`, `fs` to the rest of the system?**
-  _864 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `Point`, `BoardViewport`, `SceneAnnotation` to the rest of the system?**
+  _871 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08258258258258258 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

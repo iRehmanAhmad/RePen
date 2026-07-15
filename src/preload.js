@@ -64,5 +64,9 @@ contextBridge.exposeInMainWorld('appBridge', {
   getRecordingState: () => ipcRenderer.invoke('recording:get-state'),
   onRecordingStateChanged: (callback) => on('recording:state-changed', callback),
   onRecordingTimerTick: (callback) => on('recording:timer-tick', callback),
+  saveProjectFile: (projectData, suggestedName, existingProjectPath) => ipcRenderer.invoke('project:save', projectData, suggestedName, existingProjectPath),
+  loadProjectFile: (projectFolder) => ipcRenderer.invoke('project:load', projectFolder),
+  loadProjectFileFromPath: (filePath) => ipcRenderer.invoke('project:load-from-path', filePath),
+  getCurrentProjectPath: () => ipcRenderer.invoke('project:get-current-path'),
 });
 

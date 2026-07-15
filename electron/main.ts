@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron';
+import { app, ipcMain, dialog } from 'electron';
 import { initializeSingleInstanceLock } from './bootstrap/instance';
 import { StateManager } from './services/state';
 import { DisplayManager } from './services/display';
@@ -8,6 +8,7 @@ import { WindowRegistry } from './windows/registry';
 import { RecorderService } from './services/recorder';
 import { PresentationTrackService } from './services/presentationTrack';
 import path from 'path';
+import fs from 'fs';
 
 // Global singleton instances
 let stateManager: StateManager;
@@ -171,6 +172,104 @@ function bootstrap() {
 
   ipcMain.handle('recording:get-state', async () => {
     return recorderService.getState();
+  });
+
+  let currentProjectPath: string | null = null;
+
+  ipcMain.handle('project:save', async (_, projectData: any, suggestedName?: string, existingProjectPath?: string) => {
+    try {
+      const targetPath = existingProjectPath || currentProjectPath;
+      if (targetPath && fs.existsSync(targetPath)) {
+        fs.writeFileSync(targetPath, JSON.stringify(projectData, null, 2), 'utf-8');
+        currentProjectPath = targetPath;
+        return { success: true, path: targetPath, message: 'Project saved successfully' };
+      }
+
+      const safeName = (suggestedName || `project-${Date.now()}`).replace(/[^a-zA-Z0-9-_]/g, '_');
+      const defaultName = safeName.endsWith('.repen-project') ? safeName : `${safeName}.repen-project`;
+
+      const result = await dialog.showSaveDialog({
+        title: 'Save RePen Project',
+        defaultPath: path.join(app.getPath('videos'), defaultName),
+        filters: [
+          { name: 'RePen Project', extensions: ['repen-project'] },
+          { name: 'OpenScreen Project', extensions: ['openscreen'] },
+          { name: 'JSON', extensions: ['json'] }
+        ],
+        properties: ['createDirectory', 'showOverwriteConfirmation']
+      });
+
+      if (result.canceled || !result.filePath) {
+        return { success: false, canceled: true, message: 'Save project canceled' };
+      }
+
+      fs.writeFileSync(result.filePath, JSON.stringify(projectData, null, 2), 'utf-8');
+      currentProjectPath = result.filePath;
+      return { success: true, path: result.filePath, message: 'Project saved successfully' };
+    } catch (error) {
+      console.error('Failed to save project:', error);
+      return { success: false, message: 'Failed to save project', error: String(error) };
+    }
+  });
+
+  ipcMain.handle('project:load', async (_, projectFolder?: string) => {
+    try {
+      const defaultDir = projectFolder && fs.existsSync(projectFolder) ? projectFolder : app.getPath('videos');
+      const result = await dialog.showOpenDialog({
+        title: 'Open RePen Project',
+        defaultPath: defaultDir,
+        filters: [
+          { name: 'RePen Project', extensions: ['repen-project', 'openscreen'] },
+          { name: 'JSON', extensions: ['json'] },
+          { name: 'All Files', extensions: ['*'] }
+        ],
+        properties: ['openFile']
+      });
+
+      if (result.canceled || result.filePaths.length === 0) {
+        return { success: false, canceled: true, message: 'Open project canceled' };
+      }
+
+      const filePath = result.filePaths[0];
+      const content = fs.readFileSync(filePath, 'utf-8');
+      let project = JSON.parse(content);
+      currentProjectPath = filePath;
+
+      if (filePath.endsWith('.openscreen') || (project.version && project.version === 1)) {
+        const { migrateProjectData } = require('../src/shared/editor/projectPersistence');
+        project = migrateProjectData(project);
+      }
+
+      return { success: true, path: filePath, project };
+    } catch (error) {
+      console.error('Failed to load project:', error);
+      return { success: false, message: 'Failed to load project', error: String(error) };
+    }
+  });
+
+  ipcMain.handle('project:load-from-path', async (_, filePath: string) => {
+    try {
+      if (!filePath || !fs.existsSync(filePath)) {
+        return { success: false, message: 'File not found' };
+      }
+      const content = fs.readFileSync(filePath, 'utf-8');
+      let project = JSON.parse(content);
+      currentProjectPath = filePath;
+
+      if (filePath.endsWith('.openscreen') || (project.version && project.version === 1)) {
+        const { migrateProjectData } = require('../src/shared/editor/projectPersistence');
+        project = migrateProjectData(project);
+      }
+
+      return { success: true, path: filePath, project };
+    } catch (error) {
+      console.error('Failed to load project from path:', error);
+      return { success: false, message: 'Failed to load project', error: String(error) };
+    }
+  });
+
+  ipcMain.handle('project:get-current-path', async () => {
+    return currentProjectPath;
   });
 
   app.whenReady().then(() => {
