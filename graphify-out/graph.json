@@ -3314,6 +3314,46 @@
       "norm_label": "lines"
     },
     {
+      "label": "find_pixi_init.js",
+      "file_type": "code",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_find_pixi_init",
+      "community": 152,
+      "norm_label": "find_pixi_init.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_find_pixi_init_fs",
+      "community": 152,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_find_pixi_init_content",
+      "community": 152,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_find_pixi_init_lines",
+      "community": 152,
+      "norm_label": "lines"
+    },
+    {
       "label": "find_shape_text_properties.js",
       "file_type": "code",
       "source_file": "scratch/find_shape_text_properties.js",
@@ -3354,6 +3394,86 @@
       "norm_label": "lines"
     },
     {
+      "label": "read_pixi_setup.js",
+      "file_type": "code",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_read_pixi_setup",
+      "community": 153,
+      "norm_label": "read_pixi_setup.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_read_pixi_setup_fs",
+      "community": 153,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_read_pixi_setup_content",
+      "community": 153,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_read_pixi_setup_lines",
+      "community": 153,
+      "norm_label": "lines"
+    },
+    {
+      "label": "read_videoplayback.js",
+      "file_type": "code",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_read_videoplayback",
+      "community": 154,
+      "norm_label": "read_videoplayback.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_read_videoplayback_fs",
+      "community": 154,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_read_videoplayback_content",
+      "community": 154,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_read_videoplayback_lines",
+      "community": 154,
+      "norm_label": "lines"
+    },
+    {
       "label": "view_load_project.js",
       "file_type": "code",
       "source_file": "scratch/view_load_project.js",
@@ -3391,6 +3511,46 @@
       "_origin": "ast",
       "id": "scratch_view_load_project_lines",
       "community": 149,
+      "norm_label": "lines"
+    },
+    {
+      "label": "view_pixi_init.js",
+      "file_type": "code",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_view_pixi_init",
+      "community": 155,
+      "norm_label": "view_pixi_init.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_view_pixi_init_fs",
+      "community": 155,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_view_pixi_init_content",
+      "community": 155,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_view_pixi_init_lines",
+      "community": 155,
       "norm_label": "lines"
     },
     {
@@ -5174,6 +5334,196 @@
       "norm_label": "presentertoolbar()"
     },
     {
+      "label": "cursorTelemetryRenderer.ts",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/cursorTelemetryRenderer.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_cursortelemetryrenderer",
+      "community": 151,
+      "norm_label": "cursortelemetryrenderer.ts"
+    },
+    {
+      "label": "getSmoothedCursorPosition()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/cursorTelemetryRenderer.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_cursortelemetryrenderer_getsmoothedcursorposition",
+      "community": 151,
+      "norm_label": "getsmoothedcursorposition()"
+    },
+    {
+      "label": "playbackCoordinator.ts",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator",
+      "community": 151,
+      "norm_label": "playbackcoordinator.ts"
+    },
+    {
+      "label": "PlaybackCoordinator",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "community": 151,
+      "norm_label": "playbackcoordinator"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_constructor",
+      "community": 151,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".setElements()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setelements",
+      "community": 151,
+      "norm_label": ".setelements()"
+    },
+    {
+      "label": ".setRegions()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setregions",
+      "community": 151,
+      "norm_label": ".setregions()"
+    },
+    {
+      "label": ".setDefaultSpeed()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setdefaultspeed",
+      "community": 151,
+      "norm_label": ".setdefaultspeed()"
+    },
+    {
+      "label": ".play()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_play",
+      "community": 151,
+      "norm_label": ".play()"
+    },
+    {
+      "label": ".pause()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_pause",
+      "community": 151,
+      "norm_label": ".pause()"
+    },
+    {
+      "label": ".seek()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_seek",
+      "community": 151,
+      "norm_label": ".seek()"
+    },
+    {
+      "label": ".updatePlaybackRate()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_updateplaybackrate",
+      "community": 151,
+      "norm_label": ".updateplaybackrate()"
+    },
+    {
+      "label": ".getCurrentTimeMs()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_getcurrenttimems",
+      "community": 151,
+      "norm_label": ".getcurrenttimems()"
+    },
+    {
+      "label": ".getSpeedAtTime()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L68",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_getspeedattime",
+      "community": 151,
+      "norm_label": ".getspeedattime()"
+    },
+    {
+      "label": ".checkTrimRegions()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_checktrimregions",
+      "community": 151,
+      "norm_label": ".checktrimregions()"
+    },
+    {
+      "label": ".syncWebcamAndAudio()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_syncwebcamandaudio",
+      "community": 151,
+      "norm_label": ".syncwebcamandaudio()"
+    },
+    {
+      "label": "videoPlaybackSync.tsx",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_videoplaybacksync",
+      "community": 151,
+      "norm_label": "videoplaybacksync.tsx"
+    },
+    {
+      "label": "VideoPlaybackSyncProps",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksyncprops",
+      "community": 151,
+      "norm_label": "videoplaybacksyncprops"
+    },
+    {
+      "label": "VideoPlaybackSync()",
+      "file_type": "code",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksync",
+      "community": 151,
+      "norm_label": "videoplaybacksync()"
+    },
+    {
       "label": "geometry.ts",
       "file_type": "code",
       "source_file": "src/renderer/presenter/geometry.ts",
@@ -6830,7 +7180,7 @@
       "source_location": "L155",
       "_origin": "ast",
       "id": "src_shared_editor_types_cursortelemetrypoint",
-      "community": 142,
+      "community": 151,
       "norm_label": "cursortelemetrypoint"
     },
     {
@@ -6850,7 +7200,7 @@
       "source_location": "L187",
       "_origin": "ast",
       "id": "src_shared_editor_types_trimregion",
-      "community": 143,
+      "community": 151,
       "norm_label": "trimregion"
     },
     {
@@ -7080,7 +7430,7 @@
       "source_location": "L351",
       "_origin": "ast",
       "id": "src_shared_editor_types_speedregion",
-      "community": 143,
+      "community": 151,
       "norm_label": "speedregion"
     },
     {
@@ -7384,6 +7734,26 @@
       "norm_label": "history.test.ts"
     },
     {
+      "label": "playbackCoordinator.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_playbackcoordinator_test",
+      "community": 151,
+      "norm_label": "playbackcoordinator.test.ts"
+    },
+    {
+      "label": "currentTime()",
+      "file_type": "code",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "tests_unit_playbackcoordinator_test_currenttime",
+      "community": 151,
+      "norm_label": "currenttime()"
+    },
+    {
       "label": "presentationTrack.test.ts",
       "file_type": "code",
       "source_file": "tests/unit/presentationTrack.test.ts",
@@ -7640,7 +8010,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 120,
+      "community": 92,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -7840,7 +8210,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 120,
+      "community": 92,
       "norm_label": "mutex"
     },
     {
@@ -7860,7 +8230,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_condition_variable",
-      "community": 120,
+      "community": 92,
       "norm_label": "condition_variable"
     },
     {
@@ -7880,7 +8250,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 120,
+      "community": 92,
       "norm_label": "vector"
     },
     {
@@ -7930,7 +8300,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 120,
+      "community": 92,
       "norm_label": "thread"
     },
     {
@@ -7950,7 +8320,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 120,
+      "community": 92,
       "norm_label": "atomic"
     },
     {
@@ -8470,7 +8840,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 120,
+      "community": 92,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -9610,7 +9980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 120,
+      "community": 92,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -10340,7 +10710,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 120,
+      "community": 92,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -10370,7 +10740,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializesystemloopback",
-      "community": 98,
+      "community": 116,
       "norm_label": "initializesystemloopback"
     },
     {
@@ -10400,7 +10770,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_stop",
-      "community": 98,
+      "community": 116,
       "norm_label": "stop"
     },
     {
@@ -10560,7 +10930,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_inputformat",
-      "community": 98,
+      "community": 116,
       "norm_label": "inputformat_"
     },
     {
@@ -10580,7 +10950,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_selecteddevicename",
-      "community": 98,
+      "community": 116,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -10830,7 +11200,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 120,
+      "community": 92,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -11160,7 +11530,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_selecteddevicename",
-      "community": 97,
+      "community": 116,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -11170,7 +11540,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 116,
+      "community": 85,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -11220,7 +11590,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 116,
+      "community": 85,
       "norm_label": "hmonitor"
     },
     {
@@ -11230,7 +11600,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 116,
+      "community": 85,
       "norm_label": "hwnd"
     },
     {
@@ -11280,7 +11650,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 120,
+      "community": 85,
       "norm_label": "wgc_session.h"
     },
     {
@@ -11300,7 +11670,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 116,
+      "community": 85,
       "norm_label": ".wgcsession()"
     },
     {
@@ -11310,7 +11680,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 116,
+      "community": 85,
       "norm_label": "initialize"
     },
     {
@@ -11330,7 +11700,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 116,
+      "community": 85,
       "norm_label": "start"
     },
     {
@@ -11340,7 +11710,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 116,
+      "community": 85,
       "norm_label": "stop"
     },
     {
@@ -11350,7 +11720,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 116,
+      "community": 85,
       "norm_label": "capturewidth"
     },
     {
@@ -11360,7 +11730,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 116,
+      "community": 85,
       "norm_label": "captureheight"
     },
     {
@@ -11400,7 +11770,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 116,
+      "community": 85,
       "norm_label": "createcaptureitem"
     },
     {
@@ -11410,7 +11780,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 116,
+      "community": 85,
       "norm_label": "applysessionoptions"
     },
     {
@@ -24809,6 +25179,36 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_find_pixi_init",
+      "target": "scratch_find_pixi_init_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_find_pixi_init",
+      "target": "scratch_find_pixi_init_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/find_pixi_init.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_find_pixi_init",
+      "target": "scratch_find_pixi_init_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scratch/find_shape_text_properties.js",
       "source_location": "L2",
       "weight": 1.0,
@@ -24839,6 +25239,66 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_read_pixi_setup",
+      "target": "scratch_read_pixi_setup_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_read_pixi_setup",
+      "target": "scratch_read_pixi_setup_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/read_pixi_setup.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_read_pixi_setup",
+      "target": "scratch_read_pixi_setup_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_read_videoplayback",
+      "target": "scratch_read_videoplayback_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_read_videoplayback",
+      "target": "scratch_read_videoplayback_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/read_videoplayback.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_read_videoplayback",
+      "target": "scratch_read_videoplayback_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scratch/view_load_project.js",
       "source_location": "L2",
       "weight": 1.0,
@@ -24864,6 +25324,36 @@
       "weight": 1.0,
       "source": "scratch_view_load_project",
       "target": "scratch_view_load_project_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_view_pixi_init",
+      "target": "scratch_view_pixi_init_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_view_pixi_init",
+      "target": "scratch_view_pixi_init_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_pixi_init.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_view_pixi_init",
+      "target": "scratch_view_pixi_init_lines",
       "confidence_score": 1.0
     },
     {
@@ -27636,6 +28126,496 @@
       "weight": 1.0,
       "source": "tests_unit_presentertoolbar_test",
       "target": "src_renderer_presenter_components_presentertoolbar_presentertoolbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/cursorTelemetryRenderer.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_cursortelemetryrenderer",
+      "target": "src_renderer_presenter_editor_cursortelemetryrenderer_getsmoothedcursorposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/cursorTelemetryRenderer.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_cursortelemetryrenderer",
+      "target": "src_shared_editor_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/cursorTelemetryRenderer.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_cursortelemetryrenderer",
+      "target": "src_shared_editor_types_cursortelemetrypoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_cursortelemetryrenderer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "src_renderer_presenter_editor_cursortelemetryrenderer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_cursortelemetryrenderer_getsmoothedcursorposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_cursortelemetryrenderer_getsmoothedcursorposition"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "src_renderer_presenter_editor_cursortelemetryrenderer_getsmoothedcursorposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator",
+      "target": "src_shared_editor_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_playbackcoordinator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "src_renderer_presenter_editor_playbackcoordinator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_checktrimregions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_getcurrenttimems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_getspeedattime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_pause",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_play",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_seek",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setdefaultspeed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setelements",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setregions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_syncwebcamandaudio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_updateplaybackrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setregions",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_updateplaybackrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setregions",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setregions",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_setdefaultspeed",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_updateplaybackrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_checktrimregions",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_seek",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_updateplaybackrate",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_getcurrenttimems",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/playbackCoordinator.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_updateplaybackrate",
+      "target": "src_renderer_presenter_editor_playbackcoordinator_playbackcoordinator_getspeedattime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksync",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksyncprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_shared_editor_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_shared_editor_types_cursortelemetrypoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksyncprops",
+      "target": "src_shared_editor_types_cursortelemetrypoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksyncprops",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/presenter/editor/videoPlaybackSync.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_renderer_presenter_editor_videoplaybacksync_videoplaybacksyncprops",
+      "target": "src_shared_editor_types_trimregion",
       "confidence_score": 1.0
     },
     {
@@ -31472,6 +32452,28 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "src_shared_editor_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "src_shared_editor_types_cursortelemetrypoint",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -31692,6 +32694,16 @@
       "weight": 1.0,
       "source": "src_shared_schemas_scene_strokeannotation",
       "target": "src_shared_schemas_scene_baseannotation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/playbackCoordinator.test.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "tests_unit_playbackcoordinator_test",
+      "target": "tests_unit_playbackcoordinator_test_currenttime",
       "confidence_score": 1.0
     },
     {
@@ -45967,5 +46979,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bb2210d9cefeb8d3d87a22ea42eb23f0af7802f1"
+  "built_at_commit": "1514ff9633a387d71a1749d13f0d684ddda2868c"
 }

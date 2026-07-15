@@ -37,7 +37,7 @@
       "label": "startRecordingTimer()",
       "file_type": "code",
       "source_file": "electron/main.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "electron_main_startrecordingtimer",
       "community": 136,
@@ -47,7 +47,7 @@
       "label": "stopRecordingTimer()",
       "file_type": "code",
       "source_file": "electron/main.ts",
-      "source_location": "L37",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "electron_main_stoprecordingtimer",
       "community": 136,
@@ -57,7 +57,7 @@
       "label": "broadcastRecordingState()",
       "file_type": "code",
       "source_file": "electron/main.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "electron_main_broadcastrecordingstate",
       "community": 136,
@@ -67,7 +67,7 @@
       "label": "calculateToolbarBounds()",
       "file_type": "code",
       "source_file": "electron/main.ts",
-      "source_location": "L61",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "electron_main_calculatetoolbarbounds",
       "community": 136,
@@ -77,7 +77,7 @@
       "label": "rebuildOverlays()",
       "file_type": "code",
       "source_file": "electron/main.ts",
-      "source_location": "L76",
+      "source_location": "L77",
       "_origin": "ast",
       "id": "electron_main_rebuildoverlays",
       "community": 136,
@@ -87,7 +87,7 @@
       "label": "bootstrap()",
       "file_type": "code",
       "source_file": "electron/main.ts",
-      "source_location": "L84",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "electron_main_bootstrap",
       "community": 136,
@@ -1330,7 +1330,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "main_syncpagestore",
-      "community": 82,
+      "community": 145,
       "norm_label": "syncpagestore()"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "main_getstatefilepath",
-      "community": 87,
+      "community": 146,
       "norm_label": "getstatefilepath()"
     },
     {
@@ -1360,7 +1360,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "main_readpersistedstate",
-      "community": 87,
+      "community": 146,
       "norm_label": "readpersistedstate()"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L179",
       "_origin": "ast",
       "id": "main_loadstate",
-      "community": 87,
+      "community": 146,
       "norm_label": "loadstate()"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L441",
       "_origin": "ast",
       "id": "main_createtrayicon",
-      "community": 87,
+      "community": 146,
       "norm_label": "createtrayicon()"
     },
     {
@@ -1540,7 +1540,7 @@
       "source_location": "L486",
       "_origin": "ast",
       "id": "main_createtray",
-      "community": 87,
+      "community": 146,
       "norm_label": "createtray()"
     },
     {
@@ -1640,7 +1640,7 @@
       "source_location": "L774",
       "_origin": "ast",
       "id": "main_showoverlaywindows",
-      "community": 87,
+      "community": 83,
       "norm_label": "showoverlaywindows()"
     },
     {
@@ -1650,7 +1650,7 @@
       "source_location": "L782",
       "_origin": "ast",
       "id": "main_hideoverlaywindows",
-      "community": 87,
+      "community": 146,
       "norm_label": "hideoverlaywindows()"
     },
     {
@@ -1700,7 +1700,7 @@
       "source_location": "L860",
       "_origin": "ast",
       "id": "main_cyclebackgroundmode",
-      "community": 82,
+      "community": 83,
       "norm_label": "cyclebackgroundmode()"
     },
     {
@@ -1740,7 +1740,7 @@
       "source_location": "L892",
       "_origin": "ast",
       "id": "main_setclickhalo",
-      "community": 82,
+      "community": 83,
       "norm_label": "setclickhalo()"
     },
     {
@@ -1890,7 +1890,7 @@
       "source_location": "L1068",
       "_origin": "ast",
       "id": "main_clearscene",
-      "community": 82,
+      "community": 83,
       "norm_label": "clearscene()"
     },
     {
@@ -1940,7 +1940,7 @@
       "source_location": "L1137",
       "_origin": "ast",
       "id": "main_showmodaldialog",
-      "community": 82,
+      "community": 145,
       "norm_label": "showmodaldialog()"
     },
     {
@@ -1950,7 +1950,7 @@
       "source_location": "L1158",
       "_origin": "ast",
       "id": "main_autoarchivecurrentsession",
-      "community": 82,
+      "community": 145,
       "norm_label": "autoarchivecurrentsession()"
     },
     {
@@ -1960,7 +1960,7 @@
       "source_location": "L1191",
       "_origin": "ast",
       "id": "main_savesession",
-      "community": 82,
+      "community": 145,
       "norm_label": "savesession()"
     },
     {
@@ -1970,7 +1970,7 @@
       "source_location": "L1226",
       "_origin": "ast",
       "id": "main_loadsession",
-      "community": 82,
+      "community": 145,
       "norm_label": "loadsession()"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_location": "L1242",
       "_origin": "ast",
       "id": "main_loadsessionfromfile",
-      "community": 82,
+      "community": 145,
       "norm_label": "loadsessionfromfile()"
     },
     {
@@ -1990,7 +1990,7 @@
       "source_location": "L1289",
       "_origin": "ast",
       "id": "main_newsession",
-      "community": 82,
+      "community": 145,
       "norm_label": "newsession()"
     },
     {
@@ -2000,7 +2000,7 @@
       "source_location": "L1309",
       "_origin": "ast",
       "id": "main_exportpdf",
-      "community": 82,
+      "community": 145,
       "norm_label": "exportpdf()"
     },
     {
@@ -2210,7 +2210,7 @@
       "source_location": "L1940",
       "_origin": "ast",
       "id": "main_getshortcutactions",
-      "community": 82,
+      "community": 83,
       "norm_label": "getshortcutactions()"
     },
     {
@@ -2290,7 +2290,7 @@
       "source_location": "L2099",
       "_origin": "ast",
       "id": "main_rebuildwindows",
-      "community": 87,
+      "community": 83,
       "norm_label": "rebuildwindows()"
     },
     {
@@ -2300,7 +2300,7 @@
       "source_location": "L2115",
       "_origin": "ast",
       "id": "main_init",
-      "community": 87,
+      "community": 146,
       "norm_label": "init()"
     },
     {
@@ -2327,10 +2327,10 @@
       "label": "takeScreenshot()",
       "file_type": "code",
       "source_file": "main.js",
-      "source_location": "L2650",
+      "source_location": "L2748",
       "_origin": "ast",
       "id": "main_takescreenshot",
-      "community": 87,
+      "community": 83,
       "norm_label": "takescreenshot()"
     },
     {
@@ -2994,6 +2994,46 @@
       "norm_label": "lines"
     },
     {
+      "label": "find_extension.js",
+      "file_type": "code",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_find_extension",
+      "community": 147,
+      "norm_label": "find_extension.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_find_extension_fs",
+      "community": 147,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_find_extension_content",
+      "community": 147,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_find_extension_lines",
+      "community": 147,
+      "norm_label": "lines"
+    },
+    {
       "label": "find_geometry_functions.js",
       "file_type": "code",
       "source_file": "scratch/find_geometry_functions.js",
@@ -3154,6 +3194,46 @@
       "norm_label": "lines"
     },
     {
+      "label": "find_openscreen_persistence.js",
+      "file_type": "code",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_find_openscreen_persistence",
+      "community": 148,
+      "norm_label": "find_openscreen_persistence.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_find_openscreen_persistence_fs",
+      "community": 148,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_find_openscreen_persistence_content",
+      "community": 148,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_find_openscreen_persistence_lines",
+      "community": 148,
+      "norm_label": "lines"
+    },
+    {
       "label": "find_overlay_drawing.js",
       "file_type": "code",
       "source_file": "scratch/find_overlay_drawing.js",
@@ -3271,6 +3351,86 @@
       "_origin": "ast",
       "id": "scratch_find_shape_text_properties_lines",
       "community": 134,
+      "norm_label": "lines"
+    },
+    {
+      "label": "view_load_project.js",
+      "file_type": "code",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_view_load_project",
+      "community": 149,
+      "norm_label": "view_load_project.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_view_load_project_fs",
+      "community": 149,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_view_load_project_content",
+      "community": 149,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_view_load_project_lines",
+      "community": 149,
+      "norm_label": "lines"
+    },
+    {
+      "label": "view_save_project.js",
+      "file_type": "code",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_view_save_project",
+      "community": 150,
+      "norm_label": "view_save_project.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_view_save_project_fs",
+      "community": 150,
+      "norm_label": "fs"
+    },
+    {
+      "label": "content",
+      "file_type": "code",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "scratch_view_save_project_content",
+      "community": 150,
+      "norm_label": "content"
+    },
+    {
+      "label": "lines",
+      "file_type": "code",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "scratch_view_save_project_lines",
+      "community": 150,
       "norm_label": "lines"
     },
     {
@@ -6164,6 +6324,816 @@
       "norm_label": "recordingstartoptions"
     },
     {
+      "label": "editorDefaults.ts",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults",
+      "community": 143,
+      "norm_label": "editordefaults.ts"
+    },
+    {
+      "label": "AspectRatio",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_aspectratio",
+      "community": 143,
+      "norm_label": "aspectratio"
+    },
+    {
+      "label": "ExportQuality",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_exportquality",
+      "community": 143,
+      "norm_label": "exportquality"
+    },
+    {
+      "label": "ExportFormat",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_exportformat",
+      "community": 143,
+      "norm_label": "exportformat"
+    },
+    {
+      "label": "GifFrameRate",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_gifframerate",
+      "community": 143,
+      "norm_label": "gifframerate"
+    },
+    {
+      "label": "GifSizePreset",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_gifsizepreset",
+      "community": 143,
+      "norm_label": "gifsizepreset"
+    },
+    {
+      "label": "DEFAULT_SOURCE_DIMENSIONS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_source_dimensions",
+      "community": 143,
+      "norm_label": "default_source_dimensions"
+    },
+    {
+      "label": "DEFAULT_GIF_OUTPUT_DIMENSIONS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L30",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_gif_output_dimensions",
+      "community": 143,
+      "norm_label": "default_gif_output_dimensions"
+    },
+    {
+      "label": "DEFAULT_EDITOR_APPEARANCE_SETTINGS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_editor_appearance_settings",
+      "community": 143,
+      "norm_label": "default_editor_appearance_settings"
+    },
+    {
+      "label": "DEFAULT_EDITOR_LAYOUT_SETTINGS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_editor_layout_settings",
+      "community": 143,
+      "norm_label": "default_editor_layout_settings"
+    },
+    {
+      "label": "DEFAULT_CURSOR_SETTINGS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_cursor_settings",
+      "community": 143,
+      "norm_label": "default_cursor_settings"
+    },
+    {
+      "label": "DEFAULT_EXPORT_SETTINGS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L83",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_export_settings",
+      "community": 143,
+      "norm_label": "default_export_settings"
+    },
+    {
+      "label": "DEFAULT_GIF_SETTINGS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "src_shared_editor_editordefaults_default_gif_settings",
+      "community": 143,
+      "norm_label": "default_gif_settings"
+    },
+    {
+      "label": "projectPersistence.ts",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence",
+      "community": 144,
+      "norm_label": "projectpersistence.ts"
+    },
+    {
+      "label": "ProjectMedia",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_projectmedia",
+      "community": 144,
+      "norm_label": "projectmedia"
+    },
+    {
+      "label": "ProjectEditorState",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_projecteditorstate",
+      "community": 143,
+      "norm_label": "projecteditorstate"
+    },
+    {
+      "label": "EditorProjectData",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L86",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_editorprojectdata",
+      "community": 144,
+      "norm_label": "editorprojectdata"
+    },
+    {
+      "label": "VALID_BLUR_SHAPES",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L93",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_valid_blur_shapes",
+      "community": 144,
+      "norm_label": "valid_blur_shapes"
+    },
+    {
+      "label": "normalizeTextAnimation()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L95",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_normalizetextanimation",
+      "community": 144,
+      "norm_label": "normalizetextanimation()"
+    },
+    {
+      "label": "normalizeBlurType()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_normalizeblurtype",
+      "community": 144,
+      "norm_label": "normalizeblurtype()"
+    },
+    {
+      "label": "normalizeBlurColor()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_normalizeblurcolor",
+      "community": 144,
+      "norm_label": "normalizeblurcolor()"
+    },
+    {
+      "label": "normalizeCursorThemeId()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L108",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_normalizecursorthemeid",
+      "community": 144,
+      "norm_label": "normalizecursorthemeid()"
+    },
+    {
+      "label": "normalizeProjectMedia()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L112",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_normalizeprojectmedia",
+      "community": 144,
+      "norm_label": "normalizeprojectmedia()"
+    },
+    {
+      "label": "isFiniteNumber()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L124",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_isfinitenumber",
+      "community": 144,
+      "norm_label": "isfinitenumber()"
+    },
+    {
+      "label": "clamp()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L128",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_clamp",
+      "community": 144,
+      "norm_label": "clamp()"
+    },
+    {
+      "label": "toFileUrl()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_tofileurl",
+      "community": 144,
+      "norm_label": "tofileurl()"
+    },
+    {
+      "label": "fromFileUrl()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L140",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_fromfileurl",
+      "community": 144,
+      "norm_label": "fromfileurl()"
+    },
+    {
+      "label": "normalizeProjectEditor()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L148",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "community": 144,
+      "norm_label": "normalizeprojecteditor()"
+    },
+    {
+      "label": "validateProjectData()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L352",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_validateprojectdata",
+      "community": 144,
+      "norm_label": "validateprojectdata()"
+    },
+    {
+      "label": "migrateProjectData()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L361",
+      "_origin": "ast",
+      "id": "src_shared_editor_projectpersistence_migrateprojectdata",
+      "community": 144,
+      "norm_label": "migrateprojectdata()"
+    },
+    {
+      "label": "types.ts",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_shared_editor_types",
+      "community": 142,
+      "norm_label": "types.ts"
+    },
+    {
+      "label": "ZoomDepth",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_zoomdepth",
+      "community": 142,
+      "norm_label": "zoomdepth"
+    },
+    {
+      "label": "ZoomFocusMode",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_zoomfocusmode",
+      "community": 142,
+      "norm_label": "zoomfocusmode"
+    },
+    {
+      "label": "WebcamLayoutPreset",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_webcamlayoutpreset",
+      "community": 143,
+      "norm_label": "webcamlayoutpreset"
+    },
+    {
+      "label": "WebcamSizePreset",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_webcamsizepreset",
+      "community": 143,
+      "norm_label": "webcamsizepreset"
+    },
+    {
+      "label": "WebcamMaskShape",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_webcammaskshape",
+      "community": 143,
+      "norm_label": "webcammaskshape"
+    },
+    {
+      "label": "WebcamPosition",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_webcamposition",
+      "community": 143,
+      "norm_label": "webcamposition"
+    },
+    {
+      "label": "ZoomFocus",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_zoomfocus",
+      "community": 142,
+      "norm_label": "zoomfocus"
+    },
+    {
+      "label": "Rotation3D",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_rotation3d",
+      "community": 142,
+      "norm_label": "rotation3d"
+    },
+    {
+      "label": "DEFAULT_ROTATION_3D",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_rotation_3d",
+      "community": 142,
+      "norm_label": "default_rotation_3d"
+    },
+    {
+      "label": "Rotation3DPreset",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_rotation3dpreset",
+      "community": 142,
+      "norm_label": "rotation3dpreset"
+    },
+    {
+      "label": "ROTATION_3D_PRESETS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_rotation_3d_presets",
+      "community": 142,
+      "norm_label": "rotation_3d_presets"
+    },
+    {
+      "label": "ROTATION_3D_PRESET_ORDER",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_rotation_3d_preset_order",
+      "community": 142,
+      "norm_label": "rotation_3d_preset_order"
+    },
+    {
+      "label": "rotation3DPerspective()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L52",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_rotation3dperspective",
+      "community": 142,
+      "norm_label": "rotation3dperspective()"
+    },
+    {
+      "label": "ZoomRegionSource",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L56",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_zoomregionsource",
+      "community": 142,
+      "norm_label": "zoomregionsource"
+    },
+    {
+      "label": "ZoomRegion",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_zoomregion",
+      "community": 143,
+      "norm_label": "zoomregion"
+    },
+    {
+      "label": "getRotation3D()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_getrotation3d",
+      "community": 142,
+      "norm_label": "getrotation3d()"
+    },
+    {
+      "label": "isRotation3DIdentity()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_isrotation3didentity",
+      "community": 142,
+      "norm_label": "isrotation3didentity()"
+    },
+    {
+      "label": "lerpRotation3D()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L79",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_lerprotation3d",
+      "community": 142,
+      "norm_label": "lerprotation3d()"
+    },
+    {
+      "label": "computeRotation3DContainScale()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L87",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_computerotation3dcontainscale",
+      "community": 142,
+      "norm_label": "computerotation3dcontainscale()"
+    },
+    {
+      "label": "CursorTelemetryPoint",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L155",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_cursortelemetrypoint",
+      "community": 142,
+      "norm_label": "cursortelemetrypoint"
+    },
+    {
+      "label": "CursorVisualSettings",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L172",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_cursorvisualsettings",
+      "community": 143,
+      "norm_label": "cursorvisualsettings"
+    },
+    {
+      "label": "TrimRegion",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L187",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_trimregion",
+      "community": 143,
+      "norm_label": "trimregion"
+    },
+    {
+      "label": "AnnotationType",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L193",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_annotationtype",
+      "community": 142,
+      "norm_label": "annotationtype"
+    },
+    {
+      "label": "ArrowDirection",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L195",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_arrowdirection",
+      "community": 142,
+      "norm_label": "arrowdirection"
+    },
+    {
+      "label": "FigureData",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L205",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_figuredata",
+      "community": 142,
+      "norm_label": "figuredata"
+    },
+    {
+      "label": "BlurShape",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L211",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_blurshape",
+      "community": 142,
+      "norm_label": "blurshape"
+    },
+    {
+      "label": "BlurType",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L212",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_blurtype",
+      "community": 142,
+      "norm_label": "blurtype"
+    },
+    {
+      "label": "BlurColor",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L213",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_blurcolor",
+      "community": 142,
+      "norm_label": "blurcolor"
+    },
+    {
+      "label": "BlurData",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L222",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_blurdata",
+      "community": 142,
+      "norm_label": "blurdata"
+    },
+    {
+      "label": "AnnotationPosition",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L231",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_annotationposition",
+      "community": 142,
+      "norm_label": "annotationposition"
+    },
+    {
+      "label": "AnnotationSize",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L236",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_annotationsize",
+      "community": 142,
+      "norm_label": "annotationsize"
+    },
+    {
+      "label": "AnnotationTextAnimation",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L241",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_annotationtextanimation",
+      "community": 142,
+      "norm_label": "annotationtextanimation"
+    },
+    {
+      "label": "AnnotationTextStyle",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L250",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_annotationtextstyle",
+      "community": 142,
+      "norm_label": "annotationtextstyle"
+    },
+    {
+      "label": "AnnotationRegion",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L262",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_annotationregion",
+      "community": 143,
+      "norm_label": "annotationregion"
+    },
+    {
+      "label": "DEFAULT_ANNOTATION_POSITION",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L279",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_annotation_position",
+      "community": 144,
+      "norm_label": "default_annotation_position"
+    },
+    {
+      "label": "DEFAULT_ANNOTATION_SIZE",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L284",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_annotation_size",
+      "community": 144,
+      "norm_label": "default_annotation_size"
+    },
+    {
+      "label": "DEFAULT_ANNOTATION_STYLE",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L289",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_annotation_style",
+      "community": 144,
+      "norm_label": "default_annotation_style"
+    },
+    {
+      "label": "DEFAULT_FIGURE_DATA",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L301",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_figure_data",
+      "community": 144,
+      "norm_label": "default_figure_data"
+    },
+    {
+      "label": "DEFAULT_BLUR_FREEHAND_POINTS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L307",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_blur_freehand_points",
+      "community": 144,
+      "norm_label": "default_blur_freehand_points"
+    },
+    {
+      "label": "DEFAULT_BLUR_DATA",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L319",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_blur_data",
+      "community": 144,
+      "norm_label": "default_blur_data"
+    },
+    {
+      "label": "CropRegion",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L328",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_cropregion",
+      "community": 143,
+      "norm_label": "cropregion"
+    },
+    {
+      "label": "DEFAULT_CROP_REGION",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L335",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_default_crop_region",
+      "community": 143,
+      "norm_label": "default_crop_region"
+    },
+    {
+      "label": "PlaybackSpeed",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L342",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_playbackspeed",
+      "community": 142,
+      "norm_label": "playbackspeed"
+    },
+    {
+      "label": "clampPlaybackSpeed()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L347",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_clampplaybackspeed",
+      "community": 144,
+      "norm_label": "clampplaybackspeed()"
+    },
+    {
+      "label": "SpeedRegion",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L351",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_speedregion",
+      "community": 143,
+      "norm_label": "speedregion"
+    },
+    {
+      "label": "SPEED_OPTIONS",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L358",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_speed_options",
+      "community": 142,
+      "norm_label": "speed_options"
+    },
+    {
+      "label": "ZOOM_DEPTH_SCALES",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L373",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_zoom_depth_scales",
+      "community": 142,
+      "norm_label": "zoom_depth_scales"
+    },
+    {
+      "label": "getZoomScale()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L387",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_getzoomscale",
+      "community": 142,
+      "norm_label": "getzoomscale()"
+    },
+    {
+      "label": "clampFocusToDepth()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L395",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_clampfocustodepth",
+      "community": 142,
+      "norm_label": "clampfocustodepth()"
+    },
+    {
+      "label": "clamp()",
+      "file_type": "code",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L402",
+      "_origin": "ast",
+      "id": "src_shared_editor_types_clamp",
+      "community": 142,
+      "norm_label": "clamp()"
+    },
+    {
       "label": "project.ts",
       "file_type": "code",
       "source_file": "src/shared/schemas/project.ts",
@@ -6434,6 +7404,16 @@
       "norm_label": "presentertoolbar.test.tsx"
     },
     {
+      "label": "projectPersistence.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_projectpersistence_test",
+      "community": 144,
+      "norm_label": "projectpersistence.test.ts"
+    },
+    {
       "label": "recorder.test.ts",
       "file_type": "code",
       "source_file": "tests/unit/recorder.test.ts",
@@ -6660,7 +7640,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 92,
+      "community": 120,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -6860,7 +7840,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 92,
+      "community": 120,
       "norm_label": "mutex"
     },
     {
@@ -6880,7 +7860,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_condition_variable",
-      "community": 92,
+      "community": 120,
       "norm_label": "condition_variable"
     },
     {
@@ -6900,7 +7880,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 92,
+      "community": 120,
       "norm_label": "vector"
     },
     {
@@ -6950,7 +7930,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 92,
+      "community": 120,
       "norm_label": "thread"
     },
     {
@@ -6970,7 +7950,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 92,
+      "community": 120,
       "norm_label": "atomic"
     },
     {
@@ -7490,7 +8470,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 92,
+      "community": 120,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -8630,7 +9610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 92,
+      "community": 120,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -9360,7 +10340,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 92,
+      "community": 120,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -9390,7 +10370,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializesystemloopback",
-      "community": 116,
+      "community": 98,
       "norm_label": "initializesystemloopback"
     },
     {
@@ -9420,7 +10400,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_stop",
-      "community": 116,
+      "community": 98,
       "norm_label": "stop"
     },
     {
@@ -9580,7 +10560,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_inputformat",
-      "community": 116,
+      "community": 98,
       "norm_label": "inputformat_"
     },
     {
@@ -9600,7 +10580,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_selecteddevicename",
-      "community": 116,
+      "community": 98,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -9850,7 +10830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 92,
+      "community": 120,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -10190,7 +11170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 85,
+      "community": 116,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -10240,7 +11220,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 85,
+      "community": 116,
       "norm_label": "hmonitor"
     },
     {
@@ -10250,7 +11230,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 85,
+      "community": 116,
       "norm_label": "hwnd"
     },
     {
@@ -10300,7 +11280,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 85,
+      "community": 120,
       "norm_label": "wgc_session.h"
     },
     {
@@ -10320,7 +11300,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 85,
+      "community": 116,
       "norm_label": ".wgcsession()"
     },
     {
@@ -10330,7 +11310,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 85,
+      "community": 116,
       "norm_label": "initialize"
     },
     {
@@ -10350,7 +11330,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 85,
+      "community": 116,
       "norm_label": "start"
     },
     {
@@ -10360,7 +11340,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 85,
+      "community": 116,
       "norm_label": "stop"
     },
     {
@@ -10370,7 +11350,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 85,
+      "community": 116,
       "norm_label": "capturewidth"
     },
     {
@@ -10380,7 +11360,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 85,
+      "community": 116,
       "norm_label": "captureheight"
     },
     {
@@ -10420,7 +11400,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 85,
+      "community": 116,
       "norm_label": "createcaptureitem"
     },
     {
@@ -10430,7 +11410,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 85,
+      "community": 116,
       "norm_label": "applysessionoptions"
     },
     {
@@ -17442,7 +18422,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L85",
+      "source_location": "L86",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_bootstrap_instance_initializesingleinstancelock",
@@ -17452,7 +18432,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L84",
+      "source_location": "L85",
       "weight": 1.0,
       "source": "electron_main",
       "target": "electron_main_bootstrap",
@@ -17462,7 +18442,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0,
       "source": "electron_main",
       "target": "electron_main_broadcastrecordingstate",
@@ -17472,7 +18452,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L61",
+      "source_location": "L62",
       "weight": 1.0,
       "source": "electron_main",
       "target": "electron_main_calculatetoolbarbounds",
@@ -17482,7 +18462,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L76",
+      "source_location": "L77",
       "weight": 1.0,
       "source": "electron_main",
       "target": "electron_main_rebuildoverlays",
@@ -17492,7 +18472,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L23",
+      "source_location": "L24",
       "weight": 1.0,
       "source": "electron_main",
       "target": "electron_main_startrecordingtimer",
@@ -17502,7 +18482,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "electron_main",
       "target": "electron_main_stoprecordingtimer",
@@ -17645,7 +18625,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L128",
+      "source_location": "L129",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_startrecordingtimer",
@@ -17656,7 +18636,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L152",
+      "source_location": "L153",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_stoprecordingtimer",
@@ -17667,7 +18647,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L129",
+      "source_location": "L130",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_broadcastrecordingstate",
@@ -17678,7 +18658,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L183",
+      "source_location": "L282",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_calculatetoolbarbounds",
@@ -17689,11 +18669,22 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L178",
+      "source_location": "L277",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_rebuildoverlays",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "electron/main.ts",
+      "source_location": "L240",
+      "weight": 1.0,
+      "source": "electron_main_bootstrap",
+      "target": "src_shared_editor_projectpersistence_migrateprojectdata"
     },
     {
       "relation": "contains",
@@ -20898,7 +21889,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L2650",
+      "source_location": "L2748",
       "weight": 1.0,
       "source": "main",
       "target": "main_takescreenshot",
@@ -22156,7 +23147,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L2692",
+      "source_location": "L2790",
       "weight": 1.0,
       "source": "main_takescreenshot",
       "target": "main_showoverlaywindows",
@@ -22255,7 +23246,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L2705",
+      "source_location": "L2803",
       "weight": 1.0,
       "source": "main_takescreenshot",
       "target": "main_updateoverlayignoremouse",
@@ -23578,6 +24569,36 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_find_extension",
+      "target": "scratch_find_extension_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_find_extension",
+      "target": "scratch_find_extension_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/find_extension.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_find_extension",
+      "target": "scratch_find_extension_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scratch/find_geometry_functions.js",
       "source_location": "L2",
       "weight": 1.0,
@@ -23698,6 +24719,36 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_find_openscreen_persistence",
+      "target": "scratch_find_openscreen_persistence_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_find_openscreen_persistence",
+      "target": "scratch_find_openscreen_persistence_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/find_openscreen_persistence.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_find_openscreen_persistence",
+      "target": "scratch_find_openscreen_persistence_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scratch/find_overlay_drawing.js",
       "source_location": "L2",
       "weight": 1.0,
@@ -23783,6 +24834,66 @@
       "weight": 1.0,
       "source": "scratch_find_shape_text_properties",
       "target": "scratch_find_shape_text_properties_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_view_load_project",
+      "target": "scratch_view_load_project_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_view_load_project",
+      "target": "scratch_view_load_project_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_load_project.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_view_load_project",
+      "target": "scratch_view_load_project_lines",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "scratch_view_save_project",
+      "target": "scratch_view_save_project_content",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "scratch_view_save_project",
+      "target": "scratch_view_save_project_fs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scratch/view_save_project.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "scratch_view_save_project",
+      "target": "scratch_view_save_project_lines",
       "confidence_score": 1.0
     },
     {
@@ -28874,6 +29985,1501 @@
       "weight": 1.0,
       "source": "tests_unit_contracts_test",
       "target": "src_shared_contracts_ipc_ipcresult",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_aspectratio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_cursor_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_editor_appearance_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_editor_layout_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_export_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_gif_output_dimensions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_gif_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_default_source_dimensions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_exportformat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_exportquality",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_gifframerate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_editordefaults_gifsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types_cursorvisualsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types_default_crop_region",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types_webcamlayoutpreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types_webcammaskshape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types_webcamposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/editorDefaults.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_editordefaults",
+      "target": "src_shared_editor_types_webcamsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_aspectratio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_editordefaults_aspectratio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_exportquality",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_editordefaults_exportquality",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_exportformat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_editordefaults_exportformat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_gifframerate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_editordefaults_gifframerate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_gifsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_editordefaults_gifsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_default_editor_appearance_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_default_editor_layout_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_default_export_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_editordefaults_default_gif_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L128",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_clamp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_editorprojectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L140",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_fromfileurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L124",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_isfinitenumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L361",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_migrateprojectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L104",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_normalizeblurcolor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_normalizeblurtype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L108",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_normalizecursorthemeid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L112",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_normalizeprojectmedia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_normalizetextanimation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_projecteditorstate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_projectmedia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_tofileurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_valid_blur_shapes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L352",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_projectpersistence_validateprojectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_annotationregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_clampplaybackspeed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_cropregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_default_annotation_position",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_default_annotation_size",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_default_annotation_style",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_default_blur_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_default_blur_freehand_points",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_default_figure_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_webcamlayoutpreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_webcammaskshape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_webcamposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_webcamsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence",
+      "target": "src_shared_editor_types_zoomregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectpersistence_test",
+      "target": "src_shared_editor_projectpersistence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_annotationregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_cropregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_webcamlayoutpreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_webcammaskshape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L77",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_webcamposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_webcamsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_projecteditorstate",
+      "target": "src_shared_editor_types_zoomregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L239",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_valid_blur_shapes"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L267",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_normalizetextanimation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L242",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_normalizeblurtype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L243",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_normalizeblurcolor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L299",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_normalizecursorthemeid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L365",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_migrateprojectdata",
+      "target": "src_shared_editor_projectpersistence_normalizeprojectmedia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L170",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_isfinitenumber",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L173",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_projectpersistence_clamp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectpersistence_test",
+      "target": "src_shared_editor_projectpersistence_tofileurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectpersistence_test",
+      "target": "src_shared_editor_projectpersistence_fromfileurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L366",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_migrateprojectdata",
+      "target": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/shared/editor/projectPersistence.ts",
+      "source_location": "L227",
+      "weight": 1.0,
+      "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "target": "src_shared_editor_types_clampplaybackspeed"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectpersistence_test",
+      "target": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectpersistence_test",
+      "target": "src_shared_editor_projectpersistence_validateprojectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectPersistence.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectpersistence_test",
+      "target": "src_shared_editor_projectpersistence_migrateprojectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L231",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_annotationposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L262",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_annotationregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L236",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_annotationsize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L241",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_annotationtextanimation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L250",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_annotationtextstyle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_annotationtype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L195",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_arrowdirection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L213",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_blurcolor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L222",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_blurdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L211",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_blurshape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L212",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_blurtype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L402",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_clamp",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L395",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_clampfocustodepth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L347",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_clampplaybackspeed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_computerotation3dcontainscale",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L328",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_cropregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L155",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_cursortelemetrypoint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L172",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_cursorvisualsettings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L279",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_annotation_position",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L284",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_annotation_size",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L289",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_annotation_style",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L319",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_blur_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L307",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_blur_freehand_points",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L335",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_crop_region",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L301",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_figure_data",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_default_rotation_3d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L205",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_figuredata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_getrotation3d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L387",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_getzoomscale",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_isrotation3didentity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_lerprotation3d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L342",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_playbackspeed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_rotation3d",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_rotation3dperspective",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_rotation3dpreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_rotation_3d_preset_order",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_rotation_3d_presets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L358",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_speed_options",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L351",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_speedregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_trimregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_webcamlayoutpreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_webcammaskshape",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_webcamposition",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_webcamsizepreset",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L373",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_zoom_depth_scales",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_zoomdepth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_zoomfocus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_zoomfocusmode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_zoomregion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "src_shared_editor_types",
+      "target": "src_shared_editor_types_zoomregionsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/shared/editor/types.ts",
+      "source_location": "L397",
+      "weight": 1.0,
+      "source": "src_shared_editor_types_clampfocustodepth",
+      "target": "src_shared_editor_types_clamp",
       "confidence_score": 1.0
     },
     {
@@ -43361,5 +45967,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "081d1066f7ea6a76a29c455f1eb9d0a2c2cfeceb"
+  "built_at_commit": "bb2210d9cefeb8d3d87a22ea42eb23f0af7802f1"
 }

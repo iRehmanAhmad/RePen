@@ -140,5 +140,14 @@
   "138": "DisplayManager",
   "139": "ShortcutManager",
   "140": "find_main_js_handlers.js",
-  "141": "scene.js"
+  "141": "scene.js",
+  "142": "types.ts",
+  "143": "editorDefaults.ts",
+  "144": "projectPersistence.ts",
+  "145": "syncPageStore",
+  "146": "init",
+  "147": "find_extension.js",
+  "148": "find_openscreen_persistence.js",
+  "149": "view_load_project.js",
+  "150": "view_save_project.js"
 }
