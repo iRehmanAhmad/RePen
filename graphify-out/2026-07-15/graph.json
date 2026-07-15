@@ -8130,7 +8130,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 156,
+      "community": 92,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -8330,7 +8330,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 156,
+      "community": 92,
       "norm_label": "mutex"
     },
     {
@@ -8370,7 +8370,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 156,
+      "community": 92,
       "norm_label": "vector"
     },
     {
@@ -8420,7 +8420,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 156,
+      "community": 92,
       "norm_label": "thread"
     },
     {
@@ -8440,7 +8440,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 156,
+      "community": 92,
       "norm_label": "atomic"
     },
     {
@@ -8490,7 +8490,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler",
-      "community": 91,
+      "community": 92,
       "norm_label": "cursor-sampler.cpp"
     },
     {
@@ -8500,7 +8500,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_lowlevelmouseproc",
-      "community": 91,
+      "community": 92,
       "norm_label": "lowlevelmouseproc()"
     },
     {
@@ -8510,7 +8510,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lresult",
-      "community": 91,
+      "community": 92,
       "norm_label": "lresult"
     },
     {
@@ -8520,7 +8520,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wparam",
-      "community": 91,
+      "community": 92,
       "norm_label": "wparam"
     },
     {
@@ -8530,7 +8530,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lparam",
-      "community": 91,
+      "community": 92,
       "norm_label": "lparam"
     },
     {
@@ -8540,7 +8540,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_nowms",
-      "community": 91,
+      "community": 92,
       "norm_label": "nowms()"
     },
     {
@@ -8550,7 +8550,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_writejsonline",
-      "community": 91,
+      "community": 92,
       "norm_label": "writejsonline()"
     },
     {
@@ -8560,7 +8560,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_string",
-      "community": 91,
+      "community": 92,
       "norm_label": "string"
     },
     {
@@ -8570,7 +8570,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_jsonescape",
-      "community": 91,
+      "community": 92,
       "norm_label": "jsonescape()"
     },
     {
@@ -8580,7 +8580,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_base64encode",
-      "community": 91,
+      "community": 92,
       "norm_label": "base64encode()"
     },
     {
@@ -8590,7 +8590,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_getpngclsid",
-      "community": 91,
+      "community": 92,
       "norm_label": "getpngclsid()"
     },
     {
@@ -8600,7 +8600,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "clsid",
-      "community": 91,
+      "community": 92,
       "norm_label": "clsid"
     },
     {
@@ -8610,7 +8610,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_standardcursortype",
-      "community": 91,
+      "community": 92,
       "norm_label": "standardcursortype()"
     },
     {
@@ -8620,7 +8620,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hcursor",
-      "community": 91,
+      "community": 92,
       "norm_label": "hcursor"
     },
     {
@@ -8630,7 +8630,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_detectcustomcursortype",
-      "community": 91,
+      "community": 92,
       "norm_label": "detectcustomcursortype()"
     },
     {
@@ -8640,7 +8640,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_buildassetjson",
-      "community": 91,
+      "community": 92,
       "norm_label": "buildassetjson()"
     },
     {
@@ -8650,7 +8650,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_runsamplingloop",
-      "community": 91,
+      "community": 92,
       "norm_label": "runsamplingloop()"
     },
     {
@@ -8660,7 +8660,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_hwnd",
-      "community": 91,
+      "community": 92,
       "norm_label": "hwnd"
     },
     {
@@ -8670,7 +8670,7 @@
       "source_location": "L412",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_main",
-      "community": 91,
+      "community": 92,
       "norm_label": "main()"
     },
     {
@@ -8960,7 +8960,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 156,
+      "community": 92,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -9420,7 +9420,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_fps",
-      "community": 85,
+      "community": 91,
       "norm_label": "fps"
     },
     {
@@ -9430,7 +9430,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_width",
-      "community": 85,
+      "community": 91,
       "norm_label": "width"
     },
     {
@@ -9440,7 +9440,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_height",
-      "community": 85,
+      "community": 91,
       "norm_label": "height"
     },
     {
@@ -9790,7 +9790,7 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_hasvisiblebgracontent",
-      "community": 120,
+      "community": 91,
       "norm_label": "hasvisiblebgracontent()"
     },
     {
@@ -9800,7 +9800,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_vector",
-      "community": 120,
+      "community": 91,
       "norm_label": "vector"
     },
     {
@@ -9810,7 +9810,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_byte",
-      "community": 120,
+      "community": 91,
       "norm_label": "byte"
     },
     {
@@ -9930,7 +9930,7 @@
       "source_location": "L383",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_main",
-      "community": 85,
+      "community": 91,
       "norm_label": "main()"
     },
     {
@@ -10100,7 +10100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 156,
+      "community": 92,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -10830,7 +10830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 156,
+      "community": 92,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -11320,7 +11320,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 156,
+      "community": 92,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -11730,7 +11730,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_framecallback",
-      "community": 85,
+      "community": 91,
       "norm_label": "framecallback"
     },
     {
@@ -11750,7 +11750,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_id3d11device",
-      "community": 85,
+      "community": 91,
       "norm_label": "id3d11device"
     },
     {
@@ -11760,7 +11760,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_id3d11devicecontext",
-      "community": 85,
+      "community": 91,
       "norm_label": "id3d11devicecontext"
     },
     {
@@ -11770,7 +11770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 156,
+      "community": 85,
       "norm_label": "wgc_session.h"
     },
     {
@@ -11810,7 +11810,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_setframecallback",
-      "community": 85,
+      "community": 91,
       "norm_label": "setframecallback"
     },
     {
@@ -11840,7 +11840,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 85,
+      "community": 91,
       "norm_label": "capturewidth"
     },
     {
@@ -11860,7 +11860,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_device",
-      "community": 85,
+      "community": 91,
       "norm_label": "device"
     },
     {
@@ -11870,7 +11870,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_context",
-      "community": 85,
+      "community": 91,
       "norm_label": "context"
     },
     {
@@ -17624,14 +17624,24 @@
       "norm_label": "7. \ud83d\udcf8 screenshot export workflow"
     },
     {
-      "label": "8. \ud83e\udd16 Automated Knowledge Graph & Git Verification",
+      "label": "8. \ud83c\udfa5 Recorder & Editor Post-Production",
       "file_type": "document",
       "source_file": "docs/qa-checklist.md",
       "source_location": "L42",
       "_origin": "ast",
-      "id": "docs_qa_checklist_8_automated_knowledge_graph_git_verification",
+      "id": "docs_qa_checklist_8_recorder_editor_post_production",
       "community": 19,
-      "norm_label": "8. \ud83e\udd16 automated knowledge graph & git verification"
+      "norm_label": "8. \ud83c\udfa5 recorder & editor post-production"
+    },
+    {
+      "label": "9. \ud83e\udd16 Automated Knowledge Graph & Git Verification",
+      "file_type": "document",
+      "source_file": "docs/qa-checklist.md",
+      "source_location": "L51",
+      "_origin": "ast",
+      "id": "docs_qa_checklist_9_automated_knowledge_graph_git_verification",
+      "community": 19,
+      "norm_label": "9. \ud83e\udd16 automated knowledge graph & git verification"
     },
     {
       "label": "release-template.md",
@@ -46083,7 +46093,17 @@
       "source_location": "L42",
       "weight": 1.0,
       "source": "docs_qa_checklist_repen_qa_regression_smoke_test_checklist",
-      "target": "docs_qa_checklist_8_automated_knowledge_graph_git_verification",
+      "target": "docs_qa_checklist_8_recorder_editor_post_production",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/qa-checklist.md",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "docs_qa_checklist_repen_qa_regression_smoke_test_checklist",
+      "target": "docs_qa_checklist_9_automated_knowledge_graph_git_verification",
       "confidence_score": 1.0
     },
     {
@@ -47278,5 +47298,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fc6f63c3d6102036ac8f947191f7c9a5d29bc5ee"
+  "built_at_commit": "962b2c4794d5a70ee1d64bb3c916cc85e6ae6988"
 }

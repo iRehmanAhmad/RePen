@@ -64,7 +64,7 @@ export class RecorderService extends EventEmitter {
       schemaVersion: 2,
       recordingId: Date.now(),
       outputPath: options.outputPath,
-      sourceType: options.sourceType,
+      sourceType: options.sourceType === 'screen' ? 'display' : options.sourceType,
       sourceId: options.sourceId,
       displayId: options.displayId ?? 0,
       windowHandle: options.windowHandle ?? null,

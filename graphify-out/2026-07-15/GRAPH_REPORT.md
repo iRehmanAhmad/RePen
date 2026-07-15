@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 160 files · ~118,367 words
+- 160 files · ~118,613 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1887 nodes · 2715 edges · 159 communities (148 shown, 11 thin omitted)
+- 1888 nodes · 2716 edges · 158 communities (147 shown, 11 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fc6f63c3`
+- Built from commit: `962b2c47`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -168,7 +168,6 @@
 - [[_COMMUNITY_read_pixi_setup.js|read_pixi_setup.js]]
 - [[_COMMUNITY_read_videoplayback.js|read_videoplayback.js]]
 - [[_COMMUNITY_view_pixi_init.js|view_pixi_init.js]]
-- [[_COMMUNITY_audio_sample_utils.h|audio_sample_utils.h]]
 - [[_COMMUNITY_find_ffmpeg_openscreen.js|find_ffmpeg_openscreen.js]]
 - [[_COMMUNITY_find_main_js_export.js|find_main_js_export.js]]
 
@@ -199,7 +198,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (159 total, 11 thin omitted)
+## Communities (158 total, 11 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -279,7 +278,7 @@ Nodes (10): fs, handledChannels, invokedChannels, listenedChannels, mainContent,
 
 ### Community 19 - "Overlay Ink — QA Regression & Smoke Test Checklist"
 Cohesion: 0.06
-Nodes (29): 1. ✍️ Basic Drawing & Erasing, 2. 📝 Text Note Tool, 3. ✋ Select & Move (Lasso Transformation), 4. 🌐 Background Modes & Click Ripple Halo, 5. 🔴 Laser Pointer Presentation Tool, 6. 💾 Settings & Schema Persistence (v2 Schema), 7. 📸 Screenshot Export Workflow, 8. 🤖 Automated Knowledge Graph & Git Verification (+21 more)
+Nodes (30): 1. ✍️ Basic Drawing & Erasing, 2. 📝 Text Note Tool, 3. ✋ Select & Move (Lasso Transformation), 4. 🌐 Background Modes & Click Ripple Halo, 5. 🔴 Laser Pointer Presentation Tool, 6. 💾 Settings & Schema Persistence (v2 Schema), 7. 📸 Screenshot Export Workflow, 8. 🎥 Recorder & Editor Post-Production (+22 more)
 
 ### Community 20 - "verify-dom-ids.js"
 Cohesion: 0.17
@@ -526,8 +525,8 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 85 - "syncPageStore"
-Cohesion: 0.11
-Nodes (26): IDXGIDevice, IInspectable, fps, height, width, main(), Direct3D11CaptureFramePool, FrameCallback (+18 more)
+Cohesion: 0.16
+Nodes (15): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice(), applySessionOptions (+7 more)
 
 ### Community 86 - "applyHotkeys"
 Cohesion: 0.43
@@ -550,12 +549,12 @@ Cohesion: 0.40
 Nodes (4): Additional Context, Describe Alternatives You've Considered, Describe the Proposed Solution, Is your feature request related to a problem?
 
 ### Community 91 - "main.cpp"
-Cohesion: 0.21
-Nodes (18): CLSID, HCURSOR, LPARAM, LRESULT, base64Encode(), buildAssetJson(), HWND, string (+10 more)
+Cohesion: 0.14
+Nodes (14): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), FrameCallback (+6 more)
 
 ### Community 92 - "AudioMixer"
-Cohesion: 0.07
-Nodes (57): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+49 more)
+Cohesion: 0.05
+Nodes (79): CLSID, HCURSOR, LPARAM, LRESULT, T, AudioMixer, append, beginTimeline (+71 more)
 
 ### Community 93 - "MFEncoder"
 Cohesion: 0.07
@@ -658,8 +657,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.24
-Nodes (17): BYTE, HWND, string, vector, wstring, findBool(), findDouble(), findInt() (+9 more)
+Cohesion: 0.31
+Nodes (14): HWND, string, wstring, findBool(), findDouble(), findInt(), findInt64(), findString() (+6 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -773,16 +772,12 @@ Nodes (3): content, fs, lines
 Cohesion: 0.50
 Nodes (3): content, fs, lines
 
-### Community 156 - "audio_sample_utils.h"
-Cohesion: 0.44
-Nodes (4): atomic, mutex, thread, vector
-
 ### Community 158 - "find_main_js_export.js"
 Cohesion: 0.50
 Nodes (3): content, fs, lines
 
 ## Knowledge Gaps
-- **928 isolated node(s):** `Point`, `BoardViewport`, `SceneAnnotation`, `PresentationTrackEvent`, `RecorderOptions` (+923 more)
+- **929 isolated node(s):** `Point`, `BoardViewport`, `SceneAnnotation`, `PresentationTrackEvent`, `RecorderOptions` (+924 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -793,12 +788,12 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `main()` connect `syncPageStore` to `WebcamCapture`, `WasapiLoopbackCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`?**
+- **Why does `main()` connect `main.cpp` to `WebcamCapture`, `WasapiLoopbackCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `WebcamFrameSnapshot`, `syncPageStore`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Point`, `BoardViewport`, `SceneAnnotation` to the rest of the system?**
-  _928 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _929 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.08258258258258258 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
