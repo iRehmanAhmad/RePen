@@ -150,6 +150,12 @@ Ran the full test suite (`npm test`) which verified:
   - **OpenScreen Window Classes**: Created placeholder classes for [selectorWindow.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/windows/selectorWindow.ts), [countdownWindow.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/windows/countdownWindow.ts), and [editorWindow.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/windows/editorWindow.ts).
   - **Main Services**: Implemented [state.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/state.ts) (persistence), [display.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/display.ts) (DPI/monitors), and [shortcuts.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/shortcuts.ts) (hotkey coordinator).
   - **TypeScript Compilation Configuration**: Configured [tsconfig.node.json](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/tsconfig.node.json) to output to `dist-electron` and verified that the entire TypeScript codebase type-checks and compiles successfully.
+- **Windows Native Recording Core (Phase 3)**: Ported the native C++ WGC screen capture helper and integrated its build and execution logic:
+  - **C++ Helper Import**: Copied the native C++ capture files from OpenScreen into [third_party/openscreen/wgc-capture/](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/third_party/openscreen/wgc-capture/).
+  - **Build Script Integration**: Created [build-native-helper.js](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/scripts/build-native-helper.js) utilizing Visual Studio Build Tools, Ninja, and CMake configurations to build the helper executable targets locally on Windows.
+  - **Spawning Service**: Developed [recorder.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/electron/services/recorder.ts) as a secure Electron wrapper to launch the helper processes, stream logs, write output MP4 files, and send control stdin strings (`pause`, `resume`, `stop`).
+  - **Test Verification**: Created [recorder.test.ts](file:///c:/Users/TOSHIBA/.gemini/antigravity/scratch/epic-pen-clone/tests/unit/recorder.test.ts) to verify start operations and log events, with both unit and legacy tests fully passing.
+
 
 
 
