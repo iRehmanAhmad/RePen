@@ -180,5 +180,6 @@
   "178": "native-recorder-helper.test.ts",
   "179": "selector.test.ts",
   "180": "main",
-  "181": "broadcastScene"
+  "181": "broadcastScene",
+  "182": "sessionUX.test.ts"
 }

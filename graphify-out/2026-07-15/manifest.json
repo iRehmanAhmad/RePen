@@ -400,8 +400,8 @@
     "semantic_hash": ""
   },
   "electron/services/recorder.ts": {
-    "mtime": 1784120069.734033,
-    "ast_hash": "8022438be8e2edc452b6f1f1433a278a",
+    "mtime": 1784131266.659052,
+    "ast_hash": "c30391ee0846db2d4b0d4578336990b4",
     "semantic_hash": ""
   },
   "electron/services/shortcuts.ts": {
@@ -962,6 +962,11 @@
   "src/renderer/selector.html": {
     "mtime": 1784130062.1382408,
     "ast_hash": "12c35af30a2c2e437cdbb0bb51d216db",
+    "semantic_hash": ""
+  },
+  "tests/unit/resilience.test.ts": {
+    "mtime": 1784131236.6319842,
+    "ast_hash": "e97da18992a503eb43ecc585cb6c8a3f",
     "semantic_hash": ""
   }
 }

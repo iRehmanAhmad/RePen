@@ -21,6 +21,7 @@ let lastEnumeratedSources = new Map<string, any>();
 
 let recordingTimer: NodeJS.Timeout | null = null;
 let recordingSeconds = 0;
+let lastStartOptions: any = null;
 
 function broadcastRecordingTimer(timeStr: string) {
   for (const overlay of windowRegistry.getOverlays()) {
@@ -232,6 +233,7 @@ function bootstrap() {
     if (!isTrustedRecordingSender(event)) {
       return { success: false, error: 'This window is not allowed to control recording.' };
     }
+    lastStartOptions = options;
     try {
       const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
       const outputPath = options.outputPath || defaultPath;
@@ -344,6 +346,23 @@ function bootstrap() {
     await presentationTrackService.discardTrack();
     broadcastRecordingState({ isRecording: false, isPaused: false, phase: 'idle' });
     return { success: true };
+  });
+
+  ipcMain.handle('recording:restart', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+    stopRecordingTimer();
+    await recorderService.cancel();
+    await presentationTrackService.discardTrack();
+
+    if (lastStartOptions) {
+      const selectedDisplay = screen.getAllDisplays().find(d => d.id === lastStartOptions.displayId) || screen.getPrimaryDisplay();
+      const win = windowRegistry.createCountdown(selectedDisplay);
+      win.getWindow()?.show();
+      broadcastRecordingState({ isRecording: false, isPaused: false, phase: 'countdown' });
+      return { success: true };
+    }
+    broadcastRecordingState({ isRecording: false, isPaused: false, phase: 'idle' });
+    return { success: false, error: 'No active session options found to restart.' };
   });
 
   ipcMain.handle('recording:get-state', async (event) => {

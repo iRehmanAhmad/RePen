@@ -61,6 +61,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   resumeRecording: () => ipcRenderer.invoke('recording:resume'),
   stopRecording: () => ipcRenderer.invoke('recording:stop'),
   cancelRecording: () => ipcRenderer.invoke('recording:cancel'),
+  restartRecording: () => ipcRenderer.invoke('recording:restart'),
   getRecordingState: () => ipcRenderer.invoke('recording:get-state'),
   getRecordingCapabilities: () => ipcRenderer.invoke('recording:get-capabilities'),
   onRecordingStateChanged: (callback) => on('recording:state-changed', callback),

@@ -2088,6 +2088,8 @@ function getShortcutActions() {
     prevPage: () => prevPage(),
     nextPage: () => nextPage(),
     pasteImage: () => pasteClipboardImage(),
+    toggleRecording: () => handleToggleRecordingShortcut(),
+    pauseRecording: () => handlePauseRecordingShortcut(),
   };
 }
 
@@ -2272,6 +2274,28 @@ try {
 
 let recordingTimer = null;
 let recordingSeconds = 0;
+let currentRecordingPhase = 'idle';
+let preRecordingState = null;
+let lastStartOptions = null;
+let lastStartEvent = null;
+
+function savePresenterState() {
+  preRecordingState = {
+    activeTool: state.activeTool,
+    passThrough: state.passThrough,
+    backgroundMode: state.backgroundMode,
+  };
+}
+
+function restorePresenterState() {
+  if (preRecordingState) {
+    setTool(preRecordingState.activeTool);
+    setPassThrough(preRecordingState.passThrough);
+    setBackgroundMode(preRecordingState.backgroundMode);
+    preRecordingState = null;
+  }
+}
+
 
 function startRecordingTimer(event) {
   recordingSeconds = 0;
@@ -2294,13 +2318,167 @@ function stopRecordingTimer() {
   }
 }
 
+async function handleStartRecording(options) {
+  if (!recorderService) {
+    throw new Error('RecorderService is not available.');
+  }
+  lastStartOptions = options;
+  savePresenterState();
+  currentRecordingPhase = 'starting';
+  broadcastRecordingState({ isRecording: false, isPaused: false });
+
+  const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
+  const outputPath = options.outputPath || defaultPath;
+  
+  await recorderService.start({
+    sourceId: options.sourceId || 'screen:0',
+    sourceType: options.sourceType || 'screen',
+    windowHandle: options.windowHandle || null,
+    displayId: options.displayId || 0,
+    width: options.width || 1920,
+    height: options.height || 1080,
+    fps: options.fps || 30,
+    captureSystemAudio: options.captureSystemAudio ?? true,
+    captureMic: options.captureMic ?? false,
+    microphoneDeviceId: options.microphoneDeviceId || null,
+    webcamEnabled: options.webcamEnabled ?? false,
+    webcamDeviceId: options.webcamDeviceId || null,
+    captureCursor: options.captureCursor ?? true,
+    outputPath: outputPath,
+    webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
+  });
+  
+  if (presentationTrackService) {
+    presentationTrackService.startTrack(
+      outputPath,
+      annotations,
+      state.backgroundMode,
+      state.boardColor || '#ffffff',
+      state.boardViewport || { panX: 0, panY: 0, zoom: 1 }
+    );
+  }
+  
+  const win = toolbarWindow || (overlayWindows.size > 0 ? overlayWindows.values().next().value : null);
+  if (win) {
+    startRecordingTimer(win);
+  }
+  currentRecordingPhase = 'recording';
+  broadcastRecordingState({ isRecording: true, isPaused: false });
+}
+
+async function handleStopRecording() {
+  if (!recorderService) throw new Error('RecorderService is not available.');
+  currentRecordingPhase = 'finalizing';
+  broadcastRecordingState({ isRecording: true, isPaused: false });
+  stopRecordingTimer();
+
+  const outputPath = await recorderService.stop();
+  if (presentationTrackService) {
+    presentationTrackService.stopTrack();
+  }
+  currentRecordingPhase = 'completed';
+  broadcastRecordingState({ isRecording: false, isPaused: false });
+  currentRecordingPhase = 'idle';
+  restorePresenterState();
+  return outputPath;
+}
+
+async function handleCancelRecording() {
+  currentRecordingPhase = 'finalizing';
+  broadcastRecordingState({ isRecording: true, isPaused: false });
+  stopRecordingTimer();
+  if (recorderService) {
+    await recorderService.cancel();
+  }
+  if (presentationTrackService) {
+    presentationTrackService.cancelTrack();
+  }
+  currentRecordingPhase = 'idle';
+  broadcastRecordingState({ isRecording: false, isPaused: false });
+  restorePresenterState();
+}
+
+async function handlePauseRecording() {
+  if (!recorderService) return;
+  await recorderService.pause();
+  if (presentationTrackService) {
+    presentationTrackService.pauseTrack();
+  }
+  currentRecordingPhase = 'paused';
+  broadcastRecordingState({ isRecording: true, isPaused: true });
+}
+
+async function handleResumeRecording() {
+  if (!recorderService) return;
+  await recorderService.resume();
+  if (presentationTrackService) {
+    presentationTrackService.resumeTrack();
+  }
+  currentRecordingPhase = 'recording';
+  broadcastRecordingState({ isRecording: true, isPaused: false });
+}
+
+async function handleRestartRecording() {
+  if (!recorderService) throw new Error('RecorderService is not available.');
+  stopRecordingTimer();
+  if (presentationTrackService) {
+    presentationTrackService.cancelTrack();
+  }
+  await recorderService.cancel();
+  
+  if (lastStartOptions) {
+    currentRecordingPhase = 'countdown';
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+    createCountdownWindow(lastStartOptions.displayId || 0);
+    if (countdownWindow && !countdownWindow.isDestroyed()) {
+      countdownWindow.show();
+    }
+  } else {
+    currentRecordingPhase = 'idle';
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+    restorePresenterState();
+  }
+}
+
+async function handleToggleRecordingShortcut() {
+  try {
+    if (['recording', 'paused'].includes(currentRecordingPhase)) {
+      await handleStopRecording();
+    } else if (currentRecordingPhase === 'idle' || currentRecordingPhase === 'selecting') {
+      if (lastStartOptions) {
+        await handleStartRecording(lastStartOptions);
+      } else {
+        showSelectorWindow();
+      }
+    }
+  } catch (err) {
+    console.error('Failed to toggle recording via shortcut:', err);
+  }
+}
+
+async function handlePauseRecordingShortcut() {
+  try {
+    if (currentRecordingPhase === 'recording') {
+      await handlePauseRecording();
+    } else if (currentRecordingPhase === 'paused') {
+      await handleResumeRecording();
+    }
+  } catch (err) {
+    console.error('Failed to pause/resume recording via shortcut:', err);
+  }
+}
+
 ipcMain.handle('recording:open-setup', async () => {
+  currentRecordingPhase = 'selecting';
   showSelectorWindow();
+  broadcastRecordingState({ isRecording: false, isPaused: false });
   return { success: true };
 });
 
 ipcMain.handle('recording:close-setup', async () => {
+  currentRecordingPhase = 'idle';
   hideSelectorWindow();
+  broadcastRecordingState({ isRecording: false, isPaused: false });
   return { success: true };
 });
 
@@ -2367,17 +2545,21 @@ ipcMain.handle('recording:select-directory', async () => {
 });
 
 ipcMain.handle('recording:start-countdown', async (event, { displayId, seconds }) => {
+  currentRecordingPhase = 'countdown';
   createCountdownWindow(displayId);
   if (countdownWindow && !countdownWindow.isDestroyed()) {
     countdownWindow.show();
   }
+  broadcastRecordingState({ isRecording: false, isPaused: false });
   return { success: true };
 });
 
 ipcMain.handle('recording:close-countdown', async () => {
+  currentRecordingPhase = 'starting';
   if (countdownWindow && !countdownWindow.isDestroyed()) {
     countdownWindow.close();
   }
+  broadcastRecordingState({ isRecording: false, isPaused: false });
   return { success: true };
 });
 
@@ -2386,6 +2568,12 @@ ipcMain.handle('recording:start', async (event, options) => {
     return { success: false, error: 'RecorderService is not available.' };
   }
   try {
+    lastStartOptions = options;
+    lastStartEvent = event;
+    savePresenterState();
+    currentRecordingPhase = 'starting';
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+
     const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
     const outputPath = options.outputPath || defaultPath;
     
@@ -2418,19 +2606,25 @@ ipcMain.handle('recording:start', async (event, options) => {
     }
     
     startRecordingTimer(event);
+    currentRecordingPhase = 'recording';
     broadcastRecordingState({ isRecording: true, isPaused: false });
     return { success: true };
   } catch (err) {
+    currentRecordingPhase = 'failed';
+    broadcastRecordingState({ isRecording: false, isPaused: false, error: err.message || String(err) });
+    currentRecordingPhase = 'idle';
+    restorePresenterState();
     return { success: false, error: err.message || String(err) };
   }
 });
 
 ipcMain.handle('recording:pause', async () => {
   if (recorderService) {
-    recorderService.pause();
+    await recorderService.pause();
     if (presentationTrackService) {
       presentationTrackService.pauseTrack();
     }
+    currentRecordingPhase = 'paused';
     broadcastRecordingState({ isRecording: true, isPaused: true });
   }
   return { success: true };
@@ -2438,10 +2632,11 @@ ipcMain.handle('recording:pause', async () => {
 
 ipcMain.handle('recording:resume', async () => {
   if (recorderService) {
-    recorderService.resume();
+    await recorderService.resume();
     if (presentationTrackService) {
       presentationTrackService.resumeTrack();
     }
+    currentRecordingPhase = 'recording';
     broadcastRecordingState({ isRecording: true, isPaused: false });
   }
   return { success: true };
@@ -2450,32 +2645,70 @@ ipcMain.handle('recording:resume', async () => {
 ipcMain.handle('recording:stop', async () => {
   if (!recorderService) return { success: false, error: 'RecorderService is not available.' };
   try {
+    currentRecordingPhase = 'finalizing';
+    broadcastRecordingState({ isRecording: true, isPaused: false });
     stopRecordingTimer();
+
     const outputPath = await recorderService.stop();
     if (presentationTrackService) {
       presentationTrackService.stopTrack();
     }
+    currentRecordingPhase = 'completed';
     broadcastRecordingState({ isRecording: false, isPaused: false });
+    currentRecordingPhase = 'idle';
+    restorePresenterState();
     return { success: true, outputPath };
   } catch (err) {
     if (presentationTrackService) {
       presentationTrackService.stopTrack();
     }
-    broadcastRecordingState({ isRecording: false, isPaused: false });
+    currentRecordingPhase = 'failed';
+    broadcastRecordingState({ isRecording: false, isPaused: false, error: err.message || String(err) });
+    currentRecordingPhase = 'idle';
+    restorePresenterState();
     return { success: false, error: err.message || String(err) };
   }
 });
 
 ipcMain.handle('recording:cancel', async () => {
+  currentRecordingPhase = 'finalizing';
+  broadcastRecordingState({ isRecording: true, isPaused: false });
   stopRecordingTimer();
   if (recorderService) {
-    recorderService.cancel();
+    await recorderService.cancel();
   }
   if (presentationTrackService) {
     presentationTrackService.cancelTrack();
   }
+  currentRecordingPhase = 'idle';
   broadcastRecordingState({ isRecording: false, isPaused: false });
+  restorePresenterState();
   return { success: true };
+});
+
+ipcMain.handle('recording:restart', async () => {
+  if (!recorderService) return { success: false, error: 'RecorderService is not available.' };
+  stopRecordingTimer();
+  if (presentationTrackService) {
+    presentationTrackService.cancelTrack();
+  }
+  await recorderService.cancel();
+  
+  if (lastStartOptions && lastStartEvent) {
+    currentRecordingPhase = 'countdown';
+    broadcastRecordingState({ isRecording: false, isPaused: false });
+    // Trigger countdown overlay
+    createCountdownWindow(lastStartOptions.displayId || 0);
+    if (countdownWindow && !countdownWindow.isDestroyed()) {
+      countdownWindow.show();
+    }
+    return { success: true };
+  }
+  
+  currentRecordingPhase = 'idle';
+  broadcastRecordingState({ isRecording: false, isPaused: false });
+  restorePresenterState();
+  return { success: false, error: 'No active session options found to restart.' };
 });
 
 ipcMain.handle('recording:get-state', async () => {
@@ -3085,8 +3318,84 @@ ipcMain.handle('settings:open', () => {
   return { ok: true };
 });
 
+function checkInterruptedSessions() {
+  if (process.env.NODE_ENV === 'test' || !app || typeof app.getPath !== 'function' || !dialog || typeof dialog.showMessageBoxSync !== 'function') {
+    return;
+  }
+  const videosDir = app.getPath('videos');
+  try {
+    if (!fs.existsSync(videosDir)) return;
+    const files = fs.readdirSync(videosDir);
+    const manifests = files.filter(f => f.endsWith('.session.json'));
+    
+    for (const file of manifests) {
+      const manifestPath = path.join(videosDir, file);
+      try {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+        if (manifest.status === 'interrupted') {
+          const result = dialog.showMessageBoxSync({
+            type: 'warning',
+            title: 'Interrupted Recording Detected',
+            message: 'RePen detected a recording session that was interrupted or crashed.',
+            detail: `File: ${path.basename(manifest.outputPath || '')}`,
+            buttons: ['Recover', 'Reveal in Explorer', 'Discard'],
+            defaultId: 0,
+            cancelId: 2,
+          });
+
+          if (result === 0) {
+            const mp4Path = manifest.outputPath;
+            if (mp4Path && fs.existsSync(mp4Path)) {
+              fs.unlinkSync(manifestPath);
+              dialog.showMessageBoxSync({
+                type: 'info',
+                title: 'Recovery Complete',
+                message: 'Recording has been recovered successfully.',
+              });
+            } else {
+              dialog.showMessageBoxSync({
+                type: 'error',
+                title: 'Recovery Failed',
+                message: 'The partial recording file could not be found.',
+              });
+              fs.unlinkSync(manifestPath);
+            }
+          } else if (result === 1) {
+            const mp4Path = manifest.outputPath;
+            if (mp4Path && fs.existsSync(mp4Path)) {
+              require('electron').shell.showItemInFolder(mp4Path);
+            } else {
+              require('electron').shell.openPath(videosDir);
+            }
+          } else {
+            const mp4Path = manifest.outputPath;
+            if (mp4Path && fs.existsSync(mp4Path)) {
+              fs.unlinkSync(mp4Path);
+            }
+            const webcamPath = manifest.webcamOutputPath;
+            if (webcamPath && fs.existsSync(webcamPath)) {
+              fs.unlinkSync(webcamPath);
+            }
+            fs.unlinkSync(manifestPath);
+            dialog.showMessageBoxSync({
+              type: 'info',
+              title: 'Session Discarded',
+              message: 'The partial recording assets have been deleted.',
+            });
+          }
+        }
+      } catch (e) {
+        console.error('Failed to parse or recover manifest:', e);
+      }
+    }
+  } catch (err) {
+    console.error('Error scanning for interrupted sessions:', err);
+  }
+}
+
 app.whenReady().then(() => {
   init();
+  checkInterruptedSessions();
 
   app.on('activate', () => {
     if (toolbarWindow && toolbarWindow.isDestroyed()) {
