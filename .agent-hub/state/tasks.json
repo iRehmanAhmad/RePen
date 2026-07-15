@@ -198,6 +198,17 @@
       "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260711-161015-simplify-settings-layout-and-remove-customize-he.md",
       "createdAt": "2026-07-11T16:10:15.674Z",
       "updatedAt": "2026-07-11T16:10:22.925Z"
+    },
+    {
+      "id": "20260715-100737-integrate-full-openscreen-feature-set-into-repen",
+      "title": "Integrate full OpenScreen feature set into RePen",
+      "phase": "implementation",
+      "owner": "antigravity",
+      "implementer": "antigravity",
+      "reviewer": "codex",
+      "file": "C:\\Users\\TOSHIBA\\.gemini\\antigravity\\scratch\\epic-pen-clone\\.agent-hub\\tasks\\20260715-100737-integrate-full-openscreen-feature-set-into-repen.md",
+      "createdAt": "2026-07-15T10:07:37.272Z",
+      "updatedAt": "2026-07-15T10:24:24.977Z"
     }
   ]
 }
