@@ -118,7 +118,8 @@ function bootstrap() {
     return senderWindow === windowRegistry.getToolbar()?.getWindow() || 
            senderWindow === windowRegistry.getSettings()?.getWindow() ||
            senderWindow === windowRegistry.getSelector()?.getWindow() ||
-           senderWindow === windowRegistry.getCountdown()?.getWindow();
+           senderWindow === windowRegistry.getCountdown()?.getWindow() ||
+           senderWindow === windowRegistry.getEditor()?.getWindow();
   };
 
   const handleRecordingFailure = async (error: unknown) => {
@@ -152,6 +153,21 @@ function bootstrap() {
 
   ipcMain.handle('recording:close-setup', async () => {
     windowRegistry.destroySelector();
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:open-editor', async (_, initialPath = null) => {
+    const win = windowRegistry.createEditor();
+    if (initialPath) {
+      // Pass the path in the load URL or via message
+      win.getWindow()?.webContents.send('editor:load-project', initialPath);
+    }
+    win.getWindow()?.show();
+    return { success: true };
+  });
+
+  ipcMain.handle('recording:close-editor', async () => {
+    windowRegistry.destroyEditor();
     return { success: true };
   });
 

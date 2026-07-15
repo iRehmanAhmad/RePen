@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 182 files · ~133,050 words
+- 183 files · ~134,235 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2153 nodes · 3130 edges · 182 communities (170 shown, 12 thin omitted)
+- 2165 nodes · 3166 edges · 183 communities (171 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 53 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `286f71d1`
+- Built from commit: `811fc12e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -221,11 +221,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (182 total, 12 thin omitted)
+## Communities (183 total, 12 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
-Nodes (28): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, buildPdfExportHtml(), ccw(), DEFAULT_STATE, desktopPage, erasePath(), eraseStrokeSegments() (+20 more)
+Nodes (30): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, buildPdfExportHtml(), ccw(), createTray(), createTrayIcon(), DEFAULT_STATE, desktopPage (+22 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.12
@@ -536,12 +536,12 @@ Cohesion: 0.29
 Nodes (6): 20260711-181000 Tray Cursor Settings Polish, Analysis, Handoff, Intake, Plan, Verification
 
 ### Community 82 - "19. Security Model"
-Cohesion: 0.21
-Nodes (12): autoArchiveCurrentSession(), cycleBackgroundMode(), exportPdf(), loadSession(), loadSessionFromFile(), newSession(), saveSession(), setBackgroundMode() (+4 more)
+Cohesion: 0.16
+Nodes (22): autoArchiveCurrentSession(), broadcastScene(), clearScene(), cycleBackgroundMode(), exportPdf(), getShortcutActions(), loadSession(), loadSessionFromFile() (+14 more)
 
 ### Community 83 - "broadcastState"
-Cohesion: 0.31
-Nodes (9): createOverlayWindows(), createTray(), createTrayIcon(), hideOverlayWindows(), init(), rebuildWindows(), showOverlayWindows(), takeScreenshot() (+1 more)
+Cohesion: 0.21
+Nodes (14): broadcastRecordingState(), handleCancelRecording(), handlePauseRecording(), handlePauseRecordingShortcut(), handleRestartRecording(), handleResumeRecording(), handleStartRecording(), handleStopRecording() (+6 more)
 
 ### Community 84 - "init"
 Cohesion: 0.10
@@ -552,12 +552,12 @@ Cohesion: 0.21
 Nodes (18): CLSID, HCURSOR, LPARAM, LRESULT, base64Encode(), buildAssetJson(), HWND, string (+10 more)
 
 ### Community 86 - "applyHotkeys"
-Cohesion: 0.43
-Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
+Cohesion: 0.25
+Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), getStateFilePath(), loadState(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys() (+3 more)
 
 ### Community 87 - "createToolbarWindow"
-Cohesion: 0.23
-Nodes (12): createAppIcon(), createCountdownWindow(), createOverlayWindow(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow(), getShortcutActions(), pasteClipboardImage() (+4 more)
+Cohesion: 0.20
+Nodes (16): createAppIcon(), createCountdownWindow(), createOverlayWindow(), createOverlayWindows(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow(), hideOverlayWindows() (+8 more)
 
 ### Community 88 - "19. Security Model"
 Cohesion: 0.29
@@ -577,7 +577,7 @@ Nodes (16): Acceptance Checks, Complete OpenScreen integration after recorder fo
 
 ### Community 92 - "AudioMixer"
 Cohesion: 0.07
-Nodes (61): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+53 more)
+Nodes (56): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+48 more)
 
 ### Community 93 - "MFEncoder"
 Cohesion: 0.07
@@ -597,7 +597,7 @@ Nodes (13): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, optio
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
-Nodes (40): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+32 more)
+Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
 Cohesion: 0.08
@@ -672,8 +672,8 @@ Cohesion: 0.20
 Nodes (10): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, timestampHns (+2 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.29
-Nodes (10): getAppState(), getDockSide(), getStateFilePath(), loadState(), nextPage(), normalizeBoardViewport(), prevPage(), readPersistedState() (+2 more)
+Cohesion: 0.33
+Nodes (9): getAppState(), getBootstrapData(), getDockSide(), getSceneState(), nextPage(), normalizeBoardViewport(), prevPage(), setBoardViewport() (+1 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -744,8 +744,8 @@ Cohesion: 0.29
 Nodes (15): enumerateAVDevices(), init(), loadSystemInfo(), refreshSources(), renderSources(), setupEventListeners(), startMicMeter(), startRecordingFlow() (+7 more)
 
 ### Community 138 - "DisplayManager"
-Cohesion: 0.17
-Nodes (15): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setColor(), setExportIncludeBackground(), setOpacity() (+7 more)
+Cohesion: 0.16
+Nodes (16): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setClickHalo(), setColor(), setExportIncludeBackground() (+8 more)
 
 ### Community 139 - "ShortcutManager"
 Cohesion: 0.22
@@ -880,12 +880,12 @@ Cohesion: 0.67
 Nodes (3): Exit gate, Implementation, Phase 8 — Product completeness
 
 ### Community 180 - "main"
-Cohesion: 0.14
-Nodes (14): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+6 more)
+Cohesion: 0.17
+Nodes (12): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+4 more)
 
 ### Community 181 - "broadcastScene"
-Cohesion: 0.27
-Nodes (12): broadcastScene(), clearScene(), deepClone(), getBootstrapData(), getSceneState(), pushUndoSnapshot(), recordSceneChange(), redo() (+4 more)
+Cohesion: 0.38
+Nodes (5): atomic, condition_variable, mutex, thread, vector
 
 ## Knowledge Gaps
 - **1044 isolated node(s):** `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION`, `Point`, `PresentationBounds` (+1039 more)
@@ -896,16 +896,16 @@ Nodes (12): broadcastScene(), clearScene(), deepClone(), getBootstrapData(), get
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Why does `migrateProjectData()` connect `projectPersistence.ts` to `main.ts`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **Why does `main()` connect `main` to `WebcamCapture`, `wasapi_loopback_capture.cpp`, `monitor_utils.cpp`, `ShortcutManager`, `WebcamFrameSnapshot`, `resolveInputFormat`, `AudioMixer`, `MFEncoder`, `WgcSession`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+- **Why does `DirectShowWebcamCapture` connect `DirectShowWebcamCapture` to `WebcamCapture`, `impl_`, `dshow_webcam_capture.cpp`, `initialize`, `WebcamFrameSnapshot`, `broadcastScene`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` to the rest of the system?**
   _1044 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07827260458839407 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.11932773109243698 - nodes in this community are weakly interconnected._

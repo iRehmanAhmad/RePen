@@ -90,6 +90,7 @@ let toolbarWindow = null;
 let settingsWindow = null;
 let selectorWindow = null;
 let countdownWindow = null;
+let editorWindow = null;
 const overlayWindows = new Map();
 let state = { ...DEFAULT_STATE };
 let pages = [{ annotations: [], undoStack: [], redoStack: [] }];
@@ -346,6 +347,7 @@ function getBootstrapData(win) {
     appState: getAppState(),
     scene: getSceneState(),
     display,
+    projectPath: win === editorWindow ? editorInitialPath : null,
   };
 }
 
@@ -864,6 +866,65 @@ function createCountdownWindow(displayId) {
 
   return countdownWindow;
 }
+
+let editorInitialPath = null;
+
+function createEditorWindow(initialPath = null) {
+  if (editorWindow && !editorWindow.isDestroyed()) {
+    if (initialPath) {
+      editorInitialPath = initialPath;
+      editorWindow.webContents.send('editor:load-project', initialPath);
+    }
+    editorWindow.show();
+    editorWindow.focus();
+    return editorWindow;
+  }
+
+  editorInitialPath = initialPath;
+
+  const primary = screen.getPrimaryDisplay();
+  const width = 1280;
+  const height = 800;
+  const x = Math.round(primary.bounds.x + (primary.bounds.width - width) / 2);
+  const y = Math.round(primary.bounds.y + (primary.bounds.height - height) / 2);
+
+  editorWindow = new BrowserWindow({
+    x,
+    y,
+    width,
+    height,
+    frame: true,
+    resizable: true,
+    minimizable: true,
+    maximizable: true,
+    show: false,
+    icon: createAppIcon(),
+    webPreferences: {
+      preload: path.join(__dirname, 'src', 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: false,
+    },
+  });
+
+  const query = {};
+  if (initialPath) {
+    query.projectPath = initialPath;
+  }
+  editorWindow.loadURL(windowUrl('editor.html', query));
+
+  editorWindow.once('ready-to-show', () => {
+    editorWindow.show();
+  });
+
+  editorWindow.on('closed', () => {
+    editorWindow = null;
+    editorInitialPath = null;
+  });
+
+  return editorWindow;
+}
+
 
 
 function showSettingsWindow() {
@@ -2479,6 +2540,18 @@ ipcMain.handle('recording:close-setup', async () => {
   currentRecordingPhase = 'idle';
   hideSelectorWindow();
   broadcastRecordingState({ isRecording: false, isPaused: false });
+  return { success: true };
+});
+
+ipcMain.handle('recording:open-editor', async (_, initialPath = null) => {
+  createEditorWindow(initialPath);
+  return { success: true };
+});
+
+ipcMain.handle('recording:close-editor', async () => {
+  if (editorWindow && !editorWindow.isDestroyed()) {
+    editorWindow.close();
+  }
   return { success: true };
 });
 
