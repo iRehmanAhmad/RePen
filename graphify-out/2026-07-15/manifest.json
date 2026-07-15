@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "walkthrough.md": {
-    "mtime": 1784116914.0509763,
-    "ast_hash": "1dc3472b49865a010b40b6e90e4e070f",
+    "mtime": 1784117927.9016273,
+    "ast_hash": "1b4e390ca9d9865574aace736432e6fa",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260708-125652-fix-main-icon-click-drag-behavior.md": {
@@ -782,6 +782,46 @@
   "tests/unit/projectPersistence.test.ts": {
     "mtime": 1784116703.1384552,
     "ast_hash": "bb93bf9bce5d3a63ea85efad076f80fd",
+    "semantic_hash": ""
+  },
+  "scratch/find_pixi_init.js": {
+    "mtime": 1784117327.2086415,
+    "ast_hash": "ab646e05c9fc9e5e9d18d4a0ef683338",
+    "semantic_hash": ""
+  },
+  "scratch/read_pixi_setup.js": {
+    "mtime": 1784117317.2812524,
+    "ast_hash": "f3c6f92b1e85c74840cf3f99c297c434",
+    "semantic_hash": ""
+  },
+  "scratch/read_videoplayback.js": {
+    "mtime": 1784117300.1859603,
+    "ast_hash": "09e94a2a8670bc90dfc7f313fc7362e7",
+    "semantic_hash": ""
+  },
+  "scratch/view_pixi_init.js": {
+    "mtime": 1784117339.4767253,
+    "ast_hash": "184808f8173d2009f719a1b3d0b7d730",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/editor/cursorTelemetryRenderer.ts": {
+    "mtime": 1784117823.1470942,
+    "ast_hash": "ca141356ffc9c2f3acd8629358f3b3bb",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/editor/playbackCoordinator.ts": {
+    "mtime": 1784117817.0986948,
+    "ast_hash": "2c739965feab9371ca3aa6b4792067d0",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/editor/videoPlaybackSync.tsx": {
+    "mtime": 1784117831.8689988,
+    "ast_hash": "de471b9525fe11ad0de6b915bf135854",
+    "semantic_hash": ""
+  },
+  "tests/unit/playbackCoordinator.test.ts": {
+    "mtime": 1784117837.6701083,
+    "ast_hash": "4f4a855ff447fc29c0052732eb660dd6",
     "semantic_hash": ""
   }
 }

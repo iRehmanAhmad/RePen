@@ -149,5 +149,10 @@
   "147": "find_extension.js",
   "148": "find_openscreen_persistence.js",
   "149": "view_load_project.js",
-  "150": "view_save_project.js"
+  "150": "view_save_project.js",
+  "151": "PlaybackCoordinator",
+  "152": "find_pixi_init.js",
+  "153": "read_pixi_setup.js",
+  "154": "read_videoplayback.js",
+  "155": "view_pixi_init.js"
 }
