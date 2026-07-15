@@ -1,6 +1,7 @@
 node_modules/
 dist/
 dist-renderer/
+dist-electron/
 out/
 build/
 *.log

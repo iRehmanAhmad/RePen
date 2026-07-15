@@ -14,6 +14,9 @@
     "vite:dev": "vite",
     "vite:build": "vite build",
     "ts:check": "tsc --noEmit",
+    "electron:build": "tsc -p tsconfig.node.json",
+    "build:all": "npm run vite:build && npm run electron:build",
+    "start:new": "npm run build:all && electron dist-electron/main.js",
     "dist": "npx electron-builder --win"
   },
   "build": {
