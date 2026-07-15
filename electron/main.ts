@@ -6,6 +6,7 @@ import { ShortcutManager } from './services/shortcuts';
 import { WindowRegistry } from './windows/registry';
 
 import { RecorderService } from './services/recorder';
+import { PresentationTrackService } from './services/presentationTrack';
 import path from 'path';
 
 // Global singleton instances
@@ -14,6 +15,7 @@ let displayManager: DisplayManager;
 let shortcutManager: ShortcutManager;
 let windowRegistry: WindowRegistry;
 let recorderService: RecorderService;
+let presentationTrackService: PresentationTrackService;
 
 let recordingTimer: NodeJS.Timeout | null = null;
 let recordingSeconds = 0;
@@ -89,6 +91,7 @@ function bootstrap() {
   shortcutManager = new ShortcutManager();
   windowRegistry = new WindowRegistry();
   recorderService = new RecorderService();
+  presentationTrackService = new PresentationTrackService();
 
   ipcMain.handle('recording:start', async (event, options) => {
     try {
@@ -113,6 +116,15 @@ function bootstrap() {
         webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
       });
       
+      const appState = stateManager.getState();
+      presentationTrackService.startTrack(
+        outputPath,
+        [],
+        appState.backgroundMode || 'transparent',
+        appState.boardColor || '#ffffff',
+        appState.boardViewport || { panX: 0, panY: 0, zoom: 1 }
+      );
+      
       startRecordingTimer(event);
       broadcastRecordingState({ isRecording: true, isPaused: false });
       return { success: true };
@@ -123,12 +135,14 @@ function bootstrap() {
 
   ipcMain.handle('recording:pause', async () => {
     recorderService.pause();
+    presentationTrackService.pauseTrack();
     broadcastRecordingState({ isRecording: true, isPaused: true });
     return { success: true };
   });
 
   ipcMain.handle('recording:resume', async () => {
     recorderService.resume();
+    presentationTrackService.resumeTrack();
     broadcastRecordingState({ isRecording: true, isPaused: false });
     return { success: true };
   });
@@ -137,9 +151,11 @@ function bootstrap() {
     try {
       stopRecordingTimer();
       const outputPath = await recorderService.stop();
+      presentationTrackService.stopTrack();
       broadcastRecordingState({ isRecording: false, isPaused: false });
       return { success: true, outputPath };
     } catch (err: any) {
+      presentationTrackService.stopTrack();
       broadcastRecordingState({ isRecording: false, isPaused: false });
       return { success: false, error: err.message || String(err) };
     }
@@ -148,6 +164,7 @@ function bootstrap() {
   ipcMain.handle('recording:cancel', async () => {
     stopRecordingTimer();
     recorderService.cancel();
+    presentationTrackService.cancelTrack();
     broadcastRecordingState({ isRecording: false, isPaused: false });
     return { success: true };
   });

@@ -1714,11 +1714,32 @@ function erasePath(payload) {
 
   recordSceneChange(() => {
     const nextAnnotations = [];
+    const deletedIds = [];
+    const addedSegments = [];
     for (const stroke of annotations) {
       const segments = eraseStrokeSegments(stroke, points, radius);
-      nextAnnotations.push(...segments);
+      if (segments.length === 0) {
+        deletedIds.push(stroke.id);
+      } else if (segments.length === 1 && segments[0] === stroke) {
+        nextAnnotations.push(stroke);
+      } else {
+        deletedIds.push(stroke.id);
+        for (const seg of segments) {
+          nextAnnotations.push(seg);
+          addedSegments.push(seg);
+        }
+      }
     }
     annotations = nextAnnotations;
+
+    if (presentationTrackService && presentationTrackService.isRecording()) {
+      if (deletedIds.length > 0) {
+        presentationTrackService.addEvent('annotation/delete', { annotationIds: deletedIds });
+      }
+      for (const added of addedSegments) {
+        presentationTrackService.addEvent('annotation/add', { annotation: added });
+      }
+    }
   });
 }
 
@@ -2111,11 +2132,14 @@ function init() {
 }
 
 let recorderService = null;
+let presentationTrackService = null;
 try {
   const { RecorderService } = require('./dist-electron/services/recorder.js');
+  const { PresentationTrackService } = require('./dist-electron/services/presentationTrack.js');
   recorderService = new RecorderService();
+  presentationTrackService = new PresentationTrackService();
 } catch (err) {
-  console.error('Failed to initialize RecorderService in legacy main.js:', err);
+  console.error('Failed to initialize RecorderService/PresentationTrackService in legacy main.js:', err);
 }
 
 let recordingTimer = null;
@@ -2168,6 +2192,16 @@ ipcMain.handle('recording:start', async (event, options) => {
       webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
     });
     
+    if (presentationTrackService) {
+      presentationTrackService.startTrack(
+        outputPath,
+        annotations,
+        state.backgroundMode,
+        state.boardColor || '#ffffff',
+        state.boardViewport || { panX: 0, panY: 0, zoom: 1 }
+      );
+    }
+    
     startRecordingTimer(event);
     broadcastRecordingState({ isRecording: true, isPaused: false });
     return { success: true };
@@ -2179,6 +2213,9 @@ ipcMain.handle('recording:start', async (event, options) => {
 ipcMain.handle('recording:pause', async () => {
   if (recorderService) {
     recorderService.pause();
+    if (presentationTrackService) {
+      presentationTrackService.pauseTrack();
+    }
     broadcastRecordingState({ isRecording: true, isPaused: true });
   }
   return { success: true };
@@ -2187,6 +2224,9 @@ ipcMain.handle('recording:pause', async () => {
 ipcMain.handle('recording:resume', async () => {
   if (recorderService) {
     recorderService.resume();
+    if (presentationTrackService) {
+      presentationTrackService.resumeTrack();
+    }
     broadcastRecordingState({ isRecording: true, isPaused: false });
   }
   return { success: true };
@@ -2197,9 +2237,15 @@ ipcMain.handle('recording:stop', async () => {
   try {
     stopRecordingTimer();
     const outputPath = await recorderService.stop();
+    if (presentationTrackService) {
+      presentationTrackService.stopTrack();
+    }
     broadcastRecordingState({ isRecording: false, isPaused: false });
     return { success: true, outputPath };
   } catch (err) {
+    if (presentationTrackService) {
+      presentationTrackService.stopTrack();
+    }
     broadcastRecordingState({ isRecording: false, isPaused: false });
     return { success: false, error: err.message || String(err) };
   }
@@ -2209,6 +2255,9 @@ ipcMain.handle('recording:cancel', async () => {
   stopRecordingTimer();
   if (recorderService) {
     recorderService.cancel();
+  }
+  if (presentationTrackService) {
+    presentationTrackService.cancelTrack();
   }
   broadcastRecordingState({ isRecording: false, isPaused: false });
   return { success: true };
@@ -2274,11 +2323,29 @@ ipcMain.handle('app:set-color', (_, color) => {
 
 ipcMain.handle('app:set-background-mode', (_, mode) => {
   setBackgroundMode(mode);
+  if (presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('board/change', {
+      board: {
+        backgroundMode: mode,
+        boardColor: state.boardColor || '#ffffff',
+        viewport: state.boardViewport || { panX: 0, panY: 0, zoom: 1 }
+      }
+    });
+  }
   return getAppState();
 });
 
 ipcMain.handle('app:set-board-color', (_, color) => {
   setBoardColor(color);
+  if (presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('board/change', {
+      board: {
+        backgroundMode: state.backgroundMode,
+        boardColor: color,
+        viewport: state.boardViewport || { panX: 0, panY: 0, zoom: 1 }
+      }
+    });
+  }
   return getAppState();
 });
 
@@ -2290,7 +2357,17 @@ ipcMain.handle('app:set-toolbar-settings-open', (_, open) => {
 });
 
 ipcMain.handle('app:set-board-viewport', (_, viewport) => {
-  return setBoardViewport(viewport);
+  const res = setBoardViewport(viewport);
+  if (presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('viewport/change', {
+      viewport: {
+        panX: viewport.panX ?? 0,
+        panY: viewport.panY ?? 0,
+        zoom: viewport.zoom ?? 1
+      }
+    });
+  }
+  return res;
 });
 
 ipcMain.handle('app:set-click-halo', (_, enabled) => {
@@ -2325,6 +2402,10 @@ ipcMain.handle('app:paste-image', () => {
 
 ipcMain.handle('scene:add-stroke', (_, stroke) => {
   addStroke(stroke);
+  const added = annotations[annotations.length - 1];
+  if (added && presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('annotation/add', { annotation: added });
+  }
   return getSceneState();
 });
 
@@ -2332,7 +2413,11 @@ ipcMain.handle('scene:update-annotation', (_, updated) => {
   recordSceneChange(() => {
     const idx = annotations.findIndex((a) => a.id === updated.id);
     if (idx !== -1) {
-      annotations[idx] = normalizeStroke(updated);
+      const norm = normalizeStroke(updated);
+      annotations[idx] = norm;
+      if (presentationTrackService && presentationTrackService.isRecording()) {
+        presentationTrackService.addEvent('annotation/update', { annotation: norm });
+      }
     }
   });
   return getSceneState();
@@ -2344,7 +2429,11 @@ ipcMain.handle('scene:update-annotations', (_, updatedList = []) => {
     for (const updated of updatedList) {
       const idx = annotations.findIndex((a) => a.id === updated.id);
       if (idx !== -1) {
-        annotations[idx] = normalizeStroke(updated);
+        const norm = normalizeStroke(updated);
+        annotations[idx] = norm;
+        if (presentationTrackService && presentationTrackService.isRecording()) {
+          presentationTrackService.addEvent('annotation/update', { annotation: norm });
+        }
       }
     }
   });
@@ -2355,6 +2444,9 @@ ipcMain.handle('scene:delete-annotations', (_, ids = []) => {
   if (!ids || !ids.length) return getSceneState();
   recordSceneChange(() => {
     annotations = annotations.filter((a) => !ids.includes(a.id));
+    if (presentationTrackService && presentationTrackService.isRecording()) {
+      presentationTrackService.addEvent('annotation/delete', { annotationIds: ids });
+    }
   });
   return getSceneState();
 });
@@ -2366,16 +2458,31 @@ ipcMain.handle('scene:erase-path', (_, payload) => {
 
 ipcMain.handle('scene:clear', () => {
   clearScene();
+  if (presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('scene/clear', { scope: 'current' });
+  }
   return getSceneState();
 });
 
 ipcMain.handle('scene:undo', () => {
   undo();
+  if (presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('scene/clear', { scope: 'current' });
+    for (const stroke of annotations) {
+      presentationTrackService.addEvent('annotation/add', { annotation: stroke });
+    }
+  }
   return getSceneState();
 });
 
 ipcMain.handle('scene:redo', () => {
   redo();
+  if (presentationTrackService && presentationTrackService.isRecording()) {
+    presentationTrackService.addEvent('scene/clear', { scope: 'current' });
+    for (const stroke of annotations) {
+      presentationTrackService.addEvent('annotation/add', { annotation: stroke });
+    }
+  }
   return getSceneState();
 });
 

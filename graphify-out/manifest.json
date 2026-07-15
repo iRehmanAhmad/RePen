@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784113087.752663,
-    "ast_hash": "bb2c006fa5de9f9b6d044b17d1e383d3",
+    "mtime": 1784114298.0511367,
+    "ast_hash": "d979925d552bd0ed9d80427620a132d1",
     "semantic_hash": ""
   },
   "package.json": {
@@ -390,8 +390,8 @@
     "semantic_hash": ""
   },
   "electron/main.ts": {
-    "mtime": 1784113102.8414252,
-    "ast_hash": "f953e5176a9d7c719eb4db558e466e57",
+    "mtime": 1784114316.2373185,
+    "ast_hash": "a71601571113da37aec0c7aafddd0040",
     "semantic_hash": ""
   },
   "electron/services/display.ts": {
@@ -722,6 +722,26 @@
   "tests/unit/presenterToolbar.test.tsx": {
     "mtime": 1784113868.7277174,
     "ast_hash": "4c8073697c308f46997a0b92b936378b",
+    "semantic_hash": ""
+  },
+  "electron/services/presentationTrack.ts": {
+    "mtime": 1784114221.5308433,
+    "ast_hash": "60846c442c9629bf490001b0e70a0974",
+    "semantic_hash": ""
+  },
+  "scratch/find_main_js_handlers.js": {
+    "mtime": 1784114071.557897,
+    "ast_hash": "57ad8003a8eaace90e86f4579b036459",
+    "semantic_hash": ""
+  },
+  "src/shared/schemas/scene.js": {
+    "mtime": 1784114208.0224009,
+    "ast_hash": "8963201168a2449f79025884824955f2",
+    "semantic_hash": ""
+  },
+  "tests/unit/presentationTrack.test.ts": {
+    "mtime": 1784114201.223571,
+    "ast_hash": "ee1a8c5979bf8b7bd37f61e22d04df25",
     "semantic_hash": ""
   }
 }
