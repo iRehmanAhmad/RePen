@@ -590,8 +590,8 @@
     "semantic_hash": ""
   },
   "vite.config.ts": {
-    "mtime": 1784111354.0219822,
-    "ast_hash": "2a5e763e0be29870cf49928406f50961",
+    "mtime": 1784113878.5661023,
+    "ast_hash": "08d1acab1109bb143dacfbc4ce85057e",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260712-154500-repen-github-launch-polish.md": {
@@ -637,6 +637,91 @@
   "third_party/openscreen/wgc-capture/CMakeLists.txt": {
     "mtime": 1784112133.8544576,
     "ast_hash": "63c5d3efbb60171efdf0e5f1bfc53086",
+    "semantic_hash": ""
+  },
+  "scratch/find_annotation_structure.js": {
+    "mtime": 1784113656.4687183,
+    "ast_hash": "c986819f35155071d9ca03f65b35e412",
+    "semantic_hash": ""
+  },
+  "scratch/find_distances.js": {
+    "mtime": 1784113743.9252772,
+    "ast_hash": "90745e38d76ec96ce889f7411a23e7b4",
+    "semantic_hash": ""
+  },
+  "scratch/find_eraser_hit.js": {
+    "mtime": 1784113708.3127167,
+    "ast_hash": "1999209f09e7a2379770c678198c380e",
+    "semantic_hash": ""
+  },
+  "scratch/find_geometry_functions.js": {
+    "mtime": 1784113692.6676433,
+    "ast_hash": "9a9c0406240cd28513db3483ba3cd818",
+    "semantic_hash": ""
+  },
+  "scratch/find_main_js_eraser.js": {
+    "mtime": 1784113724.6439853,
+    "ast_hash": "2447aa528869725d1c6f03ca36e87d0f",
+    "semantic_hash": ""
+  },
+  "scratch/find_main_js_history.js": {
+    "mtime": 1784113788.6390066,
+    "ast_hash": "11b82d84b0222214974950c1280a59f2",
+    "semantic_hash": ""
+  },
+  "scratch/find_overlay_drawing.js": {
+    "mtime": 1784113824.9363532,
+    "ast_hash": "16918c0ff92993c57eca284e5fa469b5",
+    "semantic_hash": ""
+  },
+  "scratch/find_phase5.js": {
+    "mtime": 1784113337.3616402,
+    "ast_hash": "7e07a20215090ff5a32a01171a46e097",
+    "semantic_hash": ""
+  },
+  "scratch/find_shape_text_properties.js": {
+    "mtime": 1784113671.4203875,
+    "ast_hash": "5879223948082bc5cc2496b3fc7e41e3",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/components/presenterToolbar.tsx": {
+    "mtime": 1784113858.4569492,
+    "ast_hash": "cb354fdac622be5eed15cfc42bb28a48",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/geometry.ts": {
+    "mtime": 1784113766.507684,
+    "ast_hash": "34a342cce5f28a3e2e4168d56ebfc4dc",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/history.ts": {
+    "mtime": 1784113805.9249415,
+    "ast_hash": "55721633d1d9a4b0d6b2adf9b75707dd",
+    "semantic_hash": ""
+  },
+  "src/renderer/presenter/presenterRenderer.ts": {
+    "mtime": 1784113849.8206818,
+    "ast_hash": "8001e3928d8a8014f9e15885651647e4",
+    "semantic_hash": ""
+  },
+  "src/shared/schemas/scene.ts": {
+    "mtime": 1784113685.762175,
+    "ast_hash": "6e9280e8d14988d648e92af1c2afec9e",
+    "semantic_hash": ""
+  },
+  "tests/unit/geometry.test.ts": {
+    "mtime": 1784113771.94683,
+    "ast_hash": "a09c1425582aaf273f5c64176111be58",
+    "semantic_hash": ""
+  },
+  "tests/unit/history.test.ts": {
+    "mtime": 1784113811.423201,
+    "ast_hash": "7a5771f9da645d9ad452ede7fcdca8e1",
+    "semantic_hash": ""
+  },
+  "tests/unit/presenterToolbar.test.tsx": {
+    "mtime": 1784113868.7277174,
+    "ast_hash": "4c8073697c308f46997a0b92b936378b",
     "semantic_hash": ""
   }
 }

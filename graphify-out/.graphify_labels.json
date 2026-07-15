@@ -123,5 +123,15 @@
   "121": "repository",
   "122": "README.md",
   "123": "smoke.test.ts",
-  "124": "vite.config.ts"
+  "124": "vite.config.ts",
+  "125": "presenterToolbar.tsx",
+  "126": "find_annotation_structure.js",
+  "127": "find_distances.js",
+  "128": "find_eraser_hit.js",
+  "129": "find_geometry_functions.js",
+  "130": "find_main_js_eraser.js",
+  "131": "find_main_js_history.js",
+  "132": "find_overlay_drawing.js",
+  "133": "find_phase5.js",
+  "134": "find_shape_text_properties.js"
 }
