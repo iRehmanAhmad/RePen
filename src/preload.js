@@ -75,6 +75,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   exportProject: (project, options) => ipcRenderer.invoke('project:export', project, options),
   cancelExport: (outputPath) => ipcRenderer.invoke('project:export-cancel', outputPath),
   onExportProgress: (callback) => on('project:export-progress', callback),
+  exportDiagnostics: () => ipcRenderer.invoke('app:export-diagnostics'),
   getRecordingSources: () => ipcRenderer.invoke('recording:get-sources'),
   getSystemInfo: () => ipcRenderer.invoke('recording:get-system-info'),
   selectRecordingDirectory: () => ipcRenderer.invoke('recording:select-directory'),

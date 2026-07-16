@@ -3530,6 +3530,48 @@ ipcMain.handle('settings:open', () => {
   return { ok: true };
 });
 
+ipcMain.handle('app:export-diagnostics', async () => {
+  let logContent = 'No diagnostic logs found.';
+  
+  let videosDir = '';
+  try {
+    videosDir = app.getPath('videos');
+  } catch (e) {}
+
+  const pathsToTry = [
+    path.join(videosDir, 'recording-diagnostics.log'),
+    path.join(process.env.TEMP || process.env.TMP || '.', 'repen-diagnostics', 'recording-diagnostics.log')
+  ];
+
+  for (const logPath of pathsToTry) {
+    if (logPath && fs.existsSync(logPath)) {
+      try {
+        logContent = fs.readFileSync(logPath, 'utf8');
+        break;
+      } catch (e) {}
+    }
+  }
+
+  // Redact usernames
+  const redacted = logContent.replace(/C:\\Users\\[a-zA-Z0-9_\-\.]+/gi, 'C:\\Users\\<Redacted>');
+
+  const { filePath, canceled } = await dialog.showSaveDialog(editorWindow || null, {
+    title: 'Export Redacted Diagnostics',
+    defaultPath: path.join(app.getPath('downloads') || app.getPath('desktop'), 'repen-diagnostics.log'),
+    filters: [{ name: 'Log Files', extensions: ['log', 'txt'] }]
+  });
+
+  if (!canceled && filePath) {
+    try {
+      fs.writeFileSync(filePath, redacted, 'utf8');
+      return { success: true, path: filePath };
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
+  }
+  return { success: false, error: 'Canceled' };
+});
+
 function checkInterruptedSessions() {
   if (process.env.NODE_ENV === 'test' || !app || typeof app.getPath !== 'function' || !dialog || typeof dialog.showMessageBoxSync !== 'function') {
     return;

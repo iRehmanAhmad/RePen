@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784135821.23869,
-    "ast_hash": "a7639568c29b780adc234d7bc28c3224",
+    "mtime": 1784136386.0697322,
+    "ast_hash": "539a21f2595a2d9489c892ee28ad49e6",
     "semantic_hash": ""
   },
   "package.json": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1784135860.837525,
-    "ast_hash": "5f860855b31cf3be57895eb1c3f2f470",
+    "mtime": 1784136444.6176383,
+    "ast_hash": "4678533465dab115b961bf54e1afda07",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
@@ -390,8 +390,8 @@
     "semantic_hash": ""
   },
   "electron/main.ts": {
-    "mtime": 1784135893.6265945,
-    "ast_hash": "d5865555582b7f75c63f8cbee61efb92",
+    "mtime": 1784136492.4380035,
+    "ast_hash": "d83b6a9c8a0900c2515d5a2e0b164c7a",
     "semantic_hash": ""
   },
   "electron/services/display.ts": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784135875.6332946,
-    "ast_hash": "2a7003e2fe437f041b243905f2bc5618",
+    "mtime": 1784136462.0959468,
+    "ast_hash": "9e14dc21d8313f85eef38b9e5196f20d",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -997,6 +997,11 @@
   "tests/unit/editorExport.test.ts": {
     "mtime": 1784135880.132811,
     "ast_hash": "b694077b7a5a3ef0099e732bddf57bf6",
+    "semantic_hash": ""
+  },
+  "tests/unit/productCompleteness.test.ts": {
+    "mtime": 1784136468.0072129,
+    "ast_hash": "e3b677a10bed11212f711e86564906f3",
     "semantic_hash": ""
   }
 }

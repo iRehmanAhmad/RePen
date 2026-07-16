@@ -10,7 +10,56 @@ import './editor.css';
 
 const RECENT_PROJECTS_KEY = 'repen-recent-projects';
 
+// Localization Framework (i18n)
+const TRANSLATIONS: Record<string, Record<string, string>> = {
+  en: {
+    title: 'RePen Editor',
+    save: 'Save',
+    undo: 'Undo',
+    redo: 'Redo',
+    export: 'Export',
+    close: 'Close',
+    layout: 'Layout',
+    motion: 'Motion',
+    webcam: 'Webcam',
+    overlay: 'Overlay',
+    captions: 'Captions',
+    aspectRatio: 'Aspect Ratio',
+    padding: 'Padding',
+    borderRadius: 'Border Radius',
+    wallpaper: 'Background Wallpaper',
+    autoTranscribe: 'Auto Transcribe Offline',
+    split: 'Split',
+    merge: 'Merge Next',
+    exportLogs: 'Export Diagnostics logs',
+    resetSettings: 'Reset to Defaults',
+  },
+  es: {
+    title: 'Editor RePen',
+    save: 'Guardar',
+    undo: 'Deshacer',
+    redo: 'Rehacer',
+    export: 'Exportar',
+    close: 'Cerrar',
+    layout: 'Diseño',
+    motion: 'Movimiento',
+    webcam: 'Cámara',
+    overlay: 'Superposición',
+    captions: 'Subtítulos',
+    aspectRatio: 'Relación de Aspecto',
+    padding: 'Relleno',
+    borderRadius: 'Radio del Borde',
+    wallpaper: 'Fondo de pantalla',
+    autoTranscribe: 'Transcripción Automática Offline',
+    split: 'Dividir',
+    merge: 'Fusionar Siguiente',
+    exportLogs: 'Exportar Registros de Diagnóstico',
+    resetSettings: 'Restablecer Ajustes',
+  }
+};
+
 const EditorApp: React.FC = () => {
+  const [locale, setLocale] = useState<'en' | 'es'>('en');
   const [projectPath, setProjectPath] = useState<string | null>(null);
   const [project, setProject] = useState<EditorProjectData | null>(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -49,6 +98,12 @@ const EditorApp: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportOutputPath, setExportOutputPath] = useState('');
 
+  // First-run tutorial state
+  const [showTutorialStep, setShowTutorialStep] = useState<number | null>(() => {
+    const completed = localStorage.getItem('repen-editor-tutorial-completed');
+    return completed === 'true' ? null : 1;
+  });
+
   // Snap, tracks controls
   const [timelineSnap, setTimelineSnap] = useState(true);
 
@@ -56,6 +111,11 @@ const EditorApp: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const coordinatorRef = useRef(new PlaybackCoordinator());
+
+  // Helper i18n selector
+  const t = (key: string): string => {
+    return TRANSLATIONS[locale]?.[key] || TRANSLATIONS['en']?.[key] || key;
+  };
 
   // Bootstrap initialization
   useEffect(() => {
@@ -591,30 +651,71 @@ const EditorApp: React.FC = () => {
     }
   };
 
+  // Export Redacted logs
+  const handleExportDiagnostics = async () => {
+    if ((window as any).appBridge?.exportDiagnostics) {
+      const res = await (window as any).appBridge.exportDiagnostics();
+      if (res.success) {
+        alert(`Redacted diagnostics logs exported successfully to:\n${res.path}`);
+      } else if (res.error !== 'Canceled') {
+        alert(`Failed to export diagnostics: ${res.error}`);
+      }
+    }
+  };
+
+  // Reset parameters to defaults
+  const handleResetDefaults = () => {
+    if (project) {
+      const updated = JSON.parse(JSON.stringify(project));
+      updated.editor.aspectRatio = '16:9';
+      updated.editor.padding = 0;
+      updated.editor.borderRadius = 0;
+      updated.editor.shadowIntensity = 0.3;
+      updated.editor.wallpaper = '#0b0c0e';
+      updateProject(updated);
+    }
+  };
+
+  // Finish tutorial
+  const handleCompleteTutorial = () => {
+    setShowTutorialStep(null);
+    localStorage.setItem('repen-editor-tutorial-completed', 'true');
+  };
+
   const activeVideoSrc = project?.media?.screenVideoPath || project?.videoPath || '';
 
   return (
-    <div className="editor-layout">
+    <div className="editor-layout" role="application" aria-label={t('title')}>
       {/* Header bar */}
-      <header className="editor-header">
+      <header className="editor-header" role="banner">
         <div className="editor-title">
-          🎬 RePen Editor 
+          🎬 {t('title')}
           {projectPath && <span style={{fontSize: 12, opacity: 0.7}}>({projectPath})</span>}
           {isDirty && <div className="dirty-indicator" title="Unsaved Changes" />}
         </div>
-        <div className="menu-bar">
-          <button className="menu-btn" onClick={handleSave} disabled={!isDirty}>Save</button>
-          <button className="menu-btn" onClick={handleUndo} disabled={history.length === 0}>Undo</button>
-          <button className="menu-btn" onClick={handleRedo} disabled={future.length === 0}>Redo</button>
-          <button className="menu-btn" onClick={() => setShowExportModal(true)}>Export</button>
-          <button className="menu-btn" onClick={() => (window as any).appBridge?.closeRecordingEditor()}>Close</button>
+        <div className="menu-bar" style={{display: 'flex', gap: 6, alignItems: 'center'}}>
+          <select 
+            value={locale} 
+            onChange={(e) => setLocale(e.target.value as 'en' | 'es')} 
+            className="property-control" 
+            style={{width: 80, padding: '2px 4px', fontSize: 12}}
+            aria-label="Select Language / Seleccionar idioma"
+          >
+            <option value="en">English</option>
+            <option value="es">Español</option>
+          </select>
+          <button className="menu-btn" onClick={handleSave} disabled={!isDirty} aria-label={t('save')}>{t('save')}</button>
+          <button className="menu-btn" onClick={handleUndo} disabled={history.length === 0} aria-label={t('undo')}>{t('undo')}</button>
+          <button className="menu-btn" onClick={handleRedo} disabled={future.length === 0} aria-label={t('redo')}>{t('redo')}</button>
+          <button className="menu-btn" onClick={() => setShowExportModal(true)} aria-label={t('export')}>{t('export')}</button>
+          <button className="menu-btn" onClick={() => (window as any).appBridge?.closeRecordingEditor()} aria-label={t('close')}>{t('close')}</button>
         </div>
       </header>
 
       {/* Workspace Area */}
       <div className="editor-workspace">
         {/* Preview Panel */}
-        <div className="preview-panel">
+        <div className="preview-panel" role="region" aria-label="Video Player Preview">
           {mediaMissing ? (
             <div className="missing-media-overlay">
               <h2>Missing Recording File</h2>
@@ -639,19 +740,19 @@ const EditorApp: React.FC = () => {
         </div>
 
         {/* Sidebar settings panel */}
-        <aside className="properties-panel">
-          <div className="tab-buttons" style={{display: 'flex', gap: 4, marginBottom: 12, overflowX: 'auto'}}>
-            <button className={`menu-btn ${activeTab === 'layout' ? 'active' : ''}`} onClick={() => setActiveTab('layout')}>Layout</button>
-            <button className={`menu-btn ${activeTab === 'motion' ? 'active' : ''}`} onClick={() => setActiveTab('motion')}>Motion</button>
-            <button className={`menu-btn ${activeTab === 'webcam' ? 'active' : ''}`} onClick={() => setActiveTab('webcam')}>Webcam</button>
-            <button className={`menu-btn ${activeTab === 'annotations' ? 'active' : ''}`} onClick={() => setActiveTab('annotations')}>Overlay</button>
-            <button className={`menu-btn ${activeTab === 'captions' ? 'active' : ''}`} onClick={() => setActiveTab('captions')}>Captions</button>
+        <aside className="properties-panel" role="complementary" aria-label="Properties Editor">
+          <div className="tab-buttons" style={{display: 'flex', gap: 4, marginBottom: 12, overflowX: 'auto'}} role="tablist">
+            <button className={`menu-btn ${activeTab === 'layout' ? 'active' : ''}`} onClick={() => setActiveTab('layout')} role="tab">{t('layout')}</button>
+            <button className={`menu-btn ${activeTab === 'motion' ? 'active' : ''}`} onClick={() => setActiveTab('motion')} role="tab">{t('motion')}</button>
+            <button className={`menu-btn ${activeTab === 'webcam' ? 'active' : ''}`} onClick={() => setActiveTab('webcam')} role="tab">{t('webcam')}</button>
+            <button className={`menu-btn ${activeTab === 'annotations' ? 'active' : ''}`} onClick={() => setActiveTab('annotations')} role="tab">{t('overlay')}</button>
+            <button className={`menu-btn ${activeTab === 'captions' ? 'active' : ''}`} onClick={() => setActiveTab('captions')} role="tab">{t('captions')}</button>
           </div>
 
           {project && activeTab === 'layout' && (
             <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
               <div className="property-group">
-                <span className="property-label">Aspect Ratio</span>
+                <span className="property-label">{t('aspectRatio')}</span>
                 <select 
                   className="property-control"
                   value={project.editor.aspectRatio || '16:9'}
@@ -669,7 +770,7 @@ const EditorApp: React.FC = () => {
               </div>
 
               <div className="property-group">
-                <span className="property-label">Padding: {project.editor.padding || 0}px</span>
+                <span className="property-label">{t('padding')}: {project.editor.padding || 0}px</span>
                 <input 
                   type="range" 
                   min={0} 
@@ -684,7 +785,7 @@ const EditorApp: React.FC = () => {
               </div>
 
               <div className="property-group">
-                <span className="property-label">Border Radius: {project.editor.borderRadius || 0}px</span>
+                <span className="property-label">{t('borderRadius')}: {project.editor.borderRadius || 0}px</span>
                 <input 
                   type="range" 
                   min={0} 
@@ -699,7 +800,7 @@ const EditorApp: React.FC = () => {
               </div>
 
               <div className="property-group">
-                <span className="property-label">Background Wallpaper</span>
+                <span className="property-label">{t('wallpaper')}</span>
                 <select 
                   className="property-control"
                   value={project.editor.wallpaper || '#0b0c0e'}
@@ -714,6 +815,11 @@ const EditorApp: React.FC = () => {
                   <option value="linear-gradient(135deg, #3b82f6, #8b5cf6)">Neon Violet</option>
                   <option value="linear-gradient(135deg, #10b981, #059669)">Emerald Forest</option>
                 </select>
+              </div>
+
+              <div style={{display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10}}>
+                <button className="btn-secondary" onClick={handleResetDefaults} aria-label={t('resetSettings')}>{t('resetSettings')}</button>
+                <button className="btn-secondary" onClick={handleExportDiagnostics} aria-label={t('exportLogs')}>{t('exportLogs')}</button>
               </div>
             </div>
           )}
@@ -946,7 +1052,7 @@ const EditorApp: React.FC = () => {
           {project && activeTab === 'captions' && (
             <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
               {isTranscribing ? (
-                <div style={{textAlign: 'center', padding: 20}}>
+                <div style={{textAlign: 'center', padding: 20}} role="status" aria-live="polite">
                   <h3>Generating Captions...</h3>
                   <div style={{width: '100%', height: 10, background: 'var(--surface-2)', borderRadius: 5, overflow: 'hidden', marginTop: 10}}>
                     <div style={{width: `${transcriptionProgress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.2s'}} />
@@ -954,11 +1060,11 @@ const EditorApp: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <button className="btn-primary" onClick={handleTranscribe}>🎙️ Auto Transcribe Offline</button>
+                  <button className="btn-primary" onClick={handleTranscribe} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
                   
                   <div style={{display: 'flex', gap: 6}}>
-                    <button className="btn-secondary" style={{flex: 1}} onClick={handleSplitCaption} disabled={!selectedCaptionId}>Split</button>
-                    <button className="btn-secondary" style={{flex: 1}} onClick={handleMergeCaption} disabled={!selectedCaptionId}>Merge Next</button>
+                    <button className="btn-secondary" style={{flex: 1}} onClick={handleSplitCaption} disabled={!selectedCaptionId}>{t('split')}</button>
+                    <button className="btn-secondary" style={{flex: 1}} onClick={handleMergeCaption} disabled={!selectedCaptionId}>{t('merge')}</button>
                   </div>
 
                   <div style={{maxHeight: 220, overflowY: 'auto', border: '1px solid var(--line)', padding: 6, borderRadius: 6}}>
@@ -981,6 +1087,7 @@ const EditorApp: React.FC = () => {
                               updateProject(updated);
                             }
                           }}
+                          aria-label="Caption segment text"
                         />
                       </div>
                     ))}
@@ -1008,7 +1115,7 @@ const EditorApp: React.FC = () => {
       </div>
 
       {/* Timeline Control Panel */}
-      <footer className="timeline-panel">
+      <footer className="timeline-panel" role="contentinfo">
         <div className="timeline-toolbar">
           <div>
             Time: {Math.round(currentTimeMs / 1000)}s / {Math.round(durationMs / 1000)}s
@@ -1034,11 +1141,8 @@ const EditorApp: React.FC = () => {
           const pct = clickX / rect.width;
           handleSeek(Math.round(pct * durationMs));
         }}>
-          {/* Main timeline track with playhead */}
           <div className="timeline-track">
             <span className="track-label">Screen Recording</span>
-            
-            {/* Trim blocks */}
             {project?.editor.trimRegions?.map((t: TrimRegion) => (
               <div 
                 key={t.id} 
@@ -1049,8 +1153,6 @@ const EditorApp: React.FC = () => {
                 }}
               />
             ))}
-
-            {/* Playhead indicator */}
             <div 
               className="timeline-playhead" 
               style={{ left: `${(currentTimeMs / (durationMs || 1)) * 100}%` }}
@@ -1092,9 +1194,9 @@ const EditorApp: React.FC = () => {
 
       {/* Export Setup Modal Dialog */}
       {showExportModal && (
-        <div className="dialog-overlay">
+        <div className="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="export-title">
           <div className="dialog-container" style={{maxWidth: 380}}>
-            <h2 className="dialog-title">🎬 Export Presentation Project</h2>
+            <h2 id="export-title" className="dialog-title">🎬 {t('export')} Presentation Project</h2>
             
             <div className="dialog-body" style={{display: 'flex', flexDirection: 'column', gap: 12}}>
               <div className="property-group">
@@ -1157,7 +1259,7 @@ const EditorApp: React.FC = () => {
 
       {/* Live Rendering Export Progress Overlay */}
       {isExporting && (
-        <div className="dialog-overlay" style={{background: 'rgba(0,0,0,0.85)', zIndex: 1000}}>
+        <div className="dialog-overlay" style={{background: 'rgba(0,0,0,0.85)', zIndex: 1000}} role="status" aria-live="assertive">
           <div className="dialog-container" style={{maxWidth: 400, textAlign: 'center'}}>
             <h2>🎨 Rendering Video Composites...</h2>
             <p style={{fontSize: 13, opacity: 0.8, margin: '8px 0 16px 0'}}>
@@ -1173,6 +1275,51 @@ const EditorApp: React.FC = () => {
             <button className="btn-primary" style={{background: 'var(--danger)'}} onClick={handleCancelExport}>
               Cancel Render
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* First-Run Guidance Tutorial overlays */}
+      {showTutorialStep !== null && (
+        <div className="dialog-overlay" style={{zIndex: 2000}}>
+          <div className="dialog-container" style={{maxWidth: 360}}>
+            {showTutorialStep === 1 && (
+              <>
+                <h2 className="dialog-title">💡 Welcome to RePen Editor!</h2>
+                <p style={{fontSize: 13, lineHeight: 1.5, margin: '12px 0'}}>
+                  <strong>Presenter vs Editor</strong>: Use the floating RePen presenter toolbar to draw and highlight screen objects during recordings. 
+                  Use this Editor workspace to tweak geometry, skews, aspect ratios, and timeline segments post-recording.
+                </p>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 20}}>
+                  <button className="btn-secondary" onClick={handleCompleteTutorial}>Skip</button>
+                  <button className="btn-primary" onClick={() => setShowTutorialStep(2)}>Next</button>
+                </div>
+              </>
+            )}
+            {showTutorialStep === 2 && (
+              <>
+                <h2 className="dialog-title">🎬 Aspect Ratios & Backgrounds</h2>
+                <p style={{fontSize: 13, lineHeight: 1.5, margin: '12px 0'}}>
+                  Customize your canvas dimensions (16:9, 1:1 square, or 9:16 vertical), add padding borders, border radius margins, and professional background wallpapers.
+                </p>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 20}}>
+                  <button className="btn-secondary" onClick={() => setShowTutorialStep(1)}>Back</button>
+                  <button className="btn-primary" onClick={() => setShowTutorialStep(3)}>Next</button>
+                </div>
+              </>
+            )}
+            {showTutorialStep === 3 && (
+              <>
+                <h2 className="dialog-title">🎙️ Captions & Exporting</h2>
+                <p style={{fontSize: 13, lineHeight: 1.5, margin: '12px 0'}}>
+                  Click the <strong>Captions</strong> tab to transcribe speech completely offline, correct text timing splits/merges, and hit **Export** to render high-quality MP4s or lanczos animated GIFs!
+                </p>
+                <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 20}}>
+                  <button className="btn-secondary" onClick={() => setShowTutorialStep(2)}>Back</button>
+                  <button className="btn-primary" onClick={handleCompleteTutorial}>Got it!</button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

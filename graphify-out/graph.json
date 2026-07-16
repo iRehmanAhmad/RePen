@@ -3397,7 +3397,7 @@
       "label": "checkInterruptedSessions()",
       "file_type": "code",
       "source_file": "main.js",
-      "source_location": "L3533",
+      "source_location": "L3575",
       "_origin": "ast",
       "id": "main_checkinterruptedsessions",
       "community": 0,
@@ -6534,20 +6534,30 @@
       "norm_label": "editor.tsx"
     },
     {
+      "label": "TRANSLATIONS",
+      "file_type": "code",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "src_renderer_editor_translations",
+      "community": 144,
+      "norm_label": "translations"
+    },
+    {
       "label": "EditorApp()",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L13",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "src_renderer_editor_editorapp",
-      "community": 144,
+      "community": 111,
       "norm_label": "editorapp()"
     },
     {
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1183",
+      "source_location": "L1330",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 144,
@@ -9984,6 +9994,16 @@
       "norm_label": "presentertoolbar.test.tsx"
     },
     {
+      "label": "productCompleteness.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/productCompleteness.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_productcompleteness_test",
+      "community": 85,
+      "norm_label": "productcompleteness.test.ts"
+    },
+    {
       "label": "projectPersistence.test.ts",
       "file_type": "code",
       "source_file": "tests/unit/projectPersistence.test.ts",
@@ -11690,7 +11710,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_fps",
-      "community": 139,
+      "community": 99,
       "norm_label": "fps"
     },
     {
@@ -11700,7 +11720,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_width",
-      "community": 139,
+      "community": 99,
       "norm_label": "width"
     },
     {
@@ -11710,7 +11730,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_height",
-      "community": 139,
+      "community": 99,
       "norm_label": "height"
     },
     {
@@ -12070,7 +12090,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_hasvisiblebgracontent",
-      "community": 139,
+      "community": 120,
       "norm_label": "hasvisiblebgracontent()"
     },
     {
@@ -12080,7 +12100,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_vector",
-      "community": 139,
+      "community": 120,
       "norm_label": "vector"
     },
     {
@@ -12090,7 +12110,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_byte",
-      "community": 139,
+      "community": 120,
       "norm_label": "byte"
     },
     {
@@ -12210,7 +12230,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_main",
-      "community": 139,
+      "community": 120,
       "norm_label": "main()"
     },
     {
@@ -12980,7 +13000,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 85,
+      "community": 98,
       "norm_label": "wasapi_loopback_capture.cpp"
     },
     {
@@ -12990,7 +13010,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_succeeded",
-      "community": 85,
+      "community": 98,
       "norm_label": "succeeded()"
     },
     {
@@ -13000,7 +13020,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_hresult",
-      "community": 85,
+      "community": 98,
       "norm_label": "hresult"
     },
     {
@@ -13010,7 +13030,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_audiosubtypefromformat",
-      "community": 85,
+      "community": 98,
       "norm_label": "audiosubtypefromformat()"
     },
     {
@@ -13020,7 +13040,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_guid",
-      "community": 85,
+      "community": 98,
       "norm_label": "guid"
     },
     {
@@ -13030,7 +13050,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_waveformatex",
-      "community": 85,
+      "community": 98,
       "norm_label": "waveformatex"
     },
     {
@@ -13040,7 +13060,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_normalizedevicename",
-      "community": 85,
+      "community": 98,
       "norm_label": "normalizedevicename()"
     },
     {
@@ -13050,7 +13070,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_wstring",
-      "community": 85,
+      "community": 98,
       "norm_label": "wstring"
     },
     {
@@ -13060,7 +13080,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_scoredevicename",
-      "community": 85,
+      "community": 98,
       "norm_label": "scoredevicename()"
     },
     {
@@ -13070,7 +13090,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_getdevicefriendlyname",
-      "community": 85,
+      "community": 98,
       "norm_label": "getdevicefriendlyname()"
     },
     {
@@ -13080,7 +13100,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_immdevice",
-      "community": 85,
+      "community": 98,
       "norm_label": "immdevice"
     },
     {
@@ -13090,7 +13110,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wasapicaptureendpoint",
-      "community": 85,
+      "community": 98,
       "norm_label": "wasapicaptureendpoint"
     },
     {
@@ -13100,7 +13120,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_audiocallback",
-      "community": 85,
+      "community": 98,
       "norm_label": "audiocallback"
     },
     {
@@ -13130,7 +13150,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_wasapiloopbackcapture",
-      "community": 85,
+      "community": 98,
       "norm_label": ".wasapiloopbackcapture()"
     },
     {
@@ -13140,7 +13160,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializesystemloopback",
-      "community": 139,
+      "community": 98,
       "norm_label": "initializesystemloopback"
     },
     {
@@ -13150,7 +13170,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializemicrophone",
-      "community": 85,
+      "community": 98,
       "norm_label": "initializemicrophone"
     },
     {
@@ -13160,7 +13180,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_start",
-      "community": 85,
+      "community": 98,
       "norm_label": "start"
     },
     {
@@ -13170,7 +13190,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_stop",
-      "community": 139,
+      "community": 98,
       "norm_label": "stop"
     },
     {
@@ -13180,7 +13200,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initialize",
-      "community": 85,
+      "community": 98,
       "norm_label": "initialize"
     },
     {
@@ -13190,7 +13210,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_resolvemicrophonebyname",
-      "community": 85,
+      "community": 98,
       "norm_label": "resolvemicrophonebyname"
     },
     {
@@ -13210,7 +13230,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_resolveinputformat",
-      "community": 85,
+      "community": 98,
       "norm_label": "resolveinputformat"
     },
     {
@@ -13330,7 +13350,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_inputformat",
-      "community": 139,
+      "community": 98,
       "norm_label": "inputformat_"
     },
     {
@@ -13350,7 +13370,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_selecteddevicename",
-      "community": 139,
+      "community": 98,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -13940,7 +13960,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_selecteddevicename",
-      "community": 139,
+      "community": 97,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -13950,7 +13970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 94,
+      "community": 139,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -13960,7 +13980,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_createdirect3d11devicefromdxgidevice",
-      "community": 94,
+      "community": 139,
       "norm_label": "createdirect3d11devicefromdxgidevice()"
     },
     {
@@ -13970,7 +13990,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hresult",
-      "community": 94,
+      "community": 139,
       "norm_label": "hresult"
     },
     {
@@ -13980,7 +14000,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "idxgidevice",
-      "community": 94,
+      "community": 139,
       "norm_label": "idxgidevice"
     },
     {
@@ -13990,7 +14010,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "iinspectable",
-      "community": 94,
+      "community": 139,
       "norm_label": "iinspectable"
     },
     {
@@ -14000,7 +14020,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 94,
+      "community": 139,
       "norm_label": "hmonitor"
     },
     {
@@ -14010,7 +14030,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 94,
+      "community": 139,
       "norm_label": "hwnd"
     },
     {
@@ -14020,7 +14040,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_framecallback",
-      "community": 94,
+      "community": 139,
       "norm_label": "framecallback"
     },
     {
@@ -14030,7 +14050,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_direct3d11captureframepool",
-      "community": 94,
+      "community": 139,
       "norm_label": "direct3d11captureframepool"
     },
     {
@@ -14060,7 +14080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 94,
+      "community": 139,
       "norm_label": "wgc_session.h"
     },
     {
@@ -14080,7 +14100,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 94,
+      "community": 139,
       "norm_label": ".wgcsession()"
     },
     {
@@ -14090,7 +14110,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 94,
+      "community": 139,
       "norm_label": "initialize"
     },
     {
@@ -14100,7 +14120,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_setframecallback",
-      "community": 94,
+      "community": 139,
       "norm_label": "setframecallback"
     },
     {
@@ -14110,7 +14130,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 94,
+      "community": 139,
       "norm_label": "start"
     },
     {
@@ -14120,7 +14140,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 94,
+      "community": 139,
       "norm_label": "stop"
     },
     {
@@ -14140,7 +14160,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 94,
+      "community": 139,
       "norm_label": "captureheight"
     },
     {
@@ -14170,7 +14190,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_created3ddevice",
-      "community": 94,
+      "community": 139,
       "norm_label": "created3ddevice"
     },
     {
@@ -14180,7 +14200,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 94,
+      "community": 139,
       "norm_label": "createcaptureitem"
     },
     {
@@ -14190,7 +14210,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 94,
+      "community": 139,
       "norm_label": "applysessionoptions"
     },
     {
@@ -14200,7 +14220,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_onframearrived",
-      "community": 94,
+      "community": 139,
       "norm_label": "onframearrived"
     },
     {
@@ -22059,7 +22079,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L640",
+      "source_location": "L688",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_calculatetoolbarbounds",
@@ -22070,7 +22090,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "electron/main.ts",
-      "source_location": "L635",
+      "source_location": "L683",
       "weight": 1.0,
       "source": "electron_main_bootstrap",
       "target": "electron_main_rebuildoverlays",
@@ -26528,7 +26548,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3533",
+      "source_location": "L3575",
       "weight": 1.0,
       "source": "main",
       "target": "main_checkinterruptedsessions",
@@ -33226,7 +33246,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L13",
+      "source_location": "L61",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_editorapp",
@@ -33236,10 +33256,20 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1183",
+      "source_location": "L1330",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "src_renderer_editor",
+      "target": "src_renderer_editor_translations",
       "confidence_score": 1.0
     },
     {
@@ -33468,7 +33498,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L219",
+      "source_location": "L279",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_presenter_presentationtrackreplay_seekpresentationtrack"
@@ -33479,7 +33509,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L230",
+      "source_location": "L290",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_presenter_presenterrenderer_presenterrenderer_drawstroke"
@@ -33490,7 +33520,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L70",
+      "source_location": "L130",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_selector_init"
@@ -33501,7 +33531,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L629",
+      "source_location": "L730",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_projectpersistence_tofileurl"
@@ -55248,5 +55278,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "17c71e63aae581b5cfe71fcdb2ceb03836dcc633"
+  "built_at_commit": "9c89da25d9361ea306520ce9d45dbf7f3355ba82"
 }
