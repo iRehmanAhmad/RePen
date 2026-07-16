@@ -117,6 +117,19 @@
     }
   }
 
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+  }
+
+  function safeImageUrl(value) {
+    return typeof value === 'string' && /^data:image\/(?:png|jpeg|webp);base64,/i.test(value) ? value : '';
+  }
+
   function renderSources() {
     const scrollPos = elements.sourcesGrid.scrollTop;
     elements.sourcesGrid.innerHTML = '';
@@ -136,10 +149,10 @@
       const card = document.createElement('div');
       card.className = `source-card${isSelected ? ' selected' : ''}`;
       card.innerHTML = `
-        <img class="source-thumbnail" src="${source.thumbnail || ''}" alt="${source.name}" />
+        <img class="source-thumbnail" src="${safeImageUrl(source.thumbnail)}" alt="${escapeHtml(source.name)}" />
         <div class="source-info">
-          ${source.appIcon ? `<img class="source-icon" src="${source.appIcon}" alt="" />` : ''}
-          <span class="source-name">${source.name}</span>
+          ${safeImageUrl(source.appIcon) ? `<img class="source-icon" src="${safeImageUrl(source.appIcon)}" alt="" />` : ''}
+          <span class="source-name">${escapeHtml(source.name || 'Untitled source')}</span>
         </div>
         ${isSelected ? `<div class="check-badge">✓</div>` : ''}
       `;

@@ -46,7 +46,7 @@ Use this structured 7-step manual testing checklist before releasing any new bui
 - [ ] Stop recording. Verify it prompts to save the resulting `.repen-project` file.
 - [ ] Open the project in the editor. Verify the video, synchronized webcam PiP, and smoothed cursor track play together.
 - [ ] Crop, trim, or adjust playback speeds. Verify the playback coordinator updates rates and skips trimmed sections.
-- [ ] Trigger export and verify a clean H.264/AAC output MP4 is generated.
+- [ ] If a licensed export engine is packaged, trigger export and verify a clean H.264/AAC output MP4. Otherwise verify the editor reports export as unavailable and does not launch a shell command.
 
 ## 9. 🤖 Automated Knowledge Graph & Git Verification
 - [ ] Run automated tests via `npm test` and verify all DOM IDs, IPC contracts, tool states, and scene store separation (`scripts/verify-scene-store-separation.js`) pass.

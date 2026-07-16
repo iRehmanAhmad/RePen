@@ -16,8 +16,8 @@ describe('recording toolbar lifecycle', () => {
   });
 
   it('keeps recorder controls clickable and above other windows for every active phase', () => {
-    expect(mainSource).toContain("['starting', 'recording', 'paused', 'finalizing'].includes(recordingState?.phase)");
-    expect(mainSource).toContain('toolbarWindow.setIgnoreMouseEvents(!(controlsActive || state.toolbarHovered)');
+    expect(mainSource).toContain("['starting', 'recording', 'paused', 'finalizing'].includes(payload.phase)");
+    expect(mainSource).toContain('toolbarWindow.setIgnoreMouseEvents(false)');
     expect(mainSource).toContain('toolbarWindow.showInactive()');
     expect(mainSource).toContain('toolbarWindow.moveTop()');
   });

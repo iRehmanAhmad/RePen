@@ -8,7 +8,7 @@ Deliver the remaining OpenScreen-derived recording setup, hardware validation, e
 
 ## Current Phase
 
-`plan`
+`verify`
 
 ## Owners
 
@@ -415,13 +415,11 @@ Features that cannot be supported safely must be capability-gated and documented
 
 ## Immediate Next Action
 
-After user approval, begin only Phase 1. Before changing code, Antigravity must record an implementation note naming the recorder setup/source-selection files it will own. Codex reviews the Phase 1 implementation and verification evidence before Phase 2 begins.
-
-Do not begin with the editor, captions, or exporter. The next release risk is incomplete source/device selection and unverified real hardware behavior.
+Run the Phase 1 and Phase 2 packaged/manual recording matrix against the corrected lifecycle implementation. Do not advance captions, export, or release claims until recording setup, start/pause/resume/stop/discard, toolbar input, source loss, and real hardware evidence pass their gates.
 
 ## Verification
 
-Planning-only task created on 2026-07-15. The plan is based on the current corrected recorder foundation and the previous full integration audit. No product code was changed by this planning task.
+Codex corrective audit on 2026-07-16 rejected the blanket nine-phase completion claim. The pass corrected recording-state broadcasts, toolbar input/stacking, countdown IPC, sender authorization, source/path validation, finalization and shutdown cleanup, selector interpolation safety, TypeScript failures, fabricated captions, and shell-based export execution. `npm test` passes 24 files / 77 tests, `npm run build:all` passes, `git diff --check` passes, and `electron-builder --win --dir` packages both native OpenScreen-derived helpers successfully. Full hardware capture, offline captions, compositor-complete MP4/GIF export, accessibility/localization, and release matrices remain open gates.
 
 ## Handoff Notes
 

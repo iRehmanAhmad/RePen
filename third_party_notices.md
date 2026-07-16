@@ -22,8 +22,9 @@ Copyright (c) Electron Authors
 ## Node.js (MIT License)
 Copyright Node.js contributors
 
-## FFmpeg (LGPL/GPL License)
-Used as an offline command line helper process.
+## FFmpeg
+
+FFmpeg is not distributed with the current RePen build. The editor export UI is capability-gated until a specifically licensed FFmpeg build or a RePen-owned compositor is packaged and attributed.
 
 ## React & ReactDOM (MIT License)
 Copyright (c) Meta Platforms, Inc. and affiliates.

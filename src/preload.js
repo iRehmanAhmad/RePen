@@ -79,7 +79,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   getRecordingSources: () => ipcRenderer.invoke('recording:get-sources'),
   getSystemInfo: () => ipcRenderer.invoke('recording:get-system-info'),
   selectRecordingDirectory: () => ipcRenderer.invoke('recording:select-directory'),
-  startCountdown: (displayId, seconds) => ipcRenderer.invoke('recording:start-countdown', displayId, seconds),
+  startCountdown: (displayId, seconds) => ipcRenderer.invoke('recording:start-countdown', { displayId, seconds }),
   onCountdownTick: (callback) => on('recording:countdown-tick', callback),
   closeCountdown: () => ipcRenderer.invoke('recording:close-countdown'),
   saveProjectFile: (projectData, suggestedName, existingProjectPath) => ipcRenderer.invoke('project:save', projectData, suggestedName, existingProjectPath),

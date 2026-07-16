@@ -9,7 +9,6 @@ import { RecorderService } from './services/recorder';
 import { PresentationTrackService } from './services/presentationTrack';
 import path from 'path';
 import fs from 'fs';
-import { spawn } from 'child_process';
 
 // Global singleton instances
 let stateManager: StateManager;
@@ -19,6 +18,7 @@ let windowRegistry: WindowRegistry;
 let recorderService: RecorderService;
 let presentationTrackService: PresentationTrackService;
 let lastEnumeratedSources = new Map<string, any>();
+const approvedRecordingDirectories = new Set<string>();
 let activeExportProcess: any = null;
 
 let recordingTimer: NodeJS.Timeout | null = null;
@@ -154,7 +154,9 @@ function bootstrap() {
   });
 
   ipcMain.handle('recording:close-setup', async () => {
-    windowRegistry.destroySelector();
+    // The selector continues the countdown/start flow after this await.
+    // Hiding it keeps its renderer alive; destroying it aborts that flow.
+    windowRegistry.getSelector()?.hide();
     return { success: true };
   });
 
@@ -173,18 +175,21 @@ function bootstrap() {
     return { success: true };
   });
 
-  ipcMain.handle('recording:transcribe', async (_, filePath) => {
+  ipcMain.handle('recording:transcribe', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized transcription request.' };
     return {
-      success: true,
-      segments: [
-        { id: 'c1', startMs: 500, endMs: 2500, content: 'Welcome to this RePen session!' },
-        { id: 'c2', startMs: 3000, endMs: 5500, content: 'Today we will draw shapes and highlights.' },
-        { id: 'c3', startMs: 6000, endMs: 8500, content: 'Thank you for watching this presentation!' }
-      ]
+      success: false,
+      supported: false,
+      error: 'Offline transcription is not installed. No caption model is bundled with this build.',
     };
   });
 
-  ipcMain.handle('project:export', async (event, project, options) => {
+  ipcMain.handle('project:export', async (event, _project, _options) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized export request.' };
+    // The modular shell must not run command strings through a system shell.
+    // Export remains capability-gated until a licensed executable/compositor is packaged.
+    return { success: false, supported: false, error: 'Video export is not available in the modular shell build.' };
+    /* c8 ignore start -- retained until the typed compositor replaces this legacy prototype.
     if (activeExportProcess) {
       return { success: false, error: 'Export already in progress' };
     }
@@ -235,23 +240,20 @@ function bootstrap() {
         }
       });
     });
+    c8 ignore stop */
   });
 
-  ipcMain.handle('project:export-cancel', async (_, outputPath) => {
+  ipcMain.handle('project:export-cancel', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized export request.' };
     if (activeExportProcess) {
       activeExportProcess.kill();
       activeExportProcess = null;
     }
-    if (outputPath && fs.existsSync(outputPath)) {
-      try {
-        fs.unlinkSync(outputPath);
-      } catch (e) {
-        // Ignore cleanup error
-      }
-    }
     return { success: true };
   });
 
+  /* Legacy prototype retained as design reference only. It must not be called
+     until it returns argv and uses shell:false with a packaged executable.
   function generateExportFFmpegCommand(options: any) {
     const parts = ['ffmpeg', '-y'];
 
@@ -311,8 +313,10 @@ function bootstrap() {
     parts.push(`"${options.outputPath}"`);
     return parts.join(' ');
   }
+  */
 
-  ipcMain.handle('recording:get-sources', async (_, opts) => {
+  ipcMain.handle('recording:get-sources', async (event, opts) => {
+    if (!isTrustedRecordingSender(event)) return [];
     const sources = await desktopCapturer.getSources(opts || {
       types: ['screen', 'window'],
       thumbnailSize: { width: 320, height: 180 },
@@ -328,7 +332,8 @@ function bootstrap() {
     }));
   });
 
-  ipcMain.handle('recording:get-system-info', async () => {
+  ipcMain.handle('recording:get-system-info', async (event) => {
+    if (!isTrustedRecordingSender(event)) throw new Error('Unauthorized recording request.');
     const displays = screen.getAllDisplays().map((d) => ({
       id: d.id,
       name: d.label || `Display ${d.id}`,
@@ -353,7 +358,8 @@ function bootstrap() {
     };
   });
 
-  ipcMain.handle('recording:select-directory', async () => {
+  ipcMain.handle('recording:select-directory', async (event) => {
+    if (!isTrustedRecordingSender(event)) return null;
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory', 'createDirectory'],
     });
@@ -361,6 +367,7 @@ function bootstrap() {
       return null;
     }
     const dir = result.filePaths[0];
+    approvedRecordingDirectories.add(path.resolve(dir));
     let freeSpaceBytes = 0;
     try {
       const stats = fs.statfsSync(dir);
@@ -374,7 +381,9 @@ function bootstrap() {
     };
   });
 
-  ipcMain.handle('recording:start-countdown', async (event, { displayId, seconds }) => {
+  ipcMain.handle('recording:start-countdown', async (event, payload: any = {}) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+    const displayId = Number(payload.displayId);
     const selectedDisplay = screen.getAllDisplays().find(d => d.id === displayId) || screen.getPrimaryDisplay();
     const win = windowRegistry.createCountdown(selectedDisplay);
     win.getWindow()?.show();
@@ -392,16 +401,30 @@ function bootstrap() {
     }
     lastStartOptions = options;
     try {
+      if (!options || typeof options !== 'object') throw new Error('Recording options are required.');
+      const selectedSource = lastEnumeratedSources.get(options.sourceId);
+      if (!selectedSource) throw new Error('The selected recording source is no longer available.');
       const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
-      const outputPath = options.outputPath || defaultPath;
+      const outputPath = path.resolve(options.outputPath || defaultPath);
+      const allowedRoots = [app.getPath('videos'), ...approvedRecordingDirectories];
+      const isAllowedOutput = allowedRoots.some((root) => {
+        const relative = path.relative(path.resolve(root), outputPath);
+        return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+      });
+      if (path.extname(outputPath).toLowerCase() !== '.mp4' || !isAllowedOutput) {
+        throw new Error('Recording output must be an MP4 inside a directory selected in RePen.');
+      }
       const sourceType = options.sourceType === 'window' ? 'window' : 'display';
-      const selectedDisplay = displayManager.getPrimaryDisplay();
+      const sourceDisplayId = Number(selectedSource.display_id || options.displayId);
+      const selectedDisplay = displayManager.getDisplays().find((display) => display.id === sourceDisplayId) || displayManager.getPrimaryDisplay();
+      const windowHandle = sourceType === 'window' ? options.sourceId.match(/^window:([^:]+):/)?.[1] || null : null;
+      if (sourceType === 'window' && !windowHandle) throw new Error('Selected window has no valid native handle.');
       const sessionId = `recording-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
       await recorderService.start({
-        sourceId: sourceType === 'display' ? `screen:${selectedDisplay.id}:0` : options.sourceId,
+        sourceId: options.sourceId,
         sourceType,
-        windowHandle: options.windowHandle || null,
+        windowHandle,
         displayId: selectedDisplay.id,
         width: options.width || 1920,
         height: options.height || 1080,
@@ -425,11 +448,11 @@ function bootstrap() {
         sessionId,
         createdAtEpochMs: Date.now(),
         source: {
-          id: sourceType === 'display' ? `screen:${selectedDisplay.id}:0` : options.sourceId,
-          name: options.sourceName || (sourceType === 'display' ? `Display ${selectedDisplay.id}` : 'Selected window'),
+          id: options.sourceId,
+          name: selectedSource.name || (sourceType === 'display' ? `Display ${selectedDisplay.id}` : 'Selected window'),
           type: sourceType,
           displayId: sourceType === 'display' ? selectedDisplay.id : null,
-          windowHandle: options.windowHandle || null,
+          windowHandle,
           bounds: options.sourceBounds || selectedDisplay.bounds,
           scaleFactor: selectedDisplay.scaleFactor || 1,
         },

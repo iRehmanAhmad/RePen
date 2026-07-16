@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { PlaybackCoordinator } from './presenter/editor/playbackCoordinator';
 import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
-import { toFileUrl, fromFileUrl, validateProjectData, migrateProjectData } from '../shared/editor/projectPersistence';
+import { toFileUrl } from '../shared/editor/projectPersistence';
 import type { EditorProjectData } from '../shared/editor/projectPersistence';
-import type { TrimRegion, SpeedRegion, ZoomRegion, AnnotationRegion, WebcamPosition, WebcamMaskShape, WebcamLayoutPreset, AspectRatio } from '../shared/editor/types';
+import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
+import type { AspectRatio } from '../shared/editor/editorDefaults';
+import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/schemas/scene';
 import './editor.css';
 
 const RECENT_PROJECTS_KEY = 'repen-recent-projects';
@@ -76,7 +78,6 @@ const EditorApp: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
   const [durationMs, setDurationMs] = useState(10000); // fallback default
-  const [volume, setVolume] = useState(1.0);
   const [timelineZoom, setTimelineZoom] = useState(1.0);
 
   // UI States
@@ -105,8 +106,6 @@ const EditorApp: React.FC = () => {
   });
 
   // Snap, tracks controls
-  const [timelineSnap, setTimelineSnap] = useState(true);
-
   // Element Refs
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -287,7 +286,7 @@ const EditorApp: React.FC = () => {
       
       if (snapshot.annotations) {
         for (const stroke of snapshot.annotations) {
-          renderer.drawStroke(stroke);
+          renderer.drawStroke(stroke as unknown as PresenterSceneAnnotation);
         }
       }
       ctx.restore();
@@ -550,7 +549,7 @@ const EditorApp: React.FC = () => {
           setActiveTab('captions');
         }, 500);
       } else {
-        alert('Transcription failed.');
+        alert(`Transcription unavailable: ${res.error || 'No offline transcription engine is installed.'}`);
         setIsTranscribing(false);
       }
     }
@@ -1312,7 +1311,7 @@ const EditorApp: React.FC = () => {
               <>
                 <h2 className="dialog-title">🎙️ Captions & Exporting</h2>
                 <p style={{fontSize: 13, lineHeight: 1.5, margin: '12px 0'}}>
-                  Click the <strong>Captions</strong> tab to transcribe speech completely offline, correct text timing splits/merges, and hit **Export** to render high-quality MP4s or lanczos animated GIFs!
+                  Caption transcription and final composited export require optional local engines that are not bundled yet. Existing caption timing and layout controls remain available for project work.
                 </p>
                 <div style={{display: 'flex', justifyContent: 'space-between', marginTop: 20}}>
                   <button className="btn-secondary" onClick={() => setShowTutorialStep(2)}>Back</button>

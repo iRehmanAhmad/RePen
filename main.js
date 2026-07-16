@@ -373,24 +373,35 @@ function broadcastState() {
   writePersistedState();
 }
 
+function isUsableWindow(win) {
+  return Boolean(win && !win.isDestroyed() && win.webContents && !win.webContents.isDestroyed());
+}
+
+function safeSend(win, channel, payload) {
+  if (!isUsableWindow(win)) return false;
+  win.webContents.send(channel, payload);
+  return true;
+}
+
 function broadcastRecordingState(recordingState) {
+  const payload = {
+    ...recordingState,
+    phase: recordingState?.phase || currentRecordingPhase || 'idle',
+    elapsedSeconds: recordingSeconds,
+  };
   for (const win of overlayWindows.values()) {
-    if (!win.isDestroyed()) {
-      win.webContents.send('recording:state-changed', recordingState);
-    }
+    safeSend(win, 'recording:state-changed', payload);
   }
-  if (toolbarWindow && !toolbarWindow.isDestroyed()) {
-    const controlsActive = ['starting', 'recording', 'paused', 'finalizing'].includes(recordingState?.phase);
+  if (isUsableWindow(toolbarWindow)) {
+    const controlsActive = ['starting', 'recording', 'paused', 'finalizing'].includes(payload.phase);
     if (controlsActive) {
-      toolbarWindow.setIgnoreMouseEvents(!(controlsActive || state.toolbarHovered));
+      toolbarWindow.setIgnoreMouseEvents(false);
       toolbarWindow.showInactive();
       toolbarWindow.moveTop();
     }
-    toolbarWindow.webContents.send('recording:state-changed', recordingState);
+    safeSend(toolbarWindow, 'recording:state-changed', payload);
   }
-  if (settingsWindow && !settingsWindow.isDestroyed()) {
-    settingsWindow.webContents.send('recording:state-changed', recordingState);
-  }
+  safeSend(settingsWindow, 'recording:state-changed', payload);
 }
 
 function broadcastScene() {
@@ -2340,6 +2351,143 @@ let currentRecordingPhase = 'idle';
 let preRecordingState = null;
 let lastStartOptions = null;
 let lastStartEvent = null;
+const approvedRecordingDirectories = new Set();
+
+function isTrustedRecordingSender(event) {
+  const senderWindow = BrowserWindow.fromWebContents(event.sender);
+  return Boolean(senderWindow && [toolbarWindow, settingsWindow, selectorWindow, countdownWindow, editorWindow].includes(senderWindow));
+}
+
+function boundedInteger(value, fallback, minimum, maximum) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(maximum, Math.max(minimum, Math.round(number)));
+}
+
+function isPathInside(rootPath, candidatePath) {
+  const relative = path.relative(path.resolve(rootPath), path.resolve(candidatePath));
+  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+}
+
+function normalizeRecordingOptions(rawOptions) {
+  if (!rawOptions || typeof rawOptions !== 'object' || Array.isArray(rawOptions)) {
+    throw new Error('Recording options are required.');
+  }
+
+  const sourceId = typeof rawOptions.sourceId === 'string' ? rawOptions.sourceId : '';
+  const source = lastEnumeratedSources.get(sourceId);
+  if (!source) throw new Error('The selected recording source is no longer available. Refresh the source list.');
+
+  const sourceType = sourceId.startsWith('window:') ? 'window' : 'display';
+  const displayIdFromSource = Number(source.display_id);
+  const requestedDisplayId = Number(rawOptions.displayId);
+  const displays = screen.getAllDisplays();
+  const selectedDisplay = displays.find((display) => display.id === requestedDisplayId)
+    || displays.find((display) => display.id === displayIdFromSource)
+    || screen.getPrimaryDisplay();
+  const windowHandle = sourceType === 'window' ? sourceId.match(/^window:([^:]+):/)?.[1] || null : null;
+  if (sourceType === 'window' && (!windowHandle || !/^(?:0x[0-9a-f]+|[1-9][0-9]*)$/i.test(windowHandle))) {
+    throw new Error('The selected window does not expose a valid native window handle.');
+  }
+
+  const defaultDirectory = app.getPath('videos');
+  const defaultOutputPath = path.join(defaultDirectory, `recording-${Date.now()}.mp4`);
+  const outputPath = path.resolve(typeof rawOptions.outputPath === 'string' && rawOptions.outputPath.trim()
+    ? rawOptions.outputPath.trim()
+    : defaultOutputPath);
+  const allowedRoots = [defaultDirectory, state.exportDefaults?.autoSavePath, ...approvedRecordingDirectories].filter(Boolean);
+  if (path.extname(outputPath).toLowerCase() !== '.mp4' || !allowedRoots.some((root) => isPathInside(root, outputPath))) {
+    throw new Error('Recording output must be an MP4 inside a directory selected in RePen.');
+  }
+
+  const sourceBounds = { ...selectedDisplay.bounds };
+  const scaleFactor = selectedDisplay.scaleFactor || 1;
+  const optionalString = (value, maxLength = 4096) =>
+    typeof value === 'string' && value.length <= maxLength && !value.includes('\0') ? value : null;
+
+  return {
+    recorder: {
+      sourceId,
+      sourceType,
+      windowHandle,
+      displayId: selectedDisplay.id,
+      width: boundedInteger(rawOptions.width, Math.round(sourceBounds.width * scaleFactor), 2, 16384),
+      height: boundedInteger(rawOptions.height, Math.round(sourceBounds.height * scaleFactor), 2, 16384),
+      fps: boundedInteger(rawOptions.fps, 30, 1, 120),
+      captureSystemAudio: rawOptions.captureSystemAudio === true,
+      captureMic: rawOptions.captureMic === true,
+      microphoneDeviceId: optionalString(rawOptions.microphoneDeviceId),
+      microphoneDeviceName: optionalString(rawOptions.microphoneDeviceName, 512),
+      microphoneGain: Math.min(4, Math.max(0, Number(rawOptions.microphoneGain) || 1)),
+      webcamEnabled: rawOptions.webcamEnabled === true,
+      webcamDeviceId: optionalString(rawOptions.webcamDeviceId),
+      webcamDeviceName: optionalString(rawOptions.webcamDeviceName, 512),
+      webcamDirectShowClsid: optionalString(rawOptions.webcamDirectShowClsid),
+      webcamWidth: boundedInteger(rawOptions.webcamWidth, 1280, 2, 7680),
+      webcamHeight: boundedInteger(rawOptions.webcamHeight, 720, 2, 4320),
+      webcamFps: boundedInteger(rawOptions.webcamFps, 30, 1, 120),
+      captureCursor: rawOptions.captureCursor !== false,
+      outputPath,
+      webcamOutputPath: rawOptions.webcamEnabled === true ? outputPath.replace(/\.mp4$/i, '-webcam.mp4') : null,
+    },
+    track: {
+      source: {
+        id: sourceId,
+        name: optionalString(source.name, 512) || (sourceType === 'display' ? `Display ${selectedDisplay.id}` : 'Selected window'),
+        type: sourceType,
+        displayId: sourceType === 'display' ? selectedDisplay.id : null,
+        windowHandle,
+        bounds: sourceBounds,
+        scaleFactor,
+      },
+      canvas: {
+        width: sourceBounds.width,
+        height: sourceBounds.height,
+        originX: sourceBounds.x,
+        originY: sourceBounds.y,
+        coordinateSpace: 'desktop-dip',
+      },
+    },
+  };
+}
+
+function getPresentationSceneSnapshot() {
+  return {
+    annotations: deepClone(annotations),
+    board: {
+      backgroundMode: state.backgroundMode || 'transparent',
+      boardColor: state.boardColor || '#ffffff',
+      viewport: {
+        panX: state.boardViewport?.panX ?? state.boardViewport?.x ?? 0,
+        panY: state.boardViewport?.panY ?? 0,
+        zoom: state.boardViewport?.zoom ?? 1,
+      },
+    },
+    page: { id: `board-page-${currentPageIndex}`, index: currentPageIndex },
+    spotlight: null,
+    laserPoints: [],
+  };
+}
+
+async function handleRecordingFailure(error) {
+  stopRecordingTimer();
+  try { await recorderService?.cancel(); } catch (cancelError) {
+    console.error('Failed to cancel recorder after failure:', cancelError);
+  }
+  try { await presentationTrackService?.discardTrack(); } catch (trackError) {
+    console.error('Failed to discard presentation track after failure:', trackError);
+  }
+  currentRecordingPhase = 'failed';
+  broadcastRecordingState({
+    isRecording: false,
+    isPaused: false,
+    error: error instanceof Error ? error.message : String(error),
+  });
+  restorePresenterState();
+}
+
+recorderService?.on('crash', (error) => void handleRecordingFailure(error));
+presentationTrackService?.on('failure', (error) => void handleRecordingFailure(error));
 
 function savePresenterState() {
   preRecordingState = {
@@ -2359,7 +2507,15 @@ function restorePresenterState() {
 }
 
 
-function startRecordingTimer(event) {
+function broadcastRecordingTimer(timeStr) {
+  for (const win of overlayWindows.values()) {
+    safeSend(win, 'recording:timer-tick', timeStr);
+  }
+  safeSend(toolbarWindow, 'recording:timer-tick', timeStr);
+  safeSend(settingsWindow, 'recording:timer-tick', timeStr);
+}
+
+function startRecordingTimer() {
   recordingSeconds = 0;
   if (recordingTimer) clearInterval(recordingTimer);
   
@@ -2369,7 +2525,7 @@ function startRecordingTimer(event) {
     const mm = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
     const ss = String(recordingSeconds % 60).padStart(2, '0');
     const timeStr = `${mm}:${ss}`;
-    event.sender.send('recording:timer-tick', timeStr);
+    broadcastRecordingTimer(timeStr);
   }, 1000);
 }
 
@@ -2389,43 +2545,23 @@ async function handleStartRecording(options) {
   currentRecordingPhase = 'starting';
   broadcastRecordingState({ isRecording: false, isPaused: false });
 
-  const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
-  const outputPath = options.outputPath || defaultPath;
-  
-  await recorderService.start({
-    sourceId: options.sourceId || 'screen:0',
-    sourceType: options.sourceType || 'screen',
-    windowHandle: options.windowHandle || null,
-    displayId: options.displayId || 0,
-    width: options.width || 1920,
-    height: options.height || 1080,
-    fps: options.fps || 30,
-    captureSystemAudio: options.captureSystemAudio ?? true,
-    captureMic: options.captureMic ?? false,
-    microphoneDeviceId: options.microphoneDeviceId || null,
-    webcamEnabled: options.webcamEnabled ?? false,
-    webcamDeviceId: options.webcamDeviceId || null,
-    captureCursor: options.captureCursor ?? true,
-    outputPath: outputPath,
-    webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
-  });
+  const normalized = normalizeRecordingOptions(options);
+  const sessionId = `recording-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  await recorderService.start(normalized.recorder);
   
   if (presentationTrackService) {
-    presentationTrackService.startTrack(
-      outputPath,
-      annotations,
-      state.backgroundMode,
-      state.boardColor || '#ffffff',
-      state.boardViewport || { panX: 0, panY: 0, zoom: 1 }
-    );
+    presentationTrackService.startTrack(normalized.recorder.outputPath, {
+      sessionId,
+      createdAtEpochMs: Date.now(),
+      source: normalized.track.source,
+      canvas: normalized.track.canvas,
+      initialScene: getPresentationSceneSnapshot(),
+    });
   }
   
-  const win = toolbarWindow || (overlayWindows.size > 0 ? overlayWindows.values().next().value : null);
-  if (win) {
-    startRecordingTimer(win);
-  }
+  startRecordingTimer();
   currentRecordingPhase = 'recording';
-  broadcastRecordingState({ isRecording: true, isPaused: false });
+  broadcastRecordingState({ isRecording: true, isPaused: false, sessionId });
 }
 
 async function handleStopRecording() {
@@ -2435,14 +2571,12 @@ async function handleStopRecording() {
   stopRecordingTimer();
 
   const outputPath = await recorderService.stop();
-  if (presentationTrackService) {
-    presentationTrackService.stopTrack();
-  }
+  const trackSummary = presentationTrackService ? await presentationTrackService.finalizeTrack() : null;
   currentRecordingPhase = 'completed';
   broadcastRecordingState({ isRecording: false, isPaused: false });
   currentRecordingPhase = 'idle';
   restorePresenterState();
-  return outputPath;
+  return { outputPath, presentationTrackPath: trackSummary?.sidecarPath || null };
 }
 
 async function handleCancelRecording() {
@@ -2453,7 +2587,7 @@ async function handleCancelRecording() {
     await recorderService.cancel();
   }
   if (presentationTrackService) {
-    presentationTrackService.cancelTrack();
+    await presentationTrackService.discardTrack();
   }
   currentRecordingPhase = 'idle';
   broadcastRecordingState({ isRecording: false, isPaused: false });
@@ -2484,7 +2618,7 @@ async function handleRestartRecording() {
   if (!recorderService) throw new Error('RecorderService is not available.');
   stopRecordingTimer();
   if (presentationTrackService) {
-    presentationTrackService.cancelTrack();
+    await presentationTrackService.discardTrack();
   }
   await recorderService.cancel();
   
@@ -2530,14 +2664,16 @@ async function handlePauseRecordingShortcut() {
   }
 }
 
-ipcMain.handle('recording:open-setup', async () => {
+ipcMain.handle('recording:open-setup', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   currentRecordingPhase = 'selecting';
   showSelectorWindow();
   broadcastRecordingState({ isRecording: false, isPaused: false });
   return { success: true };
 });
 
-ipcMain.handle('recording:close-setup', async () => {
+ipcMain.handle('recording:close-setup', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   currentRecordingPhase = 'idle';
   hideSelectorWindow();
   broadcastRecordingState({ isRecording: false, isPaused: false });
@@ -2556,40 +2692,83 @@ ipcMain.handle('recording:close-editor', async () => {
   return { success: true };
 });
 
-ipcMain.handle('recording:transcribe', async (_, filePath) => {
-  // Simulate offline whisper-like model audio processing
-  await new Promise(resolve => setTimeout(resolve, 2000));
+ipcMain.handle('recording:transcribe', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized transcription request.' };
   return {
-    success: true,
-    segments: [
-      { id: 'c1', startMs: 500, endMs: 2500, content: 'Welcome to this RePen session!' },
-      { id: 'c2', startMs: 3000, endMs: 5500, content: 'Today we will draw shapes and highlights.' },
-      { id: 'c3', startMs: 6000, endMs: 8500, content: 'Thank you for watching this presentation!' }
-    ]
+    success: false,
+    supported: false,
+    error: 'Offline transcription is not installed. No caption model is bundled with this build.',
   };
 });
 
-ipcMain.handle('project:export', async (event, project, options) => {
+function resolveFfmpegPath() {
+  const candidates = [
+    process.env.REPEN_FFMPEG_PATH,
+    app.isPackaged ? path.join(process.resourcesPath, 'ffmpeg', 'ffmpeg.exe') : null,
+  ].filter(Boolean);
+  return candidates.find((candidate) => path.isAbsolute(candidate) && fs.existsSync(candidate)) || null;
+}
+
+function generateExportFFmpegArgs(options) {
+  const args = ['-y', '-i', options.videoPath];
+  const filters = [];
+  let videoOut = '0:v';
+  if (options.cropRegion) {
+    const crop = options.cropRegion;
+    for (const value of [crop.width, crop.height, crop.x, crop.y]) {
+      if (!Number.isFinite(value) || value < 0 || value > 1) throw new Error('Invalid crop region.');
+    }
+    filters.push(`[${videoOut}]crop=w=iw*${crop.width}:h=ih*${crop.height}:x=iw*${crop.x}:y=ih*${crop.y}[cropped_v]`);
+    videoOut = 'cropped_v';
+  }
+  if (options.format === 'gif') {
+    const fps = boundedInteger(options.fps, 15, 1, 30);
+    filters.push(`[${videoOut}]fps=${fps},scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse[gif_v]`);
+    videoOut = 'gif_v';
+  }
+  if (filters.length) args.push('-filter_complex', filters.join(';'), '-map', `[${videoOut}]`);
+  else args.push('-map', '0:v');
+  if (options.format === 'gif') args.push('-loop', options.loop === false ? '-1' : '0');
+  else args.push('-map', '0:a?', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k');
+  args.push(options.outputPath);
+  return args;
+}
+
+ipcMain.handle('project:export', async (event, project, options = {}) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized export request.' };
   if (activeExportProcess) {
     return { success: false, error: 'Export already in progress' };
   }
-
-  const durationMs = options.durationMs || 10000;
-  const command = generateExportFFmpegCommand({
-    videoPath: project.media?.screenVideoPath || project.videoPath || '',
-    webcamVideoPath: project.media?.webcamVideoPath || '',
-    outputPath: options.outputPath,
-    format: options.format || 'mp4',
-    fps: options.fps || 30,
-    loop: options.loop !== false,
-    cropRegion: project.editor?.cropRegion,
-    webcamLayoutPreset: project.editor?.webcamLayoutPreset,
-    webcamSizePreset: project.editor?.webcamSizePreset,
-    webcamPosition: project.editor?.webcamPosition,
-  });
+  const ffmpegPath = resolveFfmpegPath();
+  if (!ffmpegPath) {
+    return { success: false, supported: false, error: 'Video export is unavailable because a licensed FFmpeg executable is not bundled with this build.' };
+  }
+  const inputPath = path.resolve(project?.media?.screenVideoPath || project?.videoPath || '');
+  if (!path.isAbsolute(inputPath) || !fs.existsSync(inputPath)) return { success: false, error: 'The source video is missing.' };
+  const format = options.format === 'gif' ? 'gif' : 'mp4';
+  const saveDialogOptions = {
+    title: 'Export RePen Project',
+    defaultPath: path.join(app.getPath('videos'), `RePen-Export.${format}`),
+    filters: [{ name: format === 'gif' ? 'Animated GIF' : 'MP4 Video', extensions: [format] }],
+    properties: ['createDirectory', 'showOverwriteConfirmation'],
+  };
+  const exportParent = editorWindow && !editorWindow.isDestroyed() ? editorWindow : toolbarWindow;
+  const saveResult = exportParent && !exportParent.isDestroyed()
+    ? await dialog.showSaveDialog(exportParent, saveDialogOptions)
+    : await dialog.showSaveDialog(saveDialogOptions);
+  if (saveResult.canceled || !saveResult.filePath) return { success: false, canceled: true, error: 'Export canceled.' };
+  const outputPath = path.resolve(saveResult.filePath);
+  const durationMs = boundedInteger(options.durationMs, 10000, 1, 24 * 60 * 60 * 1000);
+  let args;
+  try {
+    args = generateExportFFmpegArgs({ videoPath: inputPath, outputPath, format, fps: options.fps, loop: options.loop, cropRegion: project?.editor?.cropRegion });
+  } catch (error) {
+    return { success: false, error: error.message || String(error) };
+  }
 
   return new Promise((resolve) => {
-    activeExportProcess = spawn(command, { shell: true });
+    activeExportOutputPath = outputPath;
+    activeExportProcess = spawn(ffmpegPath, args, { shell: false, windowsHide: true });
 
     activeExportProcess.stderr.on('data', (data) => {
       const log = data.toString();
@@ -2609,23 +2788,32 @@ ipcMain.handle('project:export', async (event, project, options) => {
 
     activeExportProcess.on('close', (code) => {
       activeExportProcess = null;
+      activeExportOutputPath = null;
       if (code === 0) {
-        resolve({ success: true, path: options.outputPath });
+        resolve({ success: true, path: outputPath });
       } else {
         resolve({ success: false, error: `FFmpeg exited with code ${code}` });
       }
     });
+    activeExportProcess.on('error', (error) => {
+      activeExportProcess = null;
+      activeExportOutputPath = null;
+      resolve({ success: false, error: error.message });
+    });
   });
 });
 
-ipcMain.handle('project:export-cancel', async (_, outputPath) => {
+ipcMain.handle('project:export-cancel', async (event, outputPath) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized export request.' };
+  const partialOutputPath = activeExportOutputPath || (typeof outputPath === 'string' && path.isAbsolute(outputPath) ? outputPath : null);
   if (activeExportProcess) {
     activeExportProcess.kill();
     activeExportProcess = null;
   }
-  if (outputPath && fs.existsSync(outputPath)) {
+  activeExportOutputPath = null;
+  if (partialOutputPath && fs.existsSync(partialOutputPath)) {
     try {
-      fs.unlinkSync(outputPath);
+      fs.unlinkSync(partialOutputPath);
     } catch (e) {
       // Ignore cleanup error
     }
@@ -2633,67 +2821,8 @@ ipcMain.handle('project:export-cancel', async (_, outputPath) => {
   return { success: true };
 });
 
-function generateExportFFmpegCommand(options) {
-  const parts = ['ffmpeg', '-y'];
-
-  parts.push('-i', `"${options.videoPath}"`);
-
-  let filterGraph = [];
-  let videoOut = '0:v';
-  let audioOut = '0:a';
-
-  if (options.cropRegion) {
-    const crop = options.cropRegion;
-    filterGraph.push(`[${videoOut}]crop=w=iw*${crop.width}:h=ih*${crop.height}:x=iw*${crop.x}:y=ih*${crop.y}[cropped_v]`);
-    videoOut = 'cropped_v';
-  }
-
-  if (options.webcamVideoPath && options.webcamLayoutPreset !== 'no-webcam') {
-    parts.push('-i', `"${options.webcamVideoPath}"`);
-    const sizePct = (options.webcamSizePreset || 25) / 100;
-    filterGraph.push(`[1:v]scale=iw*${sizePct}:-1[scaled_webcam]`);
-    
-    let overlayX = 'main_w-w-20';
-    let overlayY = 'main_h-h-20';
-    if (options.webcamPosition) {
-      overlayX = `main_w*${options.webcamPosition.cx}-w/2`;
-      overlayY = `main_h*${options.webcamPosition.cy}-h/2`;
-    }
-    filterGraph.push(`[${videoOut}][scaled_webcam]overlay=x=${overlayX}:y=${overlayY}:shortest=1[webcam_overlay_v]`);
-    videoOut = 'webcam_overlay_v';
-  }
-
-  if (options.format === 'gif') {
-    const fps = options.fps || 15;
-    filterGraph.push(`[${videoOut}]fps=${fps},scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse[gif_v]`);
-    videoOut = 'gif_v';
-  }
-
-  if (filterGraph.length > 0) {
-    parts.push('-filter_complex', `"${filterGraph.join('; ')}"`);
-    parts.push('-map', `"[${videoOut}]"`);
-    if (options.format !== 'gif') {
-      parts.push('-map', `"${audioOut}"`);
-    }
-  } else {
-    parts.push('-map', '0:v');
-    if (options.format !== 'gif') {
-      parts.push('-map', '0:a');
-    }
-  }
-
-  if (options.format === 'gif') {
-    parts.push('-loop', options.loop ? '0' : '-1');
-  } else {
-    parts.push('-c:v', 'libx264', '-pix_fmt', 'yuv420p');
-    parts.push('-c:a', 'aac', '-b:a', '192k');
-  }
-
-  parts.push(`"${options.outputPath}"`);
-  return parts.join(' ');
-}
-
-ipcMain.handle('recording:get-sources', async (_, opts) => {
+ipcMain.handle('recording:get-sources', async (event, opts) => {
+  if (!isTrustedRecordingSender(event)) return [];
   const sources = await desktopCapturer.getSources(opts || {
     types: ['screen', 'window'],
     thumbnailSize: { width: 320, height: 180 },
@@ -2709,7 +2838,8 @@ ipcMain.handle('recording:get-sources', async (_, opts) => {
   }));
 });
 
-ipcMain.handle('recording:get-system-info', async () => {
+ipcMain.handle('recording:get-system-info', async (event) => {
+  if (!isTrustedRecordingSender(event)) throw new Error('Unauthorized recording request.');
   const displays = screen.getAllDisplays().map((d) => ({
     id: d.id,
     name: d.label || `Display ${d.id}`,
@@ -2734,7 +2864,8 @@ ipcMain.handle('recording:get-system-info', async () => {
   };
 });
 
-ipcMain.handle('recording:select-directory', async () => {
+ipcMain.handle('recording:select-directory', async (event) => {
+  if (!isTrustedRecordingSender(event)) return null;
   const result = await dialog.showOpenDialog({
     properties: ['openDirectory', 'createDirectory'],
   });
@@ -2742,6 +2873,7 @@ ipcMain.handle('recording:select-directory', async () => {
     return null;
   }
   const dir = result.filePaths[0];
+  approvedRecordingDirectories.add(path.resolve(dir));
   let freeSpaceBytes = 0;
   try {
     const stats = fs.statfsSync(dir);
@@ -2755,17 +2887,21 @@ ipcMain.handle('recording:select-directory', async () => {
   };
 });
 
-ipcMain.handle('recording:start-countdown', async (event, { displayId, seconds }) => {
+ipcMain.handle('recording:start-countdown', async (event, payload = {}) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  const displayId = Number(payload.displayId);
+  const seconds = boundedInteger(payload.seconds, 3, 0, 10);
   currentRecordingPhase = 'countdown';
   createCountdownWindow(displayId);
   if (countdownWindow && !countdownWindow.isDestroyed()) {
     countdownWindow.show();
   }
   broadcastRecordingState({ isRecording: false, isPaused: false });
-  return { success: true };
+  return { success: true, seconds };
 });
 
-ipcMain.handle('recording:close-countdown', async () => {
+ipcMain.handle('recording:close-countdown', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   currentRecordingPhase = 'starting';
   if (countdownWindow && !countdownWindow.isDestroyed()) {
     countdownWindow.close();
@@ -2775,160 +2911,82 @@ ipcMain.handle('recording:close-countdown', async () => {
 });
 
 ipcMain.handle('recording:start', async (event, options) => {
-  if (!recorderService) {
-    return { success: false, error: 'RecorderService is not available.' };
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!['idle', 'selecting', 'countdown', 'failed'].includes(currentRecordingPhase)) {
+    return { success: false, error: `Cannot start while recording state is ${currentRecordingPhase}.` };
   }
   try {
-    lastStartOptions = options;
     lastStartEvent = event;
-    savePresenterState();
-    currentRecordingPhase = 'starting';
-    broadcastRecordingState({ isRecording: false, isPaused: false });
-
-    const defaultPath = path.join(app.getPath('videos'), `recording-${Date.now()}.mp4`);
-    const outputPath = options.outputPath || defaultPath;
-    
-    await recorderService.start({
-      sourceId: options.sourceId || 'screen:0',
-      sourceType: options.sourceType || 'screen',
-      windowHandle: options.windowHandle || null,
-      displayId: options.displayId || 0,
-      width: options.width || 1920,
-      height: options.height || 1080,
-      fps: options.fps || 30,
-      captureSystemAudio: options.captureSystemAudio ?? true,
-      captureMic: options.captureMic ?? false,
-      microphoneDeviceId: options.microphoneDeviceId || null,
-      webcamEnabled: options.webcamEnabled ?? false,
-      webcamDeviceId: options.webcamDeviceId || null,
-      captureCursor: options.captureCursor ?? true,
-      outputPath: outputPath,
-      webcamOutputPath: options.webcamEnabled ? outputPath.replace('.mp4', '-webcam.mp4') : null,
-    });
-    
-    if (presentationTrackService) {
-      presentationTrackService.startTrack(
-        outputPath,
-        annotations,
-        state.backgroundMode,
-        state.boardColor || '#ffffff',
-        state.boardViewport || { panX: 0, panY: 0, zoom: 1 }
-      );
-    }
-    
-    startRecordingTimer(event);
-    currentRecordingPhase = 'recording';
-    broadcastRecordingState({ isRecording: true, isPaused: false });
+    await handleStartRecording(options);
     return { success: true };
-  } catch (err) {
-    currentRecordingPhase = 'failed';
-    broadcastRecordingState({ isRecording: false, isPaused: false, error: err.message || String(err) });
-    currentRecordingPhase = 'idle';
-    restorePresenterState();
-    return { success: false, error: err.message || String(err) };
-  }
-});
-
-ipcMain.handle('recording:pause', async () => {
-  if (recorderService) {
-    await recorderService.pause();
-    if (presentationTrackService) {
-      presentationTrackService.pauseTrack();
-    }
-    currentRecordingPhase = 'paused';
-    broadcastRecordingState({ isRecording: true, isPaused: true });
-  }
-  return { success: true };
-});
-
-ipcMain.handle('recording:resume', async () => {
-  if (recorderService) {
-    await recorderService.resume();
-    if (presentationTrackService) {
-      presentationTrackService.resumeTrack();
-    }
-    currentRecordingPhase = 'recording';
-    broadcastRecordingState({ isRecording: true, isPaused: false });
-  }
-  return { success: true };
-});
-
-ipcMain.handle('recording:stop', async () => {
-  if (!recorderService) return { success: false, error: 'RecorderService is not available.' };
-  try {
-    currentRecordingPhase = 'finalizing';
-    broadcastRecordingState({ isRecording: true, isPaused: false });
+  } catch (error) {
     stopRecordingTimer();
-
-    const outputPath = await recorderService.stop();
-    if (presentationTrackService) {
-      presentationTrackService.stopTrack();
-    }
-    currentRecordingPhase = 'completed';
-    broadcastRecordingState({ isRecording: false, isPaused: false });
-    currentRecordingPhase = 'idle';
-    restorePresenterState();
-    return { success: true, outputPath };
-  } catch (err) {
-    if (presentationTrackService) {
-      presentationTrackService.stopTrack();
-    }
+    try { await recorderService?.cancel(); } catch {}
+    try { await presentationTrackService?.discardTrack(); } catch {}
     currentRecordingPhase = 'failed';
-    broadcastRecordingState({ isRecording: false, isPaused: false, error: err.message || String(err) });
-    currentRecordingPhase = 'idle';
+    broadcastRecordingState({ isRecording: false, isPaused: false, error: error.message || String(error) });
     restorePresenterState();
-    return { success: false, error: err.message || String(err) };
+    return { success: false, error: error.message || String(error) };
   }
 });
 
-ipcMain.handle('recording:cancel', async () => {
-  currentRecordingPhase = 'finalizing';
-  broadcastRecordingState({ isRecording: true, isPaused: false });
-  stopRecordingTimer();
-  if (recorderService) {
-    await recorderService.cancel();
-  }
-  if (presentationTrackService) {
-    presentationTrackService.cancelTrack();
-  }
-  currentRecordingPhase = 'idle';
-  broadcastRecordingState({ isRecording: false, isPaused: false });
-  restorePresenterState();
-  return { success: true };
+ipcMain.handle('recording:pause', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (currentRecordingPhase !== 'recording') return { success: false, error: 'Recording is not active.' };
+  try { await handlePauseRecording(); return { success: true }; }
+  catch (error) { return { success: false, error: error.message || String(error) }; }
 });
 
-ipcMain.handle('recording:restart', async () => {
-  if (!recorderService) return { success: false, error: 'RecorderService is not available.' };
-  stopRecordingTimer();
-  if (presentationTrackService) {
-    presentationTrackService.cancelTrack();
+ipcMain.handle('recording:resume', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (currentRecordingPhase !== 'paused') return { success: false, error: 'Recording is not paused.' };
+  try { await handleResumeRecording(); return { success: true }; }
+  catch (error) { return { success: false, error: error.message || String(error) }; }
+});
+
+ipcMain.handle('recording:stop', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!['recording', 'paused'].includes(currentRecordingPhase)) return { success: false, error: 'No active recording to stop.' };
+  try {
+    const result = await handleStopRecording();
+    return { success: true, ...result };
+  } catch (error) {
+    currentRecordingPhase = 'failed';
+    broadcastRecordingState({ isRecording: false, isPaused: false, error: error.message || String(error) });
+    restorePresenterState();
+    return { success: false, error: error.message || String(error) };
   }
-  await recorderService.cancel();
-  
-  if (lastStartOptions && lastStartEvent) {
-    currentRecordingPhase = 'countdown';
-    broadcastRecordingState({ isRecording: false, isPaused: false });
-    // Trigger countdown overlay
-    createCountdownWindow(lastStartOptions.displayId || 0);
-    if (countdownWindow && !countdownWindow.isDestroyed()) {
-      countdownWindow.show();
-    }
+});
+
+ipcMain.handle('recording:cancel', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!['starting', 'recording', 'paused', 'failed'].includes(currentRecordingPhase)) {
+    return { success: false, error: 'No active recording to discard.' };
+  }
+  try { await handleCancelRecording(); return { success: true }; }
+  catch (error) { return { success: false, error: error.message || String(error) }; }
+});
+
+ipcMain.handle('recording:restart', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!lastStartOptions) return { success: false, error: 'No recording options are available to restart.' };
+  try {
+    await handleCancelRecording();
+    await handleStartRecording(lastStartOptions);
     return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message || String(error) };
   }
-  
-  currentRecordingPhase = 'idle';
-  broadcastRecordingState({ isRecording: false, isPaused: false });
-  restorePresenterState();
-  return { success: false, error: 'No active session options found to restart.' };
 });
 
-ipcMain.handle('recording:get-state', async () => {
-  if (!recorderService) return { isRecording: false, isPaused: false };
-  return recorderService.getState();
+ipcMain.handle('recording:get-state', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { isRecording: false, isPaused: false, phase: 'idle' };
+  return { ...(recorderService?.getState() || { isRecording: false, isPaused: false }), phase: currentRecordingPhase, elapsedSeconds: recordingSeconds };
 });
 
-ipcMain.handle('recording:get-capabilities', async () => {
-  return { available: recorderService !== null, supported: true };
+ipcMain.handle('recording:get-capabilities', async (event) => {
+  if (!isTrustedRecordingSender(event) || !recorderService) return { available: false, supported: false, reason: 'Recorder unavailable.' };
+  return recorderService.probeCapabilities();
 });
 
 // window.webContents.send('recording:countdown-tick');
@@ -3065,7 +3123,8 @@ ipcMain.handle('app:set-pass-through', (_, enabled) => {
 ipcMain.handle('app:set-toolbar-hover', (_, hovered) => {
   state.toolbarHovered = Boolean(hovered);
   if (toolbarWindow && !toolbarWindow.isDestroyed()) {
-    if (state.toolbarHovered) {
+    const recordingControlsActive = ['starting', 'recording', 'paused', 'finalizing'].includes(currentRecordingPhase);
+    if (state.toolbarHovered || recordingControlsActive) {
       toolbarWindow.setIgnoreMouseEvents(false);
     } else {
       toolbarWindow.setIgnoreMouseEvents(true, { forward: true });
@@ -3330,6 +3389,7 @@ ipcMain.handle('app:open-external', (_, url) => {
 
 let pendingExportResolve = null;
 let activeExportProcess = null;
+let activeExportOutputPath = null;
 
 ipcMain.handle('app:render-export', async (_, payload) => {
   if (!payload || !payload.dataUrl) {
@@ -3669,10 +3729,34 @@ app.whenReady().then(() => {
   screen.on('display-metrics-changed', rebuildWindows);
 });
 
-app.on('before-quit', () => {
+let recordingQuitCleanupComplete = false;
+let recordingQuitCleanup = null;
+
+app.on('before-quit', (event) => {
   app.isQuitting = true;
   globalShortcut.unregisterAll();
   writePersistedState();
+  const needsCleanup = !recordingQuitCleanupComplete && (
+    recorderService?.getState().isRecording ||
+    ['starting', 'recording', 'paused', 'finalizing'].includes(currentRecordingPhase) ||
+    presentationTrackService?.isRecording()
+  );
+  if (!needsCleanup) return;
+
+  event.preventDefault();
+  if (!recordingQuitCleanup) {
+    recordingQuitCleanup = (async () => {
+      try { await recorderService?.cancel(); } catch (error) {
+        console.error('Failed to cancel recording during shutdown:', error);
+      }
+      try { await presentationTrackService?.discardTrack(); } catch (error) {
+        console.error('Failed to discard presentation track during shutdown:', error);
+      }
+      stopRecordingTimer();
+      recordingQuitCleanupComplete = true;
+      app.quit();
+    })();
+  }
 });
 
 app.on('window-all-closed', (event) => {

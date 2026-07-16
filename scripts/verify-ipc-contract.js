@@ -35,6 +35,10 @@ const sentChannels = new Set();
 while ((match = sendRegex.exec(mainContent)) !== null) {
   sentChannels.add(match[1]);
 }
+const safeSendRegex = /safeSend\([^,]+,\s*['"]([^'"]+)['"]/g;
+while ((match = safeSendRegex.exec(mainContent)) !== null) {
+  sentChannels.add(match[1]);
+}
 
 let hasError = false;
 console.log('--- Verifying IPC Contract ---');
