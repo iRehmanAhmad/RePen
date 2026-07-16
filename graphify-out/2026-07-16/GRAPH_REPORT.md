@@ -1,16 +1,16 @@
-# Graph Report - epic-pen-clone  (2026-07-16)
+# Graph Report - epic-pen-clone  (2026-07-15)
 
 ## Corpus Check
-- 191 files · ~141,105 words
+- 189 files · ~140,874 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2185 nodes · 3208 edges · 188 communities (176 shown, 12 thin omitted)
+- 2177 nodes · 3202 edges · 186 communities (174 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `116a4dcb`
+- Built from commit: `9c89da25`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -192,7 +192,6 @@
 - [[_COMMUNITY_native-recorder-helper.test.ts|native-recorder-helper.test.ts]]
 - [[_COMMUNITY_broadcastScene|broadcastScene]]
 - [[_COMMUNITY_syncPageStore|syncPageStore]]
-- [[_COMMUNITY_Third-Party Notices & SBOM|Third-Party Notices & SBOM]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -211,17 +210,17 @@
   electron/main.ts → main.js
 - `bootstrap()` --calls--> `migrateProjectData()`  [INFERRED]
   electron/main.ts → src/shared/editor/projectPersistence.ts
-- `TestWindow` --inherits--> `BaseWindow`  [EXTRACTED]
-  tests/unit/windowSecurity.test.ts → electron/windows/baseWindow.ts
-- `main()` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
-- `configureAudioStream` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/mf_encoder.h → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
+- `main()` --calls--> `inputFormat_`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/wasapi_loopback_capture.h
+- `main()` --calls--> `selectedDeviceName_`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/wasapi_loopback_capture.h
+- `main()` --calls--> `selectedDeviceName_`  [INFERRED]
+  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/webcam_capture.h
 
 ## Import Cycles
 - None detected.
 
-## Communities (188 total, 12 thin omitted)
+## Communities (186 total, 12 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.08
@@ -544,8 +543,8 @@ Cohesion: 0.19
 Nodes (14): broadcastRecordingState(), createCountdownWindow(), handleCancelRecording(), handlePauseRecording(), handlePauseRecordingShortcut(), handleRestartRecording(), handleResumeRecording(), handleStartRecording() (+6 more)
 
 ### Community 84 - "init"
-Cohesion: 0.07
-Nodes (34): EditorApp(), ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath() (+26 more)
+Cohesion: 0.10
+Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 86 - "applyHotkeys"
 Cohesion: 0.43
@@ -580,8 +579,8 @@ Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.08
-Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ComPtr, Direct3D11CaptureFramePool, FrameCallback, ID3D11Device (+17 more)
+Cohesion: 0.07
+Nodes (29): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ID3D11Device, ID3D11DeviceContext, ComPtr, Direct3D11CaptureFramePool (+21 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -593,15 +592,15 @@ Nodes (13): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, optio
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
-Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
+Nodes (43): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+35 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.07
-Nodes (43): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+35 more)
+Cohesion: 0.06
+Nodes (47): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+39 more)
 
 ### Community 99 - "CaptureConfig"
-Cohesion: 0.08
-Nodes (25): CaptureConfig, bounds, captureCursor, captureMic, captureSystemAudio, displayId, hasDisplayBounds, microphoneDeviceId (+17 more)
+Cohesion: 0.07
+Nodes (28): CaptureConfig, bounds, captureCursor, captureMic, captureSystemAudio, displayId, fps, hasDisplayBounds (+20 more)
 
 ### Community 100 - "build-native-helper.js"
 Cohesion: 0.18
@@ -648,8 +647,8 @@ Cohesion: 0.17
 Nodes (11): author, bugs, url, description, homepage, keywords, license, main (+3 more)
 
 ### Community 111 - "project.ts"
-Cohesion: 0.10
-Nodes (28): annotationId(), applyPresentationEvent(), clone(), seekPresentationTrack(), BoardSnapshot, BoardViewport, PRESENTATION_TRACK_SCHEMA_VERSION, PresentationBounds (+20 more)
+Cohesion: 0.09
+Nodes (29): EditorApp(), annotationId(), applyPresentationEvent(), clone(), seekPresentationTrack(), BoardSnapshot, BoardViewport, PRESENTATION_TRACK_SCHEMA_VERSION (+21 more)
 
 ### Community 112 - "devDependencies"
 Cohesion: 0.17
@@ -680,8 +679,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.31
-Nodes (14): HWND, string, wstring, findBool(), findDouble(), findInt(), findInt64(), findString() (+6 more)
+Cohesion: 0.26
+Nodes (18): BYTE, HWND, string, vector, wstring, findBool(), findDouble(), findInt() (+10 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -736,16 +735,16 @@ Cohesion: 0.09
 Nodes (14): initializeSingleInstanceLock(), bootstrap(), broadcastRecordingState(), broadcastRecordingTimer(), calculateToolbarBounds(), lastEnumeratedSources, rebuildOverlays(), startRecordingTimer() (+6 more)
 
 ### Community 137 - "StateManager"
-Cohesion: 0.11
-Nodes (18): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+10 more)
+Cohesion: 0.29
+Nodes (15): enumerateAVDevices(), init(), loadSystemInfo(), refreshSources(), renderSources(), setupEventListeners(), startMicMeter(), startRecordingFlow() (+7 more)
 
 ### Community 138 - "DisplayManager"
 Cohesion: 0.19
 Nodes (13): broadcastState(), captureMagnifierBackground(), quitApp(), setClickHalo(), setColor(), setExportIncludeBackground(), setOpacity(), setShapeType() (+5 more)
 
 ### Community 139 - "audio_sample_utils.h"
-Cohesion: 0.15
-Nodes (16): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice(), applySessionOptions (+8 more)
+Cohesion: 0.13
+Nodes (18): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice() (+10 more)
 
 ### Community 140 - "find_main_js_handlers.js"
 Cohesion: 0.50
@@ -883,12 +882,8 @@ Nodes (10): broadcastScene(), deepClone(), getSceneState(), loadSessionFromFile(
 Cohesion: 0.38
 Nodes (7): autoArchiveCurrentSession(), exportPdf(), loadSession(), newSession(), saveSession(), showModalDialog(), syncPageStore()
 
-### Community 186 - "Third-Party Notices & SBOM"
-Cohesion: 0.29
-Nodes (6): Electron (MIT License), FFmpeg (LGPL/GPL License), Node.js (MIT License), OpenScreen (MIT License), React & ReactDOM (MIT License), Third-Party Notices & SBOM
-
 ## Knowledge Gaps
-- **1051 isolated node(s):** `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION`, `Point`, `PresentationBounds` (+1046 more)
+- **1046 isolated node(s):** `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION`, `Point`, `PresentationBounds` (+1041 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -896,15 +891,15 @@ Nodes (6): Electron (MIT License), FFmpeg (LGPL/GPL License), Node.js (MIT Licen
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
-  _High betweenness centrality (0.044) - this node is a cross-community bridge._
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
 - **Why does `migrateProjectData()` connect `projectPersistence.ts` to `main.ts`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **Why does `generateExportFFmpegCommand()` connect `main.ts` to `main.js`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` to the rest of the system?**
-  _1051 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1046 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.07965860597439545 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

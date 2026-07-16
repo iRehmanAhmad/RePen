@@ -1003,15 +1003,5 @@
     "mtime": 1784136468.0072129,
     "ast_hash": "e3b677a10bed11212f711e86564906f3",
     "semantic_hash": ""
-  },
-  "tests/unit/packaging.test.ts": {
-    "mtime": 1784214250.1529639,
-    "ast_hash": "fab34ecd99c99d1f8e70a7b5e8e5537f",
-    "semantic_hash": ""
-  },
-  "third_party_notices.md": {
-    "mtime": 1784214237.458915,
-    "ast_hash": "1974f9ace5e0406b5481d659f5ba1260",
-    "semantic_hash": ""
   }
 }

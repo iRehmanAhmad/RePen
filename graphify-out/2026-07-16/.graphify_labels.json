@@ -184,7 +184,5 @@
   "182": "sessionUX.test.ts",
   "183": "broadcastScene",
   "184": "syncPageStore",
-  "185": "editorExport.test.ts",
-  "186": "Third-Party Notices & SBOM",
-  "187": "packaging.test.ts"
+  "185": "editorExport.test.ts"
 }
