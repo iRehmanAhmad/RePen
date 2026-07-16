@@ -390,7 +390,8 @@ function bootstrap() {
     return { success: true };
   });
 
-  ipcMain.handle('recording:close-countdown', async () => {
+  ipcMain.handle('recording:close-countdown', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
     windowRegistry.destroyCountdown();
     return { success: true };
   });

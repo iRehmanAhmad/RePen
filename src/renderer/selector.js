@@ -331,25 +331,38 @@
       outputPath: `${selectedDestination}/recording-${Date.now()}.mp4`,
     };
 
-    // Close setup window
-    await window.appBridge.closeRecordingSetup();
+    const showStartError = async (error) => {
+      await window.appBridge.openRecordingSetup().catch(() => {});
+      elements.setupMessage.textContent = `Recording failed to start: ${error}`;
+      elements.setupMessage.style.color = 'var(--danger)';
+      elements.startButton.disabled = false;
+    };
 
-    // Trigger full screen countdown on primary display
-    await window.appBridge.startCountdown(recordingOptions.displayId, 3);
+    try {
+      const closeResult = await window.appBridge.closeRecordingSetup();
+      if (!closeResult.success) throw new Error(closeResult.error || 'Unable to close recording setup.');
 
-    // After countdown completes, actual start gets handled
-    let secondsLeft = 3;
-    const countdownTimer = setInterval(async () => {
-      secondsLeft--;
-      if (secondsLeft <= 0) {
+      const countdownResult = await window.appBridge.startCountdown(recordingOptions.displayId, 3);
+      if (!countdownResult.success) throw new Error(countdownResult.error || 'Unable to start countdown.');
+
+      let secondsLeft = 3;
+      const countdownTimer = setInterval(async () => {
+        secondsLeft--;
+        if (secondsLeft > 0) return;
+
         clearInterval(countdownTimer);
-        await window.appBridge.closeCountdown();
-        const startRes = await window.appBridge.startRecording(recordingOptions);
-        if (!startRes.success) {
-          alert(`Recording failed to start: ${startRes.error}`);
+        try {
+          const closeCountdownResult = await window.appBridge.closeCountdown();
+          if (!closeCountdownResult.success) throw new Error(closeCountdownResult.error || 'Unable to close countdown.');
+          const startResult = await window.appBridge.startRecording(recordingOptions);
+          if (!startResult.success) throw new Error(startResult.error || 'Native recorder did not start.');
+        } catch (error) {
+          await showStartError(error?.message || String(error));
         }
-      }
-    }, 1000);
+      }, 1000);
+    } catch (error) {
+      await showStartError(error?.message || String(error));
+    }
   }
 
   window.addEventListener('DOMContentLoaded', init);

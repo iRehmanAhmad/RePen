@@ -2902,7 +2902,8 @@ ipcMain.handle('recording:start-countdown', async (event, payload = {}) => {
 
 ipcMain.handle('recording:close-countdown', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
-  currentRecordingPhase = 'starting';
+  // Keep the state in countdown until recording:start owns the atomic
+  // transition to starting. Moving early makes the next command reject itself.
   if (countdownWindow && !countdownWindow.isDestroyed()) {
     countdownWindow.close();
   }

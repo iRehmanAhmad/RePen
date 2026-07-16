@@ -949,27 +949,47 @@ function restoreToolbarUI() {
   elements.recordingHud.style.display = 'none';
 }
 
+function renderRecordingState(recordingState = {}) {
+  const phase = recordingState.phase || 'idle';
+  const hudVisible = ['starting', 'recording', 'paused', 'finalizing'].includes(phase);
+  const controlsEnabled = ['recording', 'paused'].includes(phase);
+
+  isRecording = controlsEnabled;
+  isPaused = phase === 'paused';
+
+  if (elements.recordingHud) {
+    elements.recordingHud.style.display = hudVisible ? 'flex' : 'none';
+    elements.recordingHud.dataset.phase = phase;
+  }
+  if (elements.hudTimer && Number.isFinite(recordingState.elapsedSeconds)) {
+    const seconds = Math.max(0, Math.floor(recordingState.elapsedSeconds));
+    elements.hudTimer.textContent = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+  }
+  if (elements.hudPauseBtn) {
+    elements.hudPauseBtn.disabled = !controlsEnabled;
+    elements.hudPauseBtn.title = isPaused ? 'Resume Recording' : 'Pause Recording';
+    elements.hudPauseBtn.innerHTML = isPaused
+      ? '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+      : '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+  }
+  if (elements.hudStopBtn) elements.hudStopBtn.disabled = !controlsEnabled;
+  if (elements.hudCancelBtn) elements.hudCancelBtn.disabled = !controlsEnabled;
+}
+
+window.appBridge.onRecordingStateChanged(renderRecordingState);
+window.appBridge.getRecordingState()
+  .then(renderRecordingState)
+  .catch((error) => console.error('Failed to restore recording state:', error));
+
 if (elements.hudPauseBtn) {
   elements.hudPauseBtn.addEventListener('click', async () => {
     if (!isRecording) return;
     if (isPaused) {
-      await window.appBridge.resumeRecording();
-      isPaused = false;
-      elements.hudPauseBtn.title = 'Pause Recording';
-      elements.hudPauseBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-        </svg>
-      `;
+      const result = await window.appBridge.resumeRecording();
+      if (!result.success) alert(`Failed to resume recording: ${result.error}`);
     } else {
-      await window.appBridge.pauseRecording();
-      isPaused = true;
-      elements.hudPauseBtn.title = 'Resume Recording';
-      elements.hudPauseBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      `;
+      const result = await window.appBridge.pauseRecording();
+      if (!result.success) alert(`Failed to pause recording: ${result.error}`);
     }
   });
 }

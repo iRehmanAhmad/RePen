@@ -11,6 +11,23 @@ describe('post-phase integration audit', () => {
     expect(preload).toContain("ipcRenderer.invoke('recording:start-countdown', { displayId, seconds })");
   });
 
+  it('lets recording:start own the countdown-to-starting transition', () => {
+    const legacyMain = read('main.js');
+    const closeCountdownHandler = legacyMain.slice(
+      legacyMain.indexOf("ipcMain.handle('recording:close-countdown'"),
+      legacyMain.indexOf("ipcMain.handle('recording:start'"),
+    );
+    expect(closeCountdownHandler).not.toContain("currentRecordingPhase = 'starting'");
+    expect(legacyMain).toContain("if (!['idle', 'selecting', 'countdown', 'failed'].includes(currentRecordingPhase))");
+  });
+
+  it('restores the setup surface with an actionable native-start error', () => {
+    const selector = read('src/renderer/selector.js');
+    expect(selector).toContain('await window.appBridge.openRecordingSetup()');
+    expect(selector).toContain('Recording failed to start: ${error}');
+    expect(selector).not.toContain('alert(`Recording failed to start: ${startRes.error}`)');
+  });
+
   it('escapes source names and restricts image URLs before source-card interpolation', () => {
     const selector = read('src/renderer/selector.js');
     expect(selector).toContain('escapeHtml(source.name)');

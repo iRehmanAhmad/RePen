@@ -15,6 +15,13 @@ describe('recording toolbar lifecycle', () => {
     expect(toolbarSource).toContain("'.pen-bar, .recording-hud,");
   });
 
+  it('renders the HUD from the authoritative recording state used by selector-based starts', () => {
+    expect(toolbarSource).toContain('window.appBridge.onRecordingStateChanged(renderRecordingState)');
+    expect(toolbarSource).toContain("['starting', 'recording', 'paused', 'finalizing'].includes(phase)");
+    expect(toolbarSource).toContain("elements.recordingHud.style.display = hudVisible ? 'flex' : 'none'");
+    expect(toolbarSource).toContain('window.appBridge.getRecordingState()');
+  });
+
   it('keeps recorder controls clickable and above other windows for every active phase', () => {
     expect(mainSource).toContain("['starting', 'recording', 'paused', 'finalizing'].includes(payload.phase)");
     expect(mainSource).toContain('toolbarWindow.setIgnoreMouseEvents(false)');
