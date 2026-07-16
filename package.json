@@ -4,7 +4,7 @@
   "description": "Free Windows screen annotation and presentation overlay tool",
   "main": "main.js",
   "scripts": {
-    "prestart": "npm run electron:build",
+    "prestart": "npm run build:all",
     "start": "electron .",
     "dev": "electron .",
     "test": "npm run test:legacy && npm run ts:check && npm run test:types:foundation && npm run test:unit",

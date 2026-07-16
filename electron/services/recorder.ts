@@ -64,6 +64,7 @@ const MAX_LOG_BYTES = 1024 * 1024;
 const START_TIMEOUT_MS = 15_000;
 const CONTROL_TIMEOUT_MS = 5_000;
 const STOP_TIMEOUT_MS = 30_000;
+const STOP_HARD_TIMEOUT_MS = 10 * 60_000;
 
 function createWaiter<T>(timeoutMs: number, timeoutMessage: string): Waiter<T> {
   let resolvePromise!: (value: T) => void;
@@ -541,8 +542,7 @@ export class RecorderService extends EventEmitter {
     this.writeCommand('stop', this.stopWaiter);
 
     let lastSize = 0;
-    let totalExtendedMs = 0;
-    const maxExtensionMs = 30_000;
+    const finalizationStartedAt = Date.now();
     const pollInterval = setInterval(() => {
       if (!this.currentOutputPath) {
         clearInterval(pollInterval);
@@ -553,10 +553,11 @@ export class RecorderService extends EventEmitter {
           const stats = fs.statSync(this.currentOutputPath);
           const currentSize = stats.size;
           if (currentSize > lastSize && lastSize > 0) {
-            if (totalExtendedMs < maxExtensionMs && this.stopWaiter) {
-              this.stopWaiter.extendTimeout?.(5000);
-              totalExtendedMs += 5000;
-              this.writeDiagnosticsLog(`Recording file size increased from ${lastSize} to ${currentSize} bytes. Extending finalization timeout by 5000ms (total extended: ${totalExtendedMs}ms).`);
+            const hardDeadlineRemaining = STOP_HARD_TIMEOUT_MS - (Date.now() - finalizationStartedAt);
+            if (hardDeadlineRemaining > 0 && this.stopWaiter) {
+              const inactivityTimeout = Math.min(STOP_TIMEOUT_MS, hardDeadlineRemaining);
+              this.stopWaiter.extendTimeout?.(inactivityTimeout);
+              this.writeDiagnosticsLog(`Recording file size increased from ${lastSize} to ${currentSize} bytes. Resetting finalization inactivity timeout to ${inactivityTimeout}ms.`);
             }
           }
           lastSize = currentSize;

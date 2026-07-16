@@ -28,6 +28,35 @@ describe('post-phase integration audit', () => {
     expect(selector).not.toContain('alert(`Recording failed to start: ${startRes.error}`)');
   });
 
+  it('loads subsequent recordings into an editor through the preload bridge', () => {
+    const preload = read('src/preload.js');
+    const editor = read('src/renderer/editor.tsx');
+    expect(preload).toContain("onEditorLoadProject: (callback) => on('editor:load-project', callback)");
+    expect(editor).toContain('appBridge?.onEditorLoadProject');
+    expect(editor).not.toContain('(window as any).ipcRenderer.on');
+  });
+
+  it('does not shorten the native finalization timeout while output is growing', () => {
+    const recorder = read('electron/services/recorder.ts');
+    expect(recorder).toContain('const STOP_HARD_TIMEOUT_MS = 10 * 60_000');
+    expect(recorder).toContain('this.stopWaiter.extendTimeout?.(inactivityTimeout)');
+    expect(recorder).toContain('Math.min(STOP_TIMEOUT_MS, hardDeadlineRemaining)');
+    expect(recorder).not.toContain('this.stopWaiter.extendTimeout?.(5000)');
+  });
+
+  it('uses a runtime project factory available in npm and packaged layouts', () => {
+    const legacyMain = read('main.js');
+    expect(legacyMain).toContain("require('./src/shared/editor/projectFactory.js')");
+    expect(legacyMain).not.toContain("require('./dist-electron/shared/editor/projectPersistence.js')");
+    expect(read('src/shared/editor/projectFactory.js')).toContain('function createRecordingProject(media)');
+  });
+
+  it('builds the React editor before npm start instead of loading raw TSX', () => {
+    const packageJson = JSON.parse(read('package.json'));
+    expect(packageJson.scripts.prestart).toBe('npm run build:all');
+    expect(read('main.js')).toContain("path.join(__dirname, 'dist-renderer', 'editor.html')");
+  });
+
   it('escapes source names and restricts image URLs before source-card interpolation', () => {
     const selector = read('src/renderer/selector.js');
     expect(selector).toContain('escapeHtml(source.name)');

@@ -70,6 +70,7 @@ contextBridge.exposeInMainWorld('appBridge', {
   openRecordingSetup: () => ipcRenderer.invoke('recording:open-setup'),
   closeRecordingSetup: () => ipcRenderer.invoke('recording:close-setup'),
   openRecordingEditor: (initialPath = null) => ipcRenderer.invoke('recording:open-editor', initialPath),
+  onEditorLoadProject: (callback) => on('editor:load-project', callback),
   closeRecordingEditor: () => ipcRenderer.invoke('recording:close-editor'),
   transcribeRecording: (filePath) => ipcRenderer.invoke('recording:transcribe', filePath),
   exportProject: (project, options) => ipcRenderer.invoke('project:export', project, options),

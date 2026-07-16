@@ -1003,6 +1003,9 @@ if (elements.hudStopBtn) {
     
     if (result.success) {
       console.log(`Recording saved to: ${result.outputPath}`);
+      if (result.editorError) {
+        alert(`Recording was saved, but the editor could not be opened: ${result.editorError}`);
+      }
     } else {
       alert(`Failed to save recording: ${result.error}`);
     }

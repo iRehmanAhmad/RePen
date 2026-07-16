@@ -128,8 +128,8 @@ const EditorApp: React.FC = () => {
     };
     init();
 
-    if ((window as any).ipcRenderer) {
-      (window as any).ipcRenderer.on('editor:load-project', (_: any, path: string) => {
+    if ((window as any).appBridge?.onEditorLoadProject) {
+      (window as any).appBridge.onEditorLoadProject((path: string) => {
         loadProject(path);
       });
     }

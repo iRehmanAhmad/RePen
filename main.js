@@ -92,6 +92,7 @@ let settingsWindow = null;
 let selectorWindow = null;
 let countdownWindow = null;
 let editorWindow = null;
+let presenterVisibilityBeforeEditor = null;
 const overlayWindows = new Map();
 let state = { ...DEFAULT_STATE };
 let pages = [{ annotations: [], undoStack: [], redoStack: [] }];
@@ -519,6 +520,44 @@ function windowUrl(fileName, query = {}) {
   return url.toString();
 }
 
+function editorUrl(query = {}) {
+  const url = new URL(pathToFileURL(path.join(__dirname, 'dist-renderer', 'editor.html')).href);
+  for (const [key, value] of Object.entries(query)) {
+    url.searchParams.set(key, String(value));
+  }
+  return url.toString();
+}
+
+function enterEditorMode() {
+  if (!presenterVisibilityBeforeEditor) {
+    presenterVisibilityBeforeEditor = {
+      toolbar: Boolean(toolbarWindow && !toolbarWindow.isDestroyed() && toolbarWindow.isVisible()),
+      overlays: new Map(
+        [...overlayWindows.entries()].map(([displayId, win]) => [displayId, !win.isDestroyed() && win.isVisible()]),
+      ),
+    };
+  }
+  if (toolbarWindow && !toolbarWindow.isDestroyed()) toolbarWindow.hide();
+  for (const win of overlayWindows.values()) {
+    if (!win.isDestroyed()) win.hide();
+  }
+}
+
+function exitEditorMode() {
+  const visibility = presenterVisibilityBeforeEditor;
+  presenterVisibilityBeforeEditor = null;
+  if (!visibility) return;
+  for (const [displayId, wasVisible] of visibility.overlays.entries()) {
+    const win = overlayWindows.get(displayId);
+    if (wasVisible && win && !win.isDestroyed()) win.showInactive();
+  }
+  if (visibility.toolbar && toolbarWindow && !toolbarWindow.isDestroyed()) {
+    toolbarWindow.showInactive();
+    toolbarWindow.moveTop();
+  }
+  updateOverlayIgnoreMouse();
+}
+
 function createOverlayWindow(display) {
   const windowBounds = display.bounds;
   const win = new BrowserWindow({
@@ -887,6 +926,7 @@ function createEditorWindow(initialPath = null) {
       editorInitialPath = initialPath;
       editorWindow.webContents.send('editor:load-project', initialPath);
     }
+    enterEditorMode();
     editorWindow.show();
     editorWindow.focus();
     return editorWindow;
@@ -909,6 +949,7 @@ function createEditorWindow(initialPath = null) {
     resizable: true,
     minimizable: true,
     maximizable: true,
+    autoHideMenuBar: true,
     show: false,
     icon: createAppIcon(),
     webPreferences: {
@@ -923,15 +964,28 @@ function createEditorWindow(initialPath = null) {
   if (initialPath) {
     query.projectPath = initialPath;
   }
-  editorWindow.loadURL(windowUrl('editor.html', query));
+  editorWindow.setMenuBarVisibility(false);
+  editorWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+    console.log(`[Editor Console:${level}] ${message} (${sourceId}:${line})`);
+  });
+  editorWindow.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+    console.error(`Editor failed to load (${errorCode}): ${errorDescription} - ${validatedURL}`);
+  });
+  editorWindow.webContents.on('render-process-gone', (_event, details) => {
+    console.error('Editor renderer exited:', details);
+  });
+  editorWindow.loadURL(editorUrl(query));
 
   editorWindow.once('ready-to-show', () => {
+    enterEditorMode();
     editorWindow.show();
+    editorWindow.focus();
   });
 
   editorWindow.on('closed', () => {
     editorWindow = null;
     editorInitialPath = null;
+    exitEditorMode();
   });
 
   return editorWindow;
@@ -2579,6 +2633,32 @@ async function handleStopRecording() {
   return { outputPath, presentationTrackPath: trackSummary?.sidecarPath || null };
 }
 
+function createProjectForCompletedRecording({ outputPath, presentationTrackPath }) {
+  if (!outputPath || !fs.existsSync(outputPath)) {
+    throw new Error('The finalized recording file could not be found.');
+  }
+
+  const { createRecordingProject } = require('./src/shared/editor/projectFactory.js');
+  const webcamPath = outputPath.replace(/\.mp4$/i, '-webcam.mp4');
+  const project = createRecordingProject({
+    screenVideoPath: outputPath,
+    ...(fs.existsSync(webcamPath) ? { webcamVideoPath: webcamPath } : {}),
+    ...(presentationTrackPath ? { nativeSessionPath: presentationTrackPath } : {}),
+    durationMs: Math.max(1, recordingSeconds * 1000),
+  });
+  const projectPath = outputPath.replace(/\.mp4$/i, '.repen-project');
+  const temporaryPath = `${projectPath}.tmp-${process.pid}-${Date.now()}`;
+  fs.writeFileSync(temporaryPath, JSON.stringify(project, null, 2), 'utf8');
+  try {
+    fs.renameSync(temporaryPath, projectPath);
+  } catch (error) {
+    try { fs.unlinkSync(temporaryPath); } catch {}
+    throw error;
+  }
+  currentProjectPath = projectPath;
+  return projectPath;
+}
+
 async function handleCancelRecording() {
   currentRecordingPhase = 'finalizing';
   broadcastRecordingState({ isRecording: true, isPaused: false });
@@ -2950,7 +3030,18 @@ ipcMain.handle('recording:stop', async (event) => {
   if (!['recording', 'paused'].includes(currentRecordingPhase)) return { success: false, error: 'No active recording to stop.' };
   try {
     const result = await handleStopRecording();
-    return { success: true, ...result };
+    try {
+      const projectPath = createProjectForCompletedRecording(result);
+      createEditorWindow(projectPath);
+      return { success: true, ...result, projectPath };
+    } catch (editorError) {
+      console.error('Recording saved, but editor project creation failed:', editorError);
+      return {
+        success: true,
+        ...result,
+        editorError: editorError.message || String(editorError),
+      };
+    }
   } catch (error) {
     currentRecordingPhase = 'failed';
     broadcastRecordingState({ isRecording: false, isPaused: false, error: error.message || String(error) });
@@ -3055,7 +3146,7 @@ ipcMain.handle('project:load', async (_, projectFolder) => {
     currentProjectPath = filePath;
 
     if (filePath.endsWith('.openscreen') || (project.version && project.version === 1)) {
-      const { migrateProjectData } = require('./dist-electron/shared/editor/projectPersistence.js');
+      const { migrateProjectData } = require('./src/shared/editor/projectFactory.js');
       project = migrateProjectData(project);
     }
 
@@ -3076,7 +3167,7 @@ ipcMain.handle('project:load-from-path', async (_, filePath) => {
     currentProjectPath = filePath;
 
     if (filePath.endsWith('.openscreen') || (project.version && project.version === 1)) {
-      const { migrateProjectData } = require('./dist-electron/shared/editor/projectPersistence.js');
+      const { migrateProjectData } = require('./src/shared/editor/projectFactory.js');
       project = migrateProjectData(project);
     }
 
