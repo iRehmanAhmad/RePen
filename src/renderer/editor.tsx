@@ -8,7 +8,7 @@ import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimel
 import { addTrimRange } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
 import { aspectRatioCss } from '../shared/editor/layoutGeometry';
-import type { EditorProjectData } from '../shared/editor/projectPersistence';
+import { DEFAULT_TIMELINE_TRACKS, type EditorProjectData, type TimelineTrackId } from '../shared/editor/projectPersistence';
 import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
 import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/schemas/scene';
@@ -358,7 +358,7 @@ const EditorApp: React.FC = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // 1. Draw sidecar PresentationTrack annotations
-    const track = project.media?.presentationMode === 'sidecar' ? (project as any).presentationTrack : null;
+    const track = project.media?.presentationMode === 'sidecar' && project.editor.timelineTracks.presentation.visible ? (project as any).presentationTrack : null;
     if (track) {
       const snapshot = seekPresentationTrack(track, timeMs);
       const renderer = new PresenterRenderer(ctx);
@@ -379,7 +379,7 @@ const EditorApp: React.FC = () => {
 
     // 2. Draw Editor custom text annotations & subtitles
     const customAnnotations = project.editor.annotationRegions || [];
-    const activeAnns = customAnnotations.filter(ann => timeMs >= ann.startMs && timeMs <= ann.endMs);
+    const activeAnns = customAnnotations.filter(ann => timeMs >= ann.startMs && timeMs <= ann.endMs && (ann.annotationSource === 'auto-caption' ? project.editor.timelineTracks.captions.visible : project.editor.timelineTracks.effects.visible));
     
     ctx.save();
     for (const ann of activeAnns) {
@@ -466,6 +466,13 @@ const EditorApp: React.FC = () => {
     updated.editor.trimRegions = [];
     updateProject(updated);
     setTrimStartMs(null);
+  };
+
+  const updateTimelineTrack = (trackId: TimelineTrackId, property: 'visible' | 'locked') => {
+    if (!project || project.editor.timelineTracks[trackId].locked && property !== 'locked') return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.timelineTracks[trackId][property] = !updated.editor.timelineTracks[trackId][property];
+    updateProject(updated);
   };
 
   // Seek
@@ -852,6 +859,7 @@ const EditorApp: React.FC = () => {
 
   const activeVideoSrc = project?.media?.screenVideoPath || project?.videoPath || '';
   const timelineTicks = createTimelineTicks(durationMs, timelineZoom);
+  const timelineTracks = project?.editor.timelineTracks || DEFAULT_TIMELINE_TRACKS;
 
   return (
     <div className="editor-layout" role="application" aria-label={t('title')}>
@@ -917,6 +925,7 @@ const EditorApp: React.FC = () => {
                   ref={videoRef}
                   src={activeVideoSrc ? toFileUrl(activeVideoSrc) : undefined}
                   className="video-element"
+                  style={{ opacity: timelineTracks.screen.visible ? 1 : 0 }}
                   onLoadedMetadata={handleMetadataLoaded}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
@@ -1369,6 +1378,7 @@ const EditorApp: React.FC = () => {
         }}>
           <div className="timeline-track">
             <span className="track-label">Screen Recording</span>
+            <TrackControls trackId="screen" state={timelineTracks.screen} onToggle={updateTimelineTrack} />
             {project?.editor.trimRegions?.map((t: TrimRegion) => (
               <div 
                 key={t.id} 
@@ -1386,7 +1396,8 @@ const EditorApp: React.FC = () => {
           </div>
 
           <div className="timeline-track">
-            <span className="track-label">Zoom Regions</span>
+            <span className="track-label">Effects</span>
+            <TrackControls trackId="effects" state={timelineTracks.effects} onToggle={updateTimelineTrack} />
             {project?.editor.zoomRegions?.map((z: ZoomRegion) => (
               <div 
                 key={z.id}
@@ -1401,6 +1412,7 @@ const EditorApp: React.FC = () => {
 
           <div className="timeline-track">
             <span className="track-label">Captions Track</span>
+            <TrackControls trackId="captions" state={timelineTracks.captions} onToggle={updateTimelineTrack} />
             {project?.editor.annotationRegions?.filter((a: any) => a.annotationSource === 'auto-caption').map((c: any) => (
               <div 
                 key={c.id}
@@ -1415,6 +1427,12 @@ const EditorApp: React.FC = () => {
               />
             ))}
           </div>
+          {(['webcam', 'presentation', 'audio'] as TimelineTrackId[]).map((trackId) => (
+            <div className="timeline-track" key={trackId}>
+              <span className="track-label">{trackId === 'webcam' ? 'Webcam' : trackId === 'presentation' ? 'Presentation' : 'Audio'}</span>
+              <TrackControls trackId={trackId} state={timelineTracks[trackId]} onToggle={updateTimelineTrack} />
+            </div>
+          ))}
         </div>
         </div>
       </footer>
@@ -1560,6 +1578,13 @@ const EditorApp: React.FC = () => {
     </div>
   );
 };
+
+const TrackControls: React.FC<{ trackId: TimelineTrackId; state: { visible: boolean; locked: boolean }; onToggle: (trackId: TimelineTrackId, property: 'visible' | 'locked') => void }> = ({ trackId, state, onToggle }) => (
+  <span className="track-controls" onClick={(event) => event.stopPropagation()}>
+    <button className="track-control" onClick={() => onToggle(trackId, 'visible')} aria-label={`${state.visible ? 'Hide' : 'Show'} ${trackId} track`}>{state.visible ? '◉' : '○'}</button>
+    <button className="track-control" onClick={() => onToggle(trackId, 'locked')} aria-label={`${state.locked ? 'Unlock' : 'Lock'} ${trackId} track`}>{state.locked ? '🔒' : '🔓'}</button>
+  </span>
+);
 
 const rootEl = document.getElementById('root');
 if (rootEl) {

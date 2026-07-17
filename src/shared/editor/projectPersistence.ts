@@ -49,6 +49,14 @@ export interface ProjectMedia {
   durationMs?: number;
 }
 
+export type TimelineTrackId = 'screen' | 'webcam' | 'presentation' | 'effects' | 'captions' | 'audio';
+export type TimelineTrackState = { visible: boolean; locked: boolean };
+export const DEFAULT_TIMELINE_TRACKS: Record<TimelineTrackId, TimelineTrackState> = {
+  screen: { visible: true, locked: false }, webcam: { visible: true, locked: false },
+  presentation: { visible: true, locked: false }, effects: { visible: true, locked: false },
+  captions: { visible: true, locked: false }, audio: { visible: true, locked: false },
+};
+
 export interface ProjectEditorState {
   wallpaper: string;
   shadowIntensity: number;
@@ -77,6 +85,7 @@ export interface ProjectEditorState {
   gifLoop: boolean;
   gifSizePreset: GifSizePreset;
   cursorTheme: string;
+  timelineTracks: Record<TimelineTrackId, TimelineTrackState>;
 }
 
 export interface EditorProjectData {
@@ -293,6 +302,10 @@ export function normalizeProjectEditor(editor: Partial<ProjectEditorState>): Pro
 
   const cropX = clamp(rawCropX, 0, 1);
   const cropY = clamp(rawCropY, 0, 1);
+  const timelineTracks = Object.fromEntries(Object.entries(DEFAULT_TIMELINE_TRACKS).map(([id, defaults]) => {
+    const candidate = editor.timelineTracks?.[id as TimelineTrackId];
+    return [id, { visible: typeof candidate?.visible === 'boolean' ? candidate.visible : defaults.visible, locked: typeof candidate?.locked === 'boolean' ? candidate.locked : defaults.locked }];
+  })) as Record<TimelineTrackId, TimelineTrackState>;
 
   return {
     cursorTheme: normalizeCursorThemeId(editor.cursorTheme),
@@ -343,8 +356,9 @@ export function normalizeProjectEditor(editor: Partial<ProjectEditorState>): Pro
     gifLoop: typeof editor.gifLoop === "boolean" ? editor.gifLoop : DEFAULT_GIF_SETTINGS.loop,
     gifSizePreset:
       editor.gifSizePreset === "medium" || editor.gifSizePreset === "large" || editor.gifSizePreset === "original"
-        ? editor.gifSizePreset
-        : DEFAULT_GIF_SETTINGS.sizePreset,
+      ? editor.gifSizePreset
+      : DEFAULT_GIF_SETTINGS.sizePreset,
+    timelineTracks,
   };
 }
 

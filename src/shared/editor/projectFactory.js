@@ -29,12 +29,22 @@ function createDefaultEditorState(overrides = {}) {
     gifFrameRate: 15,
     gifLoop: true,
     gifSizePreset: 'medium',
+    timelineTracks: {
+      screen: { visible: true, locked: false }, webcam: { visible: true, locked: false },
+      presentation: { visible: true, locked: false }, effects: { visible: true, locked: false },
+      captions: { visible: true, locked: false }, audio: { visible: true, locked: false },
+    },
     ...overrides,
     cropRegion: { x: 0, y: 0, width: 1, height: 1, ...(overrides.cropRegion || {}) },
     zoomRegions: Array.isArray(overrides.zoomRegions) ? overrides.zoomRegions : [],
     trimRegions: Array.isArray(overrides.trimRegions) ? overrides.trimRegions : [],
     speedRegions: Array.isArray(overrides.speedRegions) ? overrides.speedRegions : [],
     annotationRegions: Array.isArray(overrides.annotationRegions) ? overrides.annotationRegions : [],
+    timelineTracks: overrides.timelineTracks && typeof overrides.timelineTracks === 'object' ? overrides.timelineTracks : {
+      screen: { visible: true, locked: false }, webcam: { visible: true, locked: false },
+      presentation: { visible: true, locked: false }, effects: { visible: true, locked: false },
+      captions: { visible: true, locked: false }, audio: { visible: true, locked: false },
+    },
   };
 }
 

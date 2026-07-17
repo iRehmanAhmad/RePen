@@ -249,7 +249,7 @@ html, body {
 .timeline-tracks {
   position: relative;
   display: grid;
-  grid-template-rows: repeat(3, 40px);
+  grid-template-rows: repeat(6, 40px);
   gap: 8px;
   margin-top: 10px;
 }
@@ -272,6 +272,9 @@ html, body {
   color: var(--muted);
   z-index: 10;
 }
+
+.track-controls { position: absolute; right: 6px; top: 6px; z-index: 20; }
+.track-control { background: transparent; border: 0; color: var(--text); cursor: pointer; padding: 2px 4px; }
 
 .timeline-playhead {
   position: absolute;
