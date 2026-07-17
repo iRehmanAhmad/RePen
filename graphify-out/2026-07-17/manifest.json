@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784283513.6482775,
-    "ast_hash": "1abbd46c70abfbaa2fb1ffe190b60cd6",
+    "mtime": 1784284343.6628633,
+    "ast_hash": "c65893a31bd8ee806368d210f905a0d5",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1185,8 +1185,8 @@
     "semantic_hash": ""
   },
   "tests/unit/editorAccessibility.test.ts": {
-    "mtime": 1784283523.8896997,
-    "ast_hash": "261e13686fae96ff353cd2cb662cb310",
+    "mtime": 1784284343.6667047,
+    "ast_hash": "8a2ed597521f319cb21fc081c883f1b3",
     "semantic_hash": ""
   },
   "docs/verification/release-readiness.md": {

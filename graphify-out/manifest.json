@@ -1190,8 +1190,8 @@
     "semantic_hash": ""
   },
   "docs/verification/release-readiness.md": {
-    "mtime": 1784284135.8417618,
-    "ast_hash": "29ece16fac931edfd09ee2e95b055b0f",
+    "mtime": 1784284716.2997863,
+    "ast_hash": "820b31d8dc78cae92f2068d640ad25f4",
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {

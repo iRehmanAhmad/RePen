@@ -1,7 +1,7 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 225 files · ~156,784 words
+- 225 files · ~156,795 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `20c065c0`
+- Built from commit: `1001dafe`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -251,8 +251,8 @@
 ## Communities (215 total, 16 thin omitted)
 
 ### Community 0 - "main.js"
-Cohesion: 0.06
-Nodes (41): optionalString(), addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, approvedRecordingDirectories, boundedInteger(), buildPdfExportHtml(), { canRunRecordingCommand, recordingCommandError, validateRecordingCommand }, ccw() (+33 more)
+Cohesion: 0.05
+Nodes (42): optionalString(), addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, approvedRecordingDirectories, boundedInteger(), buildPdfExportHtml(), { canRunRecordingCommand, recordingCommandError, validateRecordingCommand }, ccw() (+34 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.12
@@ -319,8 +319,8 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.17
-Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
+Cohesion: 0.13
+Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -579,8 +579,8 @@ Cohesion: 0.21
 Nodes (18): CLSID, HCURSOR, LPARAM, LRESULT, base64Encode(), buildAssetJson(), HWND, string (+10 more)
 
 ### Community 87 - "createToolbarWindow"
-Cohesion: 0.17
-Nodes (19): applyCapturePolicy(), createAppIcon(), createCountdownWindow(), createEditorWindow(), createOverlayWindow(), createOverlayWindows(), createSelectorWindow(), createSettingsWindow() (+11 more)
+Cohesion: 0.26
+Nodes (13): applyCapturePolicy(), createAppIcon(), createCountdownWindow(), createEditorWindow(), createOverlayWindow(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow() (+5 more)
 
 ### Community 88 - "19. Security Model"
 Cohesion: 0.29
@@ -699,8 +699,8 @@ Cohesion: 0.07
 Nodes (45): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+37 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.10
-Nodes (41): autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), exportPdf(), getAppState() (+33 more)
+Cohesion: 0.12
+Nodes (35): autoArchiveCurrentSession(), broadcastScene(), clearScene(), cycleBackgroundMode(), deepClone(), getAppState(), getBootstrapData(), getDockSide() (+27 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -767,8 +767,8 @@ Cohesion: 0.07
 Nodes (22): initializeSingleInstanceLock(), approvedRecordingDirectories, bootstrap(), broadcastRecordingState(), broadcastRecordingTimer(), calculateToolbarBounds(), { createAppCapabilities }, lastEnumeratedSources (+14 more)
 
 ### Community 137 - "StateManager"
-Cohesion: 0.27
-Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), pushUndoSnapshot() (+3 more)
+Cohesion: 0.43
+Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
 
 ### Community 139 - "PresentationTrackService"
 Cohesion: 0.19
@@ -787,8 +787,8 @@ Cohesion: 0.15
 Nodes (8): createProjectForCompletedRecording(), assertNonEmptyFile(), validateFinalizedRecordingMedia(), fs, path, writeProjectFileAtomically(), { validateFinalizedRecordingMedia }, { writeProjectFileAtomically }
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.20
-Nodes (10): ensureToolbarWindowCapacity(), getStateFilePath(), getToolbarWindowBounds(), loadState(), quitApp(), readPersistedState(), setShapeType(), setTextMode() (+2 more)
+Cohesion: 0.15
+Nodes (16): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setBoardColor(), setClickHalo(), setColor() (+8 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -907,8 +907,8 @@ Cohesion: 0.13
 Nodes (14): Correct Recorder Capture and Deliver the Production OpenScreen-Style Editor, Cross-Phase Test and Evidence Policy, Current Phase, Definition of the Target Product, Final Acceptance Checklist, Forbidden Completion Shortcuts, Goal, Handoff Notes (+6 more)
 
 ### Community 184 - "19. Security Model"
-Cohesion: 0.67
-Nodes (3): 19. Security Model, Network posture, Required security decisions
+Cohesion: 0.25
+Nodes (9): createOverlayWindows(), createTray(), createTrayIcon(), getStateFilePath(), hideOverlayWindows(), init(), loadState(), readPersistedState() (+1 more)
 
 ### Community 185 - "editorExport.test.ts"
 Cohesion: 0.18
@@ -1025,6 +1025,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
   _1181 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.05505279034690799 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.054426705370101594 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.11932773109243698 - nodes in this community are weakly interconnected._

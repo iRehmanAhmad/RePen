@@ -52,13 +52,15 @@ Local package assembly passed on 2026-07-17 and is recorded in `phase-3-package-
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` defines a Windows code/build verification job for pushes and pull requests. It installs the locked dependencies, runs `npm test`, and runs `npm run build:all`. The workflow intentionally does not create, sign, upload, or publish release artifacts. Its first remote execution must pass before it can be treated as CI evidence.
+`.github/workflows/ci.yml` defines a Windows code/build verification job for pushes and pull requests. It installs the locked dependencies, runs `npm test`, and runs `npm run build:all`. The workflow intentionally does not create, sign, upload, or publish release artifacts.
+
+Remote evidence: the Windows workflow passed for commit `1001daf` on 2026-07-17 (GitHub Actions run `29573875351`). This validates the configured source/build CI path, not installer creation, code signing, or hardware behavior.
 
 ## Known open release blockers
 
 1. Capture exclusion has automated policy coverage but still needs real captured-frame proof on the supported Windows configurations.
 2. Native capture/finalization, audio, and camera behavior require manual hardware testing.
 3. Advanced timeline edits, waveform generation, long-media performance, compositor parity, replay effects, captions, and production export are not complete release claims.
-4. Localization, screen-reader validation, CI release packaging automation, code signing, and clean-machine installer validation remain open. The source/build CI workflow is configured but requires a successful remote run.
+4. Localization, screen-reader validation, CI release packaging automation, code signing, and clean-machine installer validation remain open. The source/build CI workflow has passed remotely.
 
 Until these items are closed with evidence, this branch is suitable for continued development and controlled manual QA only—not a production release.

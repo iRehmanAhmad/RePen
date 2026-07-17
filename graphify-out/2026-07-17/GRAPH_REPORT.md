@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 225 files · ~156,763 words
+- 225 files · ~156,784 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2447 nodes · 3590 edges · 214 communities (198 shown, 16 thin omitted)
+- 2447 nodes · 3590 edges · 215 communities (199 shown, 16 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `164df38c`
+- Built from commit: `20c065c0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -191,6 +191,7 @@
 - [[_COMMUNITY_Phase 8 — Product completeness|Phase 8 — Product completeness]]
 - [[_COMMUNITY_native-recorder-helper.test.ts|native-recorder-helper.test.ts]]
 - [[_COMMUNITY_broadcastScene|broadcastScene]]
+- [[_COMMUNITY_19. Security Model|19. Security Model]]
 - [[_COMMUNITY_editorExport.test.ts|editorExport.test.ts]]
 - [[_COMMUNITY_Third-Party Notices & SBOM|Third-Party Notices & SBOM]]
 - [[_COMMUNITY_Hi there, I'm Rehman Ahmad Chaudhry 👋|Hi there, I'm Rehman Ahmad Chaudhry 👋]]
@@ -247,7 +248,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (214 total, 16 thin omitted)
+## Communities (215 total, 16 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -318,8 +319,8 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.13
-Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
+Cohesion: 0.17
+Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -904,6 +905,10 @@ Nodes (3): Exit gate, Implementation, Phase 8 — Product completeness
 ### Community 183 - "broadcastScene"
 Cohesion: 0.13
 Nodes (14): Correct Recorder Capture and Deliver the Production OpenScreen-Style Editor, Cross-Phase Test and Evidence Policy, Current Phase, Definition of the Target Product, Final Acceptance Checklist, Forbidden Completion Shortcuts, Goal, Handoff Notes (+6 more)
+
+### Community 184 - "19. Security Model"
+Cohesion: 0.67
+Nodes (3): 19. Security Model, Network posture, Required security decisions
 
 ### Community 185 - "editorExport.test.ts"
 Cohesion: 0.18
