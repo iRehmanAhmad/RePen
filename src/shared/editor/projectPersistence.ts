@@ -99,6 +99,7 @@ export interface EditorProjectData {
   presentationTrackError?: string;
   editor: ProjectEditorState;
   videoPath?: string;
+  cursorTelemetry?: any[];
 }
 
 const VALID_BLUR_SHAPES = new Set(["rectangle", "oval", "freehand"] as const);
@@ -204,10 +205,11 @@ export function normalizeProjectEditor(editor: Partial<ProjectEditorState>): Pro
               cx: clamp(isFiniteNumber(region.focus?.cx) ? region.focus.cx : 0.5, 0, 1),
               cy: clamp(isFiniteNumber(region.focus?.cy) ? region.focus.cy : 0.5, 0, 1),
             },
-            focusMode: region.focusMode === "auto" ? "auto" : "manual",
+            focusMode: region.focusMode === "auto" ? "auto" : region.focusMode === "cursor-follow" ? "cursor-follow" : "manual",
             source: region.source === "auto" ? "auto" : "manual",
             rotationPreset: region.rotationPreset,
             customScale: region.customScale,
+            easingPreset: ['ease-in-out', 'linear', 'spring'].includes(region.easingPreset as any) ? region.easingPreset : undefined,
           };
         })
     : [];
@@ -259,7 +261,7 @@ export function normalizeProjectEditor(editor: Partial<ProjectEditorState>): Pro
             startMs: Math.max(0, Math.min(rawStart, rawEnd)),
             endMs: Math.max(0, rawEnd),
             type:
-              region.type === "image" || region.type === "figure" || region.type === "blur"
+              region.type === "image" || region.type === "figure" || region.type === "blur" || region.type === "highlight" || region.type === "redaction" || region.type === "mosaic"
                 ? region.type
                 : "text",
             content: typeof region.content === "string" ? region.content : "",
@@ -385,5 +387,6 @@ export function migrateProjectData(project: any): EditorProjectData {
     media: normalizeProjectMedia(project.media) || undefined,
     editor: normalizeProjectEditor(project.editor || {}),
     videoPath: typeof project.videoPath === "string" ? project.videoPath : undefined,
+    cursorTelemetry: Array.isArray(project.cursorTelemetry) ? project.cursorTelemetry : undefined,
   };
 }

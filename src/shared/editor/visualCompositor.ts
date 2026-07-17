@@ -19,6 +19,8 @@ export interface CompositorSceneInput {
   webcamMirrored?: boolean;
   webcamMaskShape?: WebcamMaskShape;
   previewQualityMode?: 'performance' | 'high-quality';
+  cursorPosition?: { cx: number; cy: number };
+  reducedMotion?: boolean;
 }
 
 export interface CompositorSceneOutput {
@@ -26,6 +28,8 @@ export interface CompositorSceneOutput {
   compositorStyle: Record<string, string | number>;
   cropMediaStyle: Record<string, string | number>;
   webcamStyle: Record<string, string | number>;
+  viewportStyle: Record<string, string | number>;
+  mediaStyle: Record<string, string | number>;
 }
 
 export function computeCompositorStyles(input: CompositorSceneInput): CompositorSceneOutput {
@@ -40,11 +44,14 @@ export function computeCompositorStyles(input: CompositorSceneInput): Compositor
     wallpaper = '#0b0c0e',
     currentTimeMs,
     zoomRegions = [],
+    webcamLayoutPreset = 'picture-in-picture',
     webcamSizePreset = 25,
     webcamPosition = { cx: 0.82, cy: 0.82 },
     webcamMirrored = false,
     webcamMaskShape = 'square',
     previewQualityMode = 'high-quality',
+    cursorPosition,
+    reducedMotion = false,
   } = input;
 
   // 1. Aspect Ratio Style
@@ -71,7 +78,7 @@ export function computeCompositorStyles(input: CompositorSceneInput): Compositor
     padding: `${padding}px`,
     borderRadius: `${borderRadius}px`,
     boxShadow: shadowValue,
-    transition: 'all 0.15s ease-out',
+    transition: reducedMotion ? 'none' : 'all 0.15s ease-out',
     background: wallpaper,
     position: 'relative',
     display: 'flex',
@@ -83,8 +90,13 @@ export function computeCompositorStyles(input: CompositorSceneInput): Compositor
   const activeZoom = zoomRegions.find(r => currentTimeMs >= r.startMs && currentTimeMs <= r.endMs);
   if (activeZoom) {
     const depth = activeZoom.depth || 1.5;
-    const focusX = (activeZoom.focus?.cx ?? 0.5) * 100;
-    const focusY = (activeZoom.focus?.cy ?? 0.5) * 100;
+    let focusX = (activeZoom.focus?.cx ?? 0.5) * 100;
+    let focusY = (activeZoom.focus?.cy ?? 0.5) * 100;
+
+    if (activeZoom.focusMode === 'cursor-follow' && cursorPosition) {
+      focusX = Math.max(0, Math.min(100, cursorPosition.cx * 100));
+      focusY = Math.max(0, Math.min(100, cursorPosition.cy * 100));
+    }
     
     let transformStr = `scale(${depth})`;
     
@@ -111,8 +123,24 @@ export function computeCompositorStyles(input: CompositorSceneInput): Compositor
     transformOrigin: 'top left',
   };
 
-  // 4. Webcam Style
-  const webcamStyle: Record<string, string | number> = {
+  // 4. Viewport, Media, and Webcam Styles based on preset
+  let viewportStyle: Record<string, string | number> = {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
+  };
+
+  let mediaStyle: Record<string, string | number> = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
+  };
+
+  let webcamStyle: Record<string, string | number> = {
     width: `${webcamSizePreset}%`,
     left: `${webcamPosition.cx * 100}%`,
     top: `${webcamPosition.cy * 100}%`,
@@ -120,10 +148,66 @@ export function computeCompositorStyles(input: CompositorSceneInput): Compositor
     borderRadius: webcamMaskShape === 'circle' ? '50%' : webcamMaskShape === 'rounded' ? '16px' : '0',
   };
 
+  if (webcamLayoutPreset === 'no-webcam') {
+    webcamStyle.display = 'none';
+  } else if (webcamLayoutPreset === 'vertical-stack') {
+    viewportStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      height: '100%',
+      gap: '8px',
+      padding: '8px',
+      boxSizing: 'border-box',
+    };
+    mediaStyle = {
+      flex: 1,
+      width: '100%',
+      height: 'auto',
+      position: 'relative',
+      overflow: 'hidden',
+    };
+    webcamStyle = {
+      height: `${webcamSizePreset}%`,
+      width: '100%',
+      position: 'relative',
+      objectFit: 'contain',
+      borderRadius: webcamMaskShape === 'circle' ? '50%' : webcamMaskShape === 'rounded' ? '16px' : '0',
+      transform: webcamMirrored ? 'scaleX(-1)' : '',
+    };
+  } else if (webcamLayoutPreset === 'dual-frame') {
+    viewportStyle = {
+      display: 'flex',
+      flexDirection: 'row',
+      width: '100%',
+      height: '100%',
+      gap: '8px',
+      padding: '8px',
+      boxSizing: 'border-box',
+    };
+    mediaStyle = {
+      flex: 1,
+      height: '100%',
+      width: 'auto',
+      position: 'relative',
+      overflow: 'hidden',
+    };
+    webcamStyle = {
+      width: `${webcamSizePreset}%`,
+      height: '100%',
+      position: 'relative',
+      objectFit: 'contain',
+      borderRadius: webcamMaskShape === 'circle' ? '50%' : webcamMaskShape === 'rounded' ? '16px' : '0',
+      transform: webcamMirrored ? 'scaleX(-1)' : '',
+    };
+  }
+
   return {
     aspectStyle,
     compositorStyle,
     cropMediaStyle,
     webcamStyle,
+    viewportStyle,
+    mediaStyle,
   };
 }

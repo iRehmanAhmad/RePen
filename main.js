@@ -3199,9 +3199,20 @@ function hydratePresentationTrack(project) {
   if (project?.media?.presentationMode !== 'sidecar' || !project.media.nativeSessionPath) return project;
   try {
     const { parsePresentationTrackJsonl } = require('./dist-electron/services/presentationTrack.js');
+    const track = parsePresentationTrackJsonl(fs.readFileSync(project.media.nativeSessionPath, 'utf8'));
+
+    // Validate timing origin
+    if (project.media.createdAt) {
+      const projectTime = new Date(project.media.createdAt).getTime();
+      const trackTime = track.header.createdAtEpochMs;
+      if (Math.abs(projectTime - trackTime) > 5000) {
+        throw new Error("Mismatched presentation track timing origin.");
+      }
+    }
+
     return {
       ...project,
-      presentationTrack: parsePresentationTrackJsonl(fs.readFileSync(project.media.nativeSessionPath, 'utf8')),
+      presentationTrack: track,
     };
   } catch (error) {
     return { ...project, presentationTrackError: error.message || String(error) };

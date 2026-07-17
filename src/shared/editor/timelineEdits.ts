@@ -1,4 +1,4 @@
-import { clampPlaybackSpeed, type PlaybackSpeed, type SpeedRegion } from './types';
+import { clampPlaybackSpeed, type PlaybackSpeed, type SpeedRegion, type ZoomRegion } from './types';
 
 export interface TimedRegion { id: string; startMs: number; endMs: number; }
 
@@ -141,4 +141,48 @@ export function resizeSpeedRange(
 
   const filtered = regions.filter((r) => r.id !== id);
   return addSpeedRange(filtered, start, end, target.speed, durationMs);
+}
+
+/**
+ * Add a zoom range while preserving non-overlapping portions of existing zoom ranges.
+ * The newly added/modified range wins where it intersects an older one.
+ */
+export function addZoomRange(
+  regions: ZoomRegion[],
+  newRegion: ZoomRegion,
+  durationMs: number,
+): ZoomRegion[] {
+  const start = boundedTime(Math.min(newRegion.startMs, newRegion.endMs), durationMs);
+  const end = boundedTime(Math.max(newRegion.startMs, newRegion.endMs), durationMs);
+  if (end <= start) return regions;
+
+  const preserved = regions.filter(r => r.id !== newRegion.id).flatMap((region) => {
+    if (region.endMs <= start || region.startMs >= end) return [{ ...region }];
+    const portions: ZoomRegion[] = [];
+    if (region.startMs < start) portions.push({ ...region, id: `${region.id}-before-${start}`, endMs: start });
+    if (region.endMs > end) portions.push({ ...region, id: `${region.id}-after-${end}`, startMs: end });
+    return portions;
+  });
+
+  return [...preserved, { ...newRegion, startMs: start, endMs: end }]
+    .sort((a, b) => a.startMs - b.startMs || a.endMs - b.endMs);
+}
+
+/** Resizes an existing zoom range using the 'new range wins in overlap' rule. */
+export function resizeZoomRange(
+  regions: ZoomRegion[],
+  id: string,
+  newStartMs: number,
+  newEndMs: number,
+  durationMs: number,
+): ZoomRegion[] {
+  const target = regions.find((r) => r.id === id);
+  if (!target) return regions;
+
+  const start = boundedTime(newStartMs, durationMs);
+  const end = boundedTime(newEndMs, durationMs);
+  if (end <= start) return regions;
+
+  const filtered = regions.filter((r) => r.id !== id);
+  return addZoomRange(filtered, { ...target, startMs: start, endMs: end }, durationMs);
 }

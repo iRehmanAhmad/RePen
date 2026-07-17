@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addSpeedRange, addTrimRange, removeTimedRegionById, splitTimedRegion, resizeTrimRange, splitTrimRange, resizeSpeedRange } from '../../src/shared/editor/timelineEdits';
+import { addSpeedRange, addTrimRange, removeTimedRegionById, splitTimedRegion, resizeTrimRange, splitTrimRange, resizeSpeedRange, addZoomRange, resizeZoomRange } from '../../src/shared/editor/timelineEdits';
 
 describe('timeline edit rules', () => {
   it('clamps and merges overlapping trim ranges so playback has one deterministic skip region', () => {
@@ -64,5 +64,23 @@ describe('timeline edit rules', () => {
     expect(resized).toHaveLength(2);
     expect(resized[0]).toMatchObject({ startMs: 100, endMs: 450, speed: 2 });
     expect(resized[1]).toMatchObject({ startMs: 450, endMs: 600, speed: 0.5 });
+  });
+
+  it('adds and resizes zoom ranges applying new range wins overlap rule', () => {
+    const existing = [
+      { id: 'zoom-1', startMs: 100, endMs: 500, depth: 2, focus: { cx: 0.5, cy: 0.5 } },
+    ];
+    // Add zoom-2 overlapping zoom-1
+    const newZoom = { id: 'zoom-2', startMs: 300, endMs: 700, depth: 3, focus: { cx: 0.2, cy: 0.2 } };
+    const updated = addZoomRange(existing, newZoom, 1000);
+    expect(updated).toHaveLength(2);
+    expect(updated[0]).toMatchObject({ startMs: 100, endMs: 300, depth: 2 });
+    expect(updated[1]).toMatchObject({ startMs: 300, endMs: 700, depth: 3 });
+
+    // Resize zoom-1 extending into zoom-2
+    const resized = resizeZoomRange(updated, 'zoom-1-before-300', 100, 400, 1000);
+    expect(resized).toHaveLength(2);
+    expect(resized[0]).toMatchObject({ startMs: 100, endMs: 400, depth: 2 });
+    expect(resized[1]).toMatchObject({ startMs: 400, endMs: 700, depth: 3 });
   });
 });

@@ -1,5 +1,5 @@
 export type ZoomDepth = 1 | 2 | 3 | 4 | 5 | 6;
-export type ZoomFocusMode = "manual" | "auto";
+export type ZoomFocusMode = "manual" | "auto" | "cursor-follow";
 export type WebcamLayoutPreset = "picture-in-picture" | "no-webcam" | "vertical-stack" | "dual-frame";
 
 /** Webcam size as a percentage of the canvas reference dimension (10-50). */
@@ -65,6 +65,7 @@ export interface ZoomRegion {
   rotationPreset?: Rotation3DPreset;
   customScale?: number;
   source?: ZoomRegionSource;
+  easingPreset?: 'ease-in-out' | 'linear' | 'spring';
 }
 
 export function getRotation3D(region: Pick<ZoomRegion, "rotationPreset">): Rotation3D {
@@ -190,7 +191,7 @@ export interface TrimRegion {
   endMs: number;
 }
 
-export type AnnotationType = "text" | "image" | "figure" | "blur";
+export type AnnotationType = "text" | "image" | "figure" | "blur" | "highlight" | "redaction" | "mosaic";
 
 export type ArrowDirection =
   | "up"
