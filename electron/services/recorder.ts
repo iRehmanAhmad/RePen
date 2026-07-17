@@ -144,6 +144,7 @@ export class RecorderService extends EventEmitter {
   private currentSessionId: number | null = null;
   private currentOutputPath: string | null = null;
   private currentWebcamOutputPath: string | null = null;
+  private currentSessionStartedAt: string | null = null;
 
   constructor(helperPath?: string) {
     super();
@@ -187,20 +188,25 @@ export class RecorderService extends EventEmitter {
     return this.currentOutputPath + '.session.json';
   }
 
-  writeSessionManifest(status: 'recording' | 'interrupted') {
+  writeSessionManifest(status: 'recording' | 'finalizing' | 'interrupted') {
     const manifestPath = this.getManifestPath();
     if (!manifestPath) return;
+    if (!this.currentSessionStartedAt) this.currentSessionStartedAt = new Date().toISOString();
     const manifest = {
       sessionId: this.currentSessionId,
       status,
       outputPath: this.currentOutputPath,
       webcamOutputPath: this.currentWebcamOutputPath,
-      startTime: new Date().toISOString(),
+      startTime: this.currentSessionStartedAt,
+      updatedAt: new Date().toISOString(),
     };
+    const temporaryPath = `${manifestPath}.tmp-${process.pid}-${Date.now()}`;
     try {
-      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+      fs.writeFileSync(temporaryPath, JSON.stringify(manifest, null, 2), 'utf8');
+      fs.renameSync(temporaryPath, manifestPath);
       this.writeDiagnosticsLog(`Session manifest written with status "${status}": ${manifestPath}`);
     } catch (e) {
+      try { fs.unlinkSync(temporaryPath); } catch {}
       this.writeDiagnosticsLog(`Failed to write session manifest: ${String(e)}`);
     }
   }
@@ -474,6 +480,7 @@ export class RecorderService extends EventEmitter {
 
     this.resetProtocolState();
     this.currentSessionId = recordingId;
+    this.currentSessionStartedAt = new Date().toISOString();
     this.currentOutputPath = validated.outputPath;
     this.currentWebcamOutputPath = validated.webcamOutputPath;
 
@@ -537,6 +544,7 @@ export class RecorderService extends EventEmitter {
     }
     if (this.stopWaiter) return this.stopWaiter.promise;
     this.expectedExit = 'stop';
+    this.writeSessionManifest('finalizing');
     this.writeDiagnosticsLog('Stopping recording, waiting for finalization...');
     this.stopWaiter = createWaiter<string>(STOP_TIMEOUT_MS, 'Timeout waiting for native recorder to finalize.');
     this.writeCommand('stop', this.stopWaiter);
@@ -810,5 +818,6 @@ export class RecorderService extends EventEmitter {
     this.currentSessionId = null;
     this.currentOutputPath = null;
     this.currentWebcamOutputPath = null;
+    this.currentSessionStartedAt = null;
   }
 }

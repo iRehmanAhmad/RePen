@@ -13,7 +13,7 @@ describe('Recorder Resilience Unit Tests', () => {
     expect(redacted).toContain('C:\\Users\\<User>');
   });
 
-  it('should create and delete incremental session manifest files', () => {
+  it('atomically updates and deletes recovery session manifests', () => {
     const service = new RecorderService();
     const tempDir = path.resolve(__dirname, '..', '..', 'scratch');
     fs.mkdirSync(tempDir, { recursive: true });
@@ -33,6 +33,14 @@ describe('Recorder Resilience Unit Tests', () => {
     const content = JSON.parse(fs.readFileSync(manifestPath!, 'utf8'));
     expect(content.sessionId).toBe(987654);
     expect(content.status).toBe('recording');
+    expect(content.startTime).toEqual(expect.any(String));
+    expect(content.updatedAt).toEqual(expect.any(String));
+
+    service.writeSessionManifest('finalizing');
+    const finalizingContent = JSON.parse(fs.readFileSync(manifestPath!, 'utf8'));
+    expect(finalizingContent.status).toBe('finalizing');
+    expect(finalizingContent.startTime).toBe(content.startTime);
+    expect(fs.readdirSync(tempDir).filter((name) => name.startsWith(path.basename(manifestPath!) + '.tmp-'))).toEqual([]);
 
     // Delete manifest
     service.deleteSessionManifest();
