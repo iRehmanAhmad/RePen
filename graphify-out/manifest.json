@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784303769.0590298,
-    "ast_hash": "6fd15ae41ddfa6a4b46c0d0e5b17e1d7",
+    "mtime": 1784304594.2780626,
+    "ast_hash": "f68510f196717827f83dbdb935e229f3",
     "semantic_hash": ""
   },
   "package.json": {
@@ -1242,6 +1242,11 @@
   "tests/unit/zoomFocus.test.ts": {
     "mtime": 1784300486.3200207,
     "ast_hash": "824935dd010e4acc09e6a5abba9f355f",
+    "semantic_hash": ""
+  },
+  "scratch/test-recording-1784273733852.mp4.session.json": {
+    "mtime": 1784304370.9714246,
+    "ast_hash": "5a59554599a6f24e51fff30eef854a0d",
     "semantic_hash": ""
   }
 }
