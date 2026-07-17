@@ -770,8 +770,8 @@
     "semantic_hash": ""
   },
   "src/shared/editor/projectPersistence.ts": {
-    "mtime": 1784281921.289778,
-    "ast_hash": "0ac4a79d6339aee2cac3115d84c51b5b",
+    "mtime": 1784287774.0618093,
+    "ast_hash": "2a86324dde87d0195c3844b55f4fbf7d",
     "semantic_hash": ""
   },
   "src/shared/editor/types.ts": {
@@ -780,8 +780,8 @@
     "semantic_hash": ""
   },
   "tests/unit/projectPersistence.test.ts": {
-    "mtime": 1784118660.5808315,
-    "ast_hash": "089855fd13ded582b6b288941e43ff3c",
+    "mtime": 1784287789.9286034,
+    "ast_hash": "b70b34b03e903c2241d88bb60e67e162",
     "semantic_hash": ""
   },
   "scratch/find_pixi_init.js": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784287334.0398755,
-    "ast_hash": "3d97bc08bd1fbd2fd2d09ea84b32c5a2",
+    "mtime": 1784288086.614541,
+    "ast_hash": "3c367596162b5d6af50e622eb9b6ced9",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1015,8 +1015,8 @@
     "semantic_hash": ""
   },
   "src/shared/editor/projectFactory.js": {
-    "mtime": 1784281228.0118647,
-    "ast_hash": "564d0802d4aafc9683e4d17a7aa3afcb",
+    "mtime": 1784288005.149462,
+    "ast_hash": "5c2e2c6aa58c9aeaea972a7f4f0b69da",
     "semantic_hash": ""
   },
   "src/shared/recording/appCapabilities.js": {
@@ -1217,6 +1217,16 @@
   "docs/verification/phase-2-recording-lifecycle.md": {
     "mtime": 1784286744.8564227,
     "ast_hash": "956d4783a379cbb460c99a5992f77d05",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/visualCompositor.ts": {
+    "mtime": 1784287932.6614528,
+    "ast_hash": "3c98f0f676a21157974e49185aac922c",
+    "semantic_hash": ""
+  },
+  "tests/unit/visualCompositor.test.ts": {
+    "mtime": 1784287675.2702906,
+    "ast_hash": "707a983110b9e6f0a40682d0d8ac9902",
     "semantic_hash": ""
   }
 }
