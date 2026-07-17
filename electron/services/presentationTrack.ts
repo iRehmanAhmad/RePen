@@ -97,6 +97,7 @@ export interface PresentationTrackHeaderV2 {
   source: PresentationSourceMetadata;
   canvas: PresentationCanvasMetadata;
   initialScene: PresentationSceneSnapshot;
+  presentationMode: 'baked' | 'sidecar';
   clock: {
     unit: 'milliseconds';
     origin: 'recording-active-time';
@@ -126,6 +127,7 @@ export interface PresentationTrackStartOptions {
   source: PresentationSourceMetadata;
   canvas: PresentationCanvasMetadata;
   initialScene: PresentationSceneSnapshot;
+  presentationMode?: 'baked' | 'sidecar';
 }
 
 export interface PresentationTrackSummary {
@@ -368,6 +370,7 @@ export class PresentationTrackService extends EventEmitter {
       source: clone(options.source),
       canvas: clone(options.canvas),
       initialScene: clone(options.initialScene),
+      presentationMode: options.presentationMode === 'sidecar' ? 'sidecar' : 'baked',
       clock: {
         unit: 'milliseconds',
         origin: 'recording-active-time',

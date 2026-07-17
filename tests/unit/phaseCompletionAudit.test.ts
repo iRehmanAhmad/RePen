@@ -53,8 +53,23 @@ describe('post-phase integration audit', () => {
 
   it('builds the React editor before npm start instead of loading raw TSX', () => {
     const packageJson = JSON.parse(read('package.json'));
+    expect(packageJson.main).toBe('main.js');
     expect(packageJson.scripts.prestart).toBe('npm run build:all');
+    expect(packageJson.scripts.start).toBe('electron .');
     expect(read('main.js')).toContain("path.join(__dirname, 'dist-renderer', 'editor.html')");
+  });
+
+  it('uses the shared fail-closed capability contract in both Electron entry points', () => {
+    const legacyMain = read('main.js');
+    const modularMain = read('electron/main.ts');
+    const editor = read('src/renderer/editor.tsx');
+    for (const source of [legacyMain, modularMain]) {
+      expect(source).toContain("createAppCapabilities({ recorder: recorderCapabilities })");
+      expect(source).toContain('await recorderService.probeCapabilities()');
+    }
+    expect(legacyMain).toContain('getProjectExportAvailability()');
+    expect(editor).toContain('unavailableCapabilities(CAPABILITIES_PENDING_REASON)');
+    expect(editor).toContain("exportFormat === 'gif' ? capabilities.gifExport : capabilities.mp4Export");
   });
 
   it('escapes source names and restricts image URLs before source-card interpolation', () => {

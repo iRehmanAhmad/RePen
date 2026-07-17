@@ -11,6 +11,20 @@ import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/sche
 import './editor.css';
 
 const RECENT_PROJECTS_KEY = 'repen-recent-projects';
+const CAPABILITIES_PENDING_REASON = 'Checking whether this capability is available...';
+const CAPABILITIES_UNAVAILABLE_REASON = 'This build could not verify optional recording and export capabilities.';
+
+const unavailableCapabilities = (reason: string) => ({
+  recorder: { available: false, reason },
+  selectedWindow: { available: false, reason },
+  systemAudio: { available: false, reason },
+  microphone: { available: false, reason },
+  webcam: { available: false, reason },
+  presentationReplay: { available: false, reason },
+  captions: { available: false, reason },
+  mp4Export: { available: false, reason },
+  gifExport: { available: false, reason },
+});
 
 // Localization Framework (i18n)
 const TRANSLATIONS: Record<string, Record<string, string>> = {
@@ -73,6 +87,7 @@ const EditorApp: React.FC = () => {
   const [recentProjects, setRecentProjects] = useState<string[]>(() => 
     JSON.parse(localStorage.getItem(RECENT_PROJECTS_KEY) || '[]')
   );
+  const [capabilities, setCapabilities] = useState<any>(() => unavailableCapabilities(CAPABILITIES_PENDING_REASON));
 
   // Playback state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -98,6 +113,8 @@ const EditorApp: React.FC = () => {
   const [exportProgress, setExportProgress] = useState<number | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [exportOutputPath, setExportOutputPath] = useState('');
+  const selectedExportCapability = exportFormat === 'gif' ? capabilities.gifExport : capabilities.mp4Export;
+  const hasAvailableExportFormat = Boolean(capabilities.mp4Export?.available || capabilities.gifExport?.available);
 
   // First-run tutorial state
   const [showTutorialStep, setShowTutorialStep] = useState<number | null>(() => {
@@ -124,6 +141,21 @@ const EditorApp: React.FC = () => {
         if (bootstrapData?.projectPath) {
           loadProject(bootstrapData.projectPath);
         }
+      }
+      if ((window as any).appBridge?.getAppCapabilities) {
+        try {
+          const caps = await (window as any).appBridge.getAppCapabilities();
+          if (caps?.recorder && caps?.captions && caps?.mp4Export && caps?.gifExport) {
+            setCapabilities(caps);
+          } else {
+            setCapabilities(unavailableCapabilities(CAPABILITIES_UNAVAILABLE_REASON));
+          }
+        } catch (e) {
+          console.error('Failed to get capabilities:', e);
+          setCapabilities(unavailableCapabilities(CAPABILITIES_UNAVAILABLE_REASON));
+        }
+      } else {
+        setCapabilities(unavailableCapabilities(CAPABILITIES_UNAVAILABLE_REASON));
       }
     };
     init();
@@ -609,6 +641,10 @@ const EditorApp: React.FC = () => {
   // Trigger export flow
   const handleStartExport = async () => {
     if (!project) return;
+    if (!selectedExportCapability?.available) {
+      alert(selectedExportCapability?.reason || CAPABILITIES_UNAVAILABLE_REASON);
+      return;
+    }
     
     let pathSuggested = `RePen_Export.${exportFormat}`;
     if (projectPath) {
@@ -706,7 +742,15 @@ const EditorApp: React.FC = () => {
           <button className="menu-btn" onClick={handleSave} disabled={!isDirty} aria-label={t('save')}>{t('save')}</button>
           <button className="menu-btn" onClick={handleUndo} disabled={history.length === 0} aria-label={t('undo')}>{t('undo')}</button>
           <button className="menu-btn" onClick={handleRedo} disabled={future.length === 0} aria-label={t('redo')}>{t('redo')}</button>
-          <button className="menu-btn" onClick={() => setShowExportModal(true)} aria-label={t('export')}>{t('export')}</button>
+          <button
+            className="menu-btn"
+            onClick={() => setShowExportModal(true)}
+            disabled={!hasAvailableExportFormat}
+            title={hasAvailableExportFormat ? t('export') : (capabilities?.mp4Export?.reason || capabilities?.gifExport?.reason)}
+            aria-label={t('export')}
+          >
+            {t('export')}{!hasAvailableExportFormat && ' (Unavailable)'}
+          </button>
           <button className="menu-btn" onClick={() => (window as any).appBridge?.closeRecordingEditor()} aria-label={t('close')}>{t('close')}</button>
         </div>
       </header>
@@ -1059,7 +1103,14 @@ const EditorApp: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  <button className="btn-primary" onClick={handleTranscribe} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
+                   {!capabilities?.captions?.available ? (
+                    <div style={{ padding: 8, borderRadius: 6, border: '1px dashed var(--danger)', background: 'rgba(239, 68, 68, 0.1)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      <button className="btn-primary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
+                      <span style={{ fontSize: 11, color: 'var(--danger)' }}>⚠️ {capabilities?.captions?.reason || 'Offline transcription is not available.'}</span>
+                    </div>
+                  ) : (
+                    <button className="btn-primary" onClick={handleTranscribe} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
+                  )}
                   
                   <div style={{display: 'flex', gap: 6}}>
                     <button className="btn-secondary" style={{flex: 1}} onClick={handleSplitCaption} disabled={!selectedCaptionId}>{t('split')}</button>
@@ -1205,8 +1256,8 @@ const EditorApp: React.FC = () => {
                   value={exportFormat}
                   onChange={(e) => setExportFormat(e.target.value as 'mp4' | 'gif')}
                 >
-                  <option value="mp4">Video MP4 (H.264 / AAC)</option>
-                  <option value="gif">Animated GIF (lanczos palette)</option>
+                  <option value="mp4" disabled={!capabilities.mp4Export?.available}>Video MP4 (H.264 / AAC)</option>
+                  <option value="gif" disabled={!capabilities.gifExport?.available}>Animated GIF (lanczos palette)</option>
                 </select>
               </div>
 
@@ -1250,7 +1301,14 @@ const EditorApp: React.FC = () => {
 
             <div className="dialog-footer" style={{display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 16}}>
               <button className="btn-secondary" onClick={() => setShowExportModal(false)}>Cancel</button>
-              <button className="btn-primary" onClick={handleStartExport}>Start Render</button>
+              <button
+                className="btn-primary"
+                onClick={handleStartExport}
+                disabled={!selectedExportCapability?.available}
+                title={selectedExportCapability?.available ? '' : selectedExportCapability?.reason}
+              >
+                Start Render
+              </button>
             </div>
           </div>
         </div>

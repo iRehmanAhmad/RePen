@@ -9,6 +9,7 @@ import { RecorderService } from './services/recorder';
 import { PresentationTrackService } from './services/presentationTrack';
 import path from 'path';
 import fs from 'fs';
+const { createAppCapabilities } = require('../src/shared/recording/appCapabilities.js');
 
 // Global singleton instances
 let stateManager: StateManager;
@@ -554,6 +555,14 @@ function bootstrap() {
   ipcMain.handle('recording:get-capabilities', async (event) => {
     if (!isTrustedRecordingSender(event)) return { available: false, supported: false };
     return recorderService.probeCapabilities();
+  });
+
+  ipcMain.handle('app:get-capabilities', async (event) => {
+    if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized capabilities request.' };
+    const recorderCapabilities = recorderService
+      ? await recorderService.probeCapabilities()
+      : { available: false, supported: false, reason: 'Native Windows capture helper is not initialized.' };
+    return createAppCapabilities({ recorder: recorderCapabilities });
   });
 
   let currentProjectPath: string | null = null;

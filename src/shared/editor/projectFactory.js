@@ -44,6 +44,7 @@ function migrateProjectData(project = {}) {
         screenVideoPath: project.media.screenVideoPath,
         ...(typeof project.media.webcamVideoPath === 'string' ? { webcamVideoPath: project.media.webcamVideoPath } : {}),
         ...(typeof project.media.nativeSessionPath === 'string' ? { nativeSessionPath: project.media.nativeSessionPath } : {}),
+        presentationMode: project.media.presentationMode === 'sidecar' ? 'sidecar' : 'baked',
         ...(Number.isFinite(project.media.durationMs) ? { durationMs: project.media.durationMs } : {}),
       }
     : undefined;

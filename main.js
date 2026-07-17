@@ -1,4 +1,11 @@
 const { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell } = require('electron');
+const { createAppCapabilities, getProjectExportAvailability } = require('./src/shared/recording/appCapabilities.js');
+const {
+  WindowRole,
+  shouldExcludeFromCapture,
+  nativeWindowHandleCandidates,
+  filterRepenOwnedSources,
+} = require('./src/shared/recording/capturePolicy.js');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -528,6 +535,42 @@ function editorUrl(query = {}) {
   return url.toString();
 }
 
+function applyCapturePolicy(win, role) {
+  if (!win || win.isDestroyed()) return;
+  const excludeFromCapture = shouldExcludeFromCapture(role);
+  win.__repenWindowRole = role;
+  win.__repenCaptureExcluded = excludeFromCapture;
+  try {
+    win.setContentProtection(excludeFromCapture);
+  } catch (error) {
+    console.error(`Failed to apply capture policy for ${role}:`, error);
+  }
+  if (!win.__repenCapturePolicyReloadListener) {
+    win.__repenCapturePolicyReloadListener = true;
+    win.webContents.on('did-finish-load', () => {
+      if (!win.isDestroyed()) applyCapturePolicy(win, win.__repenWindowRole);
+    });
+  }
+}
+
+function getRepenOwnedWindowHandleCandidates() {
+  const windows = [
+    toolbarWindow,
+    settingsWindow,
+    selectorWindow,
+    countdownWindow,
+    editorWindow,
+    ...overlayWindows.values(),
+  ].filter((win) => win && !win.isDestroyed());
+  const candidates = new Set();
+  for (const win of windows) {
+    for (const candidate of nativeWindowHandleCandidates(win.getNativeWindowHandle())) {
+      candidates.add(candidate);
+    }
+  }
+  return [...candidates];
+}
+
 function enterEditorMode() {
   if (!presenterVisibilityBeforeEditor) {
     presenterVisibilityBeforeEditor = {
@@ -577,7 +620,7 @@ function createOverlayWindow(display) {
     type: 'utility',
     hasShadow: false,
     backgroundColor: '#00000000',
-    show: true,
+    show: false,
     alwaysOnTop: true,
     fullscreenable: false,
     webPreferences: {
@@ -588,6 +631,7 @@ function createOverlayWindow(display) {
     },
   });
 
+  applyCapturePolicy(win, WindowRole.PRESENTATION_OVERLAY);
   win.__overlayDisplay = {
     id: display.id,
     bounds: deepClone(display.bounds),
@@ -627,6 +671,7 @@ function createOverlayWindow(display) {
 
   overlayWindows.set(display.id, win);
   updateOverlayIgnoreMouse();
+  win.showInactive();
   return win;
 }
 
@@ -645,7 +690,7 @@ function createToolbarWindow() {
     hasShadow: false,
     icon: createAppIcon(),
     backgroundColor: '#00000000',
-    show: true,
+    show: false,
     alwaysOnTop: true,
     webPreferences: {
       preload: path.join(__dirname, 'src', 'preload.js'),
@@ -655,6 +700,7 @@ function createToolbarWindow() {
     },
   });
 
+  applyCapturePolicy(toolbarWindow, WindowRole.TOOLBAR);
   const logPath = path.join(__dirname, 'rep-debug.log');
 
   toolbarWindow.loadURL(windowUrl('toolbar.html'));
@@ -702,6 +748,7 @@ function createToolbarWindow() {
     }
     broadcastState();
   });
+  toolbarWindow.showInactive();
 }
 
 function getToolbarWindowBounds(display = screen.getPrimaryDisplay()) {
@@ -782,6 +829,7 @@ function createSettingsWindow() {
     },
   });
 
+  applyCapturePolicy(settingsWindow, WindowRole.SETTINGS);
   settingsWindow.loadURL(windowUrl('settings.html'));
   settingsWindow.setAlwaysOnTop(true, 'screen-saver');
   settingsWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
@@ -836,8 +884,8 @@ function createSelectorWindow() {
     },
   });
 
+  applyCapturePolicy(selectorWindow, WindowRole.SELECTOR);
   selectorWindow.loadURL(windowUrl('selector.html'));
-  selectorWindow.setContentProtection(true);
   selectorWindow.setAlwaysOnTop(true, 'screen-saver');
   selectorWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -905,8 +953,8 @@ function createCountdownWindow(displayId) {
     },
   });
 
+  applyCapturePolicy(countdownWindow, WindowRole.COUNTDOWN);
   countdownWindow.loadURL(windowUrl('countdown.html'));
-  countdownWindow.setContentProtection(true);
   countdownWindow.setIgnoreMouseEvents(true);
   countdownWindow.setAlwaysOnTop(true, 'screen-saver');
   countdownWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
@@ -960,6 +1008,7 @@ function createEditorWindow(initialPath = null) {
     },
   });
 
+  applyCapturePolicy(editorWindow, WindowRole.EDITOR);
   const query = {};
   if (initialPath) {
     query.projectPath = initialPath;
@@ -2405,6 +2454,7 @@ let currentRecordingPhase = 'idle';
 let preRecordingState = null;
 let lastStartOptions = null;
 let lastStartEvent = null;
+let activePresentationMode = 'baked';
 const approvedRecordingDirectories = new Set();
 
 function isTrustedRecordingSender(event) {
@@ -2433,6 +2483,7 @@ function normalizeRecordingOptions(rawOptions) {
   if (!source) throw new Error('The selected recording source is no longer available. Refresh the source list.');
 
   const sourceType = sourceId.startsWith('window:') ? 'window' : 'display';
+  const presentationMode = sourceType === 'window' ? 'sidecar' : 'baked';
   const displayIdFromSource = Number(source.display_id);
   const requestedDisplayId = Number(rawOptions.displayId);
   const displays = screen.getAllDisplays();
@@ -2485,6 +2536,7 @@ function normalizeRecordingOptions(rawOptions) {
       webcamOutputPath: rawOptions.webcamEnabled === true ? outputPath.replace(/\.mp4$/i, '-webcam.mp4') : null,
     },
     track: {
+      presentationMode,
       source: {
         id: sourceId,
         name: optionalString(source.name, 512) || (sourceType === 'display' ? `Display ${selectedDisplay.id}` : 'Selected window'),
@@ -2600,6 +2652,7 @@ async function handleStartRecording(options) {
   broadcastRecordingState({ isRecording: false, isPaused: false });
 
   const normalized = normalizeRecordingOptions(options);
+  activePresentationMode = normalized.track.presentationMode;
   const sessionId = `recording-${Date.now()}-${Math.random().toString(16).slice(2)}`;
   await recorderService.start(normalized.recorder);
   
@@ -2610,6 +2663,7 @@ async function handleStartRecording(options) {
       source: normalized.track.source,
       canvas: normalized.track.canvas,
       initialScene: getPresentationSceneSnapshot(),
+      presentationMode: normalized.track.presentationMode,
     });
   }
   
@@ -2630,10 +2684,10 @@ async function handleStopRecording() {
   broadcastRecordingState({ isRecording: false, isPaused: false });
   currentRecordingPhase = 'idle';
   restorePresenterState();
-  return { outputPath, presentationTrackPath: trackSummary?.sidecarPath || null };
+  return { outputPath, presentationTrackPath: trackSummary?.sidecarPath || null, presentationMode: activePresentationMode };
 }
 
-function createProjectForCompletedRecording({ outputPath, presentationTrackPath }) {
+function createProjectForCompletedRecording({ outputPath, presentationTrackPath, presentationMode = 'baked' }) {
   if (!outputPath || !fs.existsSync(outputPath)) {
     throw new Error('The finalized recording file could not be found.');
   }
@@ -2644,6 +2698,7 @@ function createProjectForCompletedRecording({ outputPath, presentationTrackPath 
     screenVideoPath: outputPath,
     ...(fs.existsSync(webcamPath) ? { webcamVideoPath: webcamPath } : {}),
     ...(presentationTrackPath ? { nativeSessionPath: presentationTrackPath } : {}),
+    presentationMode: presentationMode === 'sidecar' ? 'sidecar' : 'baked',
     durationMs: Math.max(1, recordingSeconds * 1000),
   });
   const projectPath = outputPath.replace(/\.mp4$/i, '.repen-project');
@@ -2816,6 +2871,10 @@ function generateExportFFmpegArgs(options) {
 
 ipcMain.handle('project:export', async (event, project, options = {}) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized export request.' };
+  const exportCapability = getProjectExportAvailability();
+  if (!exportCapability.available) {
+    return { success: false, supported: false, error: exportCapability.reason };
+  }
   if (activeExportProcess) {
     return { success: false, error: 'Export already in progress' };
   }
@@ -2908,8 +2967,9 @@ ipcMain.handle('recording:get-sources', async (event, opts) => {
     thumbnailSize: { width: 320, height: 180 },
     fetchWindowIcons: true,
   });
-  lastEnumeratedSources = new Map(sources.map((source) => [source.id, source]));
-  return sources.map((source) => ({
+  const selectableSources = filterRepenOwnedSources(sources, getRepenOwnedWindowHandleCandidates());
+  lastEnumeratedSources = new Map(selectableSources.map((source) => [source.id, source]));
+  return selectableSources.map((source) => ({
     id: source.id,
     name: source.name,
     display_id: source.display_id,
@@ -3079,6 +3139,14 @@ ipcMain.handle('recording:get-state', async (event) => {
 ipcMain.handle('recording:get-capabilities', async (event) => {
   if (!isTrustedRecordingSender(event) || !recorderService) return { available: false, supported: false, reason: 'Recorder unavailable.' };
   return recorderService.probeCapabilities();
+});
+
+ipcMain.handle('app:get-capabilities', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized capabilities request.' };
+  const recorderCapabilities = recorderService
+    ? await recorderService.probeCapabilities()
+    : { available: false, supported: false, reason: 'Native Windows capture helper is not initialized.' };
+  return createAppCapabilities({ recorder: recorderCapabilities });
 });
 
 // window.webContents.send('recording:countdown-tick');

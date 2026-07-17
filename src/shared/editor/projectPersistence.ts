@@ -45,6 +45,7 @@ export interface ProjectMedia {
   screenVideoPath: string;
   webcamVideoPath?: string;
   nativeSessionPath?: string;
+  presentationMode: "baked" | "sidecar";
   durationMs?: number;
 }
 
@@ -110,6 +111,7 @@ export function normalizeProjectMedia(media: any): ProjectMedia | null {
       screenVideoPath: media.screenVideoPath,
       webcamVideoPath: media.webcamVideoPath,
       nativeSessionPath: media.nativeSessionPath,
+      presentationMode: media.presentationMode === "sidecar" ? "sidecar" : "baked",
       durationMs: media.durationMs,
     };
   }

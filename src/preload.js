@@ -87,4 +87,5 @@ contextBridge.exposeInMainWorld('appBridge', {
   loadProjectFile: (projectFolder) => ipcRenderer.invoke('project:load', projectFolder),
   loadProjectFileFromPath: (filePath) => ipcRenderer.invoke('project:load-from-path', filePath),
   getCurrentProjectPath: () => ipcRenderer.invoke('project:get-current-path'),
+  getAppCapabilities: () => ipcRenderer.invoke('app:get-capabilities'),
 });
