@@ -39,5 +39,18 @@ describe('ProjectPersistence Utilities Unit Test', () => {
     const norm = normalizeProjectEditor(raw);
     expect(norm.padding).toBe(100);
     expect(norm.aspectRatio).toBe('16:9');
+    expect(norm.outputResolution).toBe('1080p');
+    expect(norm.previewQualityMode).toBe('high-quality');
+    expect(norm.showSafeArea).toBe(false);
+
+    // Verify custom settings
+    const normCustom = normalizeProjectEditor({
+      outputResolution: '4K',
+      previewQualityMode: 'performance',
+      showSafeArea: true,
+    });
+    expect(normCustom.outputResolution).toBe('4K');
+    expect(normCustom.previewQualityMode).toBe('performance');
+    expect(normCustom.showSafeArea).toBe(true);
   });
 });

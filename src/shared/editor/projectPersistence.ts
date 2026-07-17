@@ -86,6 +86,9 @@ export interface ProjectEditorState {
   gifSizePreset: GifSizePreset;
   cursorTheme: string;
   timelineTracks: Record<TimelineTrackId, TimelineTrackState>;
+  outputResolution?: string;
+  previewQualityMode?: 'performance' | 'high-quality';
+  showSafeArea?: boolean;
 }
 
 export interface EditorProjectData {
@@ -360,6 +363,9 @@ export function normalizeProjectEditor(editor: Partial<ProjectEditorState>): Pro
       ? editor.gifSizePreset
       : DEFAULT_GIF_SETTINGS.sizePreset,
     timelineTracks,
+    outputResolution: typeof editor.outputResolution === "string" ? editor.outputResolution : '1080p',
+    previewQualityMode: typeof editor.previewQualityMode === "string" ? editor.previewQualityMode : 'high-quality',
+    showSafeArea: typeof editor.showSafeArea === "boolean" ? editor.showSafeArea : false,
   };
 }
 

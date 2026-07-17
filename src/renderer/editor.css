@@ -489,3 +489,33 @@ html, body {
   padding: 2px 6px;
   font-size: 12px;
 }
+
+/* Safe Area guidelines overlay */
+.safe-area-guidelines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.safe-area-action {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  box-sizing: border-box;
+}
+
+.safe-area-title {
+  position: absolute;
+  width: 93%;
+  height: 93%;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+}

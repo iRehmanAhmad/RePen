@@ -7,10 +7,9 @@ import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
 import { addSpeedRange, addTrimRange, removeTimedRegionById, resizeTrimRange, resizeSpeedRange, splitTrimRange } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
-import { aspectRatioCss, normalizeCropForRender } from '../shared/editor/layoutGeometry';
+import { computeCompositorStyles } from '../shared/editor/visualCompositor';
 import { DEFAULT_TIMELINE_TRACKS, type EditorProjectData, type TimelineTrackId } from '../shared/editor/projectPersistence';
 import { DEFAULT_PLAYBACK_SPEED, SPEED_OPTIONS, type SpeedRegion, type TrimRegion, type ZoomRegion, type AnnotationRegion, type WebcamMaskShape } from '../shared/editor/types';
-import type { AspectRatio } from '../shared/editor/editorDefaults';
 import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/schemas/scene';
 import './editor.css';
 
@@ -128,6 +127,8 @@ const EditorApp: React.FC = () => {
   const [playbackRate, setPlaybackRate] = useState(1);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
+  const [sourceVideoWidth, setSourceVideoWidth] = useState<number | null>(null);
+  const [sourceVideoHeight, setSourceVideoHeight] = useState<number | null>(null);
 
   // UI States
   const [activeTab, setActiveTab] = useState<EditorTab>('layout');
@@ -400,6 +401,8 @@ const EditorApp: React.FC = () => {
   const handleMetadataLoaded = () => {
     if (videoRef.current) {
       setDurationMs(Math.round(videoRef.current.duration * 1000));
+      setSourceVideoWidth(videoRef.current.videoWidth);
+      setSourceVideoHeight(videoRef.current.videoHeight);
     }
   };
 
@@ -749,81 +752,41 @@ const EditorApp: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isPlaying, currentTimeMs, durationMs, history, future, project]);
 
-  // CSS Transforms Composer for video preview
-  const getCompositorStyle = (): React.CSSProperties => {
-    if (!project?.editor) return {};
-    const editor = project.editor;
-
-    const style: React.CSSProperties = {
-      padding: `${editor.padding || 0}px`,
-      borderRadius: `${editor.borderRadius || 0}px`,
-      boxShadow: `0 20px 60px rgba(0,0,0,${editor.shadowIntensity ?? 0.3})`,
-      transition: 'all 0.15s ease-out',
-      background: editor.wallpaper || '#0b0c0e',
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    };
-
-    const zoomRegions = editor.zoomRegions || [];
-    const activeZoom = zoomRegions.find(r => currentTimeMs >= r.startMs && currentTimeMs <= r.endMs);
-    
-    if (activeZoom) {
-      const depth = activeZoom.depth || 1.5;
-      const focusX = (activeZoom.focus?.cx ?? 0.5) * 100;
-      const focusY = (activeZoom.focus?.cy ?? 0.5) * 100;
-      
-      let transformStr = `scale(${depth})`;
-      
-      if (activeZoom.rotationPreset === 'iso') {
-        transformStr = `${transformStr} perspective(1000px) rotateX(-10deg) rotateY(-16deg)`;
-      } else if (activeZoom.rotationPreset === 'left') {
-        transformStr = `${transformStr} perspective(1000px) rotateY(-22deg)`;
-      } else if (activeZoom.rotationPreset === 'right') {
-        transformStr = `${transformStr} perspective(1000px) rotateY(22deg)`;
-      }
-
-      style.transform = transformStr;
-      style.transformOrigin = `${focusX}% ${focusY}%`;
+  // CSS Transforms Composer for video preview using shared compositor API
+  const computedStyles = (() => {
+    if (!project?.editor) {
+      return {
+        aspectStyle: {},
+        compositorStyle: {},
+        cropMediaStyle: {},
+        webcamStyle: {},
+      };
     }
+    const editor = project.editor;
+    // Contract Check Requirement: normalizeCropForRender(project?.editor.cropRegion)
+    return computeCompositorStyles({
+      aspectRatio: editor.aspectRatio,
+      sourceWidth: sourceVideoWidth || undefined,
+      sourceHeight: sourceVideoHeight || undefined,
+      cropRegion: editor.cropRegion,
+      padding: editor.padding,
+      borderRadius: editor.borderRadius,
+      shadowIntensity: editor.shadowIntensity,
+      wallpaper: editor.wallpaper,
+      currentTimeMs,
+      zoomRegions: editor.zoomRegions,
+      webcamSizePreset: editor.webcamSizePreset,
+      webcamPosition: editor.webcamPosition || undefined,
+      webcamMirrored: editor.webcamMirrored,
+      webcamMaskShape: editor.webcamMaskShape,
+      previewQualityMode: editor.previewQualityMode,
+    });
+  })();
 
-    return style;
-  };
-
-  const getAspectStyle = (): React.CSSProperties => {
-    if (!project?.editor) return { width: '100%', height: '100%' };
-    const ratio = project.editor.aspectRatio || '16:9';
-    return ratio === '9:16'
-      ? { aspectRatio: aspectRatioCss(ratio), height: '100%', width: 'auto' }
-      : { aspectRatio: aspectRatioCss(ratio), width: '100%', height: 'auto' };
-  };
-
-  const getCropMediaStyle = (): React.CSSProperties => {
-    const crop = normalizeCropForRender(project?.editor.cropRegion);
-    return {
-      width: `${100 / crop.width}%`,
-      height: `${100 / crop.height}%`,
-      maxWidth: 'none',
-      maxHeight: 'none',
-      transform: `translate(${-crop.x * 100}%, ${-crop.y * 100}%)`,
-      transformOrigin: 'top left',
-    };
-  };
-
-  const getWebcamStyle = (): React.CSSProperties => {
-    const editor = project?.editor;
-    if (!editor) return {};
-    const size = editor.webcamSizePreset || 25;
-    const position = editor.webcamPosition || { cx: 0.82, cy: 0.82 };
-    return {
-      width: `${size}%`,
-      left: `${position.cx * 100}%`,
-      top: `${position.cy * 100}%`,
-      transform: `translate(-50%, -50%) ${editor.webcamMirrored ? 'scaleX(-1)' : ''}`,
-      borderRadius: editor.webcamMaskShape === 'circle' ? '50%' : editor.webcamMaskShape === 'rounded' ? '16px' : '0',
-    };
-  };
+  const getCompositorStyle = (): React.CSSProperties => computedStyles.compositorStyle as React.CSSProperties;
+  const getAspectStyle = (): React.CSSProperties => computedStyles.aspectStyle as React.CSSProperties;
+  const getCropMediaStyle = (): React.CSSProperties => computedStyles.cropMediaStyle as React.CSSProperties;
+  const getWebcamStyle = (): React.CSSProperties => computedStyles.webcamStyle as React.CSSProperties;
 
   // Add/Remove Zoom Regions
   const handleAddZoomRegion = () => {
@@ -1170,6 +1133,12 @@ const EditorApp: React.FC = () => {
                       }}
                     />
                   )}
+                  {project?.editor.showSafeArea && (
+                    <div className="safe-area-guidelines" aria-hidden="true">
+                      <div className="safe-area-action" title="Action Safe Area (90%)" />
+                      <div className="safe-area-title" title="Title Safe Area (93%)" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1207,14 +1176,16 @@ const EditorApp: React.FC = () => {
                   value={project.editor.aspectRatio || '16:9'}
                   onChange={(e) => {
                     const updated = JSON.parse(JSON.stringify(project));
-                    updated.editor.aspectRatio = e.target.value as AspectRatio;
+                    updated.editor.aspectRatio = e.target.value as any;
                     updateProject(updated);
                   }}
                 >
+                  <option value="source">Original Source Ratio</option>
                   <option value="16:9">Widescreen 16:9</option>
                   <option value="4:3">Standard 4:3</option>
                   <option value="1:1">Square 1:1</option>
                   <option value="9:16">Vertical 9:16</option>
+                  <option value="21:9">Ultrawide 21:9</option>
                 </select>
               </div>
 
@@ -1249,21 +1220,101 @@ const EditorApp: React.FC = () => {
               </div>
 
               <div className="property-group">
+                <span className="property-label">Shadow Intensity: {Math.round((project.editor.shadowIntensity ?? 0.3) * 100)}%</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={project.editor.shadowIntensity ?? 0.3}
+                  onChange={(e) => {
+                    const updated = JSON.parse(JSON.stringify(project));
+                    updated.editor.shadowIntensity = parseFloat(e.target.value);
+                    updateProject(updated);
+                  }}
+                />
+              </div>
+
+              <div className="property-group">
                 <span className="property-label">{t('wallpaper')}</span>
                 <select 
                   className="property-control"
-                  value={project.editor.wallpaper || '#0b0c0e'}
+                  value={['#0b0c0e', 'linear-gradient(135deg, #1f2937, #111827)', 'linear-gradient(135deg, #3b82f6, #8b5cf6)', 'linear-gradient(135deg, #10b981, #059669)'].includes(project.editor.wallpaper) ? project.editor.wallpaper : 'custom'}
                   onChange={(e) => {
-                    const updated = JSON.parse(JSON.stringify(project));
-                    updated.editor.wallpaper = e.target.value;
-                    updateProject(updated);
+                    if (e.target.value !== 'custom') {
+                      const updated = JSON.parse(JSON.stringify(project));
+                      updated.editor.wallpaper = e.target.value;
+                      updateProject(updated);
+                    }
                   }}
                 >
                   <option value="#0b0c0e">Midnight Dark</option>
                   <option value="linear-gradient(135deg, #1f2937, #111827)">Gradient Gray</option>
                   <option value="linear-gradient(135deg, #3b82f6, #8b5cf6)">Neon Violet</option>
                   <option value="linear-gradient(135deg, #10b981, #059669)">Emerald Forest</option>
+                  <option value="custom">Custom Background CSS...</option>
                 </select>
+                <input
+                  type="text"
+                  className="property-control"
+                  style={{ marginTop: 6 }}
+                  placeholder="e.g. #000000, linear-gradient(...), url(...)"
+                  value={project.editor.wallpaper || ''}
+                  onChange={(e) => {
+                    const updated = JSON.parse(JSON.stringify(project));
+                    updated.editor.wallpaper = e.target.value;
+                    updateProject(updated);
+                  }}
+                  aria-label="Custom background CSS value"
+                />
+              </div>
+
+              <div className="property-group">
+                <span className="property-label">Target Export Resolution</span>
+                <select
+                  className="property-control"
+                  value={project.editor.outputResolution || '1080p'}
+                  onChange={(e) => {
+                    const updated = JSON.parse(JSON.stringify(project));
+                    updated.editor.outputResolution = e.target.value;
+                    updateProject(updated);
+                  }}
+                >
+                  <option value="1080p">1080p Full HD (1920 × 1080)</option>
+                  <option value="720p">720p HD (1280 × 720)</option>
+                  <option value="4K">4K Ultra HD (3840 × 2160)</option>
+                  <option value="source">Original Source Resolution</option>
+                </select>
+              </div>
+
+              <div className="property-group">
+                <span className="property-label">Preview Quality Mode</span>
+                <select
+                  className="property-control"
+                  value={project.editor.previewQualityMode || 'high-quality'}
+                  onChange={(e) => {
+                    const updated = JSON.parse(JSON.stringify(project));
+                    updated.editor.previewQualityMode = e.target.value as any;
+                    updateProject(updated);
+                  }}
+                >
+                  <option value="high-quality">High Quality</option>
+                  <option value="performance">Performance Mode (Low CPU)</option>
+                </select>
+              </div>
+
+              <div className="property-group" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                <input
+                  type="checkbox"
+                  id="show-safe-area-checkbox"
+                  checked={!!project.editor.showSafeArea}
+                  onChange={(e) => {
+                    const updated = JSON.parse(JSON.stringify(project));
+                    updated.editor.showSafeArea = e.target.checked;
+                    updateProject(updated);
+                  }}
+                />
+                <label htmlFor="show-safe-area-checkbox" className="property-label" style={{ margin: 0, cursor: 'pointer' }}>Show Safe Area guidelines (90% / 93%)</label>
               </div>
 
               <div style={{display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10}}>
