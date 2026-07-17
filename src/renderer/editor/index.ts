@@ -15,3 +15,8 @@ export type { PlaybackStateResult } from './usePlaybackState';
 
 // Sidebar panels
 export { LayoutPanel } from './LayoutPanel';
+export { WebcamPanel } from './WebcamPanel';
+export { MotionPanel } from './MotionPanel';
+
+// Preview
+export { CompositorPreview } from './CompositorPreview';
