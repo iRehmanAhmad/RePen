@@ -4,6 +4,7 @@ import { PlaybackCoordinator } from './presenter/editor/playbackCoordinator';
 import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
+import { clampTimelineZoom, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
 import type { EditorProjectData } from '../shared/editor/projectPersistence';
 import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
@@ -94,6 +95,9 @@ const EditorApp: React.FC = () => {
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
   const [durationMs, setDurationMs] = useState(10000); // fallback default
   const [timelineZoom, setTimelineZoom] = useState(1.0);
+  const [playbackRate, setPlaybackRate] = useState(1);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
 
   // UI States
   const [activeTab, setActiveTab] = useState<'layout' | 'motion' | 'webcam' | 'annotations' | 'captions'>('layout');
@@ -271,6 +275,7 @@ const EditorApp: React.FC = () => {
         const timeSec = videoRef.current.currentTime;
         const timeMs = Math.round(timeSec * 1000);
         setCurrentTimeMs(timeMs);
+        coordinatorRef.current.updatePlaybackRate();
         drawAnnotations(timeMs);
       }
       animId = requestAnimationFrame(tick);
@@ -363,6 +368,38 @@ const EditorApp: React.FC = () => {
       coord.play();
       setIsPlaying(true);
     }
+  };
+
+  const handleFrameStep = (direction: -1 | 1) => {
+    const video = videoRef.current;
+    if (!video) return;
+    coordinatorRef.current.pause();
+    setIsPlaying(false);
+    handleSeek(Math.max(0, Math.min(durationMs, Math.round(video.currentTime * 1000) + (direction * 1000 / 30))));
+  };
+
+  const handlePlaybackRate = (nextRate: number) => {
+    const safeRate = [0.5, 0.75, 1, 1.25, 1.5, 2].includes(nextRate) ? nextRate : 1;
+    coordinatorRef.current.setDefaultSpeed(safeRate);
+    setPlaybackRate(safeRate);
+  };
+
+  const handleVolume = (nextVolume: number) => {
+    const safeVolume = Math.min(1, Math.max(0, nextVolume));
+    if (videoRef.current) {
+      videoRef.current.volume = safeVolume;
+      videoRef.current.muted = safeVolume === 0;
+    }
+    setVolume(safeVolume);
+    setIsMuted(safeVolume === 0);
+  };
+
+  const handleMute = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    const nextMuted = !video.muted;
+    video.muted = nextMuted;
+    setIsMuted(nextMuted);
   };
 
   // Seek
@@ -792,6 +829,15 @@ const EditorApp: React.FC = () => {
                   src={activeVideoSrc ? toFileUrl(activeVideoSrc) : undefined}
                   className="video-element"
                   onLoadedMetadata={handleMetadataLoaded}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnded={() => setIsPlaying(false)}
+                  onVolumeChange={() => {
+                    if (videoRef.current) {
+                      setVolume(videoRef.current.volume);
+                      setIsMuted(videoRef.current.muted);
+                    }
+                  }}
                   onClick={togglePlay}
                   onError={() => setMediaMissing(true)}
                 />
@@ -1186,29 +1232,42 @@ const EditorApp: React.FC = () => {
       {/* Timeline Control Panel */}
       <footer className="timeline-panel" role="contentinfo">
         <div className="timeline-toolbar">
-          <div>
-            Time: {Math.round(currentTimeMs / 1000)}s / {Math.round(durationMs / 1000)}s
+          <div aria-live="polite">
+            Time: {formatTimelineTime(currentTimeMs)} / {formatTimelineTime(durationMs)}
           </div>
           <div style={{display: 'flex', gap: 12, alignItems: 'center'}}>
+            <button className="timeline-control" onClick={() => handleFrameStep(-1)} aria-label="Previous frame">◀ Frame</button>
+            <button className="timeline-control" onClick={togglePlay} aria-label={isPlaying ? 'Pause playback' : 'Play playback'}>{isPlaying ? 'Pause' : 'Play'}</button>
+            <button className="timeline-control" onClick={() => handleFrameStep(1)} aria-label="Next frame">Frame ▶</button>
+            <label className="timeline-field">
+              Speed
+              <select value={playbackRate} onChange={(e) => handlePlaybackRate(Number(e.target.value))} aria-label="Playback speed">
+                {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => <option key={rate} value={rate}>{rate}×</option>)}
+              </select>
+            </label>
+            <button className="timeline-control" onClick={handleMute} aria-label={isMuted ? 'Unmute' : 'Mute'}>{isMuted ? 'Unmute' : 'Mute'}</button>
+            <label className="timeline-field">
+              Volume
+              <input type="range" min={0} max={1} step={0.05} value={isMuted ? 0 : volume} onChange={(e) => handleVolume(Number(e.target.value))} aria-label="Volume" />
+            </label>
             <label style={{display: 'flex', gap: 6, alignItems: 'center'}}>
               Timeline Zoom:
               <input 
                 type="range" 
-                min={0.5} 
+                min={1}
                 max={5.0} 
                 step={0.1}
                 value={timelineZoom} 
-                onChange={(e) => setTimelineZoom(parseFloat(e.target.value))} 
+                onChange={(e) => setTimelineZoom(clampTimelineZoom(parseFloat(e.target.value)))}
               />
             </label>
           </div>
         </div>
 
-        <div className="timeline-tracks" onClick={(e) => {
+        <div className="timeline-scroll">
+        <div className="timeline-tracks" style={{ minWidth: `${timelineZoom * 100}%` }} onClick={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
-          const clickX = e.clientX - rect.left;
-          const pct = clickX / rect.width;
-          handleSeek(Math.round(pct * durationMs));
+          handleSeek(timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs));
         }}>
           <div className="timeline-track">
             <span className="track-label">Screen Recording</span>
@@ -1217,14 +1276,14 @@ const EditorApp: React.FC = () => {
                 key={t.id} 
                 className="trim-region-visual"
                 style={{
-                  left: `${(t.startMs / durationMs) * 100}%`,
-                  width: `${((t.endMs - t.startMs) / durationMs) * 100}%`
+                  left: `${timelinePercent(t.startMs, durationMs)}%`,
+                  width: `${timelinePercent(t.endMs - t.startMs, durationMs)}%`
                 }}
               />
             ))}
             <div 
               className="timeline-playhead" 
-              style={{ left: `${(currentTimeMs / (durationMs || 1)) * 100}%` }}
+              style={{ left: `${timelinePercent(currentTimeMs, durationMs)}%` }}
             />
           </div>
 
@@ -1235,8 +1294,8 @@ const EditorApp: React.FC = () => {
                 key={z.id}
                 className="speed-region-visual"
                 style={{
-                  left: `${(z.startMs / durationMs) * 100}%`,
-                  width: `${((z.endMs - z.startMs) / durationMs) * 100}%`
+                  left: `${timelinePercent(z.startMs, durationMs)}%`,
+                  width: `${timelinePercent(z.endMs - z.startMs, durationMs)}%`
                 }}
               />
             ))}
@@ -1249,8 +1308,8 @@ const EditorApp: React.FC = () => {
                 key={c.id}
                 className="speed-region-visual"
                 style={{
-                  left: `${(c.startMs / durationMs) * 100}%`,
-                  width: `${((c.endMs - c.startMs) / durationMs) * 100}%`,
+                  left: `${timelinePercent(c.startMs, durationMs)}%`,
+                  width: `${timelinePercent(c.endMs - c.startMs, durationMs)}%`,
                   background: 'rgba(255, 209, 102, 0.35)',
                   borderLeft: '2px solid var(--warning)',
                   borderRight: '2px solid var(--warning)',
@@ -1258,6 +1317,7 @@ const EditorApp: React.FC = () => {
               />
             ))}
           </div>
+        </div>
         </div>
       </footer>
 
