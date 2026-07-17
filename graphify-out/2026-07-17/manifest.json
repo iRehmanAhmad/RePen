@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784275033.2798414,
-    "ast_hash": "234ce74474ad841746892abb51458e05",
+    "mtime": 1784275172.7153106,
+    "ast_hash": "88324b2dc45b6a5adb31b76a7a1bb5a5",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1127,6 +1127,16 @@
   "tests/unit/editorSaveClose.test.ts": {
     "mtime": 1784275033.2936077,
     "ast_hash": "bd9e04d08695c6a7f3cb1c9a5cf27825",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/timelineEdits.ts": {
+    "mtime": 1784275172.7153106,
+    "ast_hash": "6b0d72b949ee42e051bc65949b761aaa",
+    "semantic_hash": ""
+  },
+  "tests/unit/timelineEdits.test.ts": {
+    "mtime": 1784275182.7041118,
+    "ast_hash": "45314e9b32720afc5dd79ff9d128af32",
     "semantic_hash": ""
   }
 }

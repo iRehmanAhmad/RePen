@@ -1138,5 +1138,10 @@
     "mtime": 1784275182.7041118,
     "ast_hash": "45314e9b32720afc5dd79ff9d128af32",
     "semantic_hash": ""
+  },
+  "tests/unit/projectDefaultParity.test.ts": {
+    "mtime": 1784275304.0685346,
+    "ast_hash": "41a2ef86c544797412268b288448051e",
+    "semantic_hash": ""
   }
 }
