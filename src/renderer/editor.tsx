@@ -7,6 +7,7 @@ import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
 import { addTrimRange } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
+import { aspectRatioCss } from '../shared/editor/layoutGeometry';
 import type { EditorProjectData } from '../shared/editor/projectPersistence';
 import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
@@ -597,13 +598,9 @@ const EditorApp: React.FC = () => {
   const getAspectStyle = (): React.CSSProperties => {
     if (!project?.editor) return { width: '100%', height: '100%' };
     const ratio = project.editor.aspectRatio || '16:9';
-    switch (ratio) {
-      case '16:9': return { aspectRatio: '16/9', width: '100%', height: 'auto' };
-      case '4:3': return { aspectRatio: '4/3', width: '80%', height: 'auto' };
-      case '1:1': return { aspectRatio: '1/1', width: '60%', height: 'auto' };
-      case '9:16': return { aspectRatio: '9/16', height: '100%', width: 'auto' };
-      default: return { aspectRatio: '16/9', width: '100%', height: 'auto' };
-    }
+    return ratio === '9:16'
+      ? { aspectRatio: aspectRatioCss(ratio), height: '100%', width: 'auto' }
+      : { aspectRatio: aspectRatioCss(ratio), width: '100%', height: 'auto' };
   };
 
   // Add/Remove Zoom Regions

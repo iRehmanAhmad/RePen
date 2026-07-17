@@ -205,9 +205,12 @@
   "203": "Phase 5 — Shared Layout and Visual Compositor",
   "204": "stateMachine.js",
   "205": "Capture Policy Decision",
+  "206": "getAppState",
   "207": "phaseCompletionAudit.test.ts",
   "208": "vite-env.d.ts",
   "209": "Phase 3 Package Inspection",
   "210": "missingMediaRecovery.test.ts",
+  "211": "FileHandlePresentationTrackWriter",
+  "212": "clone",
   "214": "19. Security Model"
 }
