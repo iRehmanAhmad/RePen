@@ -13,9 +13,9 @@ describe('presentation replay mode', () => {
     expect(mainSource).toContain('parsePresentationTrackJsonl');
   });
 
-  it('preserves a hydrated sidecar track through project normalization', () => {
+  it('does not write a hydrated sidecar back into the project file', () => {
     const track = { header: { presentationMode: 'sidecar' }, events: [], checkpoints: [] };
     expect(migrateProjectData({ media: { screenVideoPath: 'C:\\video.mp4', presentationMode: 'sidecar' }, presentationTrack: track }).presentationTrack)
-      .toEqual(track);
+      .toBeUndefined();
   });
 });

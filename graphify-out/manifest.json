@@ -770,8 +770,8 @@
     "semantic_hash": ""
   },
   "src/shared/editor/projectPersistence.ts": {
-    "mtime": 1784275581.7374609,
-    "ast_hash": "81a838d2d2f05ec073c2f2c3bcf7681e",
+    "mtime": 1784275810.8430755,
+    "ast_hash": "f0adf63278d8dbe311fcbe5bd516cc3d",
     "semantic_hash": ""
   },
   "src/shared/editor/types.ts": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784275581.7401748,
-    "ast_hash": "b4c0acd63cd70855563a88d440b4e245",
+    "mtime": 1784275810.8430755,
+    "ast_hash": "202aba52f7c915e429f7123f18ba406f",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1015,8 +1015,8 @@
     "semantic_hash": ""
   },
   "src/shared/editor/projectFactory.js": {
-    "mtime": 1784275581.7358317,
-    "ast_hash": "40f77e3077d64ee354c1f5bfc3b11c22",
+    "mtime": 1784275810.8335912,
+    "ast_hash": "0b7f3f1630fec6412bfc27114f0adbae",
     "semantic_hash": ""
   },
   "src/shared/recording/appCapabilities.js": {
@@ -1145,8 +1145,18 @@
     "semantic_hash": ""
   },
   "tests/unit/presentationReplayMode.test.ts": {
-    "mtime": 1784275581.7401748,
-    "ast_hash": "01a29180b2268738e13c73e4d8fd2ce7",
+    "mtime": 1784275810.8454318,
+    "ast_hash": "f74d59ae3b33b4af3d27ebdf0d1e2096",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/recoveryStore.ts": {
+    "mtime": 1784275810.8335912,
+    "ast_hash": "c070eae99bf955534fde0e6e8d3a289f",
+    "semantic_hash": ""
+  },
+  "tests/unit/recoveryStore.test.ts": {
+    "mtime": 1784275810.8465664,
+    "ast_hash": "c4b664ef21899991ab095c6231c23fb5",
     "semantic_hash": ""
   }
 }

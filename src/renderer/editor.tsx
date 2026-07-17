@@ -6,6 +6,7 @@ import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
 import { addTrimRange } from '../shared/editor/timelineEdits';
+import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
 import type { EditorProjectData } from '../shared/editor/projectPersistence';
 import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
@@ -197,7 +198,12 @@ const EditorApp: React.FC = () => {
     if ((window as any).appBridge?.loadProjectFileFromPath) {
       const res = await (window as any).appBridge.loadProjectFileFromPath(path);
       if (res.success) {
-        const proj = res.project;
+        let proj = res.project;
+        const recovery = readRecoverySnapshot<EditorProjectData>(localStorage, res.path);
+        if (recovery && confirm('A recovered draft is available for this project. Restore it?')) {
+          proj = recovery.project;
+          setEditorNotice('Recovered unsaved editor changes. Save the project when you are ready.');
+        }
         if (!proj.editor) proj.editor = {};
         if (!proj.editor.zoomRegions) proj.editor.zoomRegions = [];
         if (!proj.editor.annotationRegions) proj.editor.annotationRegions = [];
@@ -206,12 +212,12 @@ const EditorApp: React.FC = () => {
 
         setProject(proj);
         setProjectPath(res.path);
-        setIsDirty(false);
+        setIsDirty(Boolean(recovery && proj === recovery.project));
         setHistory([]);
         setFuture([]);
         addToRecent(res.path);
         setMediaMissing(false);
-        setEditorNotice(null);
+        if (!recovery || proj !== recovery.project) setEditorNotice(null);
       } else {
         setEditorNotice(`Could not load this project: ${res.message || res.error || 'Unknown error'}`);
       }
@@ -255,6 +261,7 @@ const EditorApp: React.FC = () => {
       const res = await (window as any).appBridge.saveProjectFile(project, '', projectPath);
       if (res.success) {
         setIsDirty(false);
+        clearRecoverySnapshot(localStorage, projectPath);
         setSaveStatus('saved');
         setEditorNotice(null);
         return true;
@@ -268,6 +275,20 @@ const EditorApp: React.FC = () => {
     setEditorNotice('Could not save project: the editor bridge is unavailable.');
     return false;
   };
+
+  useEffect(() => {
+    if (!isDirty || !project || !projectPath) return;
+    const timer = window.setTimeout(() => {
+      try {
+        const recoveryProject = JSON.parse(JSON.stringify(project));
+        delete recoveryProject.presentationTrack;
+        saveRecoverySnapshot(localStorage, { projectPath, savedAtEpochMs: Date.now(), project: recoveryProject });
+      } catch {
+        setEditorNotice('Unable to create a local recovery draft. Save your project to protect recent changes.');
+      }
+    }, 750);
+    return () => window.clearTimeout(timer);
+  }, [isDirty, project, projectPath]);
 
   const handleCloseEditor = async () => {
     if (isDirty) {

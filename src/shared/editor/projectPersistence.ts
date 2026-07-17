@@ -362,7 +362,6 @@ export function migrateProjectData(project: any): EditorProjectData {
   return {
     version: PROJECT_VERSION,
     media: normalizeProjectMedia(project.media) || undefined,
-    presentationTrack: project.presentationTrack && typeof project.presentationTrack === "object" ? project.presentationTrack : undefined,
     editor: normalizeProjectEditor(project.editor || {}),
     videoPath: typeof project.videoPath === "string" ? project.videoPath : undefined,
   };

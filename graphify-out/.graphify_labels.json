@@ -191,6 +191,7 @@
   "189": "README.md",
   "190": "editor.tsx",
   "191": "Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations",
+  "192": "MemoryStorage",
   "193": "RePen OpenScreen Corrective Baseline",
   "194": "Phase 0 — Baseline, Feature Inventory, and Truthful Gates",
   "195": "Phase 1 — Capture Exclusion and Source-Content Correctness",
@@ -204,12 +205,9 @@
   "203": "Phase 5 — Shared Layout and Visual Compositor",
   "204": "stateMachine.js",
   "205": "Capture Policy Decision",
-  "206": "19. Security Model",
   "207": "phaseCompletionAudit.test.ts",
   "208": "vite-env.d.ts",
   "209": "Phase 3 Package Inspection",
   "210": "missingMediaRecovery.test.ts",
-  "212": "FileHandlePresentationTrackWriter",
-  "213": "clone",
   "214": "19. Security Model"
 }

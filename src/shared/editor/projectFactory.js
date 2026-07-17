@@ -51,7 +51,6 @@ function migrateProjectData(project = {}) {
   return {
     version: PROJECT_VERSION,
     ...(media ? { media } : {}),
-    ...(project.presentationTrack && typeof project.presentationTrack === 'object' ? { presentationTrack: project.presentationTrack } : {}),
     editor: createDefaultEditorState(project.editor || {}),
     ...(typeof project.videoPath === 'string' ? { videoPath: project.videoPath } : {}),
   };
