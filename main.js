@@ -6,6 +6,7 @@ const {
   nativeWindowHandleCandidates,
   filterRepenOwnedSources,
 } = require('./src/shared/recording/capturePolicy.js');
+const { canRunRecordingCommand, recordingCommandError } = require('./src/shared/recording/stateMachine.js');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -2801,6 +2802,7 @@ async function handlePauseRecordingShortcut() {
 
 ipcMain.handle('recording:open-setup', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'openSetup')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'open setup') };
   currentRecordingPhase = 'selecting';
   showSelectorWindow();
   broadcastRecordingState({ isRecording: false, isPaused: false });
@@ -2809,6 +2811,7 @@ ipcMain.handle('recording:open-setup', async (event) => {
 
 ipcMain.handle('recording:close-setup', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'closeSetup')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'close setup') };
   currentRecordingPhase = 'idle';
   hideSelectorWindow();
   broadcastRecordingState({ isRecording: false, isPaused: false });
@@ -3029,6 +3032,7 @@ ipcMain.handle('recording:select-directory', async (event) => {
 
 ipcMain.handle('recording:start-countdown', async (event, payload = {}) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'startCountdown')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'start countdown') };
   const displayId = Number(payload.displayId);
   const seconds = boundedInteger(payload.seconds, 3, 0, 10);
   currentRecordingPhase = 'countdown';
@@ -3042,6 +3046,7 @@ ipcMain.handle('recording:start-countdown', async (event, payload = {}) => {
 
 ipcMain.handle('recording:close-countdown', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'closeCountdown')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'close countdown') };
   // Keep the state in countdown until recording:start owns the atomic
   // transition to starting. Moving early makes the next command reject itself.
   if (countdownWindow && !countdownWindow.isDestroyed()) {
@@ -3053,9 +3058,7 @@ ipcMain.handle('recording:close-countdown', async (event) => {
 
 ipcMain.handle('recording:start', async (event, options) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
-  if (!['idle', 'selecting', 'countdown', 'failed'].includes(currentRecordingPhase)) {
-    return { success: false, error: `Cannot start while recording state is ${currentRecordingPhase}.` };
-  }
+  if (!canRunRecordingCommand(currentRecordingPhase, 'start')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'start') };
   try {
     lastStartEvent = event;
     await handleStartRecording(options);
@@ -3073,21 +3076,21 @@ ipcMain.handle('recording:start', async (event, options) => {
 
 ipcMain.handle('recording:pause', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
-  if (currentRecordingPhase !== 'recording') return { success: false, error: 'Recording is not active.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'pause')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'pause') };
   try { await handlePauseRecording(); return { success: true }; }
   catch (error) { return { success: false, error: error.message || String(error) }; }
 });
 
 ipcMain.handle('recording:resume', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
-  if (currentRecordingPhase !== 'paused') return { success: false, error: 'Recording is not paused.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'resume')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'resume') };
   try { await handleResumeRecording(); return { success: true }; }
   catch (error) { return { success: false, error: error.message || String(error) }; }
 });
 
 ipcMain.handle('recording:stop', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
-  if (!['recording', 'paused'].includes(currentRecordingPhase)) return { success: false, error: 'No active recording to stop.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'stop')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'stop') };
   try {
     const result = await handleStopRecording();
     try {
@@ -3112,15 +3115,14 @@ ipcMain.handle('recording:stop', async (event) => {
 
 ipcMain.handle('recording:cancel', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
-  if (!['starting', 'recording', 'paused', 'failed'].includes(currentRecordingPhase)) {
-    return { success: false, error: 'No active recording to discard.' };
-  }
+  if (!canRunRecordingCommand(currentRecordingPhase, 'cancel')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'cancel') };
   try { await handleCancelRecording(); return { success: true }; }
   catch (error) { return { success: false, error: error.message || String(error) }; }
 });
 
 ipcMain.handle('recording:restart', async (event) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
+  if (!canRunRecordingCommand(currentRecordingPhase, 'restart')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'restart') };
   if (!lastStartOptions) return { success: false, error: 'No recording options are available to restart.' };
   try {
     await handleCancelRecording();

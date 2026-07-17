@@ -18,7 +18,7 @@ describe('post-phase integration audit', () => {
       legacyMain.indexOf("ipcMain.handle('recording:start'"),
     );
     expect(closeCountdownHandler).not.toContain("currentRecordingPhase = 'starting'");
-    expect(legacyMain).toContain("if (!['idle', 'selecting', 'countdown', 'failed'].includes(currentRecordingPhase))");
+    expect(legacyMain).toContain("canRunRecordingCommand(currentRecordingPhase, 'start')");
   });
 
   it('restores the setup surface with an actionable native-start error', () => {
