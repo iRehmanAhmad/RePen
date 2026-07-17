@@ -5,6 +5,7 @@ import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
+import { addTrimRange } from '../shared/editor/timelineEdits';
 import type { EditorProjectData } from '../shared/editor/projectPersistence';
 import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
@@ -97,6 +98,7 @@ const EditorApp: React.FC = () => {
   const [currentTimeMs, setCurrentTimeMs] = useState(0);
   const [durationMs, setDurationMs] = useState(10000); // fallback default
   const [timelineZoom, setTimelineZoom] = useState(1.0);
+  const [trimStartMs, setTrimStartMs] = useState<number | null>(null);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
@@ -424,6 +426,24 @@ const EditorApp: React.FC = () => {
     const nextMuted = !video.muted;
     video.muted = nextMuted;
     setIsMuted(nextMuted);
+  };
+
+  const handleMarkTrimStart = () => setTrimStartMs(currentTimeMs);
+
+  const handleAddTrimRange = () => {
+    if (!project || trimStartMs === null) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.trimRegions = addTrimRange(updated.editor.trimRegions || [], trimStartMs, currentTimeMs, durationMs);
+    updateProject(updated);
+    setTrimStartMs(null);
+  };
+
+  const handleClearTrimRanges = () => {
+    if (!project || project.editor.trimRegions.length === 0) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.trimRegions = [];
+    updateProject(updated);
+    setTrimStartMs(null);
   };
 
   // Seek
@@ -1300,6 +1320,9 @@ const EditorApp: React.FC = () => {
               Volume
               <input type="range" min={0} max={1} step={0.05} value={isMuted ? 0 : volume} onChange={(e) => handleVolume(Number(e.target.value))} aria-label="Volume" />
             </label>
+            <button className="timeline-control" onClick={handleMarkTrimStart} aria-label="Mark cut range start">{trimStartMs === null ? 'Mark Cut Start' : `Cut starts ${formatTimelineTime(trimStartMs)}`}</button>
+            <button className="timeline-control" onClick={handleAddTrimRange} disabled={trimStartMs === null || trimStartMs === currentTimeMs} aria-label="Cut marked range">Cut Range</button>
+            <button className="timeline-control" onClick={handleClearTrimRanges} disabled={!project?.editor.trimRegions.length} aria-label="Clear cut ranges">Clear Cuts</button>
             <label style={{display: 'flex', gap: 6, alignItems: 'center'}}>
               Timeline Zoom:
               <input 
