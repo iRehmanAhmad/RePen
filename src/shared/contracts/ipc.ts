@@ -101,6 +101,7 @@ export interface ExportOptions {
   fps?: number;
   loop?: boolean;
   outputPath?: string;
+  durationMs?: number;
 }
 
 // ---------------------------------------------------------------------------

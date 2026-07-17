@@ -36,20 +36,20 @@ interface RawBridge {
   revealProjectMedia?: (mediaPath: string) => Promise<RevealMediaResult>;
   getCurrentProjectPath?: () => Promise<{ success: boolean; path?: string }>;
 
-  exportProject?: (project: unknown, options: ExportOptions) => Promise<{ success: boolean; error?: string }>;
+  exportProject?: (project: unknown, options: ExportOptions) => Promise<{ success: boolean; error?: string; path?: string }>;
   cancelExport?: (outputPath: string) => Promise<void>;
   onExportProgress?: (callback: (_: unknown, payload: ExportProgressPayload) => void) => () => void;
 
   closeRecordingEditor?: () => Promise<void>;
   onEditorLoadProject?: (callback: (path: string) => void) => () => void;
 
-  transcribeRecording?: (filePath: string) => Promise<{ success: boolean; error?: string }>;
+  transcribeRecording?: (filePath: string) => Promise<{ success: boolean; error?: string; segments?: any[] }>;
   getTranscriptionStatus?: () => Promise<TranscriptionStatusResult | null>;
   downloadTranscriptionModel?: () => Promise<{ success: boolean; error?: string }>;
   cancelTranscriptionDownload?: () => Promise<void>;
   onTranscriptionDownloadProgress?: (callback: (payload: DownloadProgressPayload) => void) => () => void;
 
-  exportDiagnostics?: () => Promise<{ success: boolean; error?: string }>;
+  exportDiagnostics?: () => Promise<{ success: boolean; error?: string; path?: string }>;
   openExternal?: (url: string) => Promise<void>;
 }
 
@@ -108,7 +108,7 @@ export function useAppBridge() {
 
   // Export
   const exportProject = useCallback(
-    async (project: unknown, options: ExportOptions): Promise<{ success: boolean; error?: string }> => {
+    async (project: unknown, options: ExportOptions): Promise<{ success: boolean; error?: string; path?: string }> => {
       const bridge = getBridge();
       if (!bridge?.exportProject) return { success: false, error: 'Editor bridge unavailable.' };
       return bridge.exportProject(project, options);
@@ -143,7 +143,7 @@ export function useAppBridge() {
 
   // Transcription
   const transcribeRecording = useCallback(
-    async (filePath: string): Promise<{ success: boolean; error?: string }> => {
+    async (filePath: string): Promise<{ success: boolean; error?: string; segments?: any[] }> => {
       const bridge = getBridge();
       if (!bridge?.transcribeRecording) return { success: false, error: 'Editor bridge unavailable.' };
       return bridge.transcribeRecording(filePath);
@@ -177,7 +177,7 @@ export function useAppBridge() {
   );
 
   // Diagnostics
-  const exportDiagnostics = useCallback(async (): Promise<{ success: boolean; error?: string }> => {
+  const exportDiagnostics = useCallback(async (): Promise<{ success: boolean; error?: string; path?: string }> => {
     const bridge = getBridge();
     if (!bridge?.exportDiagnostics) return { success: false, error: 'Editor bridge unavailable.' };
     return bridge.exportDiagnostics();

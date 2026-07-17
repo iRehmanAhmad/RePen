@@ -16,7 +16,7 @@ import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { WebcamMaskShape } from '../../shared/editor/types';
 
 interface CompositorPreviewProps {
-  project: EditorProjectData;
+  project: EditorProjectData | null;
   currentTimeMs: number;
   sourceVideoWidth: number | null;
   sourceVideoHeight: number | null;
@@ -64,6 +64,14 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   onWebcamNoticeChange,
   timelineTracks,
 }) => {
+  if (!project) {
+    return (
+      <div className="editor-loading" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--text-muted)' }}>
+        Loading project...
+      </div>
+    );
+  }
+
   const editor = project.editor;
 
   const styles = editor
@@ -107,8 +115,8 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   if (!styles) return null;
 
   return (
-    <div style={styles.aspectStyle as React.CSSProperties}>
-      <div style={styles.compositorStyle as React.CSSProperties}>
+    <div style={{ ...(styles.aspectStyle as React.CSSProperties), maxWidth: '100%', maxHeight: '100%' }}>
+      <div style={{ ...(styles.compositorStyle as React.CSSProperties), width: '100%', height: '100%' }}>
         <div className="crop-viewport" style={styles.viewportStyle as React.CSSProperties}>
           {/* Screen Video */}
           <div className="screen-container" style={styles.mediaStyle as React.CSSProperties}>
