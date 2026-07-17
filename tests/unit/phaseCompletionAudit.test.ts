@@ -21,6 +21,23 @@ describe('post-phase integration audit', () => {
     expect(legacyMain).toContain("canRunRecordingCommand(currentRecordingPhase, 'start')");
   });
 
+  it('keeps setup in selecting until the countdown transition atomically dismisses it', () => {
+    const selector = read('src/renderer/selector.js');
+    const selectorStartFlow = selector.slice(
+      selector.indexOf('async function startRecordingFlow()'),
+      selector.indexOf("window.addEventListener('DOMContentLoaded'"),
+    );
+    const legacyMain = read('main.js');
+    const countdownHandler = legacyMain.slice(
+      legacyMain.indexOf("ipcMain.handle('recording:start-countdown'"),
+      legacyMain.indexOf("ipcMain.handle('recording:close-countdown'"),
+    );
+    expect(selectorStartFlow).toContain('window.appBridge.startCountdown(recordingOptions.displayId, 3)');
+    expect(selectorStartFlow).not.toContain('window.appBridge.closeRecordingSetup()');
+    expect(countdownHandler).toContain("currentRecordingPhase = 'countdown'");
+    expect(countdownHandler).toContain('hideSelectorWindow()');
+  });
+
   it('restores the setup surface with an actionable native-start error', () => {
     const selector = read('src/renderer/selector.js');
     expect(selector).toContain('await window.appBridge.openRecordingSetup()');

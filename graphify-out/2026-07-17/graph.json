@@ -2300,7 +2300,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "main_deepclone",
-      "community": 137,
+      "community": 117,
       "norm_label": "deepclone()"
     },
     {
@@ -2310,7 +2310,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "main_getstatefilepath",
-      "community": 144,
+      "community": 192,
       "norm_label": "getstatefilepath()"
     },
     {
@@ -2320,7 +2320,7 @@
       "source_location": "L137",
       "_origin": "ast",
       "id": "main_readpersistedstate",
-      "community": 144,
+      "community": 192,
       "norm_label": "readpersistedstate()"
     },
     {
@@ -2340,7 +2340,7 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "main_loadstate",
-      "community": 144,
+      "community": 192,
       "norm_label": "loadstate()"
     },
     {
@@ -2350,7 +2350,7 @@
       "source_location": "L296",
       "_origin": "ast",
       "id": "main_getdockside",
-      "community": 117,
+      "community": 206,
       "norm_label": "getdockside()"
     },
     {
@@ -2360,7 +2360,7 @@
       "source_location": "L317",
       "_origin": "ast",
       "id": "main_getappstate",
-      "community": 117,
+      "community": 206,
       "norm_label": "getappstate()"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "main_getscenestate",
-      "community": 117,
+      "community": 206,
       "norm_label": "getscenestate()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "main_getbootstrapdata",
-      "community": 117,
+      "community": 206,
       "norm_label": "getbootstrapdata()"
     },
     {
@@ -2440,7 +2440,7 @@
       "source_location": "L366",
       "_origin": "ast",
       "id": "main_broadcaststate",
-      "community": 117,
+      "community": 144,
       "norm_label": "broadcaststate()"
     },
     {
@@ -2500,7 +2500,7 @@
       "source_location": "L475",
       "_origin": "ast",
       "id": "main_createtrayicon",
-      "community": 87,
+      "community": 192,
       "norm_label": "createtrayicon()"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L520",
       "_origin": "ast",
       "id": "main_createtray",
-      "community": 87,
+      "community": 192,
       "norm_label": "createtray()"
     },
     {
@@ -2710,7 +2710,7 @@
       "source_location": "L1068",
       "_origin": "ast",
       "id": "main_createoverlaywindows",
-      "community": 87,
+      "community": 192,
       "norm_label": "createoverlaywindows()"
     },
     {
@@ -2730,7 +2730,7 @@
       "source_location": "L1089",
       "_origin": "ast",
       "id": "main_hideoverlaywindows",
-      "community": 87,
+      "community": 192,
       "norm_label": "hideoverlaywindows()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L1180",
       "_origin": "ast",
       "id": "main_normalizeboardviewport",
-      "community": 117,
+      "community": 206,
       "norm_label": "normalizeboardviewport()"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L1189",
       "_origin": "ast",
       "id": "main_setboardviewport",
-      "community": 117,
+      "community": 206,
       "norm_label": "setboardviewport()"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L1199",
       "_origin": "ast",
       "id": "main_setclickhalo",
-      "community": 117,
+      "community": 144,
       "norm_label": "setclickhalo()"
     },
     {
@@ -2830,7 +2830,7 @@
       "source_location": "L1204",
       "_origin": "ast",
       "id": "main_setexportincludebackground",
-      "community": 117,
+      "community": 144,
       "norm_label": "setexportincludebackground()"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L1212",
       "_origin": "ast",
       "id": "main_capturemagnifierbackground",
-      "community": 117,
+      "community": 144,
       "norm_label": "capturemagnifierbackground()"
     },
     {
@@ -2850,7 +2850,7 @@
       "source_location": "L1246",
       "_origin": "ast",
       "id": "main_setspotlight",
-      "community": 117,
+      "community": 144,
       "norm_label": "setspotlight()"
     },
     {
@@ -2900,7 +2900,7 @@
       "source_location": "L1306",
       "_origin": "ast",
       "id": "main_setcolor",
-      "community": 117,
+      "community": 144,
       "norm_label": "setcolor()"
     },
     {
@@ -2910,7 +2910,7 @@
       "source_location": "L1317",
       "_origin": "ast",
       "id": "main_setwidth",
-      "community": 117,
+      "community": 144,
       "norm_label": "setwidth()"
     },
     {
@@ -2920,7 +2920,7 @@
       "source_location": "L1331",
       "_origin": "ast",
       "id": "main_setopacity",
-      "community": 117,
+      "community": 144,
       "norm_label": "setopacity()"
     },
     {
@@ -2930,7 +2930,7 @@
       "source_location": "L1343",
       "_origin": "ast",
       "id": "main_pushundosnapshot",
-      "community": 137,
+      "community": 117,
       "norm_label": "pushundosnapshot()"
     },
     {
@@ -2940,7 +2940,7 @@
       "source_location": "L1350",
       "_origin": "ast",
       "id": "main_recordscenechange",
-      "community": 137,
+      "community": 117,
       "norm_label": "recordscenechange()"
     },
     {
@@ -2980,7 +2980,7 @@
       "source_location": "L1384",
       "_origin": "ast",
       "id": "main_revertautoshape",
-      "community": 137,
+      "community": 117,
       "norm_label": "revertautoshape()"
     },
     {
@@ -2990,7 +2990,7 @@
       "source_location": "L1414",
       "_origin": "ast",
       "id": "main_setpage",
-      "community": 117,
+      "community": 206,
       "norm_label": "setpage()"
     },
     {
@@ -3000,7 +3000,7 @@
       "source_location": "L1432",
       "_origin": "ast",
       "id": "main_prevpage",
-      "community": 117,
+      "community": 206,
       "norm_label": "prevpage()"
     },
     {
@@ -3010,7 +3010,7 @@
       "source_location": "L1439",
       "_origin": "ast",
       "id": "main_nextpage",
-      "community": 117,
+      "community": 206,
       "norm_label": "nextpage()"
     },
     {
@@ -3370,7 +3370,7 @@
       "source_location": "L2408",
       "_origin": "ast",
       "id": "main_rebuildwindows",
-      "community": 87,
+      "community": 192,
       "norm_label": "rebuildwindows()"
     },
     {
@@ -3380,7 +3380,7 @@
       "source_location": "L2424",
       "_origin": "ast",
       "id": "main_init",
-      "community": 87,
+      "community": 192,
       "norm_label": "init()"
     },
     {
@@ -9740,7 +9740,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_editor_recoverystore_recoverystorage_key",
-      "community": 139,
+      "community": 87,
       "norm_label": ".key()"
     },
     {
@@ -9830,7 +9830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits",
-      "community": 192,
+      "community": 190,
       "norm_label": "timelineedits.ts"
     },
     {
@@ -9840,7 +9840,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_timedregion",
-      "community": 192,
+      "community": 190,
       "norm_label": "timedregion"
     },
     {
@@ -9850,7 +9850,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_boundedtime",
-      "community": 192,
+      "community": 190,
       "norm_label": "boundedtime()"
     },
     {
@@ -9860,7 +9860,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_addtrimrange",
-      "community": 192,
+      "community": 190,
       "norm_label": "addtrimrange()"
     },
     {
@@ -9870,7 +9870,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_removetimedregionbyid",
-      "community": 192,
+      "community": 190,
       "norm_label": "removetimedregionbyid()"
     },
     {
@@ -9880,7 +9880,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_addspeedrange",
-      "community": 192,
+      "community": 190,
       "norm_label": "addspeedrange()"
     },
     {
@@ -9890,7 +9890,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_splittimedregion",
-      "community": 192,
+      "community": 190,
       "norm_label": "splittimedregion()"
     },
     {
@@ -10390,7 +10390,7 @@
       "source_location": "L342",
       "_origin": "ast",
       "id": "src_shared_editor_types_playbackspeed",
-      "community": 192,
+      "community": 142,
       "norm_label": "playbackspeed"
     },
     {
@@ -10400,7 +10400,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "src_shared_editor_types_clampplaybackspeed",
-      "community": 192,
+      "community": 190,
       "norm_label": "clampplaybackspeed()"
     },
     {
@@ -11280,7 +11280,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_projectdefaultparity_test",
-      "community": 211,
+      "community": 116,
       "norm_label": "projectdefaultparity.test.ts"
     },
     {
@@ -11290,7 +11290,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "tests_unit_projectdefaultparity_test_createdefaulteditorstate",
-      "community": 211,
+      "community": 116,
       "norm_label": "{ createdefaulteditorstate }"
     },
     {
@@ -11590,7 +11590,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_timelineedits_test",
-      "community": 192,
+      "community": 190,
       "norm_label": "timelineedits.test.ts"
     },
     {
@@ -12100,7 +12100,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_condition_variable",
-      "community": 92,
+      "community": 218,
       "norm_label": "condition_variable"
     },
     {
@@ -12440,7 +12440,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_succeeded",
-      "community": 109,
+      "community": 184,
       "norm_label": "succeeded()"
     },
     {
@@ -12450,7 +12450,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_cpp_hresult",
-      "community": 109,
+      "community": 184,
       "norm_label": "hresult"
     },
     {
@@ -12460,7 +12460,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_guidtostring",
-      "community": 109,
+      "community": 184,
       "norm_label": "guidtostring()"
     },
     {
@@ -12470,7 +12470,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_cpp_string",
-      "community": 109,
+      "community": 184,
       "norm_label": "string"
     },
     {
@@ -12480,7 +12480,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_cpp_guid",
-      "community": 109,
+      "community": 184,
       "norm_label": "guid"
     },
     {
@@ -12490,7 +12490,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_freemediatype",
-      "community": 109,
+      "community": 184,
       "norm_label": "freemediatype()"
     },
     {
@@ -12500,7 +12500,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "am_media_type",
-      "community": 109,
+      "community": 184,
       "norm_label": "am_media_type"
     },
     {
@@ -12700,7 +12700,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_cpp_wstring",
-      "community": 109,
+      "community": 184,
       "norm_label": "wstring"
     },
     {
@@ -12820,7 +12820,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_directshowwebcamcapture_initialize",
-      "community": 109,
+      "community": 184,
       "norm_label": "initialize"
     },
     {
@@ -12830,7 +12830,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_directshowwebcamcapture_start",
-      "community": 109,
+      "community": 184,
       "norm_label": "start"
     },
     {
@@ -13190,7 +13190,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_fps",
-      "community": 114,
+      "community": 120,
       "norm_label": "fps"
     },
     {
@@ -13200,7 +13200,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_width",
-      "community": 114,
+      "community": 120,
       "norm_label": "width"
     },
     {
@@ -13210,7 +13210,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_height",
-      "community": 114,
+      "community": 120,
       "norm_label": "height"
     },
     {
@@ -13570,7 +13570,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_hasvisiblebgracontent",
-      "community": 206,
+      "community": 120,
       "norm_label": "hasvisiblebgracontent()"
     },
     {
@@ -13580,7 +13580,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_vector",
-      "community": 206,
+      "community": 120,
       "norm_label": "vector"
     },
     {
@@ -13590,7 +13590,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_byte",
-      "community": 206,
+      "community": 120,
       "norm_label": "byte"
     },
     {
@@ -13710,7 +13710,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_main",
-      "community": 114,
+      "community": 120,
       "norm_label": "main()"
     },
     {
@@ -14640,7 +14640,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializesystemloopback",
-      "community": 98,
+      "community": 120,
       "norm_label": "initializesystemloopback"
     },
     {
@@ -14670,7 +14670,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_stop",
-      "community": 98,
+      "community": 120,
       "norm_label": "stop"
     },
     {
@@ -14830,7 +14830,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_inputformat",
-      "community": 98,
+      "community": 120,
       "norm_label": "inputformat_"
     },
     {
@@ -14850,7 +14850,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_selecteddevicename",
-      "community": 98,
+      "community": 120,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -14980,7 +14980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_cpp_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 184,
+      "community": 97,
       "norm_label": "webcam_capture.cpp"
     },
     {
@@ -14990,7 +14990,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_succeeded",
-      "community": 184,
+      "community": 97,
       "norm_label": "succeeded()"
     },
     {
@@ -15000,7 +15000,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_cpp_hresult",
-      "community": 184,
+      "community": 97,
       "norm_label": "hresult"
     },
     {
@@ -15010,7 +15010,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_readallocatedstring",
-      "community": 184,
+      "community": 97,
       "norm_label": "readallocatedstring()"
     },
     {
@@ -15020,7 +15020,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_cpp_wstring",
-      "community": 184,
+      "community": 97,
       "norm_label": "wstring"
     },
     {
@@ -15030,7 +15030,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "imfactivate",
-      "community": 184,
+      "community": 97,
       "norm_label": "imfactivate"
     },
     {
@@ -15040,7 +15040,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "refguid",
-      "community": 184,
+      "community": 97,
       "norm_label": "refguid"
     },
     {
@@ -15050,7 +15050,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_containsinsensitive",
-      "community": 184,
+      "community": 97,
       "norm_label": "containsinsensitive()"
     },
     {
@@ -15060,7 +15060,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_normalizedevicename",
-      "community": 184,
+      "community": 97,
       "norm_label": "normalizedevicename()"
     },
     {
@@ -15070,7 +15070,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_splitwords",
-      "community": 184,
+      "community": 97,
       "norm_label": "splitwords()"
     },
     {
@@ -15080,7 +15080,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_cpp_vector",
-      "community": 184,
+      "community": 97,
       "norm_label": "vector"
     },
     {
@@ -15090,7 +15090,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_devicematchscore",
-      "community": 184,
+      "community": 97,
       "norm_label": "devicematchscore()"
     },
     {
@@ -15130,7 +15130,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_initialize",
-      "community": 184,
+      "community": 97,
       "norm_label": "initialize"
     },
     {
@@ -15140,7 +15140,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_start",
-      "community": 184,
+      "community": 97,
       "norm_label": "start"
     },
     {
@@ -15150,7 +15150,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_stop",
-      "community": 184,
+      "community": 97,
       "norm_label": "stop"
     },
     {
@@ -15180,7 +15180,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_height",
-      "community": 184,
+      "community": 97,
       "norm_label": "height"
     },
     {
@@ -15200,7 +15200,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_selectdevice",
-      "community": 184,
+      "community": 97,
       "norm_label": "selectdevice"
     },
     {
@@ -15210,7 +15210,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_configurereader",
-      "community": 184,
+      "community": 97,
       "norm_label": "configurereader"
     },
     {
@@ -15220,7 +15220,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_captureloop",
-      "community": 184,
+      "community": 97,
       "norm_label": "captureloop"
     },
     {
@@ -15440,7 +15440,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_selecteddevicename",
-      "community": 97,
+      "community": 120,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -15450,7 +15450,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 114,
+      "community": 94,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -15460,7 +15460,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_createdirect3d11devicefromdxgidevice",
-      "community": 114,
+      "community": 94,
       "norm_label": "createdirect3d11devicefromdxgidevice()"
     },
     {
@@ -15470,7 +15470,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hresult",
-      "community": 114,
+      "community": 94,
       "norm_label": "hresult"
     },
     {
@@ -15480,7 +15480,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "idxgidevice",
-      "community": 114,
+      "community": 94,
       "norm_label": "idxgidevice"
     },
     {
@@ -15490,7 +15490,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "iinspectable",
-      "community": 114,
+      "community": 94,
       "norm_label": "iinspectable"
     },
     {
@@ -15500,7 +15500,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 114,
+      "community": 94,
       "norm_label": "hmonitor"
     },
     {
@@ -15510,7 +15510,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 114,
+      "community": 94,
       "norm_label": "hwnd"
     },
     {
@@ -15520,7 +15520,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_framecallback",
-      "community": 114,
+      "community": 94,
       "norm_label": "framecallback"
     },
     {
@@ -15530,7 +15530,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_direct3d11captureframepool",
-      "community": 114,
+      "community": 94,
       "norm_label": "direct3d11captureframepool"
     },
     {
@@ -15540,7 +15540,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_id3d11device",
-      "community": 114,
+      "community": 94,
       "norm_label": "id3d11device"
     },
     {
@@ -15550,7 +15550,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_id3d11devicecontext",
-      "community": 114,
+      "community": 94,
       "norm_label": "id3d11devicecontext"
     },
     {
@@ -15560,7 +15560,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 114,
+      "community": 218,
       "norm_label": "wgc_session.h"
     },
     {
@@ -15580,7 +15580,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 114,
+      "community": 94,
       "norm_label": ".wgcsession()"
     },
     {
@@ -15590,7 +15590,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 114,
+      "community": 94,
       "norm_label": "initialize"
     },
     {
@@ -15600,7 +15600,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_setframecallback",
-      "community": 114,
+      "community": 94,
       "norm_label": "setframecallback"
     },
     {
@@ -15610,7 +15610,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 114,
+      "community": 94,
       "norm_label": "start"
     },
     {
@@ -15620,7 +15620,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 114,
+      "community": 94,
       "norm_label": "stop"
     },
     {
@@ -15630,7 +15630,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 114,
+      "community": 94,
       "norm_label": "capturewidth"
     },
     {
@@ -15640,7 +15640,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 114,
+      "community": 94,
       "norm_label": "captureheight"
     },
     {
@@ -15650,7 +15650,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_device",
-      "community": 114,
+      "community": 94,
       "norm_label": "device"
     },
     {
@@ -15660,7 +15660,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_context",
-      "community": 114,
+      "community": 94,
       "norm_label": "context"
     },
     {
@@ -15670,7 +15670,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_created3ddevice",
-      "community": 114,
+      "community": 94,
       "norm_label": "created3ddevice"
     },
     {
@@ -15680,7 +15680,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 114,
+      "community": 94,
       "norm_label": "createcaptureitem"
     },
     {
@@ -15690,7 +15690,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 114,
+      "community": 94,
       "norm_label": "applysessionoptions"
     },
     {
@@ -15700,7 +15700,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_onframearrived",
-      "community": 114,
+      "community": 94,
       "norm_label": "onframearrived"
     },
     {
@@ -23770,7 +23770,7 @@
       "source_location": "L681",
       "_origin": "ast",
       "id": "docs_technical_architecture_19_security_model",
-      "community": 17,
+      "community": 213,
       "norm_label": "19. security model"
     },
     {
@@ -23780,7 +23780,7 @@
       "source_location": "L685",
       "_origin": "ast",
       "id": "docs_technical_architecture_required_security_decisions",
-      "community": 17,
+      "community": 213,
       "norm_label": "required security decisions"
     },
     {
@@ -23790,7 +23790,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "docs_technical_architecture_network_posture",
-      "community": 17,
+      "community": 213,
       "norm_label": "network posture"
     },
     {
@@ -24012,6 +24012,296 @@
       "id": "docs_verification_openscreen_corrective_baseline_baseline_verification",
       "community": 193,
       "norm_label": "baseline verification"
+    },
+    {
+      "label": "phase-1-capture-exclusion.md",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion",
+      "community": 114,
+      "norm_label": "phase-1-capture-exclusion.md"
+    },
+    {
+      "label": "Phase 1 QA Preparation and Evidence Collection Report",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_phase_1_qa_preparation_and_evidence_collection_report",
+      "community": 114,
+      "norm_label": "phase 1 qa preparation and evidence collection report"
+    },
+    {
+      "label": "System & Build Context",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_system_build_context",
+      "community": 114,
+      "norm_label": "system & build context"
+    },
+    {
+      "label": "Test Environment 1: Development Build (`npm start`)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_test_environment_1_development_build_npm_start",
+      "community": 114,
+      "norm_label": "test environment 1: development build (`npm start`)"
+    },
+    {
+      "label": "Case 1.1: Baked Display Capture (100% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_1_1_baked_display_capture_100_display_scaling",
+      "community": 114,
+      "norm_label": "case 1.1: baked display capture (100% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Case 1.2: Baked Display Capture (150% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_1_2_baked_display_capture_150_display_scaling",
+      "community": 114,
+      "norm_label": "case 1.2: baked display capture (150% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_53",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_61",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Case 1.3: Sidecar Selected-Window Capture (100% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_1_3_sidecar_selected_window_capture_100_display_scaling",
+      "community": 114,
+      "norm_label": "case 1.3: sidecar selected-window capture (100% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L81",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_81",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_89",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Case 1.4: Sidecar Selected-Window Capture (150% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L102",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_1_4_sidecar_selected_window_capture_150_display_scaling",
+      "community": 114,
+      "norm_label": "case 1.4: sidecar selected-window capture (150% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L109",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_109",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L117",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_117",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Test Environment 2: Packaged Build (NSIS or Portable)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L130",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_test_environment_2_packaged_build_nsis_or_portable",
+      "community": 114,
+      "norm_label": "test environment 2: packaged build (nsis or portable)"
+    },
+    {
+      "label": "Case 2.1: Baked Display Capture (100% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L132",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_2_1_baked_display_capture_100_display_scaling",
+      "community": 114,
+      "norm_label": "case 2.1: baked display capture (100% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L139",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_139",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L147",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_147",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Case 2.2: Baked Display Capture (150% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L160",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_2_2_baked_display_capture_150_display_scaling",
+      "community": 114,
+      "norm_label": "case 2.2: baked display capture (150% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L167",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_167",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L175",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_175",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Case 2.3: Sidecar Selected-Window Capture (100% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L188",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_2_3_sidecar_selected_window_capture_100_display_scaling",
+      "community": 114,
+      "norm_label": "case 2.3: sidecar selected-window capture (100% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L195",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_195",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L203",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_203",
+      "community": 114,
+      "norm_label": "verification checks"
+    },
+    {
+      "label": "Case 2.4: Sidecar Selected-Window Capture (150% Display Scaling)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L216",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_case_2_4_sidecar_selected_window_capture_150_display_scaling",
+      "community": 114,
+      "norm_label": "case 2.4: sidecar selected-window capture (150% display scaling)"
+    },
+    {
+      "label": "Lifecycle Validation Checklist",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L223",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_223",
+      "community": 114,
+      "norm_label": "lifecycle validation checklist"
+    },
+    {
+      "label": "Verification Checks",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L231",
+      "_origin": "ast",
+      "id": "docs_verification_phase_1_capture_exclusion_verification_checks_231",
+      "community": 114,
+      "norm_label": "verification checks"
     },
     {
       "label": "phase-3-package-inspection.md",
@@ -61761,6 +62051,286 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion",
+      "target": "docs_verification_phase_1_capture_exclusion_phase_1_qa_preparation_and_evidence_collection_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_phase_1_qa_preparation_and_evidence_collection_report",
+      "target": "docs_verification_phase_1_capture_exclusion_system_build_context",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_phase_1_qa_preparation_and_evidence_collection_report",
+      "target": "docs_verification_phase_1_capture_exclusion_test_environment_1_development_build_npm_start",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L130",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_phase_1_qa_preparation_and_evidence_collection_report",
+      "target": "docs_verification_phase_1_capture_exclusion_test_environment_2_packaged_build_nsis_or_portable",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_1_development_build_npm_start",
+      "target": "docs_verification_phase_1_capture_exclusion_case_1_1_baked_display_capture_100_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_1_development_build_npm_start",
+      "target": "docs_verification_phase_1_capture_exclusion_case_1_2_baked_display_capture_150_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_1_development_build_npm_start",
+      "target": "docs_verification_phase_1_capture_exclusion_case_1_3_sidecar_selected_window_capture_100_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_1_development_build_npm_start",
+      "target": "docs_verification_phase_1_capture_exclusion_case_1_4_sidecar_selected_window_capture_150_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_1_baked_display_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_1_baked_display_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_2_baked_display_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_53",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_2_baked_display_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_61",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_3_sidecar_selected_window_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_81",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_3_sidecar_selected_window_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_89",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_4_sidecar_selected_window_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_109",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L117",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_1_4_sidecar_selected_window_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_117",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_2_packaged_build_nsis_or_portable",
+      "target": "docs_verification_phase_1_capture_exclusion_case_2_1_baked_display_capture_100_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L160",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_2_packaged_build_nsis_or_portable",
+      "target": "docs_verification_phase_1_capture_exclusion_case_2_2_baked_display_capture_150_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L188",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_2_packaged_build_nsis_or_portable",
+      "target": "docs_verification_phase_1_capture_exclusion_case_2_3_sidecar_selected_window_capture_100_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L216",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_test_environment_2_packaged_build_nsis_or_portable",
+      "target": "docs_verification_phase_1_capture_exclusion_case_2_4_sidecar_selected_window_capture_150_display_scaling",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L139",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_1_baked_display_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_139",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_1_baked_display_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_147",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L167",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_2_baked_display_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_167",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L175",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_2_baked_display_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_175",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L195",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_3_sidecar_selected_window_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_195",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L203",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_3_sidecar_selected_window_capture_100_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_203",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L223",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_4_sidecar_selected_window_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_lifecycle_validation_checklist_223",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-1-capture-exclusion.md",
+      "source_location": "L231",
+      "weight": 1.0,
+      "source": "docs_verification_phase_1_capture_exclusion_case_2_4_sidecar_selected_window_capture_150_display_scaling",
+      "target": "docs_verification_phase_1_capture_exclusion_verification_checks_231",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/verification/phase-3-package-inspection.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -62170,5 +62740,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "37c067241540c42c6ffdafa4ffe24cbf09febad7"
+  "built_at_commit": "e99800e4d95952693650995967531ca4bd9a2977"
 }

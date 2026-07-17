@@ -339,9 +339,6 @@
     };
 
     try {
-      const closeResult = await window.appBridge.closeRecordingSetup();
-      if (!closeResult.success) throw new Error(closeResult.error || 'Unable to close recording setup.');
-
       const countdownResult = await window.appBridge.startCountdown(recordingOptions.displayId, 3);
       if (!countdownResult.success) throw new Error(countdownResult.error || 'Unable to start countdown.');
 

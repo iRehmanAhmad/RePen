@@ -3056,6 +3056,7 @@ ipcMain.handle('recording:start-countdown', async (event, payload = {}) => {
   const displayId = Number(payload.displayId);
   const seconds = boundedInteger(payload.seconds, 3, 0, 10);
   currentRecordingPhase = 'countdown';
+  hideSelectorWindow();
   createCountdownWindow(displayId);
   if (countdownWindow && !countdownWindow.isDestroyed()) {
     countdownWindow.show();

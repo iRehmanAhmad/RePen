@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 226 files · ~158,734 words
+- 226 files · ~158,765 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2477 nodes · 3630 edges · 218 communities (202 shown, 16 thin omitted)
+- 2477 nodes · 3630 edges · 217 communities (201 shown, 16 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e99800e4`
+- Built from commit: `35ab2c51`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -212,7 +212,6 @@
 - [[_COMMUNITY_Phase 5 — Shared Layout and Visual Compositor|Phase 5 — Shared Layout and Visual Compositor]]
 - [[_COMMUNITY_stateMachine.js|stateMachine.js]]
 - [[_COMMUNITY_Capture Policy Decision|Capture Policy Decision]]
-- [[_COMMUNITY_hasVisibleBgraContent|hasVisibleBgraContent]]
 - [[_COMMUNITY_phaseCompletionAudit.test.ts|phaseCompletionAudit.test.ts]]
 - [[_COMMUNITY_Phase 3 Package Inspection|Phase 3 Package Inspection]]
 - [[_COMMUNITY_missingMediaRecovery.test.ts|missingMediaRecovery.test.ts]]
@@ -251,7 +250,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (218 total, 16 thin omitted)
+## Communities (217 total, 16 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -703,7 +702,7 @@ Nodes (45): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETT
 
 ### Community 117 - "getAppState"
 Cohesion: 0.15
-Nodes (28): autoArchiveCurrentSession(), broadcastScene(), clearScene(), cycleBackgroundMode(), deepClone(), exportPdf(), getShortcutActions(), loadSession() (+20 more)
+Nodes (23): autoArchiveCurrentSession(), broadcastScene(), deepClone(), exportPdf(), getAppState(), getBootstrapData(), getDockSide(), getSceneState() (+15 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -790,8 +789,8 @@ Cohesion: 0.15
 Nodes (8): createProjectForCompletedRecording(), assertNonEmptyFile(), validateFinalizedRecordingMedia(), fs, path, writeProjectFileAtomically(), { validateFinalizedRecordingMedia }, { writeProjectFileAtomically }
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.16
-Nodes (15): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setClickHalo(), setColor(), setExportIncludeBackground() (+7 more)
+Cohesion: 0.12
+Nodes (29): broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), ensureToolbarWindowCapacity(), getShortcutActions(), getToolbarWindowBounds(), quitApp() (+21 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -992,10 +991,6 @@ Nodes (7): validateActiveRecordingCommand(), canRunRecordingCommand(), COMMAND_P
 ### Community 205 - "Capture Policy Decision"
 Cohesion: 0.67
 Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
-
-### Community 206 - "hasVisibleBgraContent"
-Cohesion: 0.33
-Nodes (9): getAppState(), getBootstrapData(), getDockSide(), getSceneState(), nextPage(), normalizeBoardViewport(), prevPage(), setBoardViewport() (+1 more)
 
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
