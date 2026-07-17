@@ -15,6 +15,7 @@ import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/sche
 import './editor.css';
 
 const RECENT_PROJECTS_KEY = 'repen-recent-projects';
+const EDITOR_LOCALE_STORAGE_KEY = 'repen-editor-locale';
 const CAPABILITIES_PENDING_REASON = 'Checking whether this capability is available...';
 const CAPABILITIES_UNAVAILABLE_REASON = 'This build could not verify optional recording and export capabilities.';
 const EDITOR_TABS = [
@@ -25,6 +26,7 @@ const EDITOR_TABS = [
   { id: 'captions', labelKey: 'captions' },
 ] as const;
 type EditorTab = (typeof EDITOR_TABS)[number]['id'];
+type EditorLocale = 'en' | 'es';
 
 const unavailableCapabilities = (reason: string) => ({
   recorder: { available: false, reason },
@@ -61,6 +63,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     merge: 'Merge Next',
     exportLogs: 'Export Diagnostics logs',
     resetSettings: 'Reset to Defaults',
+    selectLanguage: 'Select language',
+    languageEnglish: 'English',
+    languageSpanish: 'Spanish',
   },
   es: {
     title: 'Editor RePen',
@@ -83,11 +88,19 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     merge: 'Fusionar Siguiente',
     exportLogs: 'Exportar Registros de Diagnóstico',
     resetSettings: 'Restablecer Ajustes',
+    selectLanguage: 'Seleccionar idioma',
+    languageEnglish: 'Inglés',
+    languageSpanish: 'Español',
   }
 };
 
+const isEditorLocale = (value: string | null): value is EditorLocale => value === 'en' || value === 'es';
+
 const EditorApp: React.FC = () => {
-  const [locale, setLocale] = useState<'en' | 'es'>('en');
+  const [locale, setLocale] = useState<EditorLocale>(() => {
+    const savedLocale = localStorage.getItem(EDITOR_LOCALE_STORAGE_KEY);
+    return isEditorLocale(savedLocale) ? savedLocale : 'en';
+  });
   const [projectPath, setProjectPath] = useState<string | null>(null);
   const [project, setProject] = useState<EditorProjectData | null>(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -167,6 +180,10 @@ const EditorApp: React.FC = () => {
     setActiveTab(nextTab);
     requestAnimationFrame(() => document.getElementById(`editor-tab-${nextTab}`)?.focus());
   };
+
+  useEffect(() => {
+    localStorage.setItem(EDITOR_LOCALE_STORAGE_KEY, locale);
+  }, [locale]);
 
   // Bootstrap initialization
   useEffect(() => {
@@ -933,13 +950,13 @@ const EditorApp: React.FC = () => {
         <div className="menu-bar" style={{display: 'flex', gap: 6, alignItems: 'center'}}>
           <select 
             value={locale} 
-            onChange={(e) => setLocale(e.target.value as 'en' | 'es')} 
+            onChange={(e) => setLocale(e.target.value as EditorLocale)}
             className="property-control" 
             style={{width: 80, padding: '2px 4px', fontSize: 12}}
-            aria-label="Select Language / Seleccionar idioma"
+            aria-label={t('selectLanguage')}
           >
-            <option value="en">English</option>
-            <option value="es">Español</option>
+            <option value="en">{t('languageEnglish')}</option>
+            <option value="es">{t('languageSpanish')}</option>
           </select>
           <button className="menu-btn" onClick={() => void handleSave()} disabled={!isDirty || saveStatus === 'saving'} aria-label={t('save')}>{t('save')}</button>
           <button className="menu-btn" onClick={handleUndo} disabled={history.length === 0} aria-label={t('undo')}>{t('undo')}</button>

@@ -25,4 +25,11 @@ describe('editor accessibility baseline', () => {
     expect(editor).toContain('aria-label="Export progress"');
     expect(editor).toContain('aria-label="RePen Editor tutorial"');
   });
+
+  it('persists a validated editor locale preference', () => {
+    expect(editor).toContain("const EDITOR_LOCALE_STORAGE_KEY = 'repen-editor-locale'");
+    expect(editor).toContain('const isEditorLocale =');
+    expect(editor).toContain('localStorage.setItem(EDITOR_LOCALE_STORAGE_KEY, locale)');
+    expect(editor).toContain("languageSpanish: 'Español'");
+  });
 });
