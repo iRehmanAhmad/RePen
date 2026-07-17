@@ -205,6 +205,7 @@
   "203": "Phase 5 — Shared Layout and Visual Compositor",
   "204": "stateMachine.js",
   "205": "Capture Policy Decision",
+  "206": "3. Manual Lifecycle Test Matrix (Windows 11)",
   "207": "phaseCompletionAudit.test.ts",
   "208": "vite-env.d.ts",
   "209": "Phase 3 Package Inspection",
@@ -212,7 +213,9 @@
   "211": "FileHandlePresentationTrackWriter",
   "212": "getAppState",
   "213": "19. Security Model",
+  "214": "getAppState",
   "215": "previewCropContract.test.ts",
+  "216": "capture.py",
   "217": "webcamPreview.test.ts",
   "218": "audio_sample_utils.h",
   "219": "RePen Release-Readiness Gates"

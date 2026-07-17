@@ -1203,5 +1203,20 @@
     "mtime": 1784285735.624231,
     "ast_hash": "b6becb79aff0d5915c451bf7accd29cb",
     "semantic_hash": ""
+  },
+  "scratch/capture.py": {
+    "mtime": 1784286643.0676253,
+    "ast_hash": "42450a562fc68db19bcfdc99b02a12a9",
+    "semantic_hash": ""
+  },
+  "scratch/capture_screen.ps1": {
+    "mtime": 1784286630.9517043,
+    "ast_hash": "026b6e91717f0ed8a7479b292915baf0",
+    "semantic_hash": ""
+  },
+  "docs/verification/phase-2-recording-lifecycle.md": {
+    "mtime": 1784286744.8564227,
+    "ast_hash": "956d4783a379cbb460c99a5992f77d05",
+    "semantic_hash": ""
   }
 }

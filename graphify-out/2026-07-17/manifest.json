@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784275581.7374609,
-    "ast_hash": "5aae1edba2de7183e16c0d93e1d4ce8e",
+    "mtime": 1784286016.449216,
+    "ast_hash": "7470219ea6719aea9cf124a786feedb1",
     "semantic_hash": ""
   },
   "package.json": {
@@ -915,8 +915,8 @@
     "semantic_hash": ""
   },
   "src/renderer/selector.js": {
-    "mtime": 1784221118.0777934,
-    "ast_hash": "0b44a7a0df01311085b9a650b431bb02",
+    "mtime": 1784286016.4278665,
+    "ast_hash": "384be75b13d224879f3b91c23d0cd8b0",
     "semantic_hash": ""
   },
   "src/shared/contracts/presentationTrack.ts": {
@@ -1045,8 +1045,8 @@
     "semantic_hash": ""
   },
   "tests/unit/phaseCompletionAudit.test.ts": {
-    "mtime": 1784273121.8949785,
-    "ast_hash": "aea963f728593e3802eb8ffd375f25d5",
+    "mtime": 1784286016.4540622,
+    "ast_hash": "7c2fca7d1f082712cc9b8995c4f4dfa9",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260716-172849-correct-recorder-capture-and-deliver-production-.md": {
