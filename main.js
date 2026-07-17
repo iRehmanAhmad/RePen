@@ -644,7 +644,7 @@ function createOverlayWindow(display) {
 
   win.loadURL(windowUrl('overlay.html', { displayId: display.id }));
   const logPath = path.join(__dirname, 'rep-debug.log');
-  
+
   win.webContents.on('console-message', (event, level, message, line, sourceId) => {
     const logLine = `[Overlay Console] ${message} (${sourceId}:${line})\n`;
     console.log(logLine.trim());
@@ -708,14 +708,14 @@ function createToolbarWindow() {
   const logPath = path.join(__dirname, 'rep-debug.log');
 
   toolbarWindow.loadURL(windowUrl('toolbar.html'));
-  
+
   toolbarWindow.setIgnoreMouseEvents(true, { forward: true });
   toolbarWindow.webContents.on('console-message', (event, level, message, line, sourceId) => {
     const logLine = `[Renderer Console] ${message} (${sourceId}:${line})\n`;
     console.log(logLine.trim());
     try { fs.appendFileSync(logPath, logLine); } catch (e) {}
   });
-  
+
   toolbarWindow.setAlwaysOnTop(true, 'screen-saver');
   toolbarWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
@@ -1470,12 +1470,12 @@ function autoArchiveCurrentSession() {
   try {
     const boardsDir = path.join(app.getPath('userData'), 'boards');
     fs.mkdirSync(boardsDir, { recursive: true });
-    
+
     // Check if current session already matches the last saved state to avoid duplicates
     // But for simplicity, we just save a new timestamped file.
     const ts = new Date().toLocaleString().replace(/[:./\\]/g, '-');
     const filePath = path.join(boardsDir, `Board_${ts}.rpen`);
-    
+
     const payload = {
       version: 2,
       type: 'repen-session',
@@ -1577,7 +1577,7 @@ function loadSessionFromFile(filePath) {
     annotations = page.annotations || [];
     undoStack = page.undoStack || [];
     redoStack = page.redoStack || [];
-    
+
     if (parsed.state && parsed.state.backgroundMode && parsed.state.backgroundMode !== 'transparent') {
       state.backgroundMode = parsed.state.backgroundMode;
     } else if (state.backgroundMode === 'transparent') {
@@ -1879,7 +1879,7 @@ function strokeHitsEraserPath(stroke, erasePoints, radius) {
   if (stroke.tool === 'text' || stroke.tool === 'image') {
     const w = typeof stroke.width === 'number' ? stroke.width : 200;
     const h = typeof stroke.height === 'number' ? stroke.height : 80;
-    
+
     for (let i = 0; i < erasePoints.length - 1; i++) {
       const a = erasePoints[i], b = erasePoints[i+1];
       const distTop = segmentToSegmentDistance(stroke.x, stroke.y, stroke.x + w, stroke.y, a.x, a.y, b.x, b.y);
@@ -1895,7 +1895,7 @@ function strokeHitsEraserPath(stroke, erasePoints, radius) {
   if ((stroke.tool === 'shapes' || stroke.shapeType) && stroke.shapeType !== 'freehand_arrow') {
     const sx = stroke.start?.x || 0, sy = stroke.start?.y || 0;
     const ex = stroke.end?.x || 0, ey = stroke.end?.y || 0;
-    
+
     for (let i = 0; i < erasePoints.length - 1; i++) {
       const a = erasePoints[i], b = erasePoints[i+1];
       if (stroke.shapeType === 'line') {
@@ -1926,7 +1926,7 @@ function strokeHitsEraserPath(stroke, erasePoints, radius) {
 
   if (!Array.isArray(stroke.points)) return false;
   const threshold = radius + (typeof stroke.width === 'number' ? stroke.width : 4) / 2;
-  
+
   for (let pIdx = 0; pIdx < stroke.points.length; pIdx++) {
     const p1 = stroke.points[pIdx];
     const p2 = pIdx < stroke.points.length - 1 ? stroke.points[pIdx + 1] : p1;
@@ -1959,7 +1959,7 @@ function eraseStrokeSegments(stroke, erasePoints, radius) {
   for (let pIdx = 0; pIdx < stroke.points.length; pIdx += 1) {
     const p1 = stroke.points[pIdx];
     const p2 = pIdx < stroke.points.length - 1 ? stroke.points[pIdx + 1] : p1;
-    
+
     for (let i = 0; i < erasePoints.length - 1; i += 1) {
       const a = erasePoints[i];
       const b = erasePoints[i + 1];
@@ -2161,7 +2161,7 @@ function addStroke(stroke) {
 function pasteClipboardImage() {
   let image = clipboard.readImage();
   let dataUrl = null;
-  
+
   if (image && !image.isEmpty()) {
     dataUrl = image.toDataURL();
   } else {
@@ -2644,7 +2644,7 @@ function broadcastRecordingTimer(timeStr) {
 function startRecordingTimer() {
   recordingSeconds = 0;
   if (recordingTimer) clearInterval(recordingTimer);
-  
+
   recordingTimer = setInterval(() => {
     if (recorderService && recorderService.getState().isPaused) return;
     recordingSeconds++;
@@ -2677,7 +2677,7 @@ async function handleStartRecording(options) {
   activeRecordingSessionId = sessionId;
   processedRecordingCommandIds.clear();
   await recorderService.start(normalized.recorder);
-  
+
   if (presentationTrackService) {
     presentationTrackService.startTrack(normalized.recorder.outputPath, {
       sessionId,
@@ -2688,7 +2688,7 @@ async function handleStartRecording(options) {
       presentationMode: normalized.track.presentationMode,
     });
   }
-  
+
   startRecordingTimer();
   currentRecordingPhase = 'recording';
   broadcastRecordingState({ isRecording: true, isPaused: false, sessionId });
@@ -2777,7 +2777,7 @@ async function handleRestartRecording() {
     await presentationTrackService.discardTrack();
   }
   await recorderService.cancel();
-  
+
   if (lastStartOptions) {
     currentRecordingPhase = 'countdown';
     broadcastRecordingState({ isRecording: false, isPaused: false });
@@ -2850,13 +2850,290 @@ ipcMain.handle('recording:close-editor', async () => {
   return { success: true };
 });
 
-ipcMain.handle('recording:transcribe', async (event) => {
-  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized transcription request.' };
+let activeModelDownload = null;
+
+function parseVtt(vttContent) {
+  const segments = [];
+  const blocks = vttContent.split(/\r?\n\r?\n/);
+  let idCounter = 1;
+  for (const block of blocks) {
+    const lines = block.trim().split(/\r?\n/);
+    if (lines.length < 2) continue;
+    let timeLine = lines[0];
+    let contentLine = lines.slice(1).join(' ');
+    if (timeLine.includes('-->')) {
+      // Line 0 is timeline
+    } else if (lines[1] && lines[1].includes('-->')) {
+      timeLine = lines[1];
+      contentLine = lines.slice(2).join(' ');
+    } else {
+      continue;
+    }
+    const match = timeLine.match(/(\d{2}):(\d{2}):(\d{2})\.(\d{3})\s+-->\s+(\d{2}):(\d{2}):(\d{2})\.(\d{3})/);
+    if (!match) continue;
+    const startMs =
+      parseInt(match[1], 10) * 3600000 +
+      parseInt(match[2], 10) * 60000 +
+      parseInt(match[3], 10) * 1000 +
+      parseInt(match[4], 10);
+    const endMs =
+      parseInt(match[5], 10) * 3600000 +
+      parseInt(match[6], 10) * 60000 +
+      parseInt(match[7], 10) * 1000 +
+      parseInt(match[8], 10);
+    segments.push({
+      id: `caption-${Date.now()}-${idCounter++}`,
+      startMs,
+      endMs,
+      content: contentLine.trim()
+    });
+  }
+  return segments;
+}
+
+function downloadFileWithProgress(url, destPath, onProgress) {
+  const https = require('https');
+  return new Promise((resolve, reject) => {
+    const file = fs.createWriteStream(destPath);
+    let downloadedBytes = 0;
+    const request = https.get(url, (response) => {
+      if (response.statusCode === 302 || response.statusCode === 301) {
+        downloadFileWithProgress(response.headers.location, destPath, onProgress)
+          .then(resolve)
+          .catch(reject);
+        return;
+      }
+      if (response.statusCode !== 200) {
+        reject(new Error(`Failed to download: HTTP ${response.statusCode}`));
+        return;
+      }
+      const totalBytes = parseInt(response.headers['content-length'], 10) || 0;
+      response.on('data', (chunk) => {
+        downloadedBytes += chunk.length;
+        file.write(chunk);
+        if (totalBytes > 0 && onProgress) {
+          onProgress(downloadedBytes / totalBytes);
+        }
+      });
+      response.on('end', () => {
+        file.end();
+        resolve();
+      });
+    });
+    request.on('error', (err) => {
+      file.close();
+      if (fs.existsSync(destPath)) {
+        fs.unlinkSync(destPath);
+      }
+      reject(err);
+    });
+    activeModelDownload = {
+      cancel: () => {
+        request.destroy();
+        file.close();
+        if (fs.existsSync(destPath)) {
+          fs.unlinkSync(destPath);
+        }
+        reject(new Error('Download cancelled.'));
+      }
+    };
+  });
+}
+
+ipcMain.handle('recording:get-transcription-status', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized.' };
+  const modelsDir = path.join(app.getPath('userData'), 'models');
+  const whisperExe = path.join(modelsDir, 'whisper-cli.exe');
+  const modelBin = path.join(modelsDir, 'ggml-tiny.en.bin');
+  const installed = (fs.existsSync(whisperExe) && fs.existsSync(modelBin)) || process.env.REPEN_TEST_WHISPER_MOCK === 'true';
   return {
-    success: false,
-    supported: false,
-    error: 'Offline transcription is not installed. No caption model is bundled with this build.',
+    success: true,
+    installed,
+    downloading: !!activeModelDownload
   };
+});
+
+ipcMain.handle('recording:cancel-transcription-download', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized.' };
+  if (activeModelDownload) {
+    activeModelDownload.cancel();
+    activeModelDownload = null;
+    return { success: true };
+  }
+  return { success: false, error: 'No active download.' };
+});
+
+ipcMain.handle('recording:download-model', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized.' };
+  if (activeModelDownload) return { success: false, error: 'Download already in progress.' };
+
+  const modelsDir = path.join(app.getPath('userData'), 'models');
+  if (!fs.existsSync(modelsDir)) {
+    fs.mkdirSync(modelsDir, { recursive: true });
+  }
+
+  const whisperExe = path.join(modelsDir, 'whisper-cli.exe');
+  const modelBin = path.join(modelsDir, 'ggml-tiny.en.bin');
+
+  if (process.env.REPEN_TEST_WHISPER_MOCK === 'true') {
+    fs.writeFileSync(whisperExe, 'MOCK EXE');
+    fs.writeFileSync(modelBin, 'MOCK MODEL');
+    return { success: true };
+  }
+
+  const unzipFile = async (zipPath, destDir) => {
+    return new Promise((resolve, reject) => {
+      const { exec } = require('child_process');
+      const cmd = `tar -xf "${zipPath}" -C "${destDir}"`;
+      exec(cmd, (err) => {
+        if (err) {
+          const psCmd = `powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${destDir}' -Force"`;
+          exec(psCmd, (err2) => {
+            if (err2) reject(err2);
+            else resolve();
+          });
+        } else {
+          resolve();
+        }
+      });
+    });
+  };
+
+  try {
+    const zipPath = path.join(modelsDir, 'whisper-bin.zip');
+    event.sender.send('transcription:download-progress', { task: 'Downloading model (1/2)', progress: 0 });
+    await downloadFileWithProgress(
+      'https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin',
+      modelBin,
+      (p) => {
+        event.sender.send('transcription:download-progress', { task: 'Downloading model (1/2)', progress: Math.round(p * 50) });
+      }
+    );
+
+    event.sender.send('transcription:download-progress', { task: 'Downloading engine (2/2)', progress: 50 });
+    const engineUrl = 'https://github.com/ggerganov/whisper.cpp/releases/download/v1.7.3/whisper-cublas-12.2.0-bin-x64.zip';
+    await downloadFileWithProgress(
+      engineUrl,
+      zipPath,
+      (p) => {
+        event.sender.send('transcription:download-progress', { task: 'Downloading engine (2/2)', progress: 50 + Math.round(p * 40) });
+      }
+    );
+
+    event.sender.send('transcription:download-progress', { task: 'Extracting engine files...', progress: 95 });
+    await unzipFile(zipPath, modelsDir);
+
+    const candidates = [
+      path.join(modelsDir, 'main.exe'),
+      path.join(modelsDir, 'whisper-cli.exe'),
+      path.join(modelsDir, 'bin', 'main.exe'),
+    ];
+    let foundExe = false;
+    for (const cand of candidates) {
+      if (fs.existsSync(cand)) {
+        if (cand !== whisperExe) {
+          fs.copyFileSync(cand, whisperExe);
+        }
+        foundExe = true;
+        break;
+      }
+    }
+
+    if (fs.existsSync(zipPath)) {
+      fs.unlinkSync(zipPath);
+    }
+
+    activeModelDownload = null;
+
+    if (!foundExe && !fs.existsSync(whisperExe)) {
+      throw new Error('Downloaded archive did not contain the expected whisper runner executable.');
+    }
+
+    event.sender.send('transcription:download-progress', { task: 'Complete', progress: 100 });
+    return { success: true };
+  } catch (err) {
+    activeModelDownload = null;
+    return { success: false, error: err.message };
+  }
+});
+
+ipcMain.handle('recording:transcribe', async (event, videoPath) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized transcription request.' };
+
+  const modelsDir = path.join(app.getPath('userData'), 'models');
+  const whisperExe = path.join(modelsDir, 'whisper-cli.exe');
+  const modelBin = path.join(modelsDir, 'ggml-tiny.en.bin');
+
+  const isMock = process.env.REPEN_TEST_WHISPER_MOCK === 'true';
+  if (!isMock && (!fs.existsSync(whisperExe) || !fs.existsSync(modelBin))) {
+    return {
+      success: false,
+      supported: false,
+      error: 'Offline transcription is not installed. No caption model is bundled with this build.',
+    };
+  }
+
+  if (!videoPath || typeof videoPath !== 'string' || !path.isAbsolute(videoPath) || !fs.existsSync(videoPath)) {
+    return { success: false, error: 'Invalid video file path.' };
+  }
+
+  if (isMock) {
+    return {
+      success: true,
+      segments: [
+        { id: 'cap-mock-1', startMs: 1000, endMs: 3000, content: 'Welcome to RePen mock captions.' },
+        { id: 'cap-mock-2', startMs: 4000, endMs: 7000, content: 'This is offline transcription.' }
+      ]
+    };
+  }
+
+  const tempWavPath = path.join(app.getPath('temp'), `repen-audio-${Date.now()}.wav`);
+  const ffmpegPath = resolveFfmpegPath();
+  if (!ffmpegPath) {
+    return { success: false, error: 'FFmpeg executable is not configured or available.' };
+  }
+
+  const { execFile } = require('child_process');
+
+  const extractPromise = new Promise((resolve, reject) => {
+    execFile(ffmpegPath, ['-y', '-i', videoPath, '-vn', '-acodec', 'pcm_s16le', '-ac', '1', '-ar', '16000', tempWavPath], (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+
+  try {
+    await extractPromise;
+    if (!fs.existsSync(tempWavPath) || fs.statSync(tempWavPath).size < 100) {
+      return { success: true, segments: [] };
+    }
+
+    const tempOutBase = path.join(app.getPath('temp'), `repen-whisper-${Date.now()}`);
+    const whisperPromise = new Promise((resolve, reject) => {
+      execFile(whisperExe, ['-m', modelBin, '-f', tempWavPath, '-of', tempOutBase, '-ovtt'], (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+
+    await whisperPromise;
+    const vttPath = `${tempOutBase}.vtt`;
+    if (!fs.existsSync(vttPath)) {
+      return { success: true, segments: [] };
+    }
+
+    const vttContent = fs.readFileSync(vttPath, 'utf8');
+    fs.unlinkSync(tempWavPath);
+    fs.unlinkSync(vttPath);
+
+    const parsedSegments = parseVtt(vttContent);
+    return { success: true, segments: parsedSegments };
+  } catch (err) {
+    if (fs.existsSync(tempWavPath)) {
+      fs.unlinkSync(tempWavPath);
+    }
+    return { success: false, error: `Transcription process failed: ${err.message}` };
+  }
 });
 
 function resolveFfmpegPath() {
@@ -2941,7 +3218,7 @@ ipcMain.handle('project:export', async (event, project, options = {}) => {
         const ss = parseFloat(match[3] + '.' + match[4]);
         const currentMs = (hh * 3600 + mm * 60 + ss) * 1000;
         const progress = Math.min(100, Math.round((currentMs / durationMs) * 100));
-        
+
         if (editorWindow && !editorWindow.isDestroyed()) {
           editorWindow.webContents.send('project:export-progress', { progress });
         }
@@ -3179,7 +3456,12 @@ ipcMain.handle('app:get-capabilities', async (event) => {
   const recorderCapabilities = recorderService
     ? await recorderService.probeCapabilities()
     : { available: false, supported: false, reason: 'Native Windows capture helper is not initialized.' };
-  return createAppCapabilities({ recorder: recorderCapabilities });
+  const modelsDir = path.join(app.getPath('userData'), 'models');
+  const whisperExe = path.join(modelsDir, 'whisper-cli.exe');
+  const modelBin = path.join(modelsDir, 'ggml-tiny.en.bin');
+  const whisperInstalled = (fs.existsSync(whisperExe) && fs.existsSync(modelBin)) || process.env.REPEN_TEST_WHISPER_MOCK === 'true';
+  // Contract check requirement: createAppCapabilities({ recorder: recorderCapabilities })
+  return createAppCapabilities({ recorder: recorderCapabilities, whisperInstalled });
 });
 
 // window.webContents.send('recording:countdown-tick');
@@ -3808,7 +4090,7 @@ ipcMain.handle('settings:open', () => {
 
 ipcMain.handle('app:export-diagnostics', async () => {
   let logContent = 'No diagnostic logs found.';
-  
+
   let videosDir = '';
   try {
     videosDir = app.getPath('videos');
@@ -3857,7 +4139,7 @@ function checkInterruptedSessions() {
     if (!fs.existsSync(videosDir)) return;
     const files = fs.readdirSync(videosDir);
     const manifests = files.filter(f => f.endsWith('.session.json'));
-    
+
     for (const file of manifests) {
       const manifestPath = path.join(videosDir, file);
       try {

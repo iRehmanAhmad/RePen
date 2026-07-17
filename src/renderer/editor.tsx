@@ -155,6 +155,9 @@ const EditorApp: React.FC = () => {
   // Transcription state
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [transcriptionProgress, setTranscriptionProgress] = useState(0);
+  const [downloadingModel, setDownloadingModel] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [downloadTask, setDownloadTask] = useState('');
 
   // Export states
   const [showExportModal, setShowExportModal] = useState(false);
@@ -1041,6 +1044,40 @@ const EditorApp: React.FC = () => {
     updated.editor.annotationRegions = updated.editor.annotationRegions.filter((r: any) => r.id !== id);
     updateProject(updated);
     if (selectedAnnotationId === id) setSelectedAnnotationId(null);
+  };
+
+  // Listen to transcription download progress
+  useEffect(() => {
+    if ((window as any).appBridge?.onTranscriptionDownloadProgress) {
+      return (window as any).appBridge.onTranscriptionDownloadProgress((_event: any, data: any) => {
+        if (data) {
+          setDownloadTask(data.task || '');
+          setDownloadProgress(data.progress || 0);
+          if (data.progress === 100) {
+            setTimeout(() => {
+              setDownloadingModel(false);
+              if ((window as any).appBridge?.getAppCapabilities) {
+                (window as any).appBridge.getAppCapabilities().then((caps: any) => {
+                  setCapabilities(caps);
+                });
+              }
+            }, 1000);
+          }
+        }
+      });
+    }
+  }, []);
+
+  const handleDownloadModel = async () => {
+    if (downloadingModel) return;
+    setDownloadingModel(true);
+    setDownloadProgress(0);
+    setDownloadTask('Starting download...');
+    const res = await (window as any).appBridge.downloadTranscriptionModel();
+    if (!res.success) {
+      alert(`Download failed: ${res.error || 'Unknown error'}`);
+      setDownloadingModel(false);
+    }
   };
 
   // Offline Transcription Generator
@@ -2034,9 +2071,25 @@ const EditorApp: React.FC = () => {
               ) : (
                 <>
                    {!capabilities?.captions?.available ? (
-                    <div style={{ padding: 8, borderRadius: 6, border: '1px dashed var(--danger)', background: 'rgba(239, 68, 68, 0.1)', display: 'flex', flexDirection: 'column', gap: 6 }}>
-                      <button className="btn-primary" disabled style={{ opacity: 0.5, cursor: 'not-allowed' }} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
-                      <span style={{ fontSize: 11, color: 'var(--danger)' }}>⚠️ {capabilities?.captions?.reason || 'Offline transcription is not available.'}</span>
+                    <div style={{ padding: 12, borderRadius: 8, border: '1px dashed var(--line)', background: 'var(--surface-2)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                      <span style={{ fontSize: 13, color: 'var(--muted)' }}>⚠️ {capabilities?.captions?.reason || 'Offline transcription is not installed.'}</span>
+                      {downloadingModel ? (
+                        <div style={{ padding: '8px 0', width: '100%' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
+                            <span>{downloadTask}</span>
+                            <span>{downloadProgress}%</span>
+                          </div>
+                          <div style={{ width: '100%', height: 6, background: 'var(--surface-3)', borderRadius: 3, overflow: 'hidden' }}>
+                            <div style={{ width: `${downloadProgress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.1s' }} />
+                          </div>
+                          <button className="btn-secondary" style={{ marginTop: 10, width: '100%' }} onClick={async () => {
+                            await (window as any).appBridge.cancelTranscriptionDownload();
+                            setDownloadingModel(false);
+                          }}>Cancel Download</button>
+                        </div>
+                      ) : (
+                        <button className="btn-primary" onClick={handleDownloadModel}>Download Whisper-Tiny Model (~78MB)</button>
+                      )}
                     </div>
                   ) : (
                     <button className="btn-primary" onClick={handleTranscribe} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>

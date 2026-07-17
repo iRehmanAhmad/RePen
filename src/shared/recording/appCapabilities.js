@@ -20,7 +20,7 @@ function recorderFailureReason(recorder) {
  * licensed/compositor implementation remain explicitly unavailable instead of
  * exposing an enabled control that cannot fulfill its promise.
  */
-function createAppCapabilities({ recorder = null } = {}) {
+function createAppCapabilities({ recorder = null, whisperInstalled = false } = {}) {
   const recorderReady = Boolean(recorder?.available && recorder?.supported);
   const recorderReason = recorderFailureReason(recorder);
   const optionalRecorderCapability = (enabled, unavailableReason) => (
@@ -34,7 +34,7 @@ function createAppCapabilities({ recorder = null } = {}) {
     microphone: optionalRecorderCapability(recorder?.microphone, 'Microphone capture was not reported by the native recorder.'),
     webcam: optionalRecorderCapability(recorder?.webcam, 'Webcam capture was not reported by the native recorder.'),
     presentationReplay: unavailable('Presentation-track replay is not yet implemented in the production editor.'),
-    captions: unavailable('Offline transcription is not installed. No caption model is bundled with this build.'),
+    captions: whisperInstalled ? available() : unavailable('Offline transcription is not installed. No caption model is bundled with this build.'),
     mp4Export: unavailable('MP4 export is disabled until the licensed compositor/export pipeline is packaged and verified.'),
     gifExport: unavailable('GIF export is disabled until the licensed compositor/export pipeline is packaged and verified.'),
   };

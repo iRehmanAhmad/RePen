@@ -90,4 +90,8 @@ contextBridge.exposeInMainWorld('appBridge', {
   revealProjectMedia: (mediaPath) => ipcRenderer.invoke('project:reveal-media', mediaPath),
   getCurrentProjectPath: () => ipcRenderer.invoke('project:get-current-path'),
   getAppCapabilities: () => ipcRenderer.invoke('app:get-capabilities'),
+  getTranscriptionStatus: () => ipcRenderer.invoke('recording:get-transcription-status'),
+  downloadTranscriptionModel: () => ipcRenderer.invoke('recording:download-model'),
+  cancelTranscriptionDownload: () => ipcRenderer.invoke('recording:cancel-transcription-download'),
+  onTranscriptionDownloadProgress: (callback) => on('transcription:download-progress', callback),
 });
