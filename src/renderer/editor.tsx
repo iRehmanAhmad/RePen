@@ -1500,6 +1500,14 @@ const EditorApp: React.FC = () => {
           <div className="timeline-track">
             <span className="track-label">Screen Recording</span>
             <TrackControls trackId="screen" state={timelineTracks.screen} onToggle={updateTimelineTrack} />
+            {trimStartMs !== null && (
+              <div
+                className="timeline-pending-cut-marker"
+                style={{ left: `${timelinePercent(trimStartMs, durationMs)}%` }}
+                title={`Pending cut starts at ${formatTimelineTime(trimStartMs)}`}
+                aria-hidden="true"
+              />
+            )}
             {project?.editor.trimRegions?.map((t: TrimRegion) => (
               <button
                 key={t.id} 

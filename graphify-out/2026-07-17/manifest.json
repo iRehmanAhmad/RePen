@@ -1095,8 +1095,8 @@
     "semantic_hash": ""
   },
   "docs/verification/phase-3-package-inspection.md": {
-    "mtime": 1784274191.0039828,
-    "ast_hash": "cee13162e3b86bb51ace676de05fda18",
+    "mtime": 1784284135.8333893,
+    "ast_hash": "b651ffefdc47b61489ca20b119f5670e",
     "semantic_hash": ""
   },
   "tests/unit/missingMediaRecovery.test.ts": {
@@ -1190,8 +1190,8 @@
     "semantic_hash": ""
   },
   "docs/verification/release-readiness.md": {
-    "mtime": 1784283174.6356041,
-    "ast_hash": "87eb10c50fe1086784ef4cde8f67be13",
+    "mtime": 1784284135.8417618,
+    "ast_hash": "29ece16fac931edfd09ee2e95b055b0f",
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {

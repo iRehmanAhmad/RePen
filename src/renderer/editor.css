@@ -338,6 +338,17 @@ html, body {
   padding: 0;
 }
 
+.timeline-pending-cut-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--warning);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 2;
+}
+
 .speed-region-visual {
   position: absolute;
   top: 0;

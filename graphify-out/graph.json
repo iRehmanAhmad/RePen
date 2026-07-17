@@ -6887,7 +6887,7 @@
       "label": "TrackControls()",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1710",
+      "source_location": "L1718",
       "_origin": "ast",
       "id": "src_renderer_editor_trackcontrols",
       "community": 190,
@@ -6897,7 +6897,7 @@
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1717",
+      "source_location": "L1725",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 190,
@@ -23760,7 +23760,7 @@
       "source_location": "L681",
       "_origin": "ast",
       "id": "docs_technical_architecture_19_security_model",
-      "community": 17,
+      "community": 184,
       "norm_label": "19. security model"
     },
     {
@@ -23770,7 +23770,7 @@
       "source_location": "L685",
       "_origin": "ast",
       "id": "docs_technical_architecture_required_security_decisions",
-      "community": 17,
+      "community": 184,
       "norm_label": "required security decisions"
     },
     {
@@ -23780,7 +23780,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "docs_technical_architecture_network_posture",
-      "community": 17,
+      "community": 184,
       "norm_label": "network posture"
     },
     {
@@ -36859,7 +36859,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1717",
+      "source_location": "L1725",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
@@ -36869,7 +36869,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1710",
+      "source_location": "L1718",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_trackcontrols",
@@ -62029,5 +62029,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "164df38c3cc0508ce0d1e30ee907df428402c099"
+  "built_at_commit": "20c065c0552d2f94f1283ec95ecc68bc8565dedc"
 }

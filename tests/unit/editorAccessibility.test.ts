@@ -16,6 +16,7 @@ describe('editor accessibility baseline', () => {
     expect(editor).toContain('aria-label="Playback speed"');
     expect(editor).toContain('aria-label="Volume"');
     expect(editor).toContain('aria-label="Cancel pending cut range"');
+    expect(editor).toContain('aria-hidden="true"');
   });
 
   it('uses the tab pattern and labels modal workflows', () => {
