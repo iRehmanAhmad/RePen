@@ -2238,9 +2238,21 @@ function quitApp() {
     }
   }
   overlayWindows.clear();
-  if (toolbarWindow && !toolbarWindow.isDestroyed()) {
-    toolbarWindow.destroy();
+
+  const windowsToDestroy = [
+    toolbarWindow,
+    editorWindow,
+    settingsWindow,
+    selectorWindow,
+    countdownWindow
+  ];
+
+  for (const win of windowsToDestroy) {
+    if (win && !win.isDestroyed()) {
+      win.destroy();
+    }
   }
+
   app.quit();
 }
 
