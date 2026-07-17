@@ -106,6 +106,7 @@ const EditorApp: React.FC = () => {
   const [isDirty, setIsDirty] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [editorNotice, setEditorNotice] = useState<string | null>(null);
+  const [updateInfo, setUpdateInfo] = useState<{ available: boolean; version?: string; url?: string } | null>(null);
   const [history, setHistory] = useState<EditorProjectData[]>([]);
   const [future, setFuture] = useState<EditorProjectData[]>([]);
 
@@ -230,6 +231,17 @@ const EditorApp: React.FC = () => {
         }
       } else {
         setCapabilities(unavailableCapabilities(CAPABILITIES_UNAVAILABLE_REASON));
+      }
+
+      if ((window as any).appBridge?.checkUpdates) {
+        try {
+          const updateRes = await (window as any).appBridge.checkUpdates();
+          if (updateRes && updateRes.success && updateRes.updateAvailable) {
+            setUpdateInfo({ available: true, version: updateRes.version, url: updateRes.url });
+          }
+        } catch (err) {
+          console.error('Failed to check for updates:', err);
+        }
       }
     };
     init();
@@ -1310,6 +1322,42 @@ const EditorApp: React.FC = () => {
         <div className="editor-notice" role="alert">
           <span>{editorNotice}</span>
           <button className="menu-btn" onClick={() => setEditorNotice(null)} aria-label="Dismiss editor message">Dismiss</button>
+        </div>
+      )}
+
+      {updateInfo?.available && (
+        <div
+          className="editor-notice"
+          style={{
+            background: 'linear-gradient(90deg, #1e3a8a, #3b82f6)',
+            color: '#ffffff',
+            padding: '10px 16px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: 13,
+            fontWeight: 'medium',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            zIndex: 100
+          }}
+          role="alert"
+        >
+          <span>✨ A new version of RePen is available: <strong>Version {updateInfo.version}</strong></span>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button
+              className="menu-btn"
+              style={{ padding: '4px 10px', background: '#ffffff', color: '#1e3a8a', border: 'none', fontSize: 12 }}
+              onClick={() => (window as any).appBridge?.openExternal?.(updateInfo.url)}
+            >
+              Download Now
+            </button>
+            <button
+              style={{ background: 'transparent', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 14 }}
+              onClick={() => setUpdateInfo(null)}
+            >
+              ✕
+            </button>
+          </div>
         </div>
       )}
 

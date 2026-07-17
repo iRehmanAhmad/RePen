@@ -2369,15 +2369,24 @@ function registerShortcuts() {
   const shortcuts = normalizeHotkeys(state.hotkeys);
   const actions = getShortcutActions();
   const failures = [];
+  const registeredAccelerators = new Map();
 
   for (const [name, accelerator] of Object.entries(shortcuts)) {
     if (!accelerator) {
       continue;
     }
 
+    if (registeredAccelerators.has(accelerator)) {
+      console.warn(`Hotkey conflict detected: "${name}" and "${registeredAccelerators.get(accelerator)}" both map to "${accelerator}".`);
+      failures.push({ name, accelerator, conflict: true });
+      continue;
+    }
+
     const registered = globalShortcut.register(accelerator, actions[name]);
     if (!registered) {
       failures.push({ name, accelerator });
+    } else {
+      registeredAccelerators.set(accelerator, name);
     }
   }
 
@@ -4157,6 +4166,68 @@ ipcMain.handle('settings:reset', () => {
 ipcMain.handle('settings:open', () => {
   showSettingsWindow();
   return { ok: true };
+});
+
+function compareVersions(v1, v2) {
+  const p1 = v1.split('.').map(Number);
+  const p2 = v2.split('.').map(Number);
+  for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+    const n1 = p1[i] || 0;
+    const n2 = p2[i] || 0;
+    if (n1 > n2) return 1;
+    if (n1 < n2) return -1;
+  }
+  return 0;
+}
+
+ipcMain.handle('app:check-updates', async (event) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized.' };
+  return new Promise((resolve) => {
+    const https = require('https');
+    const options = {
+      hostname: 'api.github.com',
+      path: '/repos/iRehmanAhmad/RePen/releases/latest',
+      headers: {
+        'User-Agent': 'RePen-Electron-App'
+      },
+      timeout: 5000
+    };
+    const request = https.get(options, (response) => {
+      if (response.statusCode !== 200) {
+        resolve({ success: false, error: `HTTP ${response.statusCode}` });
+        return;
+      }
+      let body = '';
+      response.on('data', (chunk) => { body += chunk; });
+      response.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const latestVersion = data.tag_name ? data.tag_name.replace(/^v/, '') : null;
+          const currentVersion = app.getVersion();
+          if (latestVersion && currentVersion) {
+            const isNewer = compareVersions(latestVersion, currentVersion) > 0;
+            resolve({
+              success: true,
+              updateAvailable: isNewer,
+              version: latestVersion,
+              url: data.html_url || 'https://github.com/iRehmanAhmad/RePen/releases'
+            });
+          } else {
+            resolve({ success: false, error: 'Could not resolve tags.' });
+          }
+        } catch (e) {
+          resolve({ success: false, error: e.message });
+        }
+      });
+    });
+    request.on('error', (err) => {
+      resolve({ success: false, error: err.message });
+    });
+    request.on('timeout', () => {
+      request.destroy();
+      resolve({ success: false, error: 'Request timed out' });
+    });
+  });
 });
 
 ipcMain.handle('app:export-diagnostics', async () => {

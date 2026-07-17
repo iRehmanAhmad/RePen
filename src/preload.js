@@ -94,4 +94,5 @@ contextBridge.exposeInMainWorld('appBridge', {
   downloadTranscriptionModel: () => ipcRenderer.invoke('recording:download-model'),
   cancelTranscriptionDownload: () => ipcRenderer.invoke('recording:cancel-transcription-download'),
   onTranscriptionDownloadProgress: (callback) => on('transcription:download-progress', callback),
+  checkUpdates: () => ipcRenderer.invoke('app:check-updates'),
 });
