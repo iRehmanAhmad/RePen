@@ -222,6 +222,30 @@ html, body {
   overflow-y: hidden;
 }
 
+.timeline-ruler {
+  height: 20px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+
+.timeline-tick {
+  color: var(--muted);
+  font-size: 10px;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.timeline-tick::before {
+  background: var(--line);
+  content: '';
+  height: 5px;
+  left: 50%;
+  position: absolute;
+  top: 13px;
+  width: 1px;
+}
+
 .timeline-tracks {
   position: relative;
   display: grid;

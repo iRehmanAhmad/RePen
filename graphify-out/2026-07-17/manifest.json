@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784275810.8430755,
-    "ast_hash": "202aba52f7c915e429f7123f18ba406f",
+    "mtime": 1784280581.0208924,
+    "ast_hash": "505bb4a4d318a0b42e5d1aec229309be",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1157,6 +1157,16 @@
   "tests/unit/recoveryStore.test.ts": {
     "mtime": 1784275810.8465664,
     "ast_hash": "c4b664ef21899991ab095c6231c23fb5",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/layoutGeometry.ts": {
+    "mtime": 1784280638.5452807,
+    "ast_hash": "44cff61ee53e7240273fae475eed2461",
+    "semantic_hash": ""
+  },
+  "tests/unit/layoutGeometry.test.ts": {
+    "mtime": 1784280638.554209,
+    "ast_hash": "f3b417769c728e834f53822c27c8297b",
     "semantic_hash": ""
   }
 }

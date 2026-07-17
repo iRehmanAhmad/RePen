@@ -22,3 +22,16 @@ export function formatTimelineTime(timeMs: number): string {
   const seconds = totalSeconds % 60;
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
+
+/** Produces a bounded, stable ruler independent of source duration. */
+export function createTimelineTicks(durationMs: number, zoom: number): number[] {
+  if (!Number.isFinite(durationMs) || durationMs <= 0) return [0];
+  const targetSegments = Math.max(4, Math.min(20, Math.round(10 * clampTimelineZoom(zoom))));
+  const rawStep = durationMs / targetSegments;
+  const candidates = [100, 250, 500, 1000, 2000, 5000, 10_000, 15_000, 30_000, 60_000, 120_000, 300_000, 600_000];
+  const step = candidates.find((candidate) => candidate >= rawStep) || candidates[candidates.length - 1];
+  const ticks: number[] = [];
+  for (let timeMs = 0; timeMs < durationMs; timeMs += step) ticks.push(timeMs);
+  if (ticks[ticks.length - 1] !== durationMs) ticks.push(durationMs);
+  return ticks;
+}

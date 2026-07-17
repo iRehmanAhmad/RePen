@@ -4,7 +4,7 @@ import { PlaybackCoordinator } from './presenter/editor/playbackCoordinator';
 import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
-import { clampTimelineZoom, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
+import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
 import { addTrimRange } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
 import { aspectRatioCss } from '../shared/editor/layoutGeometry';
@@ -851,6 +851,7 @@ const EditorApp: React.FC = () => {
   };
 
   const activeVideoSrc = project?.media?.screenVideoPath || project?.videoPath || '';
+  const timelineTicks = createTimelineTicks(durationMs, timelineZoom);
 
   return (
     <div className="editor-layout" role="application" aria-label={t('title')}>
@@ -1352,10 +1353,16 @@ const EditorApp: React.FC = () => {
                 onChange={(e) => setTimelineZoom(clampTimelineZoom(parseFloat(e.target.value)))}
               />
             </label>
+            <button className="timeline-control" onClick={() => setTimelineZoom(1)} disabled={timelineZoom === 1} aria-label="Zoom timeline to fit">Zoom to Fit</button>
           </div>
         </div>
 
         <div className="timeline-scroll">
+        <div className="timeline-ruler" style={{ minWidth: `${timelineZoom * 100}%` }} aria-label="Timeline time ruler">
+          {timelineTicks.map((timeMs) => (
+            <span key={timeMs} className="timeline-tick" style={{ left: `${timelinePercent(timeMs, durationMs)}%` }}>{formatTimelineTime(timeMs)}</span>
+          ))}
+        </div>
         <div className="timeline-tracks" style={{ minWidth: `${timelineZoom * 100}%` }} onClick={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           handleSeek(timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs));
