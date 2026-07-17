@@ -37,6 +37,22 @@ I am a passionate software developer and engineer specializing in **Machine Lear
 
 ---
 
+### ⚡ Recent Activity
+
+<!--START_SECTION:activity-->
+*Will be automatically updated with your latest GitHub contributions by GitHub Actions.*
+<!--END_SECTION:activity-->
+
+---
+
+### 📝 Latest Blog Posts
+
+<!--BLOG-POST-LIST:START-->
+*Will be automatically updated with your latest blog posts by GitHub Actions.*
+<!--BLOG-POST-LIST:END-->
+
+---
+
 ### 🚀 Featured Projects
 
 #### 🖋️ Desktop Applications & Tools

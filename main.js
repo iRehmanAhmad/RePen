@@ -6,7 +6,7 @@ const {
   nativeWindowHandleCandidates,
   filterRepenOwnedSources,
 } = require('./src/shared/recording/capturePolicy.js');
-const { canRunRecordingCommand, recordingCommandError } = require('./src/shared/recording/stateMachine.js');
+const { canRunRecordingCommand, recordingCommandError, validateRecordingCommand } = require('./src/shared/recording/stateMachine.js');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -396,6 +396,7 @@ function broadcastRecordingState(recordingState) {
   const payload = {
     ...recordingState,
     phase: recordingState?.phase || currentRecordingPhase || 'idle',
+    sessionId: recordingState?.sessionId || activeRecordingSessionId,
     elapsedSeconds: recordingSeconds,
   };
   for (const win of overlayWindows.values()) {
@@ -2456,11 +2457,27 @@ let preRecordingState = null;
 let lastStartOptions = null;
 let lastStartEvent = null;
 let activePresentationMode = 'baked';
+let activeRecordingSessionId = null;
+const processedRecordingCommandIds = new Set();
 const approvedRecordingDirectories = new Set();
 
 function isTrustedRecordingSender(event) {
   const senderWindow = BrowserWindow.fromWebContents(event.sender);
   return Boolean(senderWindow && [toolbarWindow, settingsWindow, selectorWindow, countdownWindow, editorWindow].includes(senderWindow));
+}
+
+function validateActiveRecordingCommand(command, expectedPhase) {
+  const error = validateRecordingCommand({
+    command,
+    activeSessionId: activeRecordingSessionId,
+    currentPhase: currentRecordingPhase,
+    expectedPhase,
+    processedCommandIds: processedRecordingCommandIds,
+  });
+  if (error) return error;
+  processedRecordingCommandIds.add(command.commandId);
+  if (processedRecordingCommandIds.size > 256) processedRecordingCommandIds.clear();
+  return null;
 }
 
 function boundedInteger(value, fallback, minimum, maximum) {
@@ -2655,6 +2672,8 @@ async function handleStartRecording(options) {
   const normalized = normalizeRecordingOptions(options);
   activePresentationMode = normalized.track.presentationMode;
   const sessionId = `recording-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  activeRecordingSessionId = sessionId;
+  processedRecordingCommandIds.clear();
   await recorderService.start(normalized.recorder);
   
   if (presentationTrackService) {
@@ -2671,6 +2690,7 @@ async function handleStartRecording(options) {
   startRecordingTimer();
   currentRecordingPhase = 'recording';
   broadcastRecordingState({ isRecording: true, isPaused: false, sessionId });
+  return sessionId;
 }
 
 async function handleStopRecording() {
@@ -2684,6 +2704,8 @@ async function handleStopRecording() {
   currentRecordingPhase = 'completed';
   broadcastRecordingState({ isRecording: false, isPaused: false });
   currentRecordingPhase = 'idle';
+  activeRecordingSessionId = null;
+  processedRecordingCommandIds.clear();
   restorePresenterState();
   return { outputPath, presentationTrackPath: trackSummary?.sidecarPath || null, presentationMode: activePresentationMode };
 }
@@ -2726,6 +2748,8 @@ async function handleCancelRecording() {
     await presentationTrackService.discardTrack();
   }
   currentRecordingPhase = 'idle';
+  activeRecordingSessionId = null;
+  processedRecordingCommandIds.clear();
   broadcastRecordingState({ isRecording: false, isPaused: false });
   restorePresenterState();
 }
@@ -3061,12 +3085,14 @@ ipcMain.handle('recording:start', async (event, options) => {
   if (!canRunRecordingCommand(currentRecordingPhase, 'start')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'start') };
   try {
     lastStartEvent = event;
-    await handleStartRecording(options);
-    return { success: true };
+    const sessionId = await handleStartRecording(options);
+    return { success: true, sessionId };
   } catch (error) {
     stopRecordingTimer();
     try { await recorderService?.cancel(); } catch {}
     try { await presentationTrackService?.discardTrack(); } catch {}
+    activeRecordingSessionId = null;
+    processedRecordingCommandIds.clear();
     currentRecordingPhase = 'failed';
     broadcastRecordingState({ isRecording: false, isPaused: false, error: error.message || String(error) });
     restorePresenterState();
@@ -3074,23 +3100,29 @@ ipcMain.handle('recording:start', async (event, options) => {
   }
 });
 
-ipcMain.handle('recording:pause', async (event) => {
+ipcMain.handle('recording:pause', async (event, command) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   if (!canRunRecordingCommand(currentRecordingPhase, 'pause')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'pause') };
+  const commandError = validateActiveRecordingCommand(command, 'recording');
+  if (commandError) return { success: false, error: commandError };
   try { await handlePauseRecording(); return { success: true }; }
   catch (error) { return { success: false, error: error.message || String(error) }; }
 });
 
-ipcMain.handle('recording:resume', async (event) => {
+ipcMain.handle('recording:resume', async (event, command) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   if (!canRunRecordingCommand(currentRecordingPhase, 'resume')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'resume') };
+  const commandError = validateActiveRecordingCommand(command, 'paused');
+  if (commandError) return { success: false, error: commandError };
   try { await handleResumeRecording(); return { success: true }; }
   catch (error) { return { success: false, error: error.message || String(error) }; }
 });
 
-ipcMain.handle('recording:stop', async (event) => {
+ipcMain.handle('recording:stop', async (event, command) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   if (!canRunRecordingCommand(currentRecordingPhase, 'stop')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'stop') };
+  const commandError = validateActiveRecordingCommand(command, currentRecordingPhase);
+  if (commandError) return { success: false, error: commandError };
   try {
     const result = await handleStopRecording();
     try {
@@ -3113,9 +3145,11 @@ ipcMain.handle('recording:stop', async (event) => {
   }
 });
 
-ipcMain.handle('recording:cancel', async (event) => {
+ipcMain.handle('recording:cancel', async (event, command) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized recording control.' };
   if (!canRunRecordingCommand(currentRecordingPhase, 'cancel')) return { success: false, error: recordingCommandError(currentRecordingPhase, 'cancel') };
+  const commandError = validateActiveRecordingCommand(command, currentRecordingPhase);
+  if (commandError) return { success: false, error: commandError };
   try { await handleCancelRecording(); return { success: true }; }
   catch (error) { return { success: false, error: error.message || String(error) }; }
 });

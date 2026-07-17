@@ -1,17 +1,17 @@
 {
   ".agent-hub/state/tasks.json": {
-    "mtime": 1784128906.264851,
-    "ast_hash": "5d670879b9e0205582887848941005c3",
+    "mtime": 1784271991.493562,
+    "ast_hash": "a427bf58240c2942a67414e67541fd57",
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784136386.0697322,
-    "ast_hash": "539a21f2595a2d9489c892ee28ad49e6",
+    "mtime": 1784273095.473113,
+    "ast_hash": "965dcff09bb752b09a7ad0bc7d6552e0",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1784120586.613296,
-    "ast_hash": "16d49bbf43f1fcf1a1a8d591ca6698aa",
+    "mtime": 1784222500.4366148,
+    "ast_hash": "5dabd8790a3d02f6c88bf836621acc1e",
     "semantic_hash": ""
   },
   "scripts/agent-hub.js": {
@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "scripts/verify-ipc-contract.js": {
-    "mtime": 1783746968.0668828,
-    "ast_hash": "0f4059104ffd32c2d201ff6c500ba955",
+    "mtime": 1784220432.2246177,
+    "ast_hash": "17796ac8624c16b14b29fe419dc71b15",
     "semantic_hash": ""
   },
   "scripts/verify-tool-state.js": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1784136444.6176383,
-    "ast_hash": "4678533465dab115b961bf54e1afda07",
+    "mtime": 1784223672.0638509,
+    "ast_hash": "e9fa95f5e24779985e4c135ef28f5d87",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1784130262.297088,
-    "ast_hash": "9583c20b16a30a4507f86ba9bd7f3de7",
+    "mtime": 1784221415.2448575,
+    "ast_hash": "a1f66d72fc6d1646c788b13dbc853d7c",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "docs/qa-checklist.md": {
-    "mtime": 1784118660.3536847,
-    "ast_hash": "8dd94f382b3f661f93d76fba485fe474",
+    "mtime": 1784219689.7608771,
+    "ast_hash": "b5d20b913792bf9d435a7cec89dd13e3",
     "semantic_hash": ""
   },
   "docs/technical-architecture.md": {
@@ -380,8 +380,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1783856985.4915042,
-    "ast_hash": "dcd93111c4caa979738e342b90291106",
+    "mtime": 1784273046.244302,
+    "ast_hash": "e3e9c2625ad08fb6cdcbad3329ef6547",
     "semantic_hash": ""
   },
   "electron/bootstrap/instance.ts": {
@@ -390,8 +390,8 @@
     "semantic_hash": ""
   },
   "electron/main.ts": {
-    "mtime": 1784136492.4380035,
-    "ast_hash": "d83b6a9c8a0900c2515d5a2e0b164c7a",
+    "mtime": 1784271755.6318173,
+    "ast_hash": "0a79b174e1768f66ae01b9096e18d65b",
     "semantic_hash": ""
   },
   "electron/services/display.ts": {
@@ -400,8 +400,8 @@
     "semantic_hash": ""
   },
   "electron/services/recorder.ts": {
-    "mtime": 1784131266.659052,
-    "ast_hash": "c30391ee0846db2d4b0d4578336990b4",
+    "mtime": 1784221860.0407152,
+    "ast_hash": "5db63941da0618e4dcdb43edbaa1ddb9",
     "semantic_hash": ""
   },
   "electron/services/shortcuts.ts": {
@@ -725,8 +725,8 @@
     "semantic_hash": ""
   },
   "electron/services/presentationTrack.ts": {
-    "mtime": 1784119941.7517624,
-    "ast_hash": "2e9814f89f226114cd2069053c62e226",
+    "mtime": 1784272411.572469,
+    "ast_hash": "aa0911e39f2daa509161bd3870ca762b",
     "semantic_hash": ""
   },
   "scratch/find_main_js_handlers.js": {
@@ -770,8 +770,8 @@
     "semantic_hash": ""
   },
   "src/shared/editor/projectPersistence.ts": {
-    "mtime": 1784120356.0474606,
-    "ast_hash": "bacb017c484fc34c9238a8c19f1a7a06",
+    "mtime": 1784272401.8050022,
+    "ast_hash": "3fae7822b2fbdad40ab5d0f2dcefa85f",
     "semantic_hash": ""
   },
   "src/shared/editor/types.ts": {
@@ -915,8 +915,8 @@
     "semantic_hash": ""
   },
   "src/renderer/selector.js": {
-    "mtime": 1784130070.773309,
-    "ast_hash": "fe8c77c6fb6177e7fa857fab1fdc2f95",
+    "mtime": 1784221118.0777934,
+    "ast_hash": "0b44a7a0df01311085b9a650b431bb02",
     "semantic_hash": ""
   },
   "src/shared/contracts/presentationTrack.ts": {
@@ -930,8 +930,8 @@
     "semantic_hash": ""
   },
   "tests/unit/recordingToolbar.test.ts": {
-    "mtime": 1784122076.4849088,
-    "ast_hash": "89b3f8fb06d46695abb1f03467a8168e",
+    "mtime": 1784222528.7445183,
+    "ast_hash": "c15b455478448b24a03aa1ba34824ca7",
     "semantic_hash": ""
   },
   "tests/unit/selector.test.ts": {
@@ -945,8 +945,8 @@
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260715-151929-complete-openscreen-integration-after-recorder-f.md": {
-    "mtime": 1784128906.264851,
-    "ast_hash": "f7ff18cedc7dcd54925573dead93a226",
+    "mtime": 1784220539.2971182,
+    "ast_hash": "618ed41b543082c653c300d0ebd47b9a",
     "semantic_hash": ""
   },
   "src/renderer/countdown.html": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784136462.0959468,
-    "ast_hash": "9e14dc21d8313f85eef38b9e5196f20d",
+    "mtime": 1784271837.8107498,
+    "ast_hash": "b3a10d14042a52a821de525ccdb19799",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -995,8 +995,8 @@
     "semantic_hash": ""
   },
   "tests/unit/editorExport.test.ts": {
-    "mtime": 1784135880.132811,
-    "ast_hash": "b694077b7a5a3ef0099e732bddf57bf6",
+    "mtime": 1784271905.7866447,
+    "ast_hash": "37fb91237b4006f3234dfee39f86c571",
     "semantic_hash": ""
   },
   "tests/unit/productCompleteness.test.ts": {
@@ -1010,8 +1010,58 @@
     "semantic_hash": ""
   },
   "third_party_notices.md": {
-    "mtime": 1784214237.458915,
-    "ast_hash": "1974f9ace5e0406b5481d659f5ba1260",
+    "mtime": 1784219689.7576497,
+    "ast_hash": "d146609e2f3d0231d7879d000862964c",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/projectFactory.js": {
+    "mtime": 1784272401.8039074,
+    "ast_hash": "0b7f3f1630fec6412bfc27114f0adbae",
+    "semantic_hash": ""
+  },
+  "src/shared/recording/appCapabilities.js": {
+    "mtime": 1784271755.626824,
+    "ast_hash": "f3517469c0a99b5c3272bb64ebff1d7d",
+    "semantic_hash": ""
+  },
+  "src/shared/recording/capturePolicy.js": {
+    "mtime": 1784272051.1338737,
+    "ast_hash": "40265a607e45070ddd1614d624f1f7a3",
+    "semantic_hash": ""
+  },
+  "src/shared/recording/stateMachine.js": {
+    "mtime": 1784272702.4855404,
+    "ast_hash": "7630365c1179f72db21a9031e9c8fcc5",
+    "semantic_hash": ""
+  },
+  "src/vite-env.d.ts": {
+    "mtime": 1784219068.8073738,
+    "ast_hash": "0352474ba2918efe13895edbc3780d94",
+    "semantic_hash": ""
+  },
+  "tests/unit/capturePolicy.test.ts": {
+    "mtime": 1784272458.633868,
+    "ast_hash": "282fc7f6414dcf4750940f953d8b5199",
+    "semantic_hash": ""
+  },
+  "tests/unit/phaseCompletionAudit.test.ts": {
+    "mtime": 1784271905.7886512,
+    "ast_hash": "017d116c66ded606648b25ba78924490",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260716-172849-correct-recorder-capture-and-deliver-production-.md": {
+    "mtime": 1784271991.4945517,
+    "ast_hash": "d56cb47b4b02bd1cff50a259c336ae4c",
+    "semantic_hash": ""
+  },
+  "docs/verification/openscreen-corrective-baseline.md": {
+    "mtime": 1784271879.1301332,
+    "ast_hash": "4eb9623da1c170717ecdc1484de88098",
+    "semantic_hash": ""
+  },
+  "profile_readme_proposal.md": {
+    "mtime": 1784273067.2234564,
+    "ast_hash": "ad70497b22258312a75ba923a6e4a712",
     "semantic_hash": ""
   }
 }

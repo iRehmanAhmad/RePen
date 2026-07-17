@@ -902,6 +902,15 @@ if (elements.settingsButton) {
 let preRecordingPassThrough = false;
 let isRecording = false;
 let isPaused = false;
+let activeRecordingSessionId = null;
+let activeRecordingPhase = 'idle';
+
+function createRecordingCommand(expectedPhase) {
+  if (!activeRecordingSessionId) return null;
+  const commandId = window.crypto?.randomUUID?.()
+    || `toolbar-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  return { sessionId: activeRecordingSessionId, commandId, expectedPhase };
+}
 
 if (elements.recordButton) {
   elements.recordButton.addEventListener('click', async () => {
@@ -940,12 +949,16 @@ async function proceedToRecord(settings) {
   if (!result.success) {
     alert(`Recording failed to start: ${result.error}`);
     restoreToolbarUI();
+  } else if (result.sessionId) {
+    activeRecordingSessionId = result.sessionId;
   }
 }
 
 function restoreToolbarUI() {
   isRecording = false;
   isPaused = false;
+  activeRecordingSessionId = null;
+  activeRecordingPhase = 'idle';
   elements.recordingHud.style.display = 'none';
 }
 
@@ -956,6 +969,8 @@ function renderRecordingState(recordingState = {}) {
 
   isRecording = controlsEnabled;
   isPaused = phase === 'paused';
+  activeRecordingPhase = phase;
+  activeRecordingSessionId = recordingState.sessionId || null;
 
   if (elements.recordingHud) {
     elements.recordingHud.style.display = hudVisible ? 'flex' : 'none';
@@ -985,10 +1000,10 @@ if (elements.hudPauseBtn) {
   elements.hudPauseBtn.addEventListener('click', async () => {
     if (!isRecording) return;
     if (isPaused) {
-      const result = await window.appBridge.resumeRecording();
+      const result = await window.appBridge.resumeRecording(createRecordingCommand('paused'));
       if (!result.success) alert(`Failed to resume recording: ${result.error}`);
     } else {
-      const result = await window.appBridge.pauseRecording();
+      const result = await window.appBridge.pauseRecording(createRecordingCommand('recording'));
       if (!result.success) alert(`Failed to pause recording: ${result.error}`);
     }
   });
@@ -998,7 +1013,7 @@ if (elements.hudStopBtn) {
   elements.hudStopBtn.addEventListener('click', async () => {
     if (!isRecording) return;
     elements.hudStopBtn.disabled = true;
-    const result = await window.appBridge.stopRecording();
+    const result = await window.appBridge.stopRecording(createRecordingCommand(activeRecordingPhase));
     elements.hudStopBtn.disabled = false;
     
     if (result.success) {
@@ -1017,8 +1032,12 @@ if (elements.hudCancelBtn) {
   elements.hudCancelBtn.addEventListener('click', async () => {
     if (!isRecording) return;
     if (confirm('Are you sure you want to discard this recording?')) {
-      await window.appBridge.cancelRecording();
-      restoreToolbarUI();
+      const result = await window.appBridge.cancelRecording(createRecordingCommand(activeRecordingPhase));
+      if (!result.success) {
+        alert(`Failed to discard recording: ${result.error}`);
+      } else {
+        restoreToolbarUI();
+      }
     }
   });
 }

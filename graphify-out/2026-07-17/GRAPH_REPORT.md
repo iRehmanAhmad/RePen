@@ -1,16 +1,16 @@
-# Graph Report - epic-pen-clone  (2026-07-16)
+# Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 191 files · ~141,105 words
+- 201 files · ~150,680 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2185 nodes · 3208 edges · 188 communities (176 shown, 12 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 55 edges (avg confidence: 0.77)
+- 2343 nodes · 3415 edges · 209 communities (196 shown, 13 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 68 edges (avg confidence: 0.73)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `116a4dcb`
+- Built from commit: `2869e95e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -192,7 +192,28 @@
 - [[_COMMUNITY_native-recorder-helper.test.ts|native-recorder-helper.test.ts]]
 - [[_COMMUNITY_broadcastScene|broadcastScene]]
 - [[_COMMUNITY_syncPageStore|syncPageStore]]
+- [[_COMMUNITY_editorExport.test.ts|editorExport.test.ts]]
 - [[_COMMUNITY_Third-Party Notices & SBOM|Third-Party Notices & SBOM]]
+- [[_COMMUNITY_Hi there, I'm Rehman Ahmad Chaudhry 👋|Hi there, I'm Rehman Ahmad Chaudhry 👋]]
+- [[_COMMUNITY_README|README.md]]
+- [[_COMMUNITY_editor.tsx|editor.tsx]]
+- [[_COMMUNITY_Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations|Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations]]
+- [[_COMMUNITY_init|init]]
+- [[_COMMUNITY_RePen OpenScreen Corrective Baseline|RePen OpenScreen Corrective Baseline]]
+- [[_COMMUNITY_Phase 0 — Baseline, Feature Inventory, and Truthful Gates|Phase 0 — Baseline, Feature Inventory, and Truthful Gates]]
+- [[_COMMUNITY_Phase 1 — Capture Exclusion and Source-Content Correctness|Phase 1 — Capture Exclusion and Source-Content Correctness]]
+- [[_COMMUNITY_Phase 2 — Recorder State Machine, Finalization, and Recovery|Phase 2 — Recorder State Machine, Finalization, and Recovery]]
+- [[_COMMUNITY_Phase 4 — Production Playback and Timeline Foundation|Phase 4 — Production Playback and Timeline Foundation]]
+- [[_COMMUNITY_Phase 7 — Offline Captions as an Optional Capability|Phase 7 — Offline Captions as an Optional Capability]]
+- [[_COMMUNITY_Phase 8 — Licensed MP4GIF Export and Preview Parity|Phase 8 — Licensed MP4/GIF Export and Preview Parity]]
+- [[_COMMUNITY_Phase 9 — Product UX, Accessibility, Diagnostics, and Windows Release Gate|Phase 9 — Product UX, Accessibility, Diagnostics, and Windows Release Gate]]
+- [[_COMMUNITY_Global Architecture Decisions|Global Architecture Decisions]]
+- [[_COMMUNITY_Phase 3 — Project Creation, Media Validation, and Editor Boot Reliability|Phase 3 — Project Creation, Media Validation, and Editor Boot Reliability]]
+- [[_COMMUNITY_Phase 5 — Shared Layout and Visual Compositor|Phase 5 — Shared Layout and Visual Compositor]]
+- [[_COMMUNITY_stateMachine.js|stateMachine.js]]
+- [[_COMMUNITY_Capture Policy Decision|Capture Policy Decision]]
+- [[_COMMUNITY_19. Security Model|19. Security Model]]
+- [[_COMMUNITY_phaseCompletionAudit.test.ts|phaseCompletionAudit.test.ts]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -207,25 +228,25 @@
 10. `WindowRegistry` - 29 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `bootstrap()` --calls--> `generateExportFFmpegCommand()`  [INFERRED]
+- `bootstrap()` --calls--> `handleRecordingFailure()`  [INFERRED]
   electron/main.ts → main.js
-- `bootstrap()` --calls--> `migrateProjectData()`  [INFERRED]
-  electron/main.ts → src/shared/editor/projectPersistence.ts
+- `bootstrap()` --calls--> `isTrustedRecordingSender()`  [INFERRED]
+  electron/main.ts → main.js
+- `normalizeRecordingOptions()` --calls--> `optionalString()`  [INFERRED]
+  main.js → electron/services/recorder.ts
+- `bootstrap()` --calls--> `createAppCapabilities()`  [EXTRACTED]
+  electron/main.ts → src/shared/recording/appCapabilities.js
 - `TestWindow` --inherits--> `BaseWindow`  [EXTRACTED]
   tests/unit/windowSecurity.test.ts → electron/windows/baseWindow.ts
-- `main()` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/main.cpp → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
-- `configureAudioStream` --calls--> `makeAacCompatibleAudioFormat()`  [INFERRED]
-  third_party/openscreen/wgc-capture/src/mf_encoder.h → third_party/openscreen/wgc-capture/src/audio_sample_utils.cpp
 
 ## Import Cycles
 - None detected.
 
-## Communities (188 total, 12 thin omitted)
+## Communities (209 total, 13 thin omitted)
 
 ### Community 0 - "main.js"
-Cohesion: 0.08
-Nodes (29): addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, buildPdfExportHtml(), ccw(), DEFAULT_STATE, desktopPage, erasePath(), eraseStrokeSegments() (+21 more)
+Cohesion: 0.06
+Nodes (38): optionalString(), addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, approvedRecordingDirectories, boundedInteger(), buildPdfExportHtml(), { canRunRecordingCommand, recordingCommandError }, ccw() (+30 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.12
@@ -292,16 +313,16 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.14
-Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
+Cohesion: 0.17
+Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
 Nodes (10): fs, handledChannels, invokedChannels, listenedChannels, mainContent, mainPath, path, preloadContent (+2 more)
 
 ### Community 19 - "Overlay Ink — QA Regression & Smoke Test Checklist"
-Cohesion: 0.06
-Nodes (30): 1. ✍️ Basic Drawing & Erasing, 2. 📝 Text Note Tool, 3. ✋ Select & Move (Lasso Transformation), 4. 🌐 Background Modes & Click Ripple Halo, 5. 🔴 Laser Pointer Presentation Tool, 6. 💾 Settings & Schema Persistence (v2 Schema), 7. 📸 Screenshot Export Workflow, 8. 🎥 Recorder & Editor Post-Production (+22 more)
+Cohesion: 0.18
+Nodes (10): 1. ✍️ Basic Drawing & Erasing, 2. 📝 Text Note Tool, 3. ✋ Select & Move (Lasso Transformation), 4. 🌐 Background Modes & Click Ripple Halo, 5. 🔴 Laser Pointer Presentation Tool, 6. 💾 Settings & Schema Persistence (v2 Schema), 7. 📸 Screenshot Export Workflow, 8. 🎥 Recorder & Editor Post-Production (+2 more)
 
 ### Community 20 - "verify-dom-ids.js"
 Cohesion: 0.17
@@ -536,24 +557,24 @@ Cohesion: 0.29
 Nodes (6): 20260711-181000 Tray Cursor Settings Polish, Analysis, Handoff, Intake, Plan, Verification
 
 ### Community 82 - "19. Security Model"
-Cohesion: 0.29
-Nodes (13): clearScene(), cycleBackgroundMode(), getShortcutActions(), restorePresenterState(), setBackgroundMode(), setPassThrough(), setTool(), showOverlayWindows() (+5 more)
+Cohesion: 0.25
+Nodes (17): enumerateAVDevices(), escapeHtml(), init(), loadSystemInfo(), refreshSources(), renderSources(), safeImageUrl(), setupEventListeners() (+9 more)
 
 ### Community 83 - "broadcastState"
-Cohesion: 0.19
-Nodes (14): broadcastRecordingState(), createCountdownWindow(), handleCancelRecording(), handlePauseRecording(), handlePauseRecordingShortcut(), handleRestartRecording(), handleResumeRecording(), handleStartRecording() (+6 more)
+Cohesion: 0.16
+Nodes (18): broadcastRecordingState(), broadcastRecordingTimer(), createCountdownWindow(), getPresentationSceneSnapshot(), handleCancelRecording(), handlePauseRecording(), handlePauseRecordingShortcut(), handleRecordingFailure() (+10 more)
 
 ### Community 84 - "init"
-Cohesion: 0.07
-Nodes (34): EditorApp(), ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath() (+26 more)
+Cohesion: 0.10
+Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 86 - "applyHotkeys"
-Cohesion: 0.43
-Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
+Cohesion: 0.39
+Nodes (8): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
 
 ### Community 87 - "createToolbarWindow"
-Cohesion: 0.15
-Nodes (19): createAppIcon(), createEditorWindow(), createOverlayWindow(), createOverlayWindows(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow(), createTray() (+11 more)
+Cohesion: 0.16
+Nodes (18): applyCapturePolicy(), createAppIcon(), createEditorWindow(), createOverlayWindow(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow(), editorUrl() (+10 more)
 
 ### Community 88 - "19. Security Model"
 Cohesion: 0.29
@@ -589,7 +610,7 @@ Nodes (46): Acceptance Checks, Analysis Summary, Architecture decision, Automate
 
 ### Community 96 - "main.ts"
 Cohesion: 0.09
-Nodes (13): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, optionalString(), RecorderCapabilities, RecorderOptions, RecorderService (+5 more)
+Nodes (12): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, RecorderCapabilities, RecorderOptions, RecorderService, Waiter (+4 more)
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
@@ -668,8 +689,8 @@ Cohesion: 0.20
 Nodes (10): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, timestampHns (+2 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.39
-Nodes (8): getAppState(), getBootstrapData(), getDockSide(), nextPage(), normalizeBoardViewport(), prevPage(), setBoardViewport(), setPage()
+Cohesion: 0.14
+Nodes (22): autoArchiveCurrentSession(), broadcastScene(), exportPdf(), getAppState(), getBootstrapData(), getDockSide(), getSceneState(), loadSession() (+14 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -732,16 +753,16 @@ Cohesion: 0.05
 Nodes (32): annotationId(), applyPresentationEvent(), BoardSnapshot, BoardViewport, clone(), defaultWriterFactory, FileHandlePresentationTrackWriter, parsePresentationTrackJsonl() (+24 more)
 
 ### Community 136 - "main.ts"
-Cohesion: 0.09
-Nodes (14): initializeSingleInstanceLock(), bootstrap(), broadcastRecordingState(), broadcastRecordingTimer(), calculateToolbarBounds(), lastEnumeratedSources, rebuildOverlays(), startRecordingTimer() (+6 more)
+Cohesion: 0.07
+Nodes (22): initializeSingleInstanceLock(), approvedRecordingDirectories, bootstrap(), broadcastRecordingState(), broadcastRecordingTimer(), calculateToolbarBounds(), { createAppCapabilities }, lastEnumeratedSources (+14 more)
 
 ### Community 137 - "StateManager"
 Cohesion: 0.11
 Nodes (18): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+10 more)
 
 ### Community 138 - "DisplayManager"
-Cohesion: 0.19
-Nodes (13): broadcastState(), captureMagnifierBackground(), quitApp(), setClickHalo(), setColor(), setExportIncludeBackground(), setOpacity(), setShapeType() (+5 more)
+Cohesion: 0.14
+Nodes (27): broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), getShortcutActions(), quitApp(), redo(), restorePresenterState() (+19 more)
 
 ### Community 139 - "audio_sample_utils.h"
 Cohesion: 0.15
@@ -756,12 +777,12 @@ Cohesion: 0.05
 Nodes (31): AnnotationPosition, AnnotationSize, AnnotationTextAnimation, AnnotationTextStyle, AnnotationType, ArrowDirection, BlurColor, BlurData (+23 more)
 
 ### Community 143 - "editorDefaults.ts"
-Cohesion: 0.14
-Nodes (18): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+10 more)
+Cohesion: 0.15
+Nodes (17): DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS, ExportFormat (+9 more)
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.16
-Nodes (21): rootEl, TRANSLATIONS, clamp(), EditorProjectData, fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor() (+13 more)
+Cohesion: 0.22
+Nodes (15): clamp(), fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor(), normalizeBlurType(), normalizeCursorThemeId(), normalizeProjectEditor() (+7 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -876,36 +897,116 @@ Cohesion: 0.67
 Nodes (3): Exit gate, Implementation, Phase 8 — Product completeness
 
 ### Community 183 - "broadcastScene"
-Cohesion: 0.33
-Nodes (10): broadcastScene(), deepClone(), getSceneState(), loadSessionFromFile(), pushUndoSnapshot(), recordSceneChange(), redo(), revertAutoShape() (+2 more)
+Cohesion: 0.13
+Nodes (14): Correct Recorder Capture and Deliver the Production OpenScreen-Style Editor, Cross-Phase Test and Evidence Policy, Current Phase, Definition of the Target Product, Final Acceptance Checklist, Forbidden Completion Shortcuts, Goal, Handoff Notes (+6 more)
 
 ### Community 184 - "syncPageStore"
-Cohesion: 0.38
-Nodes (7): autoArchiveCurrentSession(), exportPdf(), loadSession(), newSession(), saveSession(), showModalDialog(), syncPageStore()
+Cohesion: 0.23
+Nodes (11): createProjectForCompletedRecording(), getRepenOwnedWindowHandleCandidates(), createDefaultEditorState(), createRecordingProject(), migrateProjectData(), filterRepenOwnedSources(), nativeWindowHandleCandidates(), sourceHandleCandidates() (+3 more)
+
+### Community 185 - "editorExport.test.ts"
+Cohesion: 0.18
+Nodes (10): Assets To Attach, Checksum Command, Checksums, Download, Final Pre-Publish Checklist, Known Notes, RePen Release Template, Short Summary (+2 more)
 
 ### Community 186 - "Third-Party Notices & SBOM"
 Cohesion: 0.29
-Nodes (6): Electron (MIT License), FFmpeg (LGPL/GPL License), Node.js (MIT License), OpenScreen (MIT License), React & ReactDOM (MIT License), Third-Party Notices & SBOM
+Nodes (6): Electron (MIT License), FFmpeg, Node.js (MIT License), OpenScreen (MIT License), React & ReactDOM (MIT License), Third-Party Notices & SBOM
+
+### Community 188 - "Hi there, I'm Rehman Ahmad Chaudhry 👋"
+Cohesion: 0.18
+Nodes (10): 💫 About Me, 📊 Account Stats, 🖋️ Desktop Applications & Tools, 🚀 Featured Projects, Full-Stack Developer & Machine Learning / Computer Vision Engineer, 📊 GitHub Activity & Contribution Graph, Hi there, I'm Rehman Ahmad Chaudhry 👋, 🧠 Machine Learning & Computer Vision (+2 more)
+
+### Community 189 - "README.md"
+Cohesion: 0.18
+Nodes (10): Build & Package, ✨ Features, 🤝 Feedback & Support, 🛠️ Installation & Running from Source, ⌨️ Keyboard Shortcuts, 🚀 Overview, Prerequisites, Run Locally (+2 more)
+
+### Community 190 - "editor.tsx"
+Cohesion: 0.22
+Nodes (9): EditorApp(), rootEl, TRANSLATIONS, unavailableCapabilities(), AspectRatio, EditorProjectData, AnnotationRegion, WebcamMaskShape (+1 more)
+
+### Community 191 - "Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations"
+Cohesion: 0.22
+Nodes (9): Cursor and clicks, Editor annotations, Exit gate, Objective, Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations, Presentation sidecar, Required tests, Webcam (+1 more)
+
+### Community 192 - "init"
+Cohesion: 0.25
+Nodes (9): createOverlayWindows(), createTray(), createTrayIcon(), getStateFilePath(), hideOverlayWindows(), init(), loadState(), readPersistedState() (+1 more)
+
+### Community 193 - "RePen OpenScreen Corrective Baseline"
+Cohesion: 0.29
+Nodes (6): Baseline verification, Dual implementation audit, Environment, Feature and control inventory, Release blockers, RePen OpenScreen Corrective Baseline
+
+### Community 194 - "Phase 0 — Baseline, Feature Inventory, and Truthful Gates"
+Cohesion: 0.33
+Nodes (6): Automated verification, Exit gate, Expected files, Implementation tasks, Objective, Phase 0 — Baseline, Feature Inventory, and Truthful Gates
+
+### Community 195 - "Phase 1 — Capture Exclusion and Source-Content Correctness"
+Cohesion: 0.33
+Nodes (6): Exit gate, Implementation tasks, Objective, Phase 1 — Capture Exclusion and Source-Content Correctness, Required manual QA, Required tests
+
+### Community 196 - "Phase 2 — Recorder State Machine, Finalization, and Recovery"
+Cohesion: 0.33
+Nodes (6): Exit gate, Implementation tasks, Objective, Phase 2 — Recorder State Machine, Finalization, and Recovery, Required manual QA, Required tests
+
+### Community 197 - "Phase 4 — Production Playback and Timeline Foundation"
+Cohesion: 0.33
+Nodes (6): Exit gate, Implementation tasks, Objective, Phase 4 — Production Playback and Timeline Foundation, Required shortcuts, Required tests
+
+### Community 198 - "Phase 7 — Offline Captions as an Optional Capability"
+Cohesion: 0.33
+Nodes (6): Exit gate, Implementation tasks, Objective, Phase 7 — Offline Captions as an Optional Capability, Product decision gate, Required tests
+
+### Community 199 - "Phase 8 — Licensed MP4/GIF Export and Preview Parity"
+Cohesion: 0.33
+Nodes (6): Exit gate, Implementation tasks, Objective, Phase 8 — Licensed MP4/GIF Export and Preview Parity, Product decision gate, Required validation
+
+### Community 200 - "Phase 9 — Product UX, Accessibility, Diagnostics, and Windows Release Gate"
+Cohesion: 0.33
+Nodes (6): Exit gate, Implementation tasks, Objective, Phase 9 — Product UX, Accessibility, Diagnostics, and Windows Release Gate, Rollout gate, Windows matrix
+
+### Community 201 - "Global Architecture Decisions"
+Cohesion: 0.40
+Nodes (5): Authoritative process boundaries, Authoritative state, Global Architecture Decisions, Required compositor order, Required recording phases
+
+### Community 202 - "Phase 3 — Project Creation, Media Validation, and Editor Boot Reliability"
+Cohesion: 0.40
+Nodes (5): Exit gate, Implementation tasks, Objective, Phase 3 — Project Creation, Media Validation, and Editor Boot Reliability, Required tests
+
+### Community 203 - "Phase 5 — Shared Layout and Visual Compositor"
+Cohesion: 0.40
+Nodes (5): Exit gate, Implementation tasks, Objective, Phase 5 — Shared Layout and Visual Compositor, Required tests
+
+### Community 204 - "stateMachine.js"
+Cohesion: 0.40
+Nodes (4): canRunRecordingCommand(), COMMAND_PHASES, recordingCommandError(), RecordingPhase
+
+### Community 205 - "Capture Policy Decision"
+Cohesion: 0.67
+Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
+
+### Community 206 - "19. Security Model"
+Cohesion: 0.67
+Nodes (3): 19. Security Model, Network posture, Required security decisions
 
 ## Knowledge Gaps
-- **1051 isolated node(s):** `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION`, `Point`, `PresentationBounds` (+1046 more)
+- **1146 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1141 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `bootstrap()` connect `main.ts` to `projectPersistence.ts`?**
-  _High betweenness centrality (0.044) - this node is a cross-community bridge._
-- **Why does `migrateProjectData()` connect `projectPersistence.ts` to `main.ts`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
-- **Why does `generateExportFFmpegCommand()` connect `main.ts` to `main.js`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `PresentationTrackService` connect `PresentationTrackService` to `main.ts`?**
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+- **Why does `createAppCapabilities()` connect `main.ts` to `main.js`?**
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
+- **Why does `seekPresentationTrack()` connect `project.ts` to `editor.tsx`, `PresentationTrackService`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `lastEnumeratedSources`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` to the rest of the system?**
-  _1051 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
+  _1146 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.07965860597439545 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.061170212765957445 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.11932773109243698 - nodes in this community are weakly interconnected._

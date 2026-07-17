@@ -34,8 +34,22 @@ function recordingCommandError(phase, command) {
   return `Cannot ${command} while recording state is ${phase}.`;
 }
 
+function validateRecordingCommand({ command, activeSessionId, currentPhase, expectedPhase, processedCommandIds }) {
+  if (!command || typeof command !== 'object') return 'Recording command metadata is required.';
+  if (command.sessionId !== activeSessionId || !activeSessionId) return 'This recording command belongs to an inactive session.';
+  if (command.expectedPhase !== expectedPhase || currentPhase !== expectedPhase) {
+    return `This recording command is stale; current state is ${currentPhase}.`;
+  }
+  if (typeof command.commandId !== 'string' || command.commandId.length < 8 || command.commandId.length > 256) {
+    return 'Recording command ID is invalid.';
+  }
+  if (processedCommandIds.has(command.commandId)) return 'This recording command was already processed.';
+  return null;
+}
+
 module.exports = {
   RecordingPhase,
   canRunRecordingCommand,
   recordingCommandError,
+  validateRecordingCommand,
 };

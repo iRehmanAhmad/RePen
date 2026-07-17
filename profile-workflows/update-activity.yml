@@ -1,0 +1,22 @@
+name: Update README Activity
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Runs every 30 minutes to fetch latest activity
+  workflow_dispatch: # Allows you to manually trigger it from the Actions tab
+
+jobs:
+  update-readme:
+    name: Update README with Latest Activity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Update Activity Section
+        uses: jamesgeorge007/github-activity-readme@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          COMMIT_MSG: "⚡ Update README with latest activity"
+          MAX_LINES: 5
