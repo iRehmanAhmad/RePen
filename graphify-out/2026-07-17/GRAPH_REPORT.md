@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 222 files · ~155,061 words
+- 223 files · ~155,237 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2430 nodes · 3571 edges · 216 communities (202 shown, 14 thin omitted)
+- 2432 nodes · 3572 edges · 218 communities (203 shown, 15 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6a828ea7`
+- Built from commit: `a2da26c6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -221,6 +221,8 @@
 - [[_COMMUNITY_clone|clone]]
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
 - [[_COMMUNITY_previewCropContract.test.ts|previewCropContract.test.ts]]
+- [[_COMMUNITY_getAppState|getAppState]]
+- [[_COMMUNITY_webcamPreview.test.ts|webcamPreview.test.ts]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -249,7 +251,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (216 total, 14 thin omitted)
+## Communities (218 total, 15 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -576,8 +578,8 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 86 - "applyHotkeys"
-Cohesion: 0.27
-Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), pushUndoSnapshot() (+3 more)
+Cohesion: 0.43
+Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
 
 ### Community 87 - "createToolbarWindow"
 Cohesion: 0.17
@@ -601,15 +603,15 @@ Nodes (16): Acceptance Checks, Complete OpenScreen integration after recorder fo
 
 ### Community 92 - "AudioMixer"
 Cohesion: 0.07
-Nodes (56): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+48 more)
+Nodes (57): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+49 more)
 
 ### Community 93 - "MFEncoder"
 Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.06
-Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
+Cohesion: 0.08
+Nodes (32): IDXGIDevice, IInspectable, fps, height, width, main(), initializeSystemLoopback, inputFormat_ (+24 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -624,8 +626,8 @@ Cohesion: 0.07
 Nodes (40): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+32 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.08
-Nodes (26): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, atomic, AudioCallback, BYTE, ComPtr, IMMDevice (+18 more)
+Cohesion: 0.07
+Nodes (44): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+36 more)
 
 ### Community 99 - "CaptureConfig"
 Cohesion: 0.08
@@ -700,8 +702,8 @@ Cohesion: 0.16
 Nodes (19): clamp(), DEFAULT_TIMELINE_TRACKS, fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor(), normalizeBlurType(), normalizeCursorThemeId() (+11 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.10
-Nodes (41): autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), exportPdf(), getAppState() (+33 more)
+Cohesion: 0.15
+Nodes (27): autoArchiveCurrentSession(), broadcastScene(), clearScene(), cycleBackgroundMode(), deepClone(), exportPdf(), getShortcutActions(), loadSession() (+19 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -788,8 +790,8 @@ Cohesion: 0.13
 Nodes (20): DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS, ExportFormat (+12 more)
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.20
-Nodes (10): ensureToolbarWindowCapacity(), getStateFilePath(), getToolbarWindowBounds(), loadState(), quitApp(), readPersistedState(), setShapeType(), setTextMode() (+2 more)
+Cohesion: 0.15
+Nodes (16): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setBoardColor(), setClickHalo(), setColor() (+8 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -992,8 +994,8 @@ Cohesion: 0.67
 Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
 
 ### Community 206 - "getAppState"
-Cohesion: 0.22
-Nodes (17): audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice, WAVEFORMATEX, wstring, getDeviceFriendlyName() (+9 more)
+Cohesion: 0.08
+Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ComPtr, Direct3D11CaptureFramePool, FrameCallback, ID3D11Device (+17 more)
 
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
@@ -1008,21 +1010,25 @@ Cohesion: 0.15
 Nodes (8): createProjectForCompletedRecording(), assertNonEmptyFile(), validateFinalizedRecordingMedia(), fs, path, writeProjectFileAtomically(), { validateFinalizedRecordingMedia }, { writeProjectFileAtomically }
 
 ### Community 212 - "init"
-Cohesion: 0.14
-Nodes (14): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+6 more)
+Cohesion: 0.67
+Nodes (3): BYTE, vector, hasVisibleBgraContent()
 
 ### Community 213 - "clone"
-Cohesion: 0.44
-Nodes (5): atomic, condition_variable, mutex, thread, vector
+Cohesion: 0.53
+Nodes (4): atomic, mutex, thread, vector
 
 ### Community 214 - "19. Security Model"
 Cohesion: 0.67
 Nodes (3): 19. Security Model, Network posture, Required security decisions
 
+### Community 216 - "getAppState"
+Cohesion: 0.23
+Nodes (12): getAppState(), getBootstrapData(), getDockSide(), getSceneState(), getStateFilePath(), loadState(), nextPage(), normalizeBoardViewport() (+4 more)
+
 ## Knowledge Gaps
-- **1171 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1166 more)
+- **1172 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1167 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
@@ -1036,7 +1042,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
-  _1171 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1172 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05505279034690799 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

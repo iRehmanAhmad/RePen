@@ -11,6 +11,8 @@ describe('presentation replay mode', () => {
     expect(editorSource).toContain("project.media?.presentationMode === 'sidecar'");
     expect(mainSource).toContain('function hydratePresentationTrack(project)');
     expect(mainSource).toContain('parsePresentationTrackJsonl');
+    expect(editorSource).toContain('Presentation replay is unavailable:');
+    expect(editorSource).toContain('proj.presentationTrackError');
   });
 
   it('does not write a hydrated sidecar back into the project file', () => {

@@ -93,6 +93,7 @@ export interface EditorProjectData {
   media?: ProjectMedia;
   /** Parsed on load only when sidecar presentation replay is required. */
   presentationTrack?: unknown;
+  presentationTrackError?: string;
   editor: ProjectEditorState;
   videoPath?: string;
 }

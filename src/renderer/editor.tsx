@@ -221,7 +221,11 @@ const EditorApp: React.FC = () => {
         addToRecent(res.path);
         setMediaMissing(false);
         setWebcamMissing(false);
-        if (!recovery || proj !== recovery.project) setEditorNotice(null);
+        if (proj.presentationTrackError) {
+          setEditorNotice(`Presentation replay is unavailable: ${proj.presentationTrackError}`);
+        } else if (!recovery || proj !== recovery.project) {
+          setEditorNotice(null);
+        }
       } else {
         setEditorNotice(`Could not load this project: ${res.message || res.error || 'Unknown error'}`);
       }
