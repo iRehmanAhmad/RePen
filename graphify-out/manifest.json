@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784281228.0252433,
-    "ast_hash": "f3847fe9990e87b9f56830471b1d3ee7",
+    "mtime": 1784281460.894951,
+    "ast_hash": "1a8792548c2c9978c63503d3dad1f3e2",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1172,6 +1172,11 @@
   "tests/unit/timelineTracks.test.ts": {
     "mtime": 1784281228.0274925,
     "ast_hash": "46afb2c959ca0a1c17f050513c293809",
+    "semantic_hash": ""
+  },
+  "tests/unit/previewCropContract.test.ts": {
+    "mtime": 1784281460.901014,
+    "ast_hash": "291b08a3d51271747e2ac40025ce35d7",
     "semantic_hash": ""
   }
 }

@@ -7,7 +7,7 @@ import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
 import { addTrimRange } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
-import { aspectRatioCss } from '../shared/editor/layoutGeometry';
+import { aspectRatioCss, normalizeCropForRender } from '../shared/editor/layoutGeometry';
 import { DEFAULT_TIMELINE_TRACKS, type EditorProjectData, type TimelineTrackId } from '../shared/editor/projectPersistence';
 import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
@@ -610,6 +610,18 @@ const EditorApp: React.FC = () => {
       : { aspectRatio: aspectRatioCss(ratio), width: '100%', height: 'auto' };
   };
 
+  const getCropMediaStyle = (): React.CSSProperties => {
+    const crop = normalizeCropForRender(project?.editor.cropRegion);
+    return {
+      width: `${100 / crop.width}%`,
+      height: `${100 / crop.height}%`,
+      maxWidth: 'none',
+      maxHeight: 'none',
+      transform: `translate(${-crop.x * 100}%, ${-crop.y * 100}%)`,
+      transformOrigin: 'top left',
+    };
+  };
+
   // Add/Remove Zoom Regions
   const handleAddZoomRegion = () => {
     if (!project) return;
@@ -921,25 +933,27 @@ const EditorApp: React.FC = () => {
           ) : (
             <div style={getAspectStyle()}>
               <div style={getCompositorStyle()}>
-                <video
-                  ref={videoRef}
-                  src={activeVideoSrc ? toFileUrl(activeVideoSrc) : undefined}
-                  className="video-element"
-                  style={{ opacity: timelineTracks.screen.visible ? 1 : 0 }}
-                  onLoadedMetadata={handleMetadataLoaded}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onEnded={() => setIsPlaying(false)}
-                  onVolumeChange={() => {
-                    if (videoRef.current) {
-                      setVolume(videoRef.current.volume);
-                      setIsMuted(videoRef.current.muted);
-                    }
-                  }}
-                  onClick={togglePlay}
-                  onError={() => setMediaMissing(true)}
-                />
-                <canvas ref={canvasRef} className="annotation-canvas" />
+                <div className="crop-viewport">
+                  <video
+                    ref={videoRef}
+                    src={activeVideoSrc ? toFileUrl(activeVideoSrc) : undefined}
+                    className="video-element"
+                    style={{ ...getCropMediaStyle(), opacity: timelineTracks.screen.visible ? 1 : 0 }}
+                    onLoadedMetadata={handleMetadataLoaded}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => setIsPlaying(false)}
+                    onVolumeChange={() => {
+                      if (videoRef.current) {
+                        setVolume(videoRef.current.volume);
+                        setIsMuted(videoRef.current.muted);
+                      }
+                    }}
+                    onClick={togglePlay}
+                    onError={() => setMediaMissing(true)}
+                  />
+                  <canvas ref={canvasRef} className="annotation-canvas" style={getCropMediaStyle()} />
+                </div>
               </div>
             </div>
           )}
