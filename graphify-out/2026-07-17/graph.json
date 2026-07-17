@@ -13170,7 +13170,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_fps",
-      "community": 120,
+      "community": 213,
       "norm_label": "fps"
     },
     {
@@ -13180,7 +13180,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_width",
-      "community": 120,
+      "community": 213,
       "norm_label": "width"
     },
     {
@@ -13190,7 +13190,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_height",
-      "community": 120,
+      "community": 213,
       "norm_label": "height"
     },
     {
@@ -13550,7 +13550,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_hasvisiblebgracontent",
-      "community": 120,
+      "community": 213,
       "norm_label": "hasvisiblebgracontent()"
     },
     {
@@ -13560,7 +13560,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_vector",
-      "community": 120,
+      "community": 213,
       "norm_label": "vector"
     },
     {
@@ -13570,7 +13570,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_cpp_byte",
-      "community": 120,
+      "community": 213,
       "norm_label": "byte"
     },
     {
@@ -13690,7 +13690,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_main",
-      "community": 120,
+      "community": 213,
       "norm_label": "main()"
     },
     {
@@ -14460,7 +14460,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 98,
+      "community": 184,
       "norm_label": "wasapi_loopback_capture.cpp"
     },
     {
@@ -14470,7 +14470,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_succeeded",
-      "community": 98,
+      "community": 184,
       "norm_label": "succeeded()"
     },
     {
@@ -14480,7 +14480,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_hresult",
-      "community": 98,
+      "community": 184,
       "norm_label": "hresult"
     },
     {
@@ -14490,7 +14490,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_audiosubtypefromformat",
-      "community": 98,
+      "community": 184,
       "norm_label": "audiosubtypefromformat()"
     },
     {
@@ -14500,7 +14500,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_guid",
-      "community": 98,
+      "community": 184,
       "norm_label": "guid"
     },
     {
@@ -14510,7 +14510,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_waveformatex",
-      "community": 98,
+      "community": 184,
       "norm_label": "waveformatex"
     },
     {
@@ -14520,7 +14520,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_normalizedevicename",
-      "community": 98,
+      "community": 184,
       "norm_label": "normalizedevicename()"
     },
     {
@@ -14530,7 +14530,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_wstring",
-      "community": 98,
+      "community": 184,
       "norm_label": "wstring"
     },
     {
@@ -14540,7 +14540,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_scoredevicename",
-      "community": 98,
+      "community": 184,
       "norm_label": "scoredevicename()"
     },
     {
@@ -14550,7 +14550,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_getdevicefriendlyname",
-      "community": 98,
+      "community": 184,
       "norm_label": "getdevicefriendlyname()"
     },
     {
@@ -14560,7 +14560,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_immdevice",
-      "community": 98,
+      "community": 184,
       "norm_label": "immdevice"
     },
     {
@@ -14570,7 +14570,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wasapicaptureendpoint",
-      "community": 98,
+      "community": 184,
       "norm_label": "wasapicaptureendpoint"
     },
     {
@@ -14580,7 +14580,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_audiocallback",
-      "community": 98,
+      "community": 184,
       "norm_label": "audiocallback"
     },
     {
@@ -14620,7 +14620,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializesystemloopback",
-      "community": 98,
+      "community": 213,
       "norm_label": "initializesystemloopback"
     },
     {
@@ -14630,7 +14630,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializemicrophone",
-      "community": 98,
+      "community": 184,
       "norm_label": "initializemicrophone"
     },
     {
@@ -14640,7 +14640,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_start",
-      "community": 98,
+      "community": 184,
       "norm_label": "start"
     },
     {
@@ -14650,7 +14650,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_stop",
-      "community": 98,
+      "community": 213,
       "norm_label": "stop"
     },
     {
@@ -14660,7 +14660,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initialize",
-      "community": 98,
+      "community": 184,
       "norm_label": "initialize"
     },
     {
@@ -14670,7 +14670,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_resolvemicrophonebyname",
-      "community": 98,
+      "community": 184,
       "norm_label": "resolvemicrophonebyname"
     },
     {
@@ -14690,7 +14690,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_resolveinputformat",
-      "community": 98,
+      "community": 184,
       "norm_label": "resolveinputformat"
     },
     {
@@ -14810,7 +14810,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_inputformat",
-      "community": 98,
+      "community": 213,
       "norm_label": "inputformat_"
     },
     {
@@ -14830,7 +14830,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_selecteddevicename",
-      "community": 98,
+      "community": 213,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -15420,7 +15420,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_selecteddevicename",
-      "community": 97,
+      "community": 213,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -15600,7 +15600,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 120,
+      "community": 94,
       "norm_label": "stop"
     },
     {
@@ -15610,7 +15610,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 120,
+      "community": 94,
       "norm_label": "capturewidth"
     },
     {
@@ -24104,10 +24104,20 @@
       "norm_label": "packaging and publication gates"
     },
     {
-      "label": "Known open release blockers",
+      "label": "Continuous integration",
       "file_type": "document",
       "source_file": "docs/verification/release-readiness.md",
       "source_location": "L51",
+      "_origin": "ast",
+      "id": "docs_verification_release_readiness_continuous_integration",
+      "community": 219,
+      "norm_label": "continuous integration"
+    },
+    {
+      "label": "Known open release blockers",
+      "file_type": "document",
+      "source_file": "docs/verification/release-readiness.md",
+      "source_location": "L55",
       "_origin": "ast",
       "id": "docs_verification_release_readiness_known_open_release_blockers",
       "community": 219,
@@ -61631,6 +61641,16 @@
       "source_location": "L51",
       "weight": 1.0,
       "source": "docs_verification_release_readiness_repen_release_readiness_gates",
+      "target": "docs_verification_release_readiness_continuous_integration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/release-readiness.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "docs_verification_release_readiness_repen_release_readiness_gates",
       "target": "docs_verification_release_readiness_known_open_release_blockers",
       "confidence_score": 1.0
     },
@@ -61956,5 +61976,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0d8e55ef8c709554bc03dc6bbb01086412b392a2"
+  "built_at_commit": "efe6efb099bdd0c579f39bbc634ec77b9a9beadb"
 }

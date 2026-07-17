@@ -23,6 +23,11 @@ export function addTrimRange(regions: TimedRegion[], startMs: number, endMs: num
   }, []);
 }
 
+/** Remove one persisted range without changing the remaining ranges or their order. */
+export function removeTimedRegionById<T extends TimedRegion>(regions: T[], id: string): T[] {
+  return regions.filter((region) => region.id !== id);
+}
+
 export function splitTimedRegion<T extends TimedRegion>(region: T, atMs: number): [T, T] | null {
   const at = Math.round(atMs);
   if (at <= region.startMs || at >= region.endMs) return null;

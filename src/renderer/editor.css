@@ -334,6 +334,8 @@ html, body {
   background: rgba(255, 107, 107, 0.2);
   border-left: 2px solid var(--danger);
   border-right: 2px solid var(--danger);
+  cursor: pointer;
+  padding: 0;
 }
 
 .speed-region-visual {

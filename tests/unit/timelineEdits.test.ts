@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addTrimRange, splitTimedRegion } from '../../src/shared/editor/timelineEdits';
+import { addTrimRange, removeTimedRegionById, splitTimedRegion } from '../../src/shared/editor/timelineEdits';
 
 describe('timeline edit rules', () => {
   it('clamps and merges overlapping trim ranges so playback has one deterministic skip region', () => {
@@ -12,5 +12,14 @@ describe('timeline edit rules', () => {
     expect(splitTimedRegion({ id: 'caption', startMs: 100, endMs: 300 }, 200))
       .toEqual([{ id: 'caption', startMs: 100, endMs: 200 }, { id: 'caption-split-200', startMs: 200, endMs: 300 }]);
     expect(splitTimedRegion({ id: 'caption', startMs: 100, endMs: 300 }, 100)).toBeNull();
+  });
+
+  it('removes only the requested trim range', () => {
+    const regions = [
+      { id: 'first', startMs: 100, endMs: 200 },
+      { id: 'second', startMs: 300, endMs: 400 },
+    ];
+    expect(removeTimedRegionById(regions, 'first')).toEqual([{ id: 'second', startMs: 300, endMs: 400 }]);
+    expect(removeTimedRegionById(regions, 'missing')).toEqual(regions);
   });
 });

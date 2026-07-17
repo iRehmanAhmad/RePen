@@ -5,7 +5,7 @@ import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
-import { addTrimRange } from '../shared/editor/timelineEdits';
+import { addTrimRange, removeTimedRegionById } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
 import { aspectRatioCss, normalizeCropForRender } from '../shared/editor/layoutGeometry';
 import { DEFAULT_TIMELINE_TRACKS, type EditorProjectData, type TimelineTrackId } from '../shared/editor/projectPersistence';
@@ -514,6 +514,13 @@ const EditorApp: React.FC = () => {
     updated.editor.trimRegions = [];
     updateProject(updated);
     setTrimStartMs(null);
+  };
+
+  const handleRemoveTrimRange = (trimId: string) => {
+    if (!project) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.trimRegions = removeTimedRegionById(updated.editor.trimRegions || [], trimId);
+    updateProject(updated);
   };
 
   const updateTimelineTrack = (trackId: TimelineTrackId, property: 'visible' | 'locked') => {
@@ -1491,9 +1498,16 @@ const EditorApp: React.FC = () => {
             <span className="track-label">Screen Recording</span>
             <TrackControls trackId="screen" state={timelineTracks.screen} onToggle={updateTimelineTrack} />
             {project?.editor.trimRegions?.map((t: TrimRegion) => (
-              <div 
+              <button
                 key={t.id} 
+                type="button"
                 className="trim-region-visual"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleRemoveTrimRange(t.id);
+                }}
+                aria-label={`Remove cut from ${formatTimelineTime(t.startMs)} to ${formatTimelineTime(t.endMs)}`}
+                title="Remove cut range"
                 style={{
                   left: `${timelinePercent(t.startMs, durationMs)}%`,
                   width: `${timelinePercent(t.endMs - t.startMs, durationMs)}%`
