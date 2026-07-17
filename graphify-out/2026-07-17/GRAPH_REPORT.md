@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 209 files · ~152,374 words
+- 211 files · ~152,748 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2379 nodes · 3460 edges · 212 communities (197 shown, 15 thin omitted)
+- 2385 nodes · 3478 edges · 211 communities (199 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 72 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1066c60e`
+- Built from commit: `bcc34d78`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -216,7 +216,6 @@
 - [[_COMMUNITY_phaseCompletionAudit.test.ts|phaseCompletionAudit.test.ts]]
 - [[_COMMUNITY_Phase 3 Package Inspection|Phase 3 Package Inspection]]
 - [[_COMMUNITY_missingMediaRecovery.test.ts|missingMediaRecovery.test.ts]]
-- [[_COMMUNITY_clone|clone]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -245,7 +244,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (212 total, 15 thin omitted)
+## Communities (211 total, 12 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -572,12 +571,12 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 86 - "applyHotkeys"
-Cohesion: 0.27
-Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), pushUndoSnapshot() (+3 more)
+Cohesion: 0.43
+Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
 
 ### Community 87 - "createToolbarWindow"
-Cohesion: 0.19
-Nodes (16): applyCapturePolicy(), createAppIcon(), createCountdownWindow(), createEditorWindow(), createOverlayWindow(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow() (+8 more)
+Cohesion: 0.21
+Nodes (14): applyCapturePolicy(), createAppIcon(), createCountdownWindow(), createEditorWindow(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow(), editorUrl() (+6 more)
 
 ### Community 88 - "19. Security Model"
 Cohesion: 0.29
@@ -604,8 +603,8 @@ Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.07
-Nodes (29): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ID3D11Device, ID3D11DeviceContext, ComPtr, Direct3D11CaptureFramePool (+21 more)
+Cohesion: 0.08
+Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ComPtr, Direct3D11CaptureFramePool, FrameCallback, ID3D11Device (+17 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -617,15 +616,15 @@ Nodes (12): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, Recor
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
-Nodes (43): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+35 more)
+Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.06
-Nodes (47): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+39 more)
+Cohesion: 0.07
+Nodes (43): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+35 more)
 
 ### Community 99 - "CaptureConfig"
-Cohesion: 0.07
-Nodes (28): CaptureConfig, bounds, captureCursor, captureMic, captureSystemAudio, displayId, fps, hasDisplayBounds (+20 more)
+Cohesion: 0.08
+Nodes (25): CaptureConfig, bounds, captureCursor, captureMic, captureSystemAudio, displayId, hasDisplayBounds, microphoneDeviceId (+17 more)
 
 ### Community 100 - "build-native-helper.js"
 Cohesion: 0.18
@@ -691,9 +690,13 @@ Nodes (10): AM_MEDIA_TYPE, GUID, HRESULT, string, wstring, initialize, start, fr
 Cohesion: 0.20
 Nodes (10): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, timestampHns (+2 more)
 
-### Community 117 - "getAppState"
+### Community 116 - "main"
 Cohesion: 0.15
-Nodes (21): autoArchiveCurrentSession(), broadcastScene(), cycleBackgroundMode(), exportPdf(), getAppState(), getBootstrapData(), getDockSide(), getSceneState() (+13 more)
+Nodes (7): getSmoothedCursorPosition(), PlaybackCoordinator, VideoPlaybackSync(), VideoPlaybackSyncProps, CursorTelemetryPoint, SpeedRegion, TrimRegion
+
+### Community 117 - "getAppState"
+Cohesion: 0.14
+Nodes (30): autoArchiveCurrentSession(), broadcastScene(), clearScene(), createOverlayWindow(), cycleBackgroundMode(), deepClone(), exportPdf(), getShortcutActions() (+22 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -704,8 +707,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.26
-Nodes (18): BYTE, HWND, string, vector, wstring, findBool(), findDouble(), findInt() (+10 more)
+Cohesion: 0.31
+Nodes (14): HWND, string, wstring, findBool(), findDouble(), findInt(), findInt64(), findString() (+6 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -752,8 +755,8 @@ Cohesion: 0.50
 Nodes (3): content, fs, lines
 
 ### Community 135 - "PresentationTrackService"
-Cohesion: 0.08
-Nodes (25): BoardSnapshot, BoardViewport, defaultWriterFactory, parsePresentationTrackJsonl(), Point, PRESENTATION_TRACK_SCHEMA_VERSION, PresentationBounds, PresentationCanvasMetadata (+17 more)
+Cohesion: 0.05
+Nodes (32): annotationId(), applyPresentationEvent(), BoardSnapshot, BoardViewport, clone(), defaultWriterFactory, FileHandlePresentationTrackWriter, parsePresentationTrackJsonl() (+24 more)
 
 ### Community 136 - "main.ts"
 Cohesion: 0.07
@@ -764,24 +767,24 @@ Cohesion: 0.15
 Nodes (8): createProjectForCompletedRecording(), assertNonEmptyFile(), validateFinalizedRecordingMedia(), fs, path, writeProjectFileAtomically(), { validateFinalizedRecordingMedia }, { writeProjectFileAtomically }
 
 ### Community 138 - "DisplayManager"
-Cohesion: 0.11
-Nodes (33): broadcastState(), captureMagnifierBackground(), clearScene(), createOverlayWindows(), createTray(), createTrayIcon(), getShortcutActions(), getStateFilePath() (+25 more)
+Cohesion: 0.12
+Nodes (21): broadcastState(), captureMagnifierBackground(), createOverlayWindows(), createTray(), createTrayIcon(), getStateFilePath(), hideOverlayWindows(), init() (+13 more)
 
 ### Community 139 - "audio_sample_utils.h"
-Cohesion: 0.13
-Nodes (18): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice() (+10 more)
+Cohesion: 0.15
+Nodes (16): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice(), applySessionOptions (+8 more)
 
 ### Community 140 - "find_main_js_handlers.js"
 Cohesion: 0.50
 Nodes (3): content, fs, lines
 
 ### Community 142 - "types.ts"
-Cohesion: 0.05
-Nodes (31): AnnotationPosition, AnnotationSize, AnnotationTextAnimation, AnnotationTextStyle, AnnotationType, ArrowDirection, BlurColor, BlurData (+23 more)
+Cohesion: 0.06
+Nodes (30): AnnotationPosition, AnnotationSize, AnnotationTextAnimation, AnnotationTextStyle, AnnotationType, ArrowDirection, BlurColor, BlurData (+22 more)
 
 ### Community 143 - "editorDefaults.ts"
-Cohesion: 0.15
-Nodes (17): DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS, ExportFormat (+9 more)
+Cohesion: 0.13
+Nodes (21): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+13 more)
 
 ### Community 144 - "projectPersistence.ts"
 Cohesion: 0.22
@@ -812,8 +815,8 @@ Cohesion: 0.50
 Nodes (3): content, fs, lines
 
 ### Community 151 - "PlaybackCoordinator"
-Cohesion: 0.24
-Nodes (9): getSmoothedCursorPosition(), VideoPlaybackSync(), VideoPlaybackSyncProps, FFmpegCommandOptions, generateFFmpegCommand(), CropRegion, CursorTelemetryPoint, SpeedRegion (+1 more)
+Cohesion: 0.60
+Nodes (3): FFmpegCommandOptions, generateFFmpegCommand(), CropRegion
 
 ### Community 152 - "find_pixi_init.js"
 Cohesion: 0.50
@@ -924,12 +927,16 @@ Cohesion: 0.18
 Nodes (10): Build & Package, ✨ Features, 🤝 Feedback & Support, 🛠️ Installation & Running from Source, ⌨️ Keyboard Shortcuts, 🚀 Overview, Prerequisites, Run Locally (+2 more)
 
 ### Community 190 - "editor.tsx"
-Cohesion: 0.22
-Nodes (9): EditorApp(), rootEl, TRANSLATIONS, unavailableCapabilities(), AspectRatio, EditorProjectData, AnnotationRegion, WebcamMaskShape (+1 more)
+Cohesion: 0.33
+Nodes (10): EditorApp(), rootEl, TRANSLATIONS, unavailableCapabilities(), EditorProjectData, toFileUrl(), clampTimelineZoom(), formatTimelineTime() (+2 more)
 
 ### Community 191 - "Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations"
 Cohesion: 0.22
 Nodes (9): Cursor and clicks, Editor annotations, Exit gate, Objective, Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations, Presentation sidecar, Required tests, Webcam (+1 more)
+
+### Community 192 - "init"
+Cohesion: 0.11
+Nodes (18): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+10 more)
 
 ### Community 193 - "RePen OpenScreen Corrective Baseline"
 Cohesion: 0.29
@@ -983,6 +990,10 @@ Nodes (7): validateActiveRecordingCommand(), canRunRecordingCommand(), COMMAND_P
 Cohesion: 0.67
 Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
 
+### Community 206 - "19. Security Model"
+Cohesion: 0.33
+Nodes (9): getAppState(), getBootstrapData(), getDockSide(), getSceneState(), nextPage(), normalizeBoardViewport(), prevPage(), setBoardViewport() (+1 more)
+
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
 Nodes (4): Command, Inspected package contents, Limits, Phase 3 Package Inspection
@@ -991,22 +1002,18 @@ Nodes (4): Command, Inspected package contents, Limits, Phase 3 Package Inspecti
 Cohesion: 0.40
 Nodes (4): editorSource, mainSource, preloadSource, repositoryRoot
 
-### Community 211 - "clone"
-Cohesion: 0.47
-Nodes (4): annotationId(), applyPresentationEvent(), clone(), replayPresentationTrack()
-
 ## Knowledge Gaps
 - **1162 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1157 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PresentationTrackService` connect `init` to `main.ts`, `clone`, `PresentationTrackService`?**
+- **Why does `PresentationTrackService` connect `PresentationTrackService` to `main.ts`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **Why does `createAppCapabilities()` connect `main.ts` to `main.js`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Why does `seekPresentationTrack()` connect `project.ts` to `editor.tsx`, `PresentationTrackService`?**
   _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**

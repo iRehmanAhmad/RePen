@@ -80,6 +80,8 @@ const EditorApp: React.FC = () => {
   const [projectPath, setProjectPath] = useState<string | null>(null);
   const [project, setProject] = useState<EditorProjectData | null>(null);
   const [isDirty, setIsDirty] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [editorNotice, setEditorNotice] = useState<string | null>(null);
   const [history, setHistory] = useState<EditorProjectData[]>([]);
   const [future, setFuture] = useState<EditorProjectData[]>([]);
 
@@ -207,8 +209,9 @@ const EditorApp: React.FC = () => {
         setFuture([]);
         addToRecent(res.path);
         setMediaMissing(false);
+        setEditorNotice(null);
       } else {
-        alert(`Failed to load project: ${res.message}`);
+        setEditorNotice(`Could not load this project: ${res.message || res.error || 'Unknown error'}`);
       }
     }
   };
@@ -220,6 +223,7 @@ const EditorApp: React.FC = () => {
       setFuture([]);
       setProject(newProject);
       setIsDirty(true);
+      setSaveStatus('idle');
     }
   };
 
@@ -243,16 +247,36 @@ const EditorApp: React.FC = () => {
 
   // Save Project
   const handleSave = async () => {
-    if (!project || !projectPath) return;
+    if (!project || !projectPath) return false;
     if ((window as any).appBridge?.saveProjectFile) {
+      setSaveStatus('saving');
       const res = await (window as any).appBridge.saveProjectFile(project, '', projectPath);
       if (res.success) {
         setIsDirty(false);
-        alert('Project saved successfully!');
+        setSaveStatus('saved');
+        setEditorNotice(null);
+        return true;
       } else {
-        alert(`Save failed: ${res.error}`);
+        setSaveStatus('error');
+        setEditorNotice(`Could not save project: ${res.error || res.message || 'Unknown error'}`);
+        return false;
       }
     }
+    setSaveStatus('error');
+    setEditorNotice('Could not save project: the editor bridge is unavailable.');
+    return false;
+  };
+
+  const handleCloseEditor = async () => {
+    if (isDirty) {
+      const saveBeforeClosing = confirm('Save changes before closing the editor?');
+      if (saveBeforeClosing) {
+        if (!(await handleSave())) return;
+      } else if (!confirm('Discard unsaved changes and close the editor?')) {
+        return;
+      }
+    }
+    (window as any).appBridge?.closeRecordingEditor();
   };
 
   // Playback sync
@@ -455,20 +479,37 @@ const EditorApp: React.FC = () => {
   // Key handlers
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
+      const target = e.target as HTMLElement | null;
+      const isEditableTarget = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        void handleSave();
+      } else if (!isEditableTarget && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        if (e.shiftKey) handleRedo(); else handleUndo();
+      } else if (!isEditableTarget && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+        e.preventDefault();
+        handleRedo();
+      } else if (!isEditableTarget && e.code === 'Space') {
         e.preventDefault();
         togglePlay();
-      } else if (e.code === 'ArrowLeft') {
+      } else if (!isEditableTarget && e.code === 'ArrowLeft') {
         e.preventDefault();
-        handleSeek(Math.max(0, currentTimeMs - 100));
-      } else if (e.code === 'ArrowRight') {
+        if (e.shiftKey) handleFrameStep(-1); else handleSeek(Math.max(0, currentTimeMs - 100));
+      } else if (!isEditableTarget && e.code === 'ArrowRight') {
         e.preventDefault();
-        handleSeek(Math.min(durationMs, currentTimeMs + 100));
+        if (e.shiftKey) handleFrameStep(1); else handleSeek(Math.min(durationMs, currentTimeMs + 100));
+      } else if (!isEditableTarget && e.code === 'Home') {
+        e.preventDefault();
+        handleSeek(0);
+      } else if (!isEditableTarget && e.code === 'End') {
+        e.preventDefault();
+        handleSeek(durationMs);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPlaying, currentTimeMs, durationMs]);
+  }, [isPlaying, currentTimeMs, durationMs, history, future, project]);
 
   // CSS Transforms Composer for video preview
   const getCompositorStyle = (): React.CSSProperties => {
@@ -781,6 +822,8 @@ const EditorApp: React.FC = () => {
           🎬 {t('title')}
           {projectPath && <span style={{fontSize: 12, opacity: 0.7}}>({projectPath})</span>}
           {isDirty && <div className="dirty-indicator" title="Unsaved Changes" />}
+          {saveStatus === 'saving' && <span className="save-status" role="status">Saving…</span>}
+          {saveStatus === 'saved' && <span className="save-status" role="status">Saved</span>}
         </div>
         <div className="menu-bar" style={{display: 'flex', gap: 6, alignItems: 'center'}}>
           <select 
@@ -793,7 +836,7 @@ const EditorApp: React.FC = () => {
             <option value="en">English</option>
             <option value="es">Español</option>
           </select>
-          <button className="menu-btn" onClick={handleSave} disabled={!isDirty} aria-label={t('save')}>{t('save')}</button>
+          <button className="menu-btn" onClick={() => void handleSave()} disabled={!isDirty || saveStatus === 'saving'} aria-label={t('save')}>{t('save')}</button>
           <button className="menu-btn" onClick={handleUndo} disabled={history.length === 0} aria-label={t('undo')}>{t('undo')}</button>
           <button className="menu-btn" onClick={handleRedo} disabled={future.length === 0} aria-label={t('redo')}>{t('redo')}</button>
           <button
@@ -805,9 +848,16 @@ const EditorApp: React.FC = () => {
           >
             {t('export')}{!hasAvailableExportFormat && ' (Unavailable)'}
           </button>
-          <button className="menu-btn" onClick={() => (window as any).appBridge?.closeRecordingEditor()} aria-label={t('close')}>{t('close')}</button>
+          <button className="menu-btn" onClick={() => void handleCloseEditor()} aria-label={t('close')}>{t('close')}</button>
         </div>
       </header>
+
+      {editorNotice && (
+        <div className="editor-notice" role="alert">
+          <span>{editorNotice}</span>
+          <button className="menu-btn" onClick={() => setEditorNotice(null)} aria-label="Dismiss editor message">Dismiss</button>
+        </div>
+      )}
 
       {/* Workspace Area */}
       <div className="editor-workspace">
