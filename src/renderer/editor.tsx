@@ -5,11 +5,11 @@ import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
-import { addTrimRange, removeTimedRegionById } from '../shared/editor/timelineEdits';
+import { addSpeedRange, addTrimRange, removeTimedRegionById } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
 import { aspectRatioCss, normalizeCropForRender } from '../shared/editor/layoutGeometry';
 import { DEFAULT_TIMELINE_TRACKS, type EditorProjectData, type TimelineTrackId } from '../shared/editor/projectPersistence';
-import type { TrimRegion, ZoomRegion, AnnotationRegion, WebcamMaskShape } from '../shared/editor/types';
+import { DEFAULT_PLAYBACK_SPEED, SPEED_OPTIONS, type SpeedRegion, type TrimRegion, type ZoomRegion, type AnnotationRegion, type WebcamMaskShape } from '../shared/editor/types';
 import type { AspectRatio } from '../shared/editor/editorDefaults';
 import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/schemas/scene';
 import './editor.css';
@@ -123,6 +123,8 @@ const EditorApp: React.FC = () => {
   const [durationMs, setDurationMs] = useState(10000); // fallback default
   const [timelineZoom, setTimelineZoom] = useState(1.0);
   const [trimStartMs, setTrimStartMs] = useState<number | null>(null);
+  const [speedStartMs, setSpeedStartMs] = useState<number | null>(null);
+  const [pendingSpeed, setPendingSpeed] = useState(DEFAULT_PLAYBACK_SPEED);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
@@ -523,6 +525,39 @@ const EditorApp: React.FC = () => {
     const updated = JSON.parse(JSON.stringify(project));
     updated.editor.trimRegions = removeTimedRegionById(updated.editor.trimRegions || [], trimId);
     updateProject(updated);
+  };
+
+  const handleMarkSpeedStart = () => setSpeedStartMs(currentTimeMs);
+
+  const handleCancelSpeedMark = () => setSpeedStartMs(null);
+
+  const handleAddSpeedRange = () => {
+    if (!project || speedStartMs === null) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.speedRegions = addSpeedRange(
+      updated.editor.speedRegions || [],
+      speedStartMs,
+      currentTimeMs,
+      pendingSpeed,
+      durationMs,
+    );
+    updateProject(updated);
+    setSpeedStartMs(null);
+  };
+
+  const handleRemoveSpeedRange = (speedId: string) => {
+    if (!project) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.speedRegions = removeTimedRegionById(updated.editor.speedRegions || [], speedId);
+    updateProject(updated);
+  };
+
+  const handleClearSpeedRanges = () => {
+    if (!project || project.editor.speedRegions.length === 0) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.speedRegions = [];
+    updateProject(updated);
+    setSpeedStartMs(null);
   };
 
   const updateTimelineTrack = (trackId: TimelineTrackId, property: 'visible' | 'locked') => {
@@ -1472,6 +1507,20 @@ const EditorApp: React.FC = () => {
             <button className="timeline-control" onClick={handleCancelTrimMark} disabled={trimStartMs === null} aria-label="Cancel pending cut range">Cancel Cut</button>
             <button className="timeline-control" onClick={handleAddTrimRange} disabled={trimStartMs === null || trimStartMs === currentTimeMs} aria-label="Cut marked range">Cut Range</button>
             <button className="timeline-control" onClick={handleClearTrimRanges} disabled={!project?.editor.trimRegions.length} aria-label="Clear cut ranges">Clear Cuts</button>
+            <select
+              className="timeline-control"
+              value={pendingSpeed}
+              onChange={(event) => setPendingSpeed(Number(event.target.value))}
+              aria-label="Speed for marked range"
+            >
+              {SPEED_OPTIONS.map((option) => <option key={option.speed} value={option.speed}>{option.label}</option>)}
+            </select>
+            <button className="timeline-control" onClick={handleMarkSpeedStart} aria-label="Mark speed range start">
+              {speedStartMs === null ? 'Mark Speed Start' : `Speed starts ${formatTimelineTime(speedStartMs)}`}
+            </button>
+            <button className="timeline-control" onClick={handleCancelSpeedMark} disabled={speedStartMs === null} aria-label="Cancel pending speed range">Cancel Speed</button>
+            <button className="timeline-control" onClick={handleAddSpeedRange} disabled={speedStartMs === null || speedStartMs === currentTimeMs} aria-label="Apply speed to marked range">Apply Speed</button>
+            <button className="timeline-control" onClick={handleClearSpeedRanges} disabled={!project?.editor.speedRegions.length} aria-label="Clear speed ranges">Clear Speeds</button>
             <label style={{display: 'flex', gap: 6, alignItems: 'center'}}>
               Timeline Zoom:
               <input 
@@ -1508,6 +1557,33 @@ const EditorApp: React.FC = () => {
                 aria-hidden="true"
               />
             )}
+            {speedStartMs !== null && (
+              <div
+                className="timeline-pending-speed-marker"
+                style={{ left: `${timelinePercent(speedStartMs, durationMs)}%` }}
+                title={`Pending speed starts at ${formatTimelineTime(speedStartMs)}`}
+                aria-hidden="true"
+              />
+            )}
+            {project?.editor.speedRegions?.map((region: SpeedRegion) => (
+              <button
+                key={region.id}
+                type="button"
+                className="playback-speed-region"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleRemoveSpeedRange(region.id);
+                }}
+                aria-label={`Remove ${region.speed} times speed from ${formatTimelineTime(region.startMs)} to ${formatTimelineTime(region.endMs)}`}
+                title={`Remove ${region.speed}× speed range`}
+                style={{
+                  left: `${timelinePercent(region.startMs, durationMs)}%`,
+                  width: `${timelinePercent(region.endMs - region.startMs, durationMs)}%`,
+                }}
+              >
+                {region.speed}×
+              </button>
+            ))}
             {project?.editor.trimRegions?.map((t: TrimRegion) => (
               <button
                 key={t.id} 

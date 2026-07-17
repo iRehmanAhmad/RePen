@@ -1,3 +1,5 @@
+import { clampPlaybackSpeed, type PlaybackSpeed, type SpeedRegion } from './types';
+
 export interface TimedRegion { id: string; startMs: number; endMs: number; }
 
 function boundedTime(value: number, durationMs: number): number {
@@ -26,6 +28,35 @@ export function addTrimRange(regions: TimedRegion[], startMs: number, endMs: num
 /** Remove one persisted range without changing the remaining ranges or their order. */
 export function removeTimedRegionById<T extends TimedRegion>(regions: T[], id: string): T[] {
   return regions.filter((region) => region.id !== id);
+}
+
+/**
+ * Add a speed range while preserving non-overlapping portions of existing ranges.
+ * The newly added range wins where it intersects an older one, so coordinator lookup
+ * never depends on insertion order.
+ */
+export function addSpeedRange(
+  regions: SpeedRegion[],
+  startMs: number,
+  endMs: number,
+  speed: number,
+  durationMs: number,
+): SpeedRegion[] {
+  const start = boundedTime(Math.min(startMs, endMs), durationMs);
+  const end = boundedTime(Math.max(startMs, endMs), durationMs);
+  if (end <= start) return regions;
+
+  const preserved = regions.flatMap((region) => {
+    if (region.endMs <= start || region.startMs >= end) return [{ ...region }];
+    const portions: SpeedRegion[] = [];
+    if (region.startMs < start) portions.push({ ...region, id: `${region.id}-before-${start}`, endMs: start });
+    if (region.endMs > end) portions.push({ ...region, id: `${region.id}-after-${end}`, startMs: end });
+    return portions;
+  });
+
+  const nextSpeed: PlaybackSpeed = clampPlaybackSpeed(speed);
+  return [...preserved, { id: `speed-${Date.now()}`, startMs: start, endMs: end, speed: nextSpeed }]
+    .sort((a, b) => a.startMs - b.startMs || a.endMs - b.endMs);
 }
 
 export function splitTimedRegion<T extends TimedRegion>(region: T, atMs: number): [T, T] | null {

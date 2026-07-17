@@ -349,6 +349,36 @@ html, body {
   z-index: 2;
 }
 
+.timeline-pending-speed-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.playback-speed-region {
+  position: absolute;
+  bottom: 2px;
+  min-width: 22px;
+  height: 16px;
+  padding: 0 3px;
+  overflow: hidden;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  background: rgba(46, 102, 212, 0.8);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: left;
+  white-space: nowrap;
+  z-index: 1;
+}
+
 .speed-region-visual {
   position: absolute;
   top: 0;
