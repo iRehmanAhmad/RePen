@@ -1,7 +1,7 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 225 files · ~156,649 words
+- 225 files · ~156,670 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6ec22ca0`
+- Built from commit: `62b28dd2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -251,8 +251,8 @@
 ## Communities (215 total, 16 thin omitted)
 
 ### Community 0 - "main.js"
-Cohesion: 0.06
-Nodes (41): optionalString(), addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, approvedRecordingDirectories, boundedInteger(), buildPdfExportHtml(), { canRunRecordingCommand, recordingCommandError, validateRecordingCommand }, ccw() (+33 more)
+Cohesion: 0.05
+Nodes (42): optionalString(), addStroke(), { app, BrowserWindow, Menu, Tray, globalShortcut, ipcMain, nativeImage, screen, desktopCapturer, clipboard, dialog, shell }, approvedRecordingDirectories, boundedInteger(), buildPdfExportHtml(), { canRunRecordingCommand, recordingCommandError, validateRecordingCommand }, ccw() (+34 more)
 
 ### Community 1 - "settings.js"
 Cohesion: 0.12
@@ -699,8 +699,8 @@ Cohesion: 0.07
 Nodes (45): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+37 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.10
-Nodes (41): autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), exportPdf(), getAppState() (+33 more)
+Cohesion: 0.11
+Nodes (38): autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), getAppState(), getDockSide() (+30 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -767,8 +767,8 @@ Cohesion: 0.07
 Nodes (22): initializeSingleInstanceLock(), approvedRecordingDirectories, bootstrap(), broadcastRecordingState(), broadcastRecordingTimer(), calculateToolbarBounds(), { createAppCapabilities }, lastEnumeratedSources (+14 more)
 
 ### Community 137 - "StateManager"
-Cohesion: 0.27
-Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), pushUndoSnapshot() (+3 more)
+Cohesion: 0.22
+Nodes (13): applyHotkeys(), applySettingsPayload(), deepClone(), getBootstrapData(), getSceneState(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys() (+5 more)
 
 ### Community 139 - "PresentationTrackService"
 Cohesion: 0.19
@@ -1025,6 +1025,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
   _1181 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.05505279034690799 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.054426705370101594 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**
   _Cohesion score 0.11932773109243698 - nodes in this community are weakly interconnected._

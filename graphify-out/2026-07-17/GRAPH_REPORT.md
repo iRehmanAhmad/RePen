@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 225 files · ~156,560 words
+- 225 files · ~156,649 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2446 nodes · 3586 edges · 218 communities (202 shown, 16 thin omitted)
+- 2447 nodes · 3590 edges · 215 communities (199 shown, 16 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `efe6efb0`
+- Built from commit: `6ec22ca0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -191,14 +191,12 @@
 - [[_COMMUNITY_Phase 8 — Product completeness|Phase 8 — Product completeness]]
 - [[_COMMUNITY_native-recorder-helper.test.ts|native-recorder-helper.test.ts]]
 - [[_COMMUNITY_broadcastScene|broadcastScene]]
-- [[_COMMUNITY_wasapi_loopback_capture.cpp|wasapi_loopback_capture.cpp]]
 - [[_COMMUNITY_editorExport.test.ts|editorExport.test.ts]]
 - [[_COMMUNITY_Third-Party Notices & SBOM|Third-Party Notices & SBOM]]
 - [[_COMMUNITY_Hi there, I'm Rehman Ahmad Chaudhry 👋|Hi there, I'm Rehman Ahmad Chaudhry 👋]]
 - [[_COMMUNITY_README|README.md]]
 - [[_COMMUNITY_editor.tsx|editor.tsx]]
 - [[_COMMUNITY_Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations|Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations]]
-- [[_COMMUNITY_MemoryStorage|MemoryStorage]]
 - [[_COMMUNITY_RePen OpenScreen Corrective Baseline|RePen OpenScreen Corrective Baseline]]
 - [[_COMMUNITY_Phase 0 — Baseline, Feature Inventory, and Truthful Gates|Phase 0 — Baseline, Feature Inventory, and Truthful Gates]]
 - [[_COMMUNITY_Phase 1 — Capture Exclusion and Source-Content Correctness|Phase 1 — Capture Exclusion and Source-Content Correctness]]
@@ -218,7 +216,6 @@
 - [[_COMMUNITY_missingMediaRecovery.test.ts|missingMediaRecovery.test.ts]]
 - [[_COMMUNITY_FileHandlePresentationTrackWriter|FileHandlePresentationTrackWriter]]
 - [[_COMMUNITY_getAppState|getAppState]]
-- [[_COMMUNITY_main|main]]
 - [[_COMMUNITY_previewCropContract.test.ts|previewCropContract.test.ts]]
 - [[_COMMUNITY_webcamPreview.test.ts|webcamPreview.test.ts]]
 - [[_COMMUNITY_audio_sample_utils.h|audio_sample_utils.h]]
@@ -251,7 +248,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (218 total, 16 thin omitted)
+## Communities (215 total, 16 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -623,15 +620,15 @@ Nodes (12): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, Recor
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
-Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
+Nodes (43): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+35 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.08
-Nodes (26): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, atomic, AudioCallback, BYTE, ComPtr, IMMDevice (+18 more)
+Cohesion: 0.06
+Nodes (47): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+39 more)
 
 ### Community 99 - "CaptureConfig"
-Cohesion: 0.08
-Nodes (25): CaptureConfig, bounds, captureCursor, captureMic, captureSystemAudio, displayId, hasDisplayBounds, microphoneDeviceId (+17 more)
+Cohesion: 0.07
+Nodes (28): CaptureConfig, bounds, captureCursor, captureMic, captureSystemAudio, displayId, fps, hasDisplayBounds (+20 more)
 
 ### Community 100 - "build-native-helper.js"
 Cohesion: 0.18
@@ -698,8 +695,8 @@ Cohesion: 0.20
 Nodes (10): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, timestampHns (+2 more)
 
 ### Community 116 - "main"
-Cohesion: 0.08
-Nodes (42): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+34 more)
+Cohesion: 0.07
+Nodes (45): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+37 more)
 
 ### Community 117 - "getAppState"
 Cohesion: 0.10
@@ -714,8 +711,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.31
-Nodes (14): HWND, string, wstring, findBool(), findDouble(), findInt(), findInt64(), findString() (+6 more)
+Cohesion: 0.26
+Nodes (18): BYTE, HWND, string, vector, wstring, findBool(), findDouble(), findInt() (+10 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -909,10 +906,6 @@ Nodes (3): Exit gate, Implementation, Phase 8 — Product completeness
 Cohesion: 0.13
 Nodes (14): Correct Recorder Capture and Deliver the Production OpenScreen-Style Editor, Cross-Phase Test and Evidence Policy, Current Phase, Definition of the Target Product, Final Acceptance Checklist, Forbidden Completion Shortcuts, Goal, Handoff Notes (+6 more)
 
-### Community 184 - "wasapi_loopback_capture.cpp"
-Cohesion: 0.22
-Nodes (17): audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice, WAVEFORMATEX, wstring, getDeviceFriendlyName() (+9 more)
-
 ### Community 185 - "editorExport.test.ts"
 Cohesion: 0.18
 Nodes (10): Assets To Attach, Checksum Command, Checksums, Download, Final Pre-Publish Checklist, Known Notes, RePen Release Template, Short Summary (+2 more)
@@ -923,23 +916,19 @@ Nodes (6): Electron (MIT License), FFmpeg, Node.js (MIT License), OpenScreen (MI
 
 ### Community 188 - "Hi there, I'm Rehman Ahmad Chaudhry 👋"
 Cohesion: 0.17
-Nodes (11): 💫 About Me, 🖋️ Desktop Applications & Tools, 🚀 Featured Projects, Full-Stack Developer & Machine Learning / Computer Vision Engineer, 📊 GitHub Activity & Contribution Graph, Hi there, I'm Rehman Ahmad Chaudhry 👋, 📝 Latest Blog Posts, 🧠 Machine Learning & Computer Vision (+3 more)
+Nodes (11): 💫 About Me, 🖋️ Desktop Applications & Tools, 🚀 Featured Projects, Full-Stack Developer & Machine Learning / Computer Vision Engineer, 📊 GitHub Stats & Metrics, Hi there, I'm Rehman Ahmad Chaudhry 👋, 📝 Latest Blog Posts, 🧠 Machine Learning & Computer Vision (+3 more)
 
 ### Community 189 - "README.md"
 Cohesion: 0.18
 Nodes (10): Build & Package, ✨ Features, 🤝 Feedback & Support, 🛠️ Installation & Running from Source, ⌨️ Keyboard Shortcuts, 🚀 Overview, Prerequisites, Run Locally (+2 more)
 
 ### Community 190 - "editor.tsx"
-Cohesion: 0.15
-Nodes (20): EDITOR_TABS, EditorApp(), EditorLocale, EditorTab, isEditorLocale(), rootEl, TRANSLATIONS, unavailableCapabilities() (+12 more)
+Cohesion: 0.14
+Nodes (22): EDITOR_TABS, EditorApp(), EditorLocale, EditorTab, isEditorLocale(), rootEl, TRANSLATIONS, unavailableCapabilities() (+14 more)
 
 ### Community 191 - "Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations"
 Cohesion: 0.22
 Nodes (9): Cursor and clicks, Editor annotations, Exit gate, Objective, Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations, Presentation sidecar, Required tests, Webcam (+1 more)
-
-### Community 192 - "MemoryStorage"
-Cohesion: 0.53
-Nodes (4): addTrimRange(), boundedTime(), splitTimedRegion(), TimedRegion
 
 ### Community 193 - "RePen OpenScreen Corrective Baseline"
 Cohesion: 0.29
@@ -1009,12 +998,8 @@ Nodes (4): editorSource, mainSource, preloadSource, repositoryRoot
 Cohesion: 0.20
 Nodes (13): getRepenOwnedWindowHandleCandidates(), createDefaultEditorState(), createRecordingProject(), migrateProjectData(), CONTROL_WINDOW_ROLES, filterRepenOwnedSources(), nativeWindowHandleCandidates(), shouldExcludeFromCapture() (+5 more)
 
-### Community 213 - "main"
-Cohesion: 0.17
-Nodes (12): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+4 more)
-
 ### Community 218 - "audio_sample_utils.h"
-Cohesion: 0.44
+Cohesion: 0.38
 Nodes (5): atomic, condition_variable, mutex, thread, vector
 
 ### Community 219 - "RePen Release-Readiness Gates"
@@ -1030,11 +1015,11 @@ Nodes (7): Automated evidence available in this branch, Capability-bound feature
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `saveRecoverySnapshot()` connect `PresentationTrackService` to `editor.tsx`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `getToolbarHotkeyConflicts()` connect `toolbar.js` to `PresentationTrackService`?**
   _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `RecorderService` connect `main.ts` to `main.ts`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**

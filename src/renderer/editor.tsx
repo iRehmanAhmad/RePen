@@ -500,6 +500,8 @@ const EditorApp: React.FC = () => {
 
   const handleMarkTrimStart = () => setTrimStartMs(currentTimeMs);
 
+  const handleCancelTrimMark = () => setTrimStartMs(null);
+
   const handleAddTrimRange = () => {
     if (!project || trimStartMs === null) return;
     const updated = JSON.parse(JSON.stringify(project));
@@ -1467,6 +1469,7 @@ const EditorApp: React.FC = () => {
               <input type="range" min={0} max={1} step={0.05} value={isMuted ? 0 : volume} onChange={(e) => handleVolume(Number(e.target.value))} aria-label="Volume" />
             </label>
             <button className="timeline-control" onClick={handleMarkTrimStart} aria-label="Mark cut range start">{trimStartMs === null ? 'Mark Cut Start' : `Cut starts ${formatTimelineTime(trimStartMs)}`}</button>
+            <button className="timeline-control" onClick={handleCancelTrimMark} disabled={trimStartMs === null} aria-label="Cancel pending cut range">Cancel Cut</button>
             <button className="timeline-control" onClick={handleAddTrimRange} disabled={trimStartMs === null || trimStartMs === currentTimeMs} aria-label="Cut marked range">Cut Range</button>
             <button className="timeline-control" onClick={handleClearTrimRanges} disabled={!project?.editor.trimRegions.length} aria-label="Clear cut ranges">Clear Cuts</button>
             <label style={{display: 'flex', gap: 6, alignItems: 'center'}}>

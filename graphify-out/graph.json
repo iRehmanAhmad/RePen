@@ -2420,7 +2420,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "main_getscenestate",
-      "community": 117,
+      "community": 137,
       "norm_label": "getscenestate()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "main_getbootstrapdata",
-      "community": 117,
+      "community": 137,
       "norm_label": "getbootstrapdata()"
     },
     {
@@ -3080,7 +3080,7 @@
       "source_location": "L1616",
       "_origin": "ast",
       "id": "main_exportpdf",
-      "community": 117,
+      "community": 0,
       "norm_label": "exportpdf()"
     },
     {
@@ -6887,7 +6887,7 @@
       "label": "TrackControls()",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1707",
+      "source_location": "L1710",
       "_origin": "ast",
       "id": "src_renderer_editor_trackcontrols",
       "community": 190,
@@ -6897,7 +6897,7 @@
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1714",
+      "source_location": "L1717",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 190,
@@ -36859,7 +36859,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1714",
+      "source_location": "L1717",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
@@ -36869,7 +36869,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1707",
+      "source_location": "L1710",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_trackcontrols",
@@ -37352,7 +37352,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L664",
+      "source_location": "L666",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_layoutgeometry_aspectratiocss"
@@ -37363,7 +37363,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L669",
+      "source_location": "L671",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_layoutgeometry_normalizecropforrender"
@@ -37374,7 +37374,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1009",
+      "source_location": "L1011",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_projectpersistence_tofileurl"
@@ -37418,7 +37418,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L506",
+      "source_location": "L508",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_addtrimrange"
@@ -37429,7 +37429,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L522",
+      "source_location": "L524",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_removetimedregionbyid"
@@ -37440,7 +37440,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1480",
+      "source_location": "L1483",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_clamptimelinezoom"
@@ -37451,7 +37451,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L943",
+      "source_location": "L945",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_createtimelineticks"
@@ -37462,7 +37462,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1452",
+      "source_location": "L1454",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_formattimelinetime"
@@ -37473,7 +37473,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1495",
+      "source_location": "L1498",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_timeattimelineposition"
@@ -37484,7 +37484,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1490",
+      "source_location": "L1493",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_timelinepercent"
@@ -62029,5 +62029,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6ec22ca080ecbc9416415b7e69de03fd08f3d17e"
+  "built_at_commit": "62b28dd22a557de03baec7f6cfa1b5ad82e2f31b"
 }
