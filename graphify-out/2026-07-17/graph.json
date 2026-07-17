@@ -2350,7 +2350,7 @@
       "source_location": "L296",
       "_origin": "ast",
       "id": "main_getdockside",
-      "community": 117,
+      "community": 214,
       "norm_label": "getdockside()"
     },
     {
@@ -2360,7 +2360,7 @@
       "source_location": "L317",
       "_origin": "ast",
       "id": "main_getappstate",
-      "community": 117,
+      "community": 214,
       "norm_label": "getappstate()"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "main_getscenestate",
-      "community": 117,
+      "community": 214,
       "norm_label": "getscenestate()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "main_getbootstrapdata",
-      "community": 117,
+      "community": 214,
       "norm_label": "getbootstrapdata()"
     },
     {
@@ -2490,7 +2490,7 @@
       "source_location": "L432",
       "_origin": "ast",
       "id": "main_updatetraymenu",
-      "community": 144,
+      "community": 117,
       "norm_label": "updatetraymenu()"
     },
     {
@@ -2560,7 +2560,7 @@
       "source_location": "L560",
       "_origin": "ast",
       "id": "main_getrepenownedwindowhandlecandidates",
-      "community": 211,
+      "community": 143,
       "norm_label": "getrepenownedwindowhandlecandidates()"
     },
     {
@@ -2690,7 +2690,7 @@
       "source_location": "L1049",
       "_origin": "ast",
       "id": "main_showsettingswindow",
-      "community": 144,
+      "community": 117,
       "norm_label": "showsettingswindow()"
     },
     {
@@ -2720,7 +2720,7 @@
       "source_location": "L1081",
       "_origin": "ast",
       "id": "main_showoverlaywindows",
-      "community": 144,
+      "community": 117,
       "norm_label": "showoverlaywindows()"
     },
     {
@@ -2740,7 +2740,7 @@
       "source_location": "L1097",
       "_origin": "ast",
       "id": "main_toggleoverlayvisibility",
-      "community": 144,
+      "community": 117,
       "norm_label": "toggleoverlayvisibility()"
     },
     {
@@ -2750,7 +2750,7 @@
       "source_location": "L1107",
       "_origin": "ast",
       "id": "main_updateoverlayignoremouse",
-      "community": 144,
+      "community": 117,
       "norm_label": "updateoverlayignoremouse()"
     },
     {
@@ -2760,7 +2760,7 @@
       "source_location": "L1122",
       "_origin": "ast",
       "id": "main_setpassthrough",
-      "community": 144,
+      "community": 117,
       "norm_label": "setpassthrough()"
     },
     {
@@ -2770,7 +2770,7 @@
       "source_location": "L1137",
       "_origin": "ast",
       "id": "main_setbackgroundmode",
-      "community": 144,
+      "community": 117,
       "norm_label": "setbackgroundmode()"
     },
     {
@@ -2780,7 +2780,7 @@
       "source_location": "L1167",
       "_origin": "ast",
       "id": "main_cyclebackgroundmode",
-      "community": 144,
+      "community": 117,
       "norm_label": "cyclebackgroundmode()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L1180",
       "_origin": "ast",
       "id": "main_normalizeboardviewport",
-      "community": 117,
+      "community": 214,
       "norm_label": "normalizeboardviewport()"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L1189",
       "_origin": "ast",
       "id": "main_setboardviewport",
-      "community": 117,
+      "community": 214,
       "norm_label": "setboardviewport()"
     },
     {
@@ -2860,7 +2860,7 @@
       "source_location": "L1253",
       "_origin": "ast",
       "id": "main_settool",
-      "community": 144,
+      "community": 117,
       "norm_label": "settool()"
     },
     {
@@ -2950,7 +2950,7 @@
       "source_location": "L1357",
       "_origin": "ast",
       "id": "main_undo",
-      "community": 144,
+      "community": 117,
       "norm_label": "undo()"
     },
     {
@@ -2960,7 +2960,7 @@
       "source_location": "L1366",
       "_origin": "ast",
       "id": "main_redo",
-      "community": 144,
+      "community": 117,
       "norm_label": "redo()"
     },
     {
@@ -2970,7 +2970,7 @@
       "source_location": "L1375",
       "_origin": "ast",
       "id": "main_clearscene",
-      "community": 144,
+      "community": 117,
       "norm_label": "clearscene()"
     },
     {
@@ -2990,7 +2990,7 @@
       "source_location": "L1414",
       "_origin": "ast",
       "id": "main_setpage",
-      "community": 117,
+      "community": 214,
       "norm_label": "setpage()"
     },
     {
@@ -3000,7 +3000,7 @@
       "source_location": "L1432",
       "_origin": "ast",
       "id": "main_prevpage",
-      "community": 117,
+      "community": 214,
       "norm_label": "prevpage()"
     },
     {
@@ -3010,7 +3010,7 @@
       "source_location": "L1439",
       "_origin": "ast",
       "id": "main_nextpage",
-      "community": 117,
+      "community": 214,
       "norm_label": "nextpage()"
     },
     {
@@ -3080,7 +3080,7 @@
       "source_location": "L1616",
       "_origin": "ast",
       "id": "main_exportpdf",
-      "community": 117,
+      "community": 0,
       "norm_label": "exportpdf()"
     },
     {
@@ -3290,7 +3290,7 @@
       "source_location": "L2247",
       "_origin": "ast",
       "id": "main_getshortcutactions",
-      "community": 144,
+      "community": 117,
       "norm_label": "getshortcutactions()"
     },
     {
@@ -3670,7 +3670,7 @@
       "source_location": "L3680",
       "_origin": "ast",
       "id": "main_takescreenshot",
-      "community": 144,
+      "community": 117,
       "norm_label": "takescreenshot()"
     },
     {
@@ -4302,6 +4302,26 @@
       "id": "patch_bg_patchcss",
       "community": 68,
       "norm_label": "patchcss()"
+    },
+    {
+      "label": "capture.py",
+      "file_type": "code",
+      "source_file": "scratch/capture.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_capture",
+      "community": 216,
+      "norm_label": "capture.py"
+    },
+    {
+      "label": "capture_screen.ps1",
+      "file_type": "code",
+      "source_file": "scratch/capture_screen.ps1",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scratch_capture_screen",
+      "community": 218,
+      "norm_label": "capture_screen.ps1"
     },
     {
       "label": "extract_launch_window.js",
@@ -9440,7 +9460,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_projectfactory",
-      "community": 211,
+      "community": 143,
       "norm_label": "projectfactory.js"
     },
     {
@@ -9450,7 +9470,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_editor_projectfactory_createdefaulteditorstate",
-      "community": 211,
+      "community": 143,
       "norm_label": "createdefaulteditorstate()"
     },
     {
@@ -9460,7 +9480,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_shared_editor_projectfactory_migrateprojectdata",
-      "community": 211,
+      "community": 143,
       "norm_label": "migrateprojectdata()"
     },
     {
@@ -9470,7 +9490,7 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "src_shared_editor_projectfactory_createrecordingproject",
-      "community": 211,
+      "community": 143,
       "norm_label": "createrecordingproject()"
     },
     {
@@ -9740,7 +9760,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_editor_recoverystore_recoverystorage_key",
-      "community": 87,
+      "community": 139,
       "norm_label": ".key()"
     },
     {
@@ -9830,7 +9850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits",
-      "community": 190,
+      "community": 211,
       "norm_label": "timelineedits.ts"
     },
     {
@@ -9840,7 +9860,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_timedregion",
-      "community": 190,
+      "community": 211,
       "norm_label": "timedregion"
     },
     {
@@ -9850,7 +9870,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_boundedtime",
-      "community": 190,
+      "community": 211,
       "norm_label": "boundedtime()"
     },
     {
@@ -9860,7 +9880,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_addtrimrange",
-      "community": 190,
+      "community": 211,
       "norm_label": "addtrimrange()"
     },
     {
@@ -9870,7 +9890,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_removetimedregionbyid",
-      "community": 190,
+      "community": 211,
       "norm_label": "removetimedregionbyid()"
     },
     {
@@ -9880,7 +9900,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_addspeedrange",
-      "community": 190,
+      "community": 211,
       "norm_label": "addspeedrange()"
     },
     {
@@ -9890,7 +9910,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_shared_editor_timelineedits_splittimedregion",
-      "community": 190,
+      "community": 211,
       "norm_label": "splittimedregion()"
     },
     {
@@ -10390,7 +10410,7 @@
       "source_location": "L342",
       "_origin": "ast",
       "id": "src_shared_editor_types_playbackspeed",
-      "community": 142,
+      "community": 211,
       "norm_label": "playbackspeed"
     },
     {
@@ -10400,7 +10420,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "src_shared_editor_types_clampplaybackspeed",
-      "community": 190,
+      "community": 211,
       "norm_label": "clampplaybackspeed()"
     },
     {
@@ -10530,7 +10550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy",
-      "community": 211,
+      "community": 143,
       "norm_label": "capturepolicy.js"
     },
     {
@@ -10540,7 +10560,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_windowrole",
-      "community": 211,
+      "community": 143,
       "norm_label": "windowrole"
     },
     {
@@ -10550,7 +10570,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_control_window_roles",
-      "community": 211,
+      "community": 143,
       "norm_label": "control_window_roles"
     },
     {
@@ -10560,7 +10580,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_shouldexcludefromcapture",
-      "community": 211,
+      "community": 143,
       "norm_label": "shouldexcludefromcapture()"
     },
     {
@@ -10570,7 +10590,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_sourcehandlecandidates",
-      "community": 211,
+      "community": 143,
       "norm_label": "sourcehandlecandidates()"
     },
     {
@@ -10580,7 +10600,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_nativewindowhandlecandidates",
-      "community": 211,
+      "community": 143,
       "norm_label": "nativewindowhandlecandidates()"
     },
     {
@@ -10590,7 +10610,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_filterrepenownedsources",
-      "community": 211,
+      "community": 143,
       "norm_label": "filterrepenownedsources()"
     },
     {
@@ -10830,7 +10850,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_capturepolicy_test",
-      "community": 211,
+      "community": 143,
       "norm_label": "capturepolicy.test.ts"
     },
     {
@@ -10840,7 +10860,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_unit_capturepolicy_test_windowrole_shouldexcludefromcapture_nativewindowhandlecandidates_filterrepenownedsources",
-      "community": 211,
+      "community": 143,
       "norm_label": "{\n  windowrole,\n  shouldexcludefromcapture,\n  nativewindowhandlecandidates,\n  filterrepenownedsources,\n}"
     },
     {
@@ -10850,7 +10870,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "tests_unit_capturepolicy_test_createrecordingproject_migrateprojectdata",
-      "community": 211,
+      "community": 143,
       "norm_label": "{ createrecordingproject, migrateprojectdata }"
     },
     {
@@ -11280,7 +11300,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_projectdefaultparity_test",
-      "community": 116,
+      "community": 143,
       "norm_label": "projectdefaultparity.test.ts"
     },
     {
@@ -11290,7 +11310,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "tests_unit_projectdefaultparity_test_createdefaulteditorstate",
-      "community": 116,
+      "community": 143,
       "norm_label": "{ createdefaulteditorstate }"
     },
     {
@@ -11590,7 +11610,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_timelineedits_test",
-      "community": 190,
+      "community": 211,
       "norm_label": "timelineedits.test.ts"
     },
     {
@@ -11880,7 +11900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 218,
+      "community": 92,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -12080,7 +12100,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 218,
+      "community": 92,
       "norm_label": "mutex"
     },
     {
@@ -12100,7 +12120,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_condition_variable",
-      "community": 218,
+      "community": 92,
       "norm_label": "condition_variable"
     },
     {
@@ -12120,7 +12140,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 218,
+      "community": 92,
       "norm_label": "vector"
     },
     {
@@ -12170,7 +12190,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 218,
+      "community": 92,
       "norm_label": "thread"
     },
     {
@@ -12190,7 +12210,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 218,
+      "community": 92,
       "norm_label": "atomic"
     },
     {
@@ -12240,7 +12260,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler",
-      "community": 86,
+      "community": 92,
       "norm_label": "cursor-sampler.cpp"
     },
     {
@@ -12250,7 +12270,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_lowlevelmouseproc",
-      "community": 86,
+      "community": 92,
       "norm_label": "lowlevelmouseproc()"
     },
     {
@@ -12260,7 +12280,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lresult",
-      "community": 86,
+      "community": 92,
       "norm_label": "lresult"
     },
     {
@@ -12270,7 +12290,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wparam",
-      "community": 86,
+      "community": 92,
       "norm_label": "wparam"
     },
     {
@@ -12280,7 +12300,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lparam",
-      "community": 86,
+      "community": 92,
       "norm_label": "lparam"
     },
     {
@@ -12290,7 +12310,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_nowms",
-      "community": 86,
+      "community": 92,
       "norm_label": "nowms()"
     },
     {
@@ -12300,7 +12320,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_writejsonline",
-      "community": 86,
+      "community": 92,
       "norm_label": "writejsonline()"
     },
     {
@@ -12310,7 +12330,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_string",
-      "community": 86,
+      "community": 92,
       "norm_label": "string"
     },
     {
@@ -12320,7 +12340,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_jsonescape",
-      "community": 86,
+      "community": 92,
       "norm_label": "jsonescape()"
     },
     {
@@ -12330,7 +12350,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_base64encode",
-      "community": 86,
+      "community": 92,
       "norm_label": "base64encode()"
     },
     {
@@ -12340,7 +12360,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_getpngclsid",
-      "community": 86,
+      "community": 92,
       "norm_label": "getpngclsid()"
     },
     {
@@ -12350,7 +12370,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "clsid",
-      "community": 86,
+      "community": 92,
       "norm_label": "clsid"
     },
     {
@@ -12360,7 +12380,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_standardcursortype",
-      "community": 86,
+      "community": 92,
       "norm_label": "standardcursortype()"
     },
     {
@@ -12370,7 +12390,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hcursor",
-      "community": 86,
+      "community": 92,
       "norm_label": "hcursor"
     },
     {
@@ -12380,7 +12400,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_detectcustomcursortype",
-      "community": 86,
+      "community": 92,
       "norm_label": "detectcustomcursortype()"
     },
     {
@@ -12390,7 +12410,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_buildassetjson",
-      "community": 86,
+      "community": 92,
       "norm_label": "buildassetjson()"
     },
     {
@@ -12400,7 +12420,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_runsamplingloop",
-      "community": 86,
+      "community": 92,
       "norm_label": "runsamplingloop()"
     },
     {
@@ -12410,7 +12430,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_hwnd",
-      "community": 86,
+      "community": 92,
       "norm_label": "hwnd"
     },
     {
@@ -12420,7 +12440,7 @@
       "source_location": "L412",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_main",
-      "community": 86,
+      "community": 92,
       "norm_label": "main()"
     },
     {
@@ -12710,7 +12730,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 218,
+      "community": 92,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -13880,7 +13900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 218,
+      "community": 92,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -14480,7 +14500,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 98,
+      "community": 86,
       "norm_label": "wasapi_loopback_capture.cpp"
     },
     {
@@ -14490,7 +14510,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_succeeded",
-      "community": 98,
+      "community": 86,
       "norm_label": "succeeded()"
     },
     {
@@ -14500,7 +14520,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_hresult",
-      "community": 98,
+      "community": 86,
       "norm_label": "hresult"
     },
     {
@@ -14510,7 +14530,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_audiosubtypefromformat",
-      "community": 98,
+      "community": 86,
       "norm_label": "audiosubtypefromformat()"
     },
     {
@@ -14520,7 +14540,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_guid",
-      "community": 98,
+      "community": 86,
       "norm_label": "guid"
     },
     {
@@ -14530,7 +14550,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_waveformatex",
-      "community": 98,
+      "community": 86,
       "norm_label": "waveformatex"
     },
     {
@@ -14540,7 +14560,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_normalizedevicename",
-      "community": 98,
+      "community": 86,
       "norm_label": "normalizedevicename()"
     },
     {
@@ -14550,7 +14570,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_wstring",
-      "community": 98,
+      "community": 86,
       "norm_label": "wstring"
     },
     {
@@ -14560,7 +14580,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_scoredevicename",
-      "community": 98,
+      "community": 86,
       "norm_label": "scoredevicename()"
     },
     {
@@ -14570,7 +14590,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_getdevicefriendlyname",
-      "community": 98,
+      "community": 86,
       "norm_label": "getdevicefriendlyname()"
     },
     {
@@ -14580,7 +14600,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_immdevice",
-      "community": 98,
+      "community": 86,
       "norm_label": "immdevice"
     },
     {
@@ -14590,7 +14610,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wasapicaptureendpoint",
-      "community": 98,
+      "community": 86,
       "norm_label": "wasapicaptureendpoint"
     },
     {
@@ -14600,7 +14620,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_cpp_audiocallback",
-      "community": 98,
+      "community": 86,
       "norm_label": "audiocallback"
     },
     {
@@ -14610,7 +14630,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 218,
+      "community": 92,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -14650,7 +14670,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initializemicrophone",
-      "community": 98,
+      "community": 86,
       "norm_label": "initializemicrophone"
     },
     {
@@ -14660,7 +14680,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_start",
-      "community": 98,
+      "community": 86,
       "norm_label": "start"
     },
     {
@@ -14680,7 +14700,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_initialize",
-      "community": 98,
+      "community": 86,
       "norm_label": "initialize"
     },
     {
@@ -14690,7 +14710,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_resolvemicrophonebyname",
-      "community": 98,
+      "community": 86,
       "norm_label": "resolvemicrophonebyname"
     },
     {
@@ -14710,7 +14730,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_resolveinputformat",
-      "community": 98,
+      "community": 86,
       "norm_label": "resolveinputformat"
     },
     {
@@ -15100,7 +15120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 218,
+      "community": 92,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -15440,7 +15460,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_webcamcapture_selecteddevicename",
-      "community": 120,
+      "community": 97,
       "norm_label": "selecteddevicename_"
     },
     {
@@ -15560,7 +15580,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 218,
+      "community": 94,
       "norm_label": "wgc_session.h"
     },
     {
@@ -24302,6 +24322,116 @@
       "id": "docs_verification_phase_1_capture_exclusion_verification_checks_231",
       "community": 114,
       "norm_label": "verification checks"
+    },
+    {
+      "label": "phase-2-recording-lifecycle.md",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle",
+      "community": 206,
+      "norm_label": "phase-2-recording-lifecycle.md"
+    },
+    {
+      "label": "Phase 2 \u2014 Native Recording Lifecycle and Recovery QA Report",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_phase_2_native_recording_lifecycle_and_recovery_qa_report",
+      "community": 206,
+      "norm_label": "phase 2 \u2014 native recording lifecycle and recovery qa report"
+    },
+    {
+      "label": "1. Recording State Transition Matrix",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_1_recording_state_transition_matrix",
+      "community": 206,
+      "norm_label": "1. recording state transition matrix"
+    },
+    {
+      "label": "2. Unit Testing Verification Evidence",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_2_unit_testing_verification_evidence",
+      "community": 206,
+      "norm_label": "2. unit testing verification evidence"
+    },
+    {
+      "label": "Unit Test Execution Output",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L31",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_unit_test_execution_output",
+      "community": 206,
+      "norm_label": "unit test execution output"
+    },
+    {
+      "label": "3. Manual Lifecycle Test Matrix (Windows 11)",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L39",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "community": 206,
+      "norm_label": "3. manual lifecycle test matrix (windows 11)"
+    },
+    {
+      "label": "Case 2.1: Countdown Start & Cancellation",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_case_2_1_countdown_start_cancellation",
+      "community": 206,
+      "norm_label": "case 2.1: countdown start & cancellation"
+    },
+    {
+      "label": "Case 2.2: Rapid Duplicate Clicks on Record/Stop/Pause",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_case_2_2_rapid_duplicate_clicks_on_record_stop_pause",
+      "community": 206,
+      "norm_label": "case 2.2: rapid duplicate clicks on record/stop/pause"
+    },
+    {
+      "label": "Case 2.3: Pause and Resume Lifecycle",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L53",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_case_2_3_pause_and_resume_lifecycle",
+      "community": 206,
+      "norm_label": "case 2.3: pause and resume lifecycle"
+    },
+    {
+      "label": "Case 2.4: Stop and Handoff to Editor",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L58",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_case_2_4_stop_and_handoff_to_editor",
+      "community": 206,
+      "norm_label": "case 2.4: stop and handoff to editor"
+    },
+    {
+      "label": "Case 2.5: Crash Recovery & Manifest Scanning",
+      "file_type": "document",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "docs_verification_phase_2_recording_lifecycle_case_2_5_crash_recovery_manifest_scanning",
+      "community": 206,
+      "norm_label": "case 2.5: crash recovery & manifest scanning"
     },
     {
       "label": "phase-3-package-inspection.md",
@@ -62331,6 +62461,106 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle",
+      "target": "docs_verification_phase_2_recording_lifecycle_phase_2_native_recording_lifecycle_and_recovery_qa_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_phase_2_native_recording_lifecycle_and_recovery_qa_report",
+      "target": "docs_verification_phase_2_recording_lifecycle_1_recording_state_transition_matrix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_phase_2_native_recording_lifecycle_and_recovery_qa_report",
+      "target": "docs_verification_phase_2_recording_lifecycle_2_unit_testing_verification_evidence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_phase_2_native_recording_lifecycle_and_recovery_qa_report",
+      "target": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_2_unit_testing_verification_evidence",
+      "target": "docs_verification_phase_2_recording_lifecycle_unit_test_execution_output",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "target": "docs_verification_phase_2_recording_lifecycle_case_2_1_countdown_start_cancellation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "target": "docs_verification_phase_2_recording_lifecycle_case_2_2_rapid_duplicate_clicks_on_record_stop_pause",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "target": "docs_verification_phase_2_recording_lifecycle_case_2_3_pause_and_resume_lifecycle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "target": "docs_verification_phase_2_recording_lifecycle_case_2_4_stop_and_handoff_to_editor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-2-recording-lifecycle.md",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "docs_verification_phase_2_recording_lifecycle_3_manual_lifecycle_test_matrix_windows_11",
+      "target": "docs_verification_phase_2_recording_lifecycle_case_2_5_crash_recovery_manifest_scanning",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/verification/phase-3-package-inspection.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -62740,5 +62970,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "35ab2c51806a3e07eec28480e314a786290d7c8b"
+  "built_at_commit": "5f5bf2119fd1d8ec5b60c540cb067fdbac655d3a"
 }

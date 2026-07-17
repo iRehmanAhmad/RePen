@@ -432,3 +432,60 @@ html, body {
 .btn-secondary:hover {
   background: var(--surface-2);
 }
+
+/* Selected states and handles for timeline regions */
+.trim-region-visual.selected {
+  outline: 2px solid var(--warning);
+  background: rgba(255, 107, 107, 0.4);
+}
+
+.playback-speed-region.selected {
+  outline: 2px solid var(--warning);
+  background: rgba(46, 102, 212, 1.0);
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: ew-resize;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resize-handle:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.left-handle {
+  left: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.right-handle {
+  right: 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Speed Edit controls panel styling */
+.speed-edit-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+}
+
+.speed-edit-controls select {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+}

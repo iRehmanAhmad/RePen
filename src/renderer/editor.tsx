@@ -5,7 +5,7 @@ import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { toFileUrl } from '../shared/editor/projectPersistence';
 import { clampTimelineZoom, createTimelineTicks, formatTimelineTime, timeAtTimelinePosition, timelinePercent } from '../shared/editor/timelineMath';
-import { addSpeedRange, addTrimRange, removeTimedRegionById } from '../shared/editor/timelineEdits';
+import { addSpeedRange, addTrimRange, removeTimedRegionById, resizeTrimRange, resizeSpeedRange, splitTrimRange } from '../shared/editor/timelineEdits';
 import { clearRecoverySnapshot, readRecoverySnapshot, saveRecoverySnapshot } from '../shared/editor/recoveryStore';
 import { aspectRatioCss, normalizeCropForRender } from '../shared/editor/layoutGeometry';
 import { DEFAULT_TIMELINE_TRACKS, type EditorProjectData, type TimelineTrackId } from '../shared/editor/projectPersistence';
@@ -134,6 +134,17 @@ const EditorApp: React.FC = () => {
   const [selectedZoomId, setSelectedZoomId] = useState<string | null>(null);
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
   const [selectedCaptionId, setSelectedCaptionId] = useState<string | null>(null);
+  const [selectedTrimId, setSelectedTrimId] = useState<string | null>(null);
+  const [selectedSpeedId, setSelectedSpeedId] = useState<string | null>(null);
+  const [draggingRegion, setDraggingRegion] = useState<{
+    id: string;
+    type: 'trim' | 'speed';
+    side: 'left' | 'right';
+    initialX: number;
+    initialStartMs: number;
+    initialEndMs: number;
+  } | null>(null);
+  const [tempResizeState, setTempResizeState] = useState<{ startMs: number; endMs: number } | null>(null);
 
   // Transcription state
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -559,6 +570,92 @@ const EditorApp: React.FC = () => {
     updateProject(updated);
     setSpeedStartMs(null);
   };
+
+  const handleDragStart = (
+    event: React.MouseEvent,
+    id: string,
+    type: 'trim' | 'speed',
+    side: 'left' | 'right',
+    startMs: number,
+    endMs: number
+  ) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setDraggingRegion({
+      id,
+      type,
+      side,
+      initialX: event.clientX,
+      initialStartMs: startMs,
+      initialEndMs: endMs,
+    });
+    setTempResizeState({ startMs, endMs });
+  };
+
+  const handleSplitTrim = () => {
+    if (!project || !selectedTrimId) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    updated.editor.trimRegions = splitTrimRange(updated.editor.trimRegions || [], selectedTrimId, currentTimeMs);
+    updateProject(updated);
+    setSelectedTrimId(null);
+  };
+
+  useEffect(() => {
+    if (!draggingRegion) return;
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const timelineTracksEl = document.querySelector('.timeline-tracks');
+      if (!timelineTracksEl) return;
+      const rect = timelineTracksEl.getBoundingClientRect();
+      const deltaX = event.clientX - draggingRegion.initialX;
+      const deltaMs = (deltaX / rect.width) * durationMs;
+
+      let newStartMs = draggingRegion.initialStartMs;
+      let newEndMs = draggingRegion.initialEndMs;
+
+      if (draggingRegion.side === 'left') {
+        newStartMs = Math.min(draggingRegion.initialEndMs - 100, Math.max(0, draggingRegion.initialStartMs + deltaMs));
+      } else {
+        newEndMs = Math.min(durationMs, Math.max(draggingRegion.initialStartMs + 100, draggingRegion.initialEndMs + deltaMs));
+      }
+
+      setTempResizeState({ startMs: Math.round(newStartMs), endMs: Math.round(newEndMs) });
+    };
+
+    const handleMouseUp = () => {
+      if (tempResizeState && project) {
+        const updated = JSON.parse(JSON.stringify(project));
+        if (draggingRegion.type === 'trim') {
+          updated.editor.trimRegions = resizeTrimRange(
+            updated.editor.trimRegions || [],
+            draggingRegion.id,
+            tempResizeState.startMs,
+            tempResizeState.endMs,
+            durationMs
+          );
+        } else {
+          updated.editor.speedRegions = resizeSpeedRange(
+            updated.editor.speedRegions || [],
+            draggingRegion.id,
+            tempResizeState.startMs,
+            tempResizeState.endMs,
+            durationMs
+          );
+        }
+        updateProject(updated);
+      }
+      setDraggingRegion(null);
+      setTempResizeState(null);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [draggingRegion, tempResizeState, project, durationMs]);
 
   const updateTimelineTrack = (trackId: TimelineTrackId, property: 'visible' | 'locked') => {
     if (!project || project.editor.timelineTracks[trackId].locked && property !== 'locked') return;
@@ -1507,6 +1604,16 @@ const EditorApp: React.FC = () => {
             <button className="timeline-control" onClick={handleCancelTrimMark} disabled={trimStartMs === null} aria-label="Cancel pending cut range">Cancel Cut</button>
             <button className="timeline-control" onClick={handleAddTrimRange} disabled={trimStartMs === null || trimStartMs === currentTimeMs} aria-label="Cut marked range">Cut Range</button>
             <button className="timeline-control" onClick={handleClearTrimRanges} disabled={!project?.editor.trimRegions.length} aria-label="Clear cut ranges">Clear Cuts</button>
+            {selectedTrimId !== null && (() => {
+              const selectedTrim = project?.editor.trimRegions?.find((t: any) => t.id === selectedTrimId);
+              const isPlayheadInsideSelectedTrim = selectedTrim && currentTimeMs > selectedTrim.startMs && currentTimeMs < selectedTrim.endMs;
+              return (
+                <div style={{ display: 'inline-flex', gap: 6, alignItems: 'center', marginLeft: 6, borderLeft: '1px solid var(--line)', paddingLeft: 6 }}>
+                  <button className="timeline-control" onClick={handleSplitTrim} disabled={!isPlayheadInsideSelectedTrim} aria-label="Split selected cut range at playhead">Split Cut</button>
+                  <button className="timeline-control" onClick={() => handleRemoveTrimRange(selectedTrimId)} aria-label="Delete selected cut range">Delete Cut</button>
+                </div>
+              );
+            })()}
             <select
               className="timeline-control"
               value={pendingSpeed}
@@ -1521,6 +1628,39 @@ const EditorApp: React.FC = () => {
             <button className="timeline-control" onClick={handleCancelSpeedMark} disabled={speedStartMs === null} aria-label="Cancel pending speed range">Cancel Speed</button>
             <button className="timeline-control" onClick={handleAddSpeedRange} disabled={speedStartMs === null || speedStartMs === currentTimeMs} aria-label="Apply speed to marked range">Apply Speed</button>
             <button className="timeline-control" onClick={handleClearSpeedRanges} disabled={!project?.editor.speedRegions.length} aria-label="Clear speed ranges">Clear Speeds</button>
+            {selectedSpeedId !== null && (() => {
+              const selectedSpeed = project?.editor.speedRegions?.find((s: any) => s.id === selectedSpeedId);
+              if (!selectedSpeed) return null;
+              return (
+                <div className="speed-edit-controls">
+                  <label htmlFor="speed-multiplier-select">Speed: </label>
+                  <select
+                    id="speed-multiplier-select"
+                    value={selectedSpeed.speed}
+                    onChange={(e) => {
+                      const speedVal = parseFloat(e.target.value);
+                      const updated = JSON.parse(JSON.stringify(project));
+                      const regions = updated.editor.speedRegions || [];
+                      const targetIdx = regions.findIndex((s: any) => s.id === selectedSpeedId);
+                      if (targetIdx !== -1) {
+                        regions[targetIdx].speed = speedVal;
+                        updateProject(updated);
+                      }
+                    }}
+                    aria-label="Change speed of selected range"
+                  >
+                    <option value="0.25">0.25×</option>
+                    <option value="0.5">0.5×</option>
+                    <option value="1.0">1.0×</option>
+                    <option value="1.5">1.5×</option>
+                    <option value="2.0">2.0×</option>
+                    <option value="4.0">4.0×</option>
+                    <option value="5.0">5.0×</option>
+                  </select>
+                  <button className="timeline-control" onClick={() => handleRemoveSpeedRange(selectedSpeedId)} aria-label="Delete selected speed range">Delete Speed</button>
+                </div>
+              );
+            })()}
             <label style={{display: 'flex', gap: 6, alignItems: 'center'}}>
               Timeline Zoom:
               <input 
@@ -1545,6 +1685,8 @@ const EditorApp: React.FC = () => {
         <div className="timeline-tracks" style={{ minWidth: `${timelineZoom * 100}%` }} onClick={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           handleSeek(timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs));
+          setSelectedTrimId(null);
+          setSelectedSpeedId(null);
         }}>
           <div className="timeline-track">
             <span className="track-label">Screen Recording</span>
@@ -1565,42 +1707,87 @@ const EditorApp: React.FC = () => {
                 aria-hidden="true"
               />
             )}
-            {project?.editor.speedRegions?.map((region: SpeedRegion) => (
-              <button
-                key={region.id}
-                type="button"
-                className="playback-speed-region"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleRemoveSpeedRange(region.id);
-                }}
-                aria-label={`Remove ${region.speed} times speed from ${formatTimelineTime(region.startMs)} to ${formatTimelineTime(region.endMs)}`}
-                title={`Remove ${region.speed}× speed range`}
-                style={{
-                  left: `${timelinePercent(region.startMs, durationMs)}%`,
-                  width: `${timelinePercent(region.endMs - region.startMs, durationMs)}%`,
-                }}
-              >
-                {region.speed}×
-              </button>
-            ))}
-            {project?.editor.trimRegions?.map((t: TrimRegion) => (
-              <button
-                key={t.id} 
-                type="button"
-                className="trim-region-visual"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleRemoveTrimRange(t.id);
-                }}
-                aria-label={`Remove cut from ${formatTimelineTime(t.startMs)} to ${formatTimelineTime(t.endMs)}`}
-                title="Remove cut range"
-                style={{
-                  left: `${timelinePercent(t.startMs, durationMs)}%`,
-                  width: `${timelinePercent(t.endMs - t.startMs, durationMs)}%`
-                }}
-              />
-            ))}
+            {project?.editor.speedRegions?.map((region: SpeedRegion) => {
+              const isSelected = region.id === selectedSpeedId;
+              const isDraggingThis = draggingRegion && draggingRegion.id === region.id && draggingRegion.type === 'speed';
+              const start = isDraggingThis && tempResizeState ? tempResizeState.startMs : region.startMs;
+              const end = isDraggingThis && tempResizeState ? tempResizeState.endMs : region.endMs;
+              return (
+                <div
+                  key={region.id}
+                  className={`playback-speed-region ${isSelected ? 'selected' : ''}`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedSpeedId(region.id);
+                    setSelectedTrimId(null);
+                  }}
+                  style={{
+                    left: `${timelinePercent(start, durationMs)}%`,
+                    width: `${timelinePercent(end - start, durationMs)}%`,
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${region.speed} times speed from ${formatTimelineTime(start)} to ${formatTimelineTime(end)}`}
+                  title={`${region.speed}× speed range`}
+                >
+                  {isSelected && (
+                    <div
+                      className="resize-handle left-handle"
+                      onMouseDown={(e) => handleDragStart(e, region.id, 'speed', 'left', region.startMs, region.endMs)}
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="speed-label">{region.speed}×</span>
+                  {isSelected && (
+                    <div
+                      className="resize-handle right-handle"
+                      onMouseDown={(e) => handleDragStart(e, region.id, 'speed', 'right', region.startMs, region.endMs)}
+                      aria-hidden="true"
+                    />
+                  )}
+                </div>
+              );
+            })}
+            {project?.editor.trimRegions?.map((t: TrimRegion) => {
+              const isSelected = t.id === selectedTrimId;
+              const isDraggingThis = draggingRegion && draggingRegion.id === t.id && draggingRegion.type === 'trim';
+              const start = isDraggingThis && tempResizeState ? tempResizeState.startMs : t.startMs;
+              const end = isDraggingThis && tempResizeState ? tempResizeState.endMs : t.endMs;
+              return (
+                <div
+                  key={t.id}
+                  className={`trim-region-visual ${isSelected ? 'selected' : ''}`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setSelectedTrimId(t.id);
+                    setSelectedSpeedId(null);
+                  }}
+                  style={{
+                    left: `${timelinePercent(start, durationMs)}%`,
+                    width: `${timelinePercent(end - start, durationMs)}%`
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Cut from ${formatTimelineTime(start)} to ${formatTimelineTime(end)}`}
+                  title="Cut range"
+                >
+                  {isSelected && (
+                    <div
+                      className="resize-handle left-handle"
+                      onMouseDown={(e) => handleDragStart(e, t.id, 'trim', 'left', t.startMs, t.endMs)}
+                      aria-hidden="true"
+                    />
+                  )}
+                  {isSelected && (
+                    <div
+                      className="resize-handle right-handle"
+                      onMouseDown={(e) => handleDragStart(e, t.id, 'trim', 'right', t.startMs, t.endMs)}
+                      aria-hidden="true"
+                    />
+                  )}
+                </div>
+              );
+            })}
             <div 
               className="timeline-playhead" 
               style={{ left: `${timelinePercent(currentTimeMs, durationMs)}%` }}

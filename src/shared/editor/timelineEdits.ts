@@ -67,3 +67,78 @@ export function splitTimedRegion<T extends TimedRegion>(region: T, atMs: number)
     { ...region, id: `${region.id}-split-${at}`, startMs: at },
   ];
 }
+
+/** Resizes a trim range and re-merges any overlapping ranges. */
+export function resizeTrimRange(
+  regions: TimedRegion[],
+  id: string,
+  newStartMs: number,
+  newEndMs: number,
+  durationMs: number,
+): TimedRegion[] {
+  const target = regions.find((r) => r.id === id);
+  if (!target) return regions;
+
+  const start = boundedTime(newStartMs, durationMs);
+  const end = boundedTime(newEndMs, durationMs);
+  if (end <= start) return regions;
+
+  const updatedRegions = regions.map((r) => {
+    if (r.id === id) {
+      return { ...r, startMs: start, endMs: end };
+    }
+    return { ...r };
+  });
+
+  const sorted = updatedRegions
+    .filter((r) => r.endMs > r.startMs)
+    .sort((a, b) => a.startMs - b.startMs);
+
+  return sorted.reduce<TimedRegion[]>((merged, region) => {
+    const previous = merged[merged.length - 1];
+    if (previous && region.startMs <= previous.endMs) {
+      previous.endMs = Math.max(previous.endMs, region.endMs);
+      if (region.id === id || previous.id === id) {
+        previous.id = id;
+      }
+    } else {
+      merged.push({ ...region });
+    }
+    return merged;
+  }, []);
+}
+
+/** Splits a specific trim region by ID at a playhead position. */
+export function splitTrimRange(regions: TimedRegion[], id: string, playheadMs: number): TimedRegion[] {
+  const target = regions.find((r) => r.id === id);
+  if (!target) return regions;
+
+  const split = splitTimedRegion(target, playheadMs);
+  if (!split) return regions;
+
+  return regions.flatMap((r) => {
+    if (r.id === id) {
+      return split;
+    }
+    return [r];
+  });
+}
+
+/** Resizes an existing speed range using the 'new range wins in overlap' rule. */
+export function resizeSpeedRange(
+  regions: SpeedRegion[],
+  id: string,
+  newStartMs: number,
+  newEndMs: number,
+  durationMs: number,
+): SpeedRegion[] {
+  const target = regions.find((r) => r.id === id);
+  if (!target) return regions;
+
+  const start = boundedTime(newStartMs, durationMs);
+  const end = boundedTime(newEndMs, durationMs);
+  if (end <= start) return regions;
+
+  const filtered = regions.filter((r) => r.id !== id);
+  return addSpeedRange(filtered, start, end, target.speed, durationMs);
+}
