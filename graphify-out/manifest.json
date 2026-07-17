@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784273095.473113,
-    "ast_hash": "965dcff09bb752b09a7ad0bc7d6552e0",
+    "mtime": 1784273889.1610944,
+    "ast_hash": "7e4379074736ab3d7f1be8fc2cb3f646",
     "semantic_hash": ""
   },
   "package.json": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1784223672.0638509,
-    "ast_hash": "e9fa95f5e24779985e4c135ef28f5d87",
+    "mtime": 1784273485.1569986,
+    "ast_hash": "a2b479c596281c9e2d2a1b560ddfe102",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
@@ -50,8 +50,8 @@
     "semantic_hash": ""
   },
   "src/renderer/toolbar.js": {
-    "mtime": 1784221415.2448575,
-    "ast_hash": "a1f66d72fc6d1646c788b13dbc853d7c",
+    "mtime": 1784273512.6526067,
+    "ast_hash": "7cb789385e980d8255d953228b282e24",
     "semantic_hash": ""
   },
   ".agent-hub/README.md": {
@@ -400,8 +400,8 @@
     "semantic_hash": ""
   },
   "electron/services/recorder.ts": {
-    "mtime": 1784221860.0407152,
-    "ast_hash": "5db63941da0618e4dcdb43edbaa1ddb9",
+    "mtime": 1784273744.6174178,
+    "ast_hash": "aaa9684fb51c8deabf8ff4e42bde748e",
     "semantic_hash": ""
   },
   "electron/services/shortcuts.ts": {
@@ -965,8 +965,8 @@
     "semantic_hash": ""
   },
   "tests/unit/resilience.test.ts": {
-    "mtime": 1784131236.6319842,
-    "ast_hash": "e97da18992a503eb43ecc585cb6c8a3f",
+    "mtime": 1784273714.9685824,
+    "ast_hash": "cc7342f30d182e866fb7af025116a396",
     "semantic_hash": ""
   },
   "tests/unit/sessionUX.test.ts": {
@@ -1030,8 +1030,8 @@
     "semantic_hash": ""
   },
   "src/shared/recording/stateMachine.js": {
-    "mtime": 1784272702.4855404,
-    "ast_hash": "7630365c1179f72db21a9031e9c8fcc5",
+    "mtime": 1784273545.655154,
+    "ast_hash": "eb37fd598bc6b5feec09779c5fac8d97",
     "semantic_hash": ""
   },
   "src/vite-env.d.ts": {
@@ -1065,8 +1065,8 @@
     "semantic_hash": ""
   },
   "tests/unit/recordingStateMachine.test.ts": {
-    "mtime": 1784273121.8939686,
-    "ast_hash": "cb55a0071b57694351ff96b1fa17fb5e",
+    "mtime": 1784273560.9209063,
+    "ast_hash": "c61a3a6effee1fee15ac7d105135b142",
     "semantic_hash": ""
   },
   "profile-workflows/update-activity.yml": {
@@ -1077,6 +1077,26 @@
   "profile-workflows/update-blog.yml": {
     "mtime": 1784273371.2857294,
     "ast_hash": "8c7355c1b514582124b2bcf42175dfac",
+    "semantic_hash": ""
+  },
+  "scratch/test-recording-1784273733852.mp4.session.json": {
+    "mtime": 1784273733.8533592,
+    "ast_hash": "8b529b78c5dd13bbc81647b51b240cb8",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/mediaValidation.js": {
+    "mtime": 1784273877.2284634,
+    "ast_hash": "479df9abebca79e49a510aa47da5b8e2",
+    "semantic_hash": ""
+  },
+  "tests/unit/mediaValidation.test.ts": {
+    "mtime": 1784273909.9537313,
+    "ast_hash": "e360c6400325a320a059a6ac4f1ac4c6",
+    "semantic_hash": ""
+  },
+  "docs/verification/phase-3-package-inspection.md": {
+    "mtime": 1784274191.0039828,
+    "ast_hash": "cee13162e3b86bb51ace676de05fda18",
     "semantic_hash": ""
   }
 }

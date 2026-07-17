@@ -1045,8 +1045,8 @@
     "semantic_hash": ""
   },
   "tests/unit/phaseCompletionAudit.test.ts": {
-    "mtime": 1784271905.7886512,
-    "ast_hash": "017d116c66ded606648b25ba78924490",
+    "mtime": 1784273121.8949785,
+    "ast_hash": "aea963f728593e3802eb8ffd375f25d5",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260716-172849-correct-recorder-capture-and-deliver-production-.md": {
@@ -1060,8 +1060,23 @@
     "semantic_hash": ""
   },
   "profile_readme_proposal.md": {
-    "mtime": 1784273067.2234564,
-    "ast_hash": "ad70497b22258312a75ba923a6e4a712",
+    "mtime": 1784273378.7772827,
+    "ast_hash": "681a345ab68ae7452a5e173be40fdf1e",
+    "semantic_hash": ""
+  },
+  "tests/unit/recordingStateMachine.test.ts": {
+    "mtime": 1784273121.8939686,
+    "ast_hash": "cb55a0071b57694351ff96b1fa17fb5e",
+    "semantic_hash": ""
+  },
+  "profile-workflows/update-activity.yml": {
+    "mtime": 1784273367.9338782,
+    "ast_hash": "ba26d9b30e4be1178e364cffed2d6a26",
+    "semantic_hash": ""
+  },
+  "profile-workflows/update-blog.yml": {
+    "mtime": 1784273371.2857294,
+    "ast_hash": "8c7355c1b514582124b2bcf42175dfac",
     "semantic_hash": ""
   }
 }

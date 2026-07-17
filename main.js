@@ -7,6 +7,7 @@ const {
   filterRepenOwnedSources,
 } = require('./src/shared/recording/capturePolicy.js');
 const { canRunRecordingCommand, recordingCommandError, validateRecordingCommand } = require('./src/shared/recording/stateMachine.js');
+const { validateFinalizedRecordingMedia } = require('./src/shared/editor/mediaValidation.js');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -2711,19 +2712,20 @@ async function handleStopRecording() {
 }
 
 function createProjectForCompletedRecording({ outputPath, presentationTrackPath, presentationMode = 'baked' }) {
-  if (!outputPath || !fs.existsSync(outputPath)) {
+  if (typeof outputPath !== 'string' || !outputPath) {
     throw new Error('The finalized recording file could not be found.');
   }
-
   const { createRecordingProject } = require('./src/shared/editor/projectFactory.js');
   const webcamPath = outputPath.replace(/\.mp4$/i, '-webcam.mp4');
-  const project = createRecordingProject({
+  const media = {
     screenVideoPath: outputPath,
     ...(fs.existsSync(webcamPath) ? { webcamVideoPath: webcamPath } : {}),
     ...(presentationTrackPath ? { nativeSessionPath: presentationTrackPath } : {}),
     presentationMode: presentationMode === 'sidecar' ? 'sidecar' : 'baked',
     durationMs: Math.max(1, recordingSeconds * 1000),
-  });
+  };
+  validateFinalizedRecordingMedia(media);
+  const project = createRecordingProject(media);
   const projectPath = outputPath.replace(/\.mp4$/i, '.repen-project');
   const temporaryPath = `${projectPath}.tmp-${process.pid}-${Date.now()}`;
   fs.writeFileSync(temporaryPath, JSON.stringify(project, null, 2), 'utf8');

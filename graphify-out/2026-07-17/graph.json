@@ -940,7 +940,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "electron_services_recorder_optionalstring",
-      "community": 0,
+      "community": 96,
       "norm_label": "optionalstring()"
     },
     {
@@ -2280,7 +2280,7 @@
       "source_location": "L127",
       "_origin": "ast",
       "id": "main_deepclone",
-      "community": 86,
+      "community": 117,
       "norm_label": "deepclone()"
     },
     {
@@ -2470,7 +2470,7 @@
       "source_location": "L429",
       "_origin": "ast",
       "id": "main_updatetraymenu",
-      "community": 138,
+      "community": 117,
       "norm_label": "updatetraymenu()"
     },
     {
@@ -2590,7 +2590,7 @@
       "source_location": "L755",
       "_origin": "ast",
       "id": "main_gettoolbarwindowbounds",
-      "community": 87,
+      "community": 138,
       "norm_label": "gettoolbarwindowbounds()"
     },
     {
@@ -2600,7 +2600,7 @@
       "source_location": "L770",
       "_origin": "ast",
       "id": "main_ensuretoolbarwindowcapacity",
-      "community": 87,
+      "community": 138,
       "norm_label": "ensuretoolbarwindowcapacity()"
     },
     {
@@ -2630,7 +2630,7 @@
       "source_location": "L907",
       "_origin": "ast",
       "id": "main_showselectorwindow",
-      "community": 87,
+      "community": 83,
       "norm_label": "showselectorwindow()"
     },
     {
@@ -2650,7 +2650,7 @@
       "source_location": "L921",
       "_origin": "ast",
       "id": "main_createcountdownwindow",
-      "community": 83,
+      "community": 87,
       "norm_label": "createcountdownwindow()"
     },
     {
@@ -2670,7 +2670,7 @@
       "source_location": "L1046",
       "_origin": "ast",
       "id": "main_showsettingswindow",
-      "community": 87,
+      "community": 117,
       "norm_label": "showsettingswindow()"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_location": "L1078",
       "_origin": "ast",
       "id": "main_showoverlaywindows",
-      "community": 138,
+      "community": 192,
       "norm_label": "showoverlaywindows()"
     },
     {
@@ -2720,7 +2720,7 @@
       "source_location": "L1094",
       "_origin": "ast",
       "id": "main_toggleoverlayvisibility",
-      "community": 138,
+      "community": 117,
       "norm_label": "toggleoverlayvisibility()"
     },
     {
@@ -2730,7 +2730,7 @@
       "source_location": "L1104",
       "_origin": "ast",
       "id": "main_updateoverlayignoremouse",
-      "community": 138,
+      "community": 192,
       "norm_label": "updateoverlayignoremouse()"
     },
     {
@@ -2740,7 +2740,7 @@
       "source_location": "L1119",
       "_origin": "ast",
       "id": "main_setpassthrough",
-      "community": 138,
+      "community": 117,
       "norm_label": "setpassthrough()"
     },
     {
@@ -2750,7 +2750,7 @@
       "source_location": "L1134",
       "_origin": "ast",
       "id": "main_setbackgroundmode",
-      "community": 138,
+      "community": 117,
       "norm_label": "setbackgroundmode()"
     },
     {
@@ -2760,7 +2760,7 @@
       "source_location": "L1164",
       "_origin": "ast",
       "id": "main_cyclebackgroundmode",
-      "community": 138,
+      "community": 117,
       "norm_label": "cyclebackgroundmode()"
     },
     {
@@ -2770,7 +2770,7 @@
       "source_location": "L1170",
       "_origin": "ast",
       "id": "main_setboardcolor",
-      "community": 117,
+      "community": 138,
       "norm_label": "setboardcolor()"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L1209",
       "_origin": "ast",
       "id": "main_capturemagnifierbackground",
-      "community": 138,
+      "community": 192,
       "norm_label": "capturemagnifierbackground()"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L1250",
       "_origin": "ast",
       "id": "main_settool",
-      "community": 138,
+      "community": 192,
       "norm_label": "settool()"
     },
     {
@@ -2930,7 +2930,7 @@
       "source_location": "L1354",
       "_origin": "ast",
       "id": "main_undo",
-      "community": 138,
+      "community": 117,
       "norm_label": "undo()"
     },
     {
@@ -2940,7 +2940,7 @@
       "source_location": "L1363",
       "_origin": "ast",
       "id": "main_redo",
-      "community": 138,
+      "community": 117,
       "norm_label": "redo()"
     },
     {
@@ -2950,7 +2950,7 @@
       "source_location": "L1372",
       "_origin": "ast",
       "id": "main_clearscene",
-      "community": 138,
+      "community": 117,
       "norm_label": "clearscene()"
     },
     {
@@ -3060,7 +3060,7 @@
       "source_location": "L1613",
       "_origin": "ast",
       "id": "main_exportpdf",
-      "community": 117,
+      "community": 0,
       "norm_label": "exportpdf()"
     },
     {
@@ -3270,7 +3270,7 @@
       "source_location": "L2244",
       "_origin": "ast",
       "id": "main_getshortcutactions",
-      "community": 138,
+      "community": 117,
       "norm_label": "getshortcutactions()"
     },
     {
@@ -3460,7 +3460,7 @@
       "source_location": "L2607",
       "_origin": "ast",
       "id": "main_restorepresenterstate",
-      "community": 138,
+      "community": 83,
       "norm_label": "restorepresenterstate()"
     },
     {
@@ -3587,7 +3587,7 @@
       "label": "resolveFfmpegPath()",
       "file_type": "code",
       "source_file": "main.js",
-      "source_location": "L2840",
+      "source_location": "L2842",
       "_origin": "ast",
       "id": "main_resolveffmpegpath",
       "community": 0,
@@ -3597,7 +3597,7 @@
       "label": "generateExportFFmpegArgs()",
       "file_type": "code",
       "source_file": "main.js",
-      "source_location": "L2848",
+      "source_location": "L2850",
       "_origin": "ast",
       "id": "main_generateexportffmpegargs",
       "community": 0,
@@ -3607,17 +3607,17 @@
       "label": "takeScreenshot()",
       "file_type": "code",
       "source_file": "main.js",
-      "source_location": "L3636",
+      "source_location": "L3637",
       "_origin": "ast",
       "id": "main_takescreenshot",
-      "community": 138,
+      "community": 192,
       "norm_label": "takescreenshot()"
     },
     {
       "label": "checkInterruptedSessions()",
       "file_type": "code",
       "source_file": "main.js",
-      "source_location": "L3796",
+      "source_location": "L3797",
       "_origin": "ast",
       "id": "main_checkinterruptedsessions",
       "community": 0,
@@ -7830,7 +7830,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_selector",
-      "community": 82,
+      "community": 84,
       "norm_label": "selector.js"
     },
     {
@@ -7840,7 +7840,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_renderer_selector_init",
-      "community": 82,
+      "community": 84,
       "norm_label": "init()"
     },
     {
@@ -7850,7 +7850,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_renderer_selector_setupeventlisteners",
-      "community": 82,
+      "community": 84,
       "norm_label": "setupeventlisteners()"
     },
     {
@@ -7860,7 +7860,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_renderer_selector_switchtab",
-      "community": 82,
+      "community": 84,
       "norm_label": "switchtab()"
     },
     {
@@ -7870,7 +7870,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_renderer_selector_loadsysteminfo",
-      "community": 82,
+      "community": 84,
       "norm_label": "loadsysteminfo()"
     },
     {
@@ -7880,7 +7880,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_renderer_selector_updatediskspacedisplay",
-      "community": 82,
+      "community": 84,
       "norm_label": "updatediskspacedisplay()"
     },
     {
@@ -7890,7 +7890,7 @@
       "source_location": "L111",
       "_origin": "ast",
       "id": "src_renderer_selector_refreshsources",
-      "community": 82,
+      "community": 84,
       "norm_label": "refreshsources()"
     },
     {
@@ -7900,7 +7900,7 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "src_renderer_selector_escapehtml",
-      "community": 82,
+      "community": 84,
       "norm_label": "escapehtml()"
     },
     {
@@ -7910,7 +7910,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_renderer_selector_safeimageurl",
-      "community": 82,
+      "community": 84,
       "norm_label": "safeimageurl()"
     },
     {
@@ -7920,7 +7920,7 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_renderer_selector_rendersources",
-      "community": 82,
+      "community": 84,
       "norm_label": "rendersources()"
     },
     {
@@ -7930,7 +7930,7 @@
       "source_location": "L170",
       "_origin": "ast",
       "id": "src_renderer_selector_enumerateavdevices",
-      "community": 82,
+      "community": 84,
       "norm_label": "enumerateavdevices()"
     },
     {
@@ -7940,7 +7940,7 @@
       "source_location": "L194",
       "_origin": "ast",
       "id": "src_renderer_selector_startmicmeter",
-      "community": 82,
+      "community": 84,
       "norm_label": "startmicmeter()"
     },
     {
@@ -7950,7 +7950,7 @@
       "source_location": "L235",
       "_origin": "ast",
       "id": "src_renderer_selector_startwebcampreview",
-      "community": 82,
+      "community": 84,
       "norm_label": "startwebcampreview()"
     },
     {
@@ -7960,7 +7960,7 @@
       "source_location": "L256",
       "_origin": "ast",
       "id": "src_renderer_selector_stopmic",
-      "community": 82,
+      "community": 84,
       "norm_label": "stopmic()"
     },
     {
@@ -7970,7 +7970,7 @@
       "source_location": "L272",
       "_origin": "ast",
       "id": "src_renderer_selector_stopwebcam",
-      "community": 82,
+      "community": 84,
       "norm_label": "stopwebcam()"
     },
     {
@@ -7980,7 +7980,7 @@
       "source_location": "L280",
       "_origin": "ast",
       "id": "src_renderer_selector_stopstreams",
-      "community": 82,
+      "community": 84,
       "norm_label": "stopstreams()"
     },
     {
@@ -7990,7 +7990,7 @@
       "source_location": "L289",
       "_origin": "ast",
       "id": "src_renderer_selector_validateform",
-      "community": 82,
+      "community": 84,
       "norm_label": "validateform()"
     },
     {
@@ -8000,7 +8000,7 @@
       "source_location": "L308",
       "_origin": "ast",
       "id": "src_renderer_selector_startrecordingflow",
-      "community": 82,
+      "community": 84,
       "norm_label": "startrecordingflow()"
     },
     {
@@ -10050,7 +10050,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_control_window_roles",
-      "community": 87,
+      "community": 184,
       "norm_label": "control_window_roles"
     },
     {
@@ -10060,7 +10060,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_shared_recording_capturepolicy_shouldexcludefromcapture",
-      "community": 87,
+      "community": 184,
       "norm_label": "shouldexcludefromcapture()"
     },
     {
@@ -10632,6 +10632,26 @@
       "id": "tests_unit_recorder_test_startrecorder",
       "community": 96,
       "norm_label": "startrecorder()"
+    },
+    {
+      "label": "recordingStateMachine.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_recordingstatemachine_test",
+      "community": 204,
+      "norm_label": "recordingstatemachine.test.ts"
+    },
+    {
+      "label": "{ RecordingPhase, canRunRecordingCommand, recordingCommandError }",
+      "file_type": "code",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "tests_unit_recordingstatemachine_test_recordingphase_canrunrecordingcommand_recordingcommanderror",
+      "community": 204,
+      "norm_label": "{ recordingphase, canrunrecordingcommand, recordingcommanderror }"
     },
     {
       "label": "recordingToolbar.test.ts",
@@ -13760,7 +13780,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_wasapiloopbackcapture_stop",
-      "community": 137,
+      "community": 98,
       "norm_label": "stop"
     },
     {
@@ -23154,10 +23174,30 @@
       "norm_label": "\ud83d\udcca github activity & contribution graph"
     },
     {
-      "label": "\ud83d\ude80 Featured Projects",
+      "label": "\u26a1 Recent Activity",
       "file_type": "document",
       "source_file": "profile_readme_proposal.md",
       "source_location": "L40",
+      "_origin": "ast",
+      "id": "profile_readme_proposal_recent_activity",
+      "community": 188,
+      "norm_label": "\u26a1 recent activity"
+    },
+    {
+      "label": "\ud83d\udcdd Latest Blog Posts",
+      "file_type": "document",
+      "source_file": "profile_readme_proposal.md",
+      "source_location": "L48",
+      "_origin": "ast",
+      "id": "profile_readme_proposal_latest_blog_posts",
+      "community": 188,
+      "norm_label": "\ud83d\udcdd latest blog posts"
+    },
+    {
+      "label": "\ud83d\ude80 Featured Projects",
+      "file_type": "document",
+      "source_file": "profile_readme_proposal.md",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "profile_readme_proposal_featured_projects",
       "community": 188,
@@ -23167,7 +23207,7 @@
       "label": "\ud83d\udd8b\ufe0f Desktop Applications & Tools",
       "file_type": "document",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L42",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "profile_readme_proposal_desktop_applications_tools",
       "community": 188,
@@ -23177,7 +23217,7 @@
       "label": "\ud83e\udde0 Machine Learning & Computer Vision",
       "file_type": "document",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L46",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "profile_readme_proposal_machine_learning_computer_vision",
       "community": 188,
@@ -23187,7 +23227,7 @@
       "label": "\ud83d\uddd3\ufe0f Web Apps & Automation",
       "file_type": "document",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L51",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "profile_readme_proposal_web_apps_automation",
       "community": 188,
@@ -23197,7 +23237,7 @@
       "label": "\ud83d\udee0\ufe0f Tech Stack & Skills",
       "file_type": "document",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L57",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "profile_readme_proposal_tech_stack_skills",
       "community": 188,
@@ -23207,7 +23247,7 @@
       "label": "\ud83d\udcca Account Stats",
       "file_type": "document",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L93",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "profile_readme_proposal_account_stats",
       "community": 188,
@@ -28322,7 +28362,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3796",
+      "source_location": "L3797",
       "weight": 1.0,
       "source": "main",
       "target": "main_checkinterruptedsessions",
@@ -28602,7 +28642,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L2848",
+      "source_location": "L2850",
       "weight": 1.0,
       "source": "main",
       "target": "main_generateexportffmpegargs",
@@ -29222,7 +29262,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L2840",
+      "source_location": "L2842",
       "weight": 1.0,
       "source": "main",
       "target": "main_resolveffmpegpath",
@@ -29562,7 +29602,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3636",
+      "source_location": "L3637",
       "weight": 1.0,
       "source": "main",
       "target": "main_takescreenshot",
@@ -29653,7 +29693,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3218",
+      "source_location": "L3219",
       "weight": 1.0,
       "source": "main",
       "target": "src_shared_editor_projectfactory",
@@ -29664,7 +29704,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3218",
+      "source_location": "L3219",
       "weight": 1.0,
       "source": "main",
       "target": "src_shared_editor_projectfactory_migrateprojectdata",
@@ -31314,7 +31354,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3678",
+      "source_location": "L3679",
       "weight": 1.0,
       "source": "main_takescreenshot",
       "target": "main_showoverlaywindows",
@@ -31413,7 +31453,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L3691",
+      "source_location": "L3692",
       "weight": 1.0,
       "source": "main_takescreenshot",
       "target": "main_updateoverlayignoremouse",
@@ -32183,7 +32223,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "main.js",
-      "source_location": "L2861",
+      "source_location": "L2863",
       "weight": 1.0,
       "source": "main_generateexportffmpegargs",
       "target": "main_boundedinteger",
@@ -42831,6 +42871,50 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_recordingstatemachine_test",
+      "target": "src_shared_recording_statemachine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_recordingstatemachine_test",
+      "target": "src_shared_recording_statemachine_recordingphase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_recordingstatemachine_test",
+      "target": "src_shared_recording_statemachine_canrunrecordingcommand",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_recordingstatemachine_test",
+      "target": "src_shared_recording_statemachine_recordingcommanderror",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/shared/schemas/project.ts",
@@ -43142,6 +43226,16 @@
       "weight": 1.0,
       "source": "tests_unit_recorder_test_startrecorder",
       "target": "tests_unit_recorder_test_latestprocess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/recordingStateMachine.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "tests_unit_recordingstatemachine_test",
+      "target": "tests_unit_recordingstatemachine_test_recordingphase_canrunrecordingcommand_recordingcommanderror",
       "confidence_score": 1.0
     },
     {
@@ -58874,7 +58968,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L93",
+      "source_location": "L109",
       "weight": 1.0,
       "source": "profile_readme_proposal_hi_there_i_m_rehman_ahmad_chaudhry",
       "target": "profile_readme_proposal_account_stats",
@@ -58884,7 +58978,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L40",
+      "source_location": "L56",
       "weight": 1.0,
       "source": "profile_readme_proposal_hi_there_i_m_rehman_ahmad_chaudhry",
       "target": "profile_readme_proposal_featured_projects",
@@ -58914,7 +59008,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L57",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "profile_readme_proposal_hi_there_i_m_rehman_ahmad_chaudhry",
+      "target": "profile_readme_proposal_latest_blog_posts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "profile_readme_proposal.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "profile_readme_proposal_hi_there_i_m_rehman_ahmad_chaudhry",
+      "target": "profile_readme_proposal_recent_activity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "profile_readme_proposal.md",
+      "source_location": "L73",
       "weight": 1.0,
       "source": "profile_readme_proposal_hi_there_i_m_rehman_ahmad_chaudhry",
       "target": "profile_readme_proposal_tech_stack_skills",
@@ -58924,7 +59038,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L42",
+      "source_location": "L58",
       "weight": 1.0,
       "source": "profile_readme_proposal_featured_projects",
       "target": "profile_readme_proposal_desktop_applications_tools",
@@ -58934,7 +59048,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L46",
+      "source_location": "L62",
       "weight": 1.0,
       "source": "profile_readme_proposal_featured_projects",
       "target": "profile_readme_proposal_machine_learning_computer_vision",
@@ -58944,7 +59058,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "profile_readme_proposal.md",
-      "source_location": "L51",
+      "source_location": "L67",
       "weight": 1.0,
       "source": "profile_readme_proposal_featured_projects",
       "target": "profile_readme_proposal_web_apps_automation",
@@ -59142,5 +59256,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2869e95eab1b813e501b03b341d2bbe862758bd6"
+  "built_at_commit": "58306fc6ba382dbf1d90c5dcc6bb40a67a1d3cb4"
 }
