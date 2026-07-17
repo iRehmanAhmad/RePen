@@ -90,6 +90,7 @@ const EditorApp: React.FC = () => {
 
   // Media loading & relinking
   const [mediaMissing, setMediaMissing] = useState(false);
+  const [webcamMissing, setWebcamMissing] = useState(false);
   const [recentProjects, setRecentProjects] = useState<string[]>(() => 
     JSON.parse(localStorage.getItem(RECENT_PROJECTS_KEY) || '[]')
   );
@@ -135,6 +136,7 @@ const EditorApp: React.FC = () => {
   // Snap, tracks controls
   // Element Refs
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const webcamVideoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const coordinatorRef = useRef(new PlaybackCoordinator());
 
@@ -218,6 +220,7 @@ const EditorApp: React.FC = () => {
         setFuture([]);
         addToRecent(res.path);
         setMediaMissing(false);
+        setWebcamMissing(false);
         if (!recovery || proj !== recovery.project) setEditorNotice(null);
       } else {
         setEditorNotice(`Could not load this project: ${res.message || res.error || 'Unknown error'}`);
@@ -308,7 +311,7 @@ const EditorApp: React.FC = () => {
     const coord = coordinatorRef.current;
     const video = videoRef.current;
     if (video) {
-      coord.setElements(video, null, null);
+      coord.setElements(video, webcamVideoRef.current, null);
       if (project?.editor) {
         coord.setRegions(project.editor.speedRegions || [], project.editor.trimRegions || []);
       }
@@ -622,6 +625,20 @@ const EditorApp: React.FC = () => {
     };
   };
 
+  const getWebcamStyle = (): React.CSSProperties => {
+    const editor = project?.editor;
+    if (!editor) return {};
+    const size = editor.webcamSizePreset || 25;
+    const position = editor.webcamPosition || { cx: 0.82, cy: 0.82 };
+    return {
+      width: `${size}%`,
+      left: `${position.cx * 100}%`,
+      top: `${position.cy * 100}%`,
+      transform: `translate(-50%, -50%) ${editor.webcamMirrored ? 'scaleX(-1)' : ''}`,
+      borderRadius: editor.webcamMaskShape === 'circle' ? '50%' : editor.webcamMaskShape === 'rounded' ? '16px' : '0',
+    };
+  };
+
   // Add/Remove Zoom Regions
   const handleAddZoomRegion = () => {
     if (!project) return;
@@ -870,6 +887,7 @@ const EditorApp: React.FC = () => {
   };
 
   const activeVideoSrc = project?.media?.screenVideoPath || project?.videoPath || '';
+  const webcamVideoSrc = project?.media?.webcamVideoPath || '';
   const timelineTicks = createTimelineTicks(durationMs, timelineZoom);
   const timelineTracks = project?.editor.timelineTracks || DEFAULT_TIMELINE_TRACKS;
 
@@ -953,6 +971,19 @@ const EditorApp: React.FC = () => {
                     onError={() => setMediaMissing(true)}
                   />
                   <canvas ref={canvasRef} className="annotation-canvas" style={getCropMediaStyle()} />
+                  {webcamVideoSrc && timelineTracks.webcam.visible && project?.editor.webcamLayoutPreset !== 'no-webcam' && !webcamMissing && (
+                    <video
+                      ref={webcamVideoRef}
+                      src={toFileUrl(webcamVideoSrc)}
+                      className="webcam-video"
+                      style={getWebcamStyle()}
+                      muted
+                      onError={() => {
+                        setWebcamMissing(true);
+                        setEditorNotice('Webcam media could not be loaded. Screen editing can continue without it.');
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </div>
