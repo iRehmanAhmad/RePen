@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 214 files · ~153,493 words
+- 215 files · ~153,570 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2393 nodes · 3490 edges · 215 communities (199 shown, 16 thin omitted)
+- 2395 nodes · 3495 edges · 215 communities (199 shown, 16 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 72 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8a3f4537`
+- Built from commit: `deb59468`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -575,12 +575,12 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 86 - "applyHotkeys"
-Cohesion: 0.43
-Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
+Cohesion: 0.27
+Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), pushUndoSnapshot() (+3 more)
 
 ### Community 87 - "createToolbarWindow"
-Cohesion: 0.21
-Nodes (14): applyCapturePolicy(), createAppIcon(), createCountdownWindow(), createEditorWindow(), createSelectorWindow(), createSettingsWindow(), createToolbarWindow(), editorUrl() (+6 more)
+Cohesion: 0.17
+Nodes (19): applyCapturePolicy(), createAppIcon(), createCountdownWindow(), createEditorWindow(), createOverlayWindow(), createOverlayWindows(), createSelectorWindow(), createSettingsWindow() (+11 more)
 
 ### Community 88 - "19. Security Model"
 Cohesion: 0.29
@@ -607,8 +607,8 @@ Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.06
-Nodes (45): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+37 more)
+Cohesion: 0.08
+Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ComPtr, Direct3D11CaptureFramePool, FrameCallback, ID3D11Device (+17 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -695,8 +695,8 @@ Cohesion: 0.20
 Nodes (10): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, timestampHns (+2 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.14
-Nodes (30): autoArchiveCurrentSession(), broadcastScene(), clearScene(), createOverlayWindow(), cycleBackgroundMode(), deepClone(), exportPdf(), getShortcutActions() (+22 more)
+Cohesion: 0.10
+Nodes (41): autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), exportPdf(), getAppState() (+33 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -707,8 +707,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.18
-Nodes (23): fps, height, width, BYTE, HWND, string, vector, wstring (+15 more)
+Cohesion: 0.24
+Nodes (17): BYTE, HWND, string, vector, wstring, findBool(), findDouble(), findInt() (+9 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -779,8 +779,8 @@ Cohesion: 0.11
 Nodes (35): AspectRatio, DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS (+27 more)
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.12
-Nodes (21): broadcastState(), captureMagnifierBackground(), createOverlayWindows(), createTray(), createTrayIcon(), getStateFilePath(), hideOverlayWindows(), init() (+13 more)
+Cohesion: 0.20
+Nodes (10): ensureToolbarWindowCapacity(), getStateFilePath(), getToolbarWindowBounds(), loadState(), quitApp(), readPersistedState(), setShapeType(), setTextMode() (+2 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -899,8 +899,8 @@ Cohesion: 0.13
 Nodes (14): Correct Recorder Capture and Deliver the Production OpenScreen-Style Editor, Cross-Phase Test and Evidence Policy, Current Phase, Definition of the Target Product, Final Acceptance Checklist, Forbidden Completion Shortcuts, Goal, Handoff Notes (+6 more)
 
 ### Community 184 - "syncPageStore"
-Cohesion: 0.23
-Nodes (12): getRepenOwnedWindowHandleCandidates(), createDefaultEditorState(), createRecordingProject(), migrateProjectData(), CONTROL_WINDOW_ROLES, filterRepenOwnedSources(), nativeWindowHandleCandidates(), shouldExcludeFromCapture() (+4 more)
+Cohesion: 0.20
+Nodes (13): getRepenOwnedWindowHandleCandidates(), createDefaultEditorState(), createRecordingProject(), migrateProjectData(), CONTROL_WINDOW_ROLES, filterRepenOwnedSources(), nativeWindowHandleCandidates(), shouldExcludeFromCapture() (+5 more)
 
 ### Community 185 - "editorExport.test.ts"
 Cohesion: 0.18
@@ -983,8 +983,8 @@ Cohesion: 0.67
 Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
 
 ### Community 206 - "19. Security Model"
-Cohesion: 0.33
-Nodes (9): getAppState(), getBootstrapData(), getDockSide(), getSceneState(), nextPage(), normalizeBoardViewport(), prevPage(), setBoardViewport() (+1 more)
+Cohesion: 0.11
+Nodes (26): IDXGIDevice, IInspectable, fps, height, width, main(), Direct3D11CaptureFramePool, FrameCallback (+18 more)
 
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
@@ -1007,7 +1007,7 @@ Cohesion: 0.67
 Nodes (3): 19. Security Model, Network posture, Required security decisions
 
 ## Knowledge Gaps
-- **1164 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1159 more)
+- **1165 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1160 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1015,15 +1015,15 @@ Nodes (3): 19. Security Model, Network posture, Required security decisions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PresentationTrackService` connect `PresentationTrackService` to `main.ts`, `clone`, `PresentationTrackService`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **Why does `seekPresentationTrack()` connect `project.ts` to `editor.tsx`, `PresentationTrackService`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `RecorderService` connect `main.ts` to `main.ts`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Why does `createAppCapabilities()` connect `main.ts` to `main.js`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
-  _1164 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1165 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05505279034690799 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

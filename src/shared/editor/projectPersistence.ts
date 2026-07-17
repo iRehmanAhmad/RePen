@@ -82,6 +82,8 @@ export interface ProjectEditorState {
 export interface EditorProjectData {
   version: number;
   media?: ProjectMedia;
+  /** Parsed on load only when sidecar presentation replay is required. */
+  presentationTrack?: unknown;
   editor: ProjectEditorState;
   videoPath?: string;
 }
@@ -360,6 +362,7 @@ export function migrateProjectData(project: any): EditorProjectData {
   return {
     version: PROJECT_VERSION,
     media: normalizeProjectMedia(project.media) || undefined,
+    presentationTrack: project.presentationTrack && typeof project.presentationTrack === "object" ? project.presentationTrack : undefined,
     editor: normalizeProjectEditor(project.editor || {}),
     videoPath: typeof project.videoPath === "string" ? project.videoPath : undefined,
   };

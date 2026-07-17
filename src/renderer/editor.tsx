@@ -336,7 +336,7 @@ const EditorApp: React.FC = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // 1. Draw sidecar PresentationTrack annotations
-    const track = (project as any).presentationTrack;
+    const track = project.media?.presentationMode === 'sidecar' ? (project as any).presentationTrack : null;
     if (track) {
       const snapshot = seekPresentationTrack(track, timeMs);
       const renderer = new PresenterRenderer(ctx);

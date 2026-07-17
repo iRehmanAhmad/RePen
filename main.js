@@ -3194,6 +3194,19 @@ function normalizeProjectPayload(projectData) {
   return migrateProjectData(projectData);
 }
 
+function hydratePresentationTrack(project) {
+  if (project?.media?.presentationMode !== 'sidecar' || !project.media.nativeSessionPath) return project;
+  try {
+    const { parsePresentationTrackJsonl } = require('./dist-electron/services/presentationTrack.js');
+    return {
+      ...project,
+      presentationTrack: parsePresentationTrackJsonl(fs.readFileSync(project.media.nativeSessionPath, 'utf8')),
+    };
+  } catch (error) {
+    return { ...project, presentationTrackError: error.message || String(error) };
+  }
+}
+
 ipcMain.handle('project:save', async (_, projectData, suggestedName, existingProjectPath) => {
   try {
     const normalizedProject = normalizeProjectPayload(projectData);
@@ -3251,7 +3264,7 @@ ipcMain.handle('project:load', async (_, projectFolder) => {
 
     const filePath = result.filePaths[0];
     const content = fs.readFileSync(filePath, 'utf-8');
-    const project = normalizeProjectPayload(JSON.parse(content));
+    const project = hydratePresentationTrack(normalizeProjectPayload(JSON.parse(content)));
     currentProjectPath = filePath;
 
     return { success: true, path: filePath, project };
@@ -3267,7 +3280,7 @@ ipcMain.handle('project:load-from-path', async (_, filePath) => {
       return { success: false, message: 'File not found' };
     }
     const content = fs.readFileSync(filePath, 'utf-8');
-    const project = normalizeProjectPayload(JSON.parse(content));
+    const project = hydratePresentationTrack(normalizeProjectPayload(JSON.parse(content)));
     currentProjectPath = filePath;
 
     return { success: true, path: filePath, project };

@@ -2300,7 +2300,7 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "main_deepclone",
-      "community": 117,
+      "community": 86,
       "norm_label": "deepclone()"
     },
     {
@@ -2350,7 +2350,7 @@
       "source_location": "L296",
       "_origin": "ast",
       "id": "main_getdockside",
-      "community": 206,
+      "community": 117,
       "norm_label": "getdockside()"
     },
     {
@@ -2360,7 +2360,7 @@
       "source_location": "L317",
       "_origin": "ast",
       "id": "main_getappstate",
-      "community": 206,
+      "community": 117,
       "norm_label": "getappstate()"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "main_getscenestate",
-      "community": 206,
+      "community": 117,
       "norm_label": "getscenestate()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "main_getbootstrapdata",
-      "community": 206,
+      "community": 117,
       "norm_label": "getbootstrapdata()"
     },
     {
@@ -2440,7 +2440,7 @@
       "source_location": "L366",
       "_origin": "ast",
       "id": "main_broadcaststate",
-      "community": 144,
+      "community": 117,
       "norm_label": "broadcaststate()"
     },
     {
@@ -2500,7 +2500,7 @@
       "source_location": "L475",
       "_origin": "ast",
       "id": "main_createtrayicon",
-      "community": 144,
+      "community": 87,
       "norm_label": "createtrayicon()"
     },
     {
@@ -2520,7 +2520,7 @@
       "source_location": "L520",
       "_origin": "ast",
       "id": "main_createtray",
-      "community": 144,
+      "community": 87,
       "norm_label": "createtray()"
     },
     {
@@ -2590,7 +2590,7 @@
       "source_location": "L608",
       "_origin": "ast",
       "id": "main_createoverlaywindow",
-      "community": 117,
+      "community": 87,
       "norm_label": "createoverlaywindow()"
     },
     {
@@ -2610,7 +2610,7 @@
       "source_location": "L758",
       "_origin": "ast",
       "id": "main_gettoolbarwindowbounds",
-      "community": 87,
+      "community": 144,
       "norm_label": "gettoolbarwindowbounds()"
     },
     {
@@ -2620,7 +2620,7 @@
       "source_location": "L773",
       "_origin": "ast",
       "id": "main_ensuretoolbarwindowcapacity",
-      "community": 87,
+      "community": 144,
       "norm_label": "ensuretoolbarwindowcapacity()"
     },
     {
@@ -2710,7 +2710,7 @@
       "source_location": "L1068",
       "_origin": "ast",
       "id": "main_createoverlaywindows",
-      "community": 144,
+      "community": 87,
       "norm_label": "createoverlaywindows()"
     },
     {
@@ -2730,7 +2730,7 @@
       "source_location": "L1089",
       "_origin": "ast",
       "id": "main_hideoverlaywindows",
-      "community": 144,
+      "community": 87,
       "norm_label": "hideoverlaywindows()"
     },
     {
@@ -2800,7 +2800,7 @@
       "source_location": "L1180",
       "_origin": "ast",
       "id": "main_normalizeboardviewport",
-      "community": 206,
+      "community": 117,
       "norm_label": "normalizeboardviewport()"
     },
     {
@@ -2810,7 +2810,7 @@
       "source_location": "L1189",
       "_origin": "ast",
       "id": "main_setboardviewport",
-      "community": 206,
+      "community": 117,
       "norm_label": "setboardviewport()"
     },
     {
@@ -2820,7 +2820,7 @@
       "source_location": "L1199",
       "_origin": "ast",
       "id": "main_setclickhalo",
-      "community": 144,
+      "community": 117,
       "norm_label": "setclickhalo()"
     },
     {
@@ -2830,7 +2830,7 @@
       "source_location": "L1204",
       "_origin": "ast",
       "id": "main_setexportincludebackground",
-      "community": 144,
+      "community": 117,
       "norm_label": "setexportincludebackground()"
     },
     {
@@ -2840,7 +2840,7 @@
       "source_location": "L1212",
       "_origin": "ast",
       "id": "main_capturemagnifierbackground",
-      "community": 144,
+      "community": 117,
       "norm_label": "capturemagnifierbackground()"
     },
     {
@@ -2850,7 +2850,7 @@
       "source_location": "L1246",
       "_origin": "ast",
       "id": "main_setspotlight",
-      "community": 144,
+      "community": 117,
       "norm_label": "setspotlight()"
     },
     {
@@ -2870,7 +2870,7 @@
       "source_location": "L1285",
       "_origin": "ast",
       "id": "main_settoolbarorientation",
-      "community": 87,
+      "community": 144,
       "norm_label": "settoolbarorientation()"
     },
     {
@@ -2900,7 +2900,7 @@
       "source_location": "L1306",
       "_origin": "ast",
       "id": "main_setcolor",
-      "community": 144,
+      "community": 117,
       "norm_label": "setcolor()"
     },
     {
@@ -2910,7 +2910,7 @@
       "source_location": "L1317",
       "_origin": "ast",
       "id": "main_setwidth",
-      "community": 144,
+      "community": 117,
       "norm_label": "setwidth()"
     },
     {
@@ -2920,7 +2920,7 @@
       "source_location": "L1331",
       "_origin": "ast",
       "id": "main_setopacity",
-      "community": 144,
+      "community": 117,
       "norm_label": "setopacity()"
     },
     {
@@ -2930,7 +2930,7 @@
       "source_location": "L1343",
       "_origin": "ast",
       "id": "main_pushundosnapshot",
-      "community": 117,
+      "community": 86,
       "norm_label": "pushundosnapshot()"
     },
     {
@@ -2940,7 +2940,7 @@
       "source_location": "L1350",
       "_origin": "ast",
       "id": "main_recordscenechange",
-      "community": 117,
+      "community": 86,
       "norm_label": "recordscenechange()"
     },
     {
@@ -2980,7 +2980,7 @@
       "source_location": "L1384",
       "_origin": "ast",
       "id": "main_revertautoshape",
-      "community": 117,
+      "community": 86,
       "norm_label": "revertautoshape()"
     },
     {
@@ -2990,7 +2990,7 @@
       "source_location": "L1414",
       "_origin": "ast",
       "id": "main_setpage",
-      "community": 206,
+      "community": 117,
       "norm_label": "setpage()"
     },
     {
@@ -3000,7 +3000,7 @@
       "source_location": "L1432",
       "_origin": "ast",
       "id": "main_prevpage",
-      "community": 206,
+      "community": 117,
       "norm_label": "prevpage()"
     },
     {
@@ -3010,7 +3010,7 @@
       "source_location": "L1439",
       "_origin": "ast",
       "id": "main_nextpage",
-      "community": 206,
+      "community": 117,
       "norm_label": "nextpage()"
     },
     {
@@ -3270,7 +3270,7 @@
       "source_location": "L2161",
       "_origin": "ast",
       "id": "main_pasteclipboardimage",
-      "community": 117,
+      "community": 87,
       "norm_label": "pasteclipboardimage()"
     },
     {
@@ -3370,7 +3370,7 @@
       "source_location": "L2408",
       "_origin": "ast",
       "id": "main_rebuildwindows",
-      "community": 144,
+      "community": 87,
       "norm_label": "rebuildwindows()"
     },
     {
@@ -3380,7 +3380,7 @@
       "source_location": "L2424",
       "_origin": "ast",
       "id": "main_init",
-      "community": 144,
+      "community": 87,
       "norm_label": "init()"
     },
     {
@@ -10914,6 +10914,26 @@
       "norm_label": "productcompleteness.test.ts"
     },
     {
+      "label": "projectDefaultParity.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_projectdefaultparity_test",
+      "community": 184,
+      "norm_label": "projectdefaultparity.test.ts"
+    },
+    {
+      "label": "{ createDefaultEditorState }",
+      "file_type": "code",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "tests_unit_projectdefaultparity_test_createdefaulteditorstate",
+      "community": 184,
+      "norm_label": "{ createdefaulteditorstate }"
+    },
+    {
       "label": "projectFile.test.ts",
       "file_type": "code",
       "source_file": "tests/unit/projectFile.test.ts",
@@ -12710,7 +12730,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_fps",
-      "community": 120,
+      "community": 206,
       "norm_label": "fps"
     },
     {
@@ -12720,7 +12740,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_width",
-      "community": 120,
+      "community": 206,
       "norm_label": "width"
     },
     {
@@ -12730,7 +12750,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_captureconfig_height",
-      "community": 120,
+      "community": 206,
       "norm_label": "height"
     },
     {
@@ -13230,7 +13250,7 @@
       "source_location": "L396",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_main_main",
-      "community": 120,
+      "community": 206,
       "norm_label": "main()"
     },
     {
@@ -14970,7 +14990,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 94,
+      "community": 206,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -14980,7 +15000,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_createdirect3d11devicefromdxgidevice",
-      "community": 94,
+      "community": 206,
       "norm_label": "createdirect3d11devicefromdxgidevice()"
     },
     {
@@ -14990,7 +15010,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hresult",
-      "community": 94,
+      "community": 206,
       "norm_label": "hresult"
     },
     {
@@ -15000,7 +15020,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "idxgidevice",
-      "community": 94,
+      "community": 206,
       "norm_label": "idxgidevice"
     },
     {
@@ -15010,7 +15030,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "iinspectable",
-      "community": 94,
+      "community": 206,
       "norm_label": "iinspectable"
     },
     {
@@ -15020,7 +15040,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 94,
+      "community": 206,
       "norm_label": "hmonitor"
     },
     {
@@ -15030,7 +15050,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 94,
+      "community": 206,
       "norm_label": "hwnd"
     },
     {
@@ -15040,7 +15060,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_framecallback",
-      "community": 94,
+      "community": 206,
       "norm_label": "framecallback"
     },
     {
@@ -15050,7 +15070,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_direct3d11captureframepool",
-      "community": 94,
+      "community": 206,
       "norm_label": "direct3d11captureframepool"
     },
     {
@@ -15060,7 +15080,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_id3d11device",
-      "community": 94,
+      "community": 206,
       "norm_label": "id3d11device"
     },
     {
@@ -15070,7 +15090,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_id3d11devicecontext",
-      "community": 94,
+      "community": 206,
       "norm_label": "id3d11devicecontext"
     },
     {
@@ -15080,7 +15100,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_h_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 94,
+      "community": 206,
       "norm_label": "wgc_session.h"
     },
     {
@@ -15100,7 +15120,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 94,
+      "community": 206,
       "norm_label": ".wgcsession()"
     },
     {
@@ -15110,7 +15130,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 94,
+      "community": 206,
       "norm_label": "initialize"
     },
     {
@@ -15120,7 +15140,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_setframecallback",
-      "community": 94,
+      "community": 206,
       "norm_label": "setframecallback"
     },
     {
@@ -15130,7 +15150,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 94,
+      "community": 206,
       "norm_label": "start"
     },
     {
@@ -15140,7 +15160,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 120,
+      "community": 206,
       "norm_label": "stop"
     },
     {
@@ -15150,7 +15170,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 120,
+      "community": 206,
       "norm_label": "capturewidth"
     },
     {
@@ -15160,7 +15180,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 94,
+      "community": 206,
       "norm_label": "captureheight"
     },
     {
@@ -15170,7 +15190,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_device",
-      "community": 94,
+      "community": 206,
       "norm_label": "device"
     },
     {
@@ -15180,7 +15200,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_context",
-      "community": 94,
+      "community": 206,
       "norm_label": "context"
     },
     {
@@ -15190,7 +15210,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_created3ddevice",
-      "community": 94,
+      "community": 206,
       "norm_label": "created3ddevice"
     },
     {
@@ -15200,7 +15220,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 94,
+      "community": 206,
       "norm_label": "createcaptureitem"
     },
     {
@@ -15210,7 +15230,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 94,
+      "community": 206,
       "norm_label": "applysessionoptions"
     },
     {
@@ -15220,7 +15240,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_onframearrived",
-      "community": 94,
+      "community": 206,
       "norm_label": "onframearrived"
     },
     {
@@ -42121,6 +42141,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tests_unit_projectdefaultparity_test",
+      "target": "src_shared_editor_projectfactory",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -42128,6 +42159,17 @@
       "source_location": "L54",
       "weight": 1.0,
       "source": "src_shared_editor_projectfactory_migrateprojectdata",
+      "target": "src_shared_editor_projectfactory_createdefaulteditorstate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tests_unit_projectdefaultparity_test",
       "target": "src_shared_editor_projectfactory_createdefaulteditorstate",
       "confidence_score": 1.0
     },
@@ -42557,6 +42599,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectdefaultparity_test",
+      "target": "src_shared_editor_projectpersistence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "tests/unit/projectPersistence.test.ts",
       "source_location": "L2",
       "weight": 1.0,
@@ -42794,6 +42847,17 @@
       "weight": 1.0,
       "source": "src_shared_editor_projectpersistence_normalizeprojecteditor",
       "target": "src_shared_editor_types_clampplaybackspeed"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "tests_unit_projectdefaultparity_test",
+      "target": "src_shared_editor_projectpersistence_normalizeprojecteditor",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -44260,6 +44324,16 @@
       "weight": 1.0,
       "source": "tests_unit_presentationtrack_test",
       "target": "tests_unit_presentationtrack_test_temporarydirectories",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/projectDefaultParity.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tests_unit_projectdefaultparity_test",
+      "target": "tests_unit_projectdefaultparity_test_createdefaulteditorstate",
       "confidence_score": 1.0
     },
     {
@@ -60432,5 +60506,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8a3f45372589e762c47ccdae59ccf01326fcb259"
+  "built_at_commit": "deb59468ff2005bae92662e3b2e3fcbd776522a8"
 }
