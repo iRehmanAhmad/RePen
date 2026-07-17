@@ -48,6 +48,8 @@ Do not publish a release until all applicable items are complete:
 - Diagnostic logs and packaged configuration are inspected for private paths, recordings, thumbnails, device identifiers, or secrets.
 - The manual Windows QA above is recorded as passed, failed, or explicitly excluded for capability-gated features.
 
+Local package assembly passed on 2026-07-17 and is recorded in `phase-3-package-inspection.md`. Those local artifacts were unsigned and are not release candidates; rebuild and checksum the final signed artifacts before publication.
+
 ## Continuous integration
 
 `.github/workflows/ci.yml` defines a Windows code/build verification job for pushes and pull requests. It installs the locked dependencies, runs `npm test`, and runs `npm run build:all`. The workflow intentionally does not create, sign, upload, or publish release artifacts. Its first remote execution must pass before it can be treated as CI evidence.

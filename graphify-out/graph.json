@@ -2420,7 +2420,7 @@
       "source_location": "L347",
       "_origin": "ast",
       "id": "main_getscenestate",
-      "community": 137,
+      "community": 117,
       "norm_label": "getscenestate()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L355",
       "_origin": "ast",
       "id": "main_getbootstrapdata",
-      "community": 137,
+      "community": 117,
       "norm_label": "getbootstrapdata()"
     },
     {
@@ -3080,7 +3080,7 @@
       "source_location": "L1616",
       "_origin": "ast",
       "id": "main_exportpdf",
-      "community": 0,
+      "community": 117,
       "norm_label": "exportpdf()"
     },
     {
@@ -23760,7 +23760,7 @@
       "source_location": "L681",
       "_origin": "ast",
       "id": "docs_technical_architecture_19_security_model",
-      "community": 206,
+      "community": 17,
       "norm_label": "19. security model"
     },
     {
@@ -23770,7 +23770,7 @@
       "source_location": "L685",
       "_origin": "ast",
       "id": "docs_technical_architecture_required_security_decisions",
-      "community": 206,
+      "community": 17,
       "norm_label": "required security decisions"
     },
     {
@@ -23780,7 +23780,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "docs_technical_architecture_network_posture",
-      "community": 206,
+      "community": 17,
       "norm_label": "network posture"
     },
     {
@@ -24024,20 +24024,20 @@
       "norm_label": "phase 3 package inspection"
     },
     {
-      "label": "Command",
+      "label": "Package assembly command",
       "file_type": "document",
       "source_file": "docs/verification/phase-3-package-inspection.md",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "docs_verification_phase_3_package_inspection_command",
+      "id": "docs_verification_phase_3_package_inspection_package_assembly_command",
       "community": 209,
-      "norm_label": "command"
+      "norm_label": "package assembly command"
     },
     {
       "label": "Inspected package contents",
       "file_type": "document",
       "source_file": "docs/verification/phase-3-package-inspection.md",
-      "source_location": "L13",
+      "source_location": "L23",
       "_origin": "ast",
       "id": "docs_verification_phase_3_package_inspection_inspected_package_contents",
       "community": 209,
@@ -24047,7 +24047,7 @@
       "label": "Limits",
       "file_type": "document",
       "source_file": "docs/verification/phase-3-package-inspection.md",
-      "source_location": "L28",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "docs_verification_phase_3_package_inspection_limits",
       "community": 209,
@@ -24117,7 +24117,7 @@
       "label": "Continuous integration",
       "file_type": "document",
       "source_file": "docs/verification/release-readiness.md",
-      "source_location": "L51",
+      "source_location": "L53",
       "_origin": "ast",
       "id": "docs_verification_release_readiness_continuous_integration",
       "community": 219,
@@ -24127,7 +24127,7 @@
       "label": "Known open release blockers",
       "file_type": "document",
       "source_file": "docs/verification/release-readiness.md",
-      "source_location": "L55",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "docs_verification_release_readiness_known_open_release_blockers",
       "community": 219,
@@ -61631,17 +61631,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/verification/phase-3-package-inspection.md",
-      "source_location": "L5",
-      "weight": 1.0,
-      "source": "docs_verification_phase_3_package_inspection_phase_3_package_inspection",
-      "target": "docs_verification_phase_3_package_inspection_command",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/verification/phase-3-package-inspection.md",
-      "source_location": "L13",
+      "source_location": "L23",
       "weight": 1.0,
       "source": "docs_verification_phase_3_package_inspection_phase_3_package_inspection",
       "target": "docs_verification_phase_3_package_inspection_inspected_package_contents",
@@ -61651,10 +61641,20 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/verification/phase-3-package-inspection.md",
-      "source_location": "L28",
+      "source_location": "L40",
       "weight": 1.0,
       "source": "docs_verification_phase_3_package_inspection_phase_3_package_inspection",
       "target": "docs_verification_phase_3_package_inspection_limits",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/verification/phase-3-package-inspection.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "docs_verification_phase_3_package_inspection_phase_3_package_inspection",
+      "target": "docs_verification_phase_3_package_inspection_package_assembly_command",
       "confidence_score": 1.0
     },
     {
@@ -61691,7 +61691,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/verification/release-readiness.md",
-      "source_location": "L51",
+      "source_location": "L53",
       "weight": 1.0,
       "source": "docs_verification_release_readiness_repen_release_readiness_gates",
       "target": "docs_verification_release_readiness_continuous_integration",
@@ -61701,7 +61701,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/verification/release-readiness.md",
-      "source_location": "L55",
+      "source_location": "L57",
       "weight": 1.0,
       "source": "docs_verification_release_readiness_repen_release_readiness_gates",
       "target": "docs_verification_release_readiness_known_open_release_blockers",
@@ -62029,5 +62029,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "62b28dd22a557de03baec7f6cfa1b5ad82e2f31b"
+  "built_at_commit": "164df38c3cc0508ce0d1e30ee907df428402c099"
 }
