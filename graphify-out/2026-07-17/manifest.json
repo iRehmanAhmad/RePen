@@ -1183,5 +1183,10 @@
     "mtime": 1784281809.306859,
     "ast_hash": "80d27990ed2381f9f7fca563795767f0",
     "semantic_hash": ""
+  },
+  "tests/unit/editorAccessibility.test.ts": {
+    "mtime": 1784282275.6841586,
+    "ast_hash": "b406a3c11a63470bf72fb9f5c53c3ab5",
+    "semantic_hash": ""
   }
 }
