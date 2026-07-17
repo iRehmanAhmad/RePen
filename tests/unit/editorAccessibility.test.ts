@@ -16,4 +16,13 @@ describe('editor accessibility baseline', () => {
     expect(editor).toContain('aria-label="Playback speed"');
     expect(editor).toContain('aria-label="Volume"');
   });
+
+  it('uses the tab pattern and labels modal workflows', () => {
+    expect(editor).toContain('aria-selected={activeTab === tab.id}');
+    expect(editor).toContain('aria-controls={`editor-panel-${tab.id}`}');
+    expect(editor).toContain('role="tabpanel"');
+    expect(editor).toContain("event.key === 'ArrowRight'");
+    expect(editor).toContain('aria-label="Export progress"');
+    expect(editor).toContain('aria-label="RePen Editor tutorial"');
+  });
 });

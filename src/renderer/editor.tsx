@@ -17,6 +17,14 @@ import './editor.css';
 const RECENT_PROJECTS_KEY = 'repen-recent-projects';
 const CAPABILITIES_PENDING_REASON = 'Checking whether this capability is available...';
 const CAPABILITIES_UNAVAILABLE_REASON = 'This build could not verify optional recording and export capabilities.';
+const EDITOR_TABS = [
+  { id: 'layout', labelKey: 'layout' },
+  { id: 'motion', labelKey: 'motion' },
+  { id: 'webcam', labelKey: 'webcam' },
+  { id: 'annotations', labelKey: 'overlay' },
+  { id: 'captions', labelKey: 'captions' },
+] as const;
+type EditorTab = (typeof EDITOR_TABS)[number]['id'];
 
 const unavailableCapabilities = (reason: string) => ({
   recorder: { available: false, reason },
@@ -107,7 +115,7 @@ const EditorApp: React.FC = () => {
   const [isMuted, setIsMuted] = useState(false);
 
   // UI States
-  const [activeTab, setActiveTab] = useState<'layout' | 'motion' | 'webcam' | 'annotations' | 'captions'>('layout');
+  const [activeTab, setActiveTab] = useState<EditorTab>('layout');
   const [selectedZoomId, setSelectedZoomId] = useState<string | null>(null);
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
   const [selectedCaptionId, setSelectedCaptionId] = useState<string | null>(null);
@@ -143,6 +151,21 @@ const EditorApp: React.FC = () => {
   // Helper i18n selector
   const t = (key: string): string => {
     return TRANSLATIONS[locale]?.[key] || TRANSLATIONS['en']?.[key] || key;
+  };
+
+  const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, tabId: EditorTab) => {
+    const currentIndex = EDITOR_TABS.findIndex((tab) => tab.id === tabId);
+    let nextIndex: number | null = null;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % EDITOR_TABS.length;
+    if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + EDITOR_TABS.length) % EDITOR_TABS.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = EDITOR_TABS.length - 1;
+    if (nextIndex === null) return;
+
+    event.preventDefault();
+    const nextTab = EDITOR_TABS[nextIndex].id;
+    setActiveTab(nextTab);
+    requestAnimationFrame(() => document.getElementById(`editor-tab-${nextTab}`)?.focus());
   };
 
   // Bootstrap initialization
@@ -998,12 +1021,24 @@ const EditorApp: React.FC = () => {
         {/* Sidebar settings panel */}
         <aside className="properties-panel" role="complementary" aria-label="Properties Editor">
           <div className="tab-buttons" style={{display: 'flex', gap: 4, marginBottom: 12, overflowX: 'auto'}} role="tablist">
-            <button className={`menu-btn ${activeTab === 'layout' ? 'active' : ''}`} onClick={() => setActiveTab('layout')} role="tab">{t('layout')}</button>
-            <button className={`menu-btn ${activeTab === 'motion' ? 'active' : ''}`} onClick={() => setActiveTab('motion')} role="tab">{t('motion')}</button>
-            <button className={`menu-btn ${activeTab === 'webcam' ? 'active' : ''}`} onClick={() => setActiveTab('webcam')} role="tab">{t('webcam')}</button>
-            <button className={`menu-btn ${activeTab === 'annotations' ? 'active' : ''}`} onClick={() => setActiveTab('annotations')} role="tab">{t('overlay')}</button>
-            <button className={`menu-btn ${activeTab === 'captions' ? 'active' : ''}`} onClick={() => setActiveTab('captions')} role="tab">{t('captions')}</button>
+            {EDITOR_TABS.map((tab) => (
+              <button
+                key={tab.id}
+                id={`editor-tab-${tab.id}`}
+                className={`menu-btn ${activeTab === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+                onKeyDown={(event) => handleTabKeyDown(event, tab.id)}
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                aria-controls={`editor-panel-${tab.id}`}
+                tabIndex={activeTab === tab.id ? 0 : -1}
+              >
+                {t(tab.labelKey)}
+              </button>
+            ))}
           </div>
+
+          <div role="tabpanel" id={`editor-panel-${activeTab}`} aria-labelledby={`editor-tab-${activeTab}`} tabIndex={0}>
 
           {project && activeTab === 'layout' && (
             <div style={{display: 'flex', flexDirection: 'column', gap: 12}}>
@@ -1359,6 +1394,7 @@ const EditorApp: React.FC = () => {
               )}
             </div>
           )}
+          </div>
 
           {recentProjects.length > 0 && (
             <div className="property-group" style={{marginTop: 'auto'}}>
@@ -1366,7 +1402,15 @@ const EditorApp: React.FC = () => {
               <ul style={{listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6}}>
                 {recentProjects.map((p, idx) => (
                   <li key={idx} style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'}}>
-                    <a href="#" style={{color: '#a3a8b1', fontSize: 12}} onClick={() => loadProject(p)}>
+                    <a
+                      href="#"
+                      style={{color: '#a3a8b1', fontSize: 12}}
+                      aria-label={`Open recent project ${p.split('/').pop()?.split('\\').pop() || 'project'}`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        void loadProject(p);
+                      }}
+                    >
                       {p.split('/').pop()?.split('\\').pop()}
                     </a>
                   </li>
@@ -1561,7 +1605,7 @@ const EditorApp: React.FC = () => {
 
       {/* Live Rendering Export Progress Overlay */}
       {isExporting && (
-        <div className="dialog-overlay" style={{background: 'rgba(0,0,0,0.85)', zIndex: 1000}} role="status" aria-live="assertive">
+        <div className="dialog-overlay" style={{background: 'rgba(0,0,0,0.85)', zIndex: 1000}} role="dialog" aria-modal="true" aria-label="Export progress">
           <div className="dialog-container" style={{maxWidth: 400, textAlign: 'center'}}>
             <h2>🎨 Rendering Video Composites...</h2>
             <p style={{fontSize: 13, opacity: 0.8, margin: '8px 0 16px 0'}}>
@@ -1583,7 +1627,7 @@ const EditorApp: React.FC = () => {
 
       {/* First-Run Guidance Tutorial overlays */}
       {showTutorialStep !== null && (
-        <div className="dialog-overlay" style={{zIndex: 2000}}>
+        <div className="dialog-overlay" style={{zIndex: 2000}} role="dialog" aria-modal="true" aria-label="RePen Editor tutorial">
           <div className="dialog-container" style={{maxWidth: 360}}>
             {showTutorialStep === 1 && (
               <>
