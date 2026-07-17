@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 206 files · ~151,800 words
+- 207 files · ~152,156 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2363 nodes · 3444 edges · 210 communities (197 shown, 13 thin omitted)
+- 2368 nodes · 3448 edges · 211 communities (198 shown, 13 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 70 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `44a7aab7`
+- Built from commit: `1c9909a2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -215,6 +215,7 @@
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
 - [[_COMMUNITY_phaseCompletionAudit.test.ts|phaseCompletionAudit.test.ts]]
 - [[_COMMUNITY_Phase 3 Package Inspection|Phase 3 Package Inspection]]
+- [[_COMMUNITY_missingMediaRecovery.test.ts|missingMediaRecovery.test.ts]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -243,7 +244,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (210 total, 13 thin omitted)
+## Communities (211 total, 13 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -314,8 +315,8 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.17
-Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
+Cohesion: 0.13
+Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -594,16 +595,16 @@ Cohesion: 0.12
 Nodes (16): Acceptance Checks, Complete OpenScreen integration after recorder foundation, Completed Baseline, Constraints, Cross-Phase Test Policy, Current Phase, Delivery Strategy, Feature Parity Definition (+8 more)
 
 ### Community 92 - "AudioMixer"
-Cohesion: 0.05
-Nodes (79): CLSID, HCURSOR, LPARAM, LRESULT, T, AudioMixer, append, beginTimeline (+71 more)
+Cohesion: 0.07
+Nodes (56): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+48 more)
 
 ### Community 93 - "MFEncoder"
 Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.07
-Nodes (29): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ID3D11Device, ID3D11DeviceContext, ComPtr, Direct3D11CaptureFramePool (+21 more)
+Cohesion: 0.06
+Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -766,8 +767,8 @@ Cohesion: 0.12
 Nodes (24): broadcastState(), ensureToolbarWindowCapacity(), getAppState(), getDockSide(), getStateFilePath(), getToolbarWindowBounds(), loadState(), nextPage() (+16 more)
 
 ### Community 139 - "audio_sample_utils.h"
-Cohesion: 0.13
-Nodes (18): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice() (+10 more)
+Cohesion: 0.38
+Nodes (5): atomic, condition_variable, mutex, thread, vector
 
 ### Community 140 - "find_main_js_handlers.js"
 Cohesion: 0.50
@@ -986,15 +987,19 @@ Cohesion: 0.67
 Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
 
 ### Community 206 - "19. Security Model"
-Cohesion: 0.67
-Nodes (3): 19. Security Model, Network posture, Required security decisions
+Cohesion: 0.21
+Nodes (18): CLSID, HCURSOR, LPARAM, LRESULT, base64Encode(), buildAssetJson(), HWND, string (+10 more)
 
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
 Nodes (4): Command, Inspected package contents, Limits, Phase 3 Package Inspection
 
+### Community 210 - "missingMediaRecovery.test.ts"
+Cohesion: 0.40
+Nodes (4): editorSource, mainSource, preloadSource, repositoryRoot
+
 ## Knowledge Gaps
-- **1154 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1149 more)
+- **1158 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1153 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1002,15 +1007,15 @@ Nodes (4): Command, Inspected package contents, Limits, Phase 3 Package Inspecti
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PresentationTrackService` connect `PresentationTrackService` to `main.ts`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Why does `createAppCapabilities()` connect `main.ts` to `main.js`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Why does `seekPresentationTrack()` connect `project.ts` to `editor.tsx`, `PresentationTrackService`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
-  _1154 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1158 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05795918367346939 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

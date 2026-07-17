@@ -6817,7 +6817,7 @@
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1387",
+      "source_location": "L1406",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 190,
@@ -10544,6 +10544,56 @@
       "norm_label": "fakefs()"
     },
     {
+      "label": "missingMediaRecovery.test.ts",
+      "file_type": "code",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "tests_unit_missingmediarecovery_test",
+      "community": 210,
+      "norm_label": "missingmediarecovery.test.ts"
+    },
+    {
+      "label": "repositoryRoot",
+      "file_type": "code",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "tests_unit_missingmediarecovery_test_repositoryroot",
+      "community": 210,
+      "norm_label": "repositoryroot"
+    },
+    {
+      "label": "editorSource",
+      "file_type": "code",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "tests_unit_missingmediarecovery_test_editorsource",
+      "community": 210,
+      "norm_label": "editorsource"
+    },
+    {
+      "label": "preloadSource",
+      "file_type": "code",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "tests_unit_missingmediarecovery_test_preloadsource",
+      "community": 210,
+      "norm_label": "preloadsource"
+    },
+    {
+      "label": "mainSource",
+      "file_type": "code",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "tests_unit_missingmediarecovery_test_mainsource",
+      "community": 210,
+      "norm_label": "mainsource"
+    },
+    {
       "label": "native-recorder-helper.test.ts",
       "file_type": "code",
       "source_file": "tests/unit/native-recorder-helper.test.ts",
@@ -11100,7 +11150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 92,
+      "community": 139,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -11300,7 +11350,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 92,
+      "community": 139,
       "norm_label": "mutex"
     },
     {
@@ -11320,7 +11370,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_condition_variable",
-      "community": 92,
+      "community": 139,
       "norm_label": "condition_variable"
     },
     {
@@ -11340,7 +11390,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 92,
+      "community": 139,
       "norm_label": "vector"
     },
     {
@@ -11390,7 +11440,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 92,
+      "community": 139,
       "norm_label": "thread"
     },
     {
@@ -11410,7 +11460,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 92,
+      "community": 139,
       "norm_label": "atomic"
     },
     {
@@ -11460,7 +11510,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler",
-      "community": 92,
+      "community": 206,
       "norm_label": "cursor-sampler.cpp"
     },
     {
@@ -11470,7 +11520,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_lowlevelmouseproc",
-      "community": 92,
+      "community": 206,
       "norm_label": "lowlevelmouseproc()"
     },
     {
@@ -11480,7 +11530,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lresult",
-      "community": 92,
+      "community": 206,
       "norm_label": "lresult"
     },
     {
@@ -11490,7 +11540,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wparam",
-      "community": 92,
+      "community": 206,
       "norm_label": "wparam"
     },
     {
@@ -11500,7 +11550,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lparam",
-      "community": 92,
+      "community": 206,
       "norm_label": "lparam"
     },
     {
@@ -11510,7 +11560,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_nowms",
-      "community": 92,
+      "community": 206,
       "norm_label": "nowms()"
     },
     {
@@ -11520,7 +11570,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_writejsonline",
-      "community": 92,
+      "community": 206,
       "norm_label": "writejsonline()"
     },
     {
@@ -11530,7 +11580,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_string",
-      "community": 92,
+      "community": 206,
       "norm_label": "string"
     },
     {
@@ -11540,7 +11590,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_jsonescape",
-      "community": 92,
+      "community": 206,
       "norm_label": "jsonescape()"
     },
     {
@@ -11550,7 +11600,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_base64encode",
-      "community": 92,
+      "community": 206,
       "norm_label": "base64encode()"
     },
     {
@@ -11560,7 +11610,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_getpngclsid",
-      "community": 92,
+      "community": 206,
       "norm_label": "getpngclsid()"
     },
     {
@@ -11570,7 +11620,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "clsid",
-      "community": 92,
+      "community": 206,
       "norm_label": "clsid"
     },
     {
@@ -11580,7 +11630,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_standardcursortype",
-      "community": 92,
+      "community": 206,
       "norm_label": "standardcursortype()"
     },
     {
@@ -11590,7 +11640,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hcursor",
-      "community": 92,
+      "community": 206,
       "norm_label": "hcursor"
     },
     {
@@ -11600,7 +11650,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_detectcustomcursortype",
-      "community": 92,
+      "community": 206,
       "norm_label": "detectcustomcursortype()"
     },
     {
@@ -11610,7 +11660,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_buildassetjson",
-      "community": 92,
+      "community": 206,
       "norm_label": "buildassetjson()"
     },
     {
@@ -11620,7 +11670,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_runsamplingloop",
-      "community": 92,
+      "community": 206,
       "norm_label": "runsamplingloop()"
     },
     {
@@ -11630,7 +11680,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_hwnd",
-      "community": 92,
+      "community": 206,
       "norm_label": "hwnd"
     },
     {
@@ -11640,7 +11690,7 @@
       "source_location": "L412",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_main",
-      "community": 92,
+      "community": 206,
       "norm_label": "main()"
     },
     {
@@ -11930,7 +11980,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 92,
+      "community": 139,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -13100,7 +13150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 92,
+      "community": 139,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -13830,7 +13880,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 92,
+      "community": 139,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -14320,7 +14370,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 92,
+      "community": 139,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -14670,7 +14720,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_third_party_openscreen_wgc_capture_src_wgc_session",
-      "community": 139,
+      "community": 94,
       "norm_label": "wgc_session.cpp"
     },
     {
@@ -14680,7 +14730,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_createdirect3d11devicefromdxgidevice",
-      "community": 139,
+      "community": 94,
       "norm_label": "createdirect3d11devicefromdxgidevice()"
     },
     {
@@ -14690,7 +14740,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hresult",
-      "community": 139,
+      "community": 94,
       "norm_label": "hresult"
     },
     {
@@ -14700,7 +14750,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "idxgidevice",
-      "community": 139,
+      "community": 94,
       "norm_label": "idxgidevice"
     },
     {
@@ -14710,7 +14760,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "iinspectable",
-      "community": 139,
+      "community": 94,
       "norm_label": "iinspectable"
     },
     {
@@ -14720,7 +14770,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hmonitor",
-      "community": 139,
+      "community": 94,
       "norm_label": "hmonitor"
     },
     {
@@ -14730,7 +14780,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_hwnd",
-      "community": 139,
+      "community": 94,
       "norm_label": "hwnd"
     },
     {
@@ -14740,7 +14790,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_framecallback",
-      "community": 139,
+      "community": 94,
       "norm_label": "framecallback"
     },
     {
@@ -14750,7 +14800,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_cpp_direct3d11captureframepool",
-      "community": 139,
+      "community": 94,
       "norm_label": "direct3d11captureframepool"
     },
     {
@@ -14800,7 +14850,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_wgcsession",
-      "community": 139,
+      "community": 94,
       "norm_label": ".wgcsession()"
     },
     {
@@ -14810,7 +14860,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_initialize",
-      "community": 139,
+      "community": 94,
       "norm_label": "initialize"
     },
     {
@@ -14820,7 +14870,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_setframecallback",
-      "community": 139,
+      "community": 94,
       "norm_label": "setframecallback"
     },
     {
@@ -14830,7 +14880,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_start",
-      "community": 139,
+      "community": 94,
       "norm_label": "start"
     },
     {
@@ -14840,7 +14890,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_stop",
-      "community": 139,
+      "community": 94,
       "norm_label": "stop"
     },
     {
@@ -14850,7 +14900,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_capturewidth",
-      "community": 139,
+      "community": 94,
       "norm_label": "capturewidth"
     },
     {
@@ -14860,7 +14910,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_captureheight",
-      "community": 139,
+      "community": 94,
       "norm_label": "captureheight"
     },
     {
@@ -14890,7 +14940,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_created3ddevice",
-      "community": 139,
+      "community": 94,
       "norm_label": "created3ddevice"
     },
     {
@@ -14900,7 +14950,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_createcaptureitem",
-      "community": 139,
+      "community": 94,
       "norm_label": "createcaptureitem"
     },
     {
@@ -14910,7 +14960,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_applysessionoptions",
-      "community": 139,
+      "community": 94,
       "norm_label": "applysessionoptions"
     },
     {
@@ -14920,7 +14970,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wgc_session_wgcsession_onframearrived",
-      "community": 139,
+      "community": 94,
       "norm_label": "onframearrived"
     },
     {
@@ -22990,7 +23040,7 @@
       "source_location": "L681",
       "_origin": "ast",
       "id": "docs_technical_architecture_19_security_model",
-      "community": 206,
+      "community": 17,
       "norm_label": "19. security model"
     },
     {
@@ -23000,7 +23050,7 @@
       "source_location": "L685",
       "_origin": "ast",
       "id": "docs_technical_architecture_required_security_decisions",
-      "community": 206,
+      "community": 17,
       "norm_label": "required security decisions"
     },
     {
@@ -23010,7 +23060,7 @@
       "source_location": "L693",
       "_origin": "ast",
       "id": "docs_technical_architecture_network_posture",
-      "community": 206,
+      "community": 17,
       "norm_label": "network posture"
     },
     {
@@ -35894,7 +35944,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1387",
+      "source_location": "L1406",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
@@ -36157,7 +36207,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L773",
+      "source_location": "L792",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_projectpersistence_tofileurl"
@@ -43445,6 +43495,46 @@
       "weight": 1.0,
       "source": "tests_unit_mediavalidation_test",
       "target": "tests_unit_mediavalidation_test_validatefinalizedrecordingmedia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "tests_unit_missingmediarecovery_test",
+      "target": "tests_unit_missingmediarecovery_test_editorsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "tests_unit_missingmediarecovery_test",
+      "target": "tests_unit_missingmediarecovery_test_mainsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "tests_unit_missingmediarecovery_test",
+      "target": "tests_unit_missingmediarecovery_test_preloadsource",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/unit/missingMediaRecovery.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "tests_unit_missingmediarecovery_test",
+      "target": "tests_unit_missingmediarecovery_test_repositoryroot",
       "confidence_score": 1.0
     },
     {
@@ -59647,5 +59737,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "44a7aab77f836465e5dcf8d5c160db48acbe6479"
+  "built_at_commit": "1c9909a26e848d844c99e877f4965dd9e62953d7"
 }

@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784274420.1848726,
-    "ast_hash": "c3bc2183271570ae9270aed82d7d122f",
+    "mtime": 1784274702.6601355,
+    "ast_hash": "1ac711f98745555be53f0505ecd1f5c0",
     "semantic_hash": ""
   },
   "package.json": {
@@ -1102,6 +1102,16 @@
   "tests/unit/missingMediaRecovery.test.ts": {
     "mtime": 1784274521.0072966,
     "ast_hash": "f63ada4ee07706d7b7b8ea0f1e391d46",
+    "semantic_hash": ""
+  },
+  "src/shared/editor/projectFile.js": {
+    "mtime": 1784274702.6601355,
+    "ast_hash": "2bd75cd86be90b8a7d69d5106a0200f4",
+    "semantic_hash": ""
+  },
+  "tests/unit/projectFile.test.ts": {
+    "mtime": 1784274702.6601355,
+    "ast_hash": "6bad2f27819370a626637d7a2b386d5e",
     "semantic_hash": ""
   }
 }

@@ -8,6 +8,7 @@ const {
 } = require('./src/shared/recording/capturePolicy.js');
 const { canRunRecordingCommand, recordingCommandError, validateRecordingCommand } = require('./src/shared/recording/stateMachine.js');
 const { validateFinalizedRecordingMedia } = require('./src/shared/editor/mediaValidation.js');
+const { writeProjectFileAtomically } = require('./src/shared/editor/projectFile.js');
 const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
@@ -2727,14 +2728,7 @@ function createProjectForCompletedRecording({ outputPath, presentationTrackPath,
   validateFinalizedRecordingMedia(media);
   const project = createRecordingProject(media);
   const projectPath = outputPath.replace(/\.mp4$/i, '.repen-project');
-  const temporaryPath = `${projectPath}.tmp-${process.pid}-${Date.now()}`;
-  fs.writeFileSync(temporaryPath, JSON.stringify(project, null, 2), 'utf8');
-  try {
-    fs.renameSync(temporaryPath, projectPath);
-  } catch (error) {
-    try { fs.unlinkSync(temporaryPath); } catch {}
-    throw error;
-  }
+  writeProjectFileAtomically(projectPath, project);
   currentProjectPath = projectPath;
   return projectPath;
 }
@@ -3192,11 +3186,20 @@ ipcMain.handle('app:get-capabilities', async (event) => {
 
 let currentProjectPath = null;
 
+function normalizeProjectPayload(projectData) {
+  if (!projectData || typeof projectData !== 'object') {
+    throw new Error('Project data must be an object.');
+  }
+  const { migrateProjectData } = require('./src/shared/editor/projectFactory.js');
+  return migrateProjectData(projectData);
+}
+
 ipcMain.handle('project:save', async (_, projectData, suggestedName, existingProjectPath) => {
   try {
+    const normalizedProject = normalizeProjectPayload(projectData);
     const targetPath = existingProjectPath || currentProjectPath;
     if (targetPath && fs.existsSync(targetPath)) {
-      fs.writeFileSync(targetPath, JSON.stringify(projectData, null, 2), 'utf-8');
+      writeProjectFileAtomically(targetPath, normalizedProject);
       currentProjectPath = targetPath;
       return { success: true, path: targetPath, message: 'Project saved successfully' };
     }
@@ -3219,7 +3222,7 @@ ipcMain.handle('project:save', async (_, projectData, suggestedName, existingPro
       return { success: false, canceled: true, message: 'Save project canceled' };
     }
 
-    fs.writeFileSync(result.filePath, JSON.stringify(projectData, null, 2), 'utf-8');
+    writeProjectFileAtomically(result.filePath, normalizedProject);
     currentProjectPath = result.filePath;
     return { success: true, path: result.filePath, message: 'Project saved successfully' };
   } catch (error) {
@@ -3248,13 +3251,8 @@ ipcMain.handle('project:load', async (_, projectFolder) => {
 
     const filePath = result.filePaths[0];
     const content = fs.readFileSync(filePath, 'utf-8');
-    let project = JSON.parse(content);
+    const project = normalizeProjectPayload(JSON.parse(content));
     currentProjectPath = filePath;
-
-    if (filePath.endsWith('.openscreen') || (project.version && project.version === 1)) {
-      const { migrateProjectData } = require('./src/shared/editor/projectFactory.js');
-      project = migrateProjectData(project);
-    }
 
     return { success: true, path: filePath, project };
   } catch (error) {
@@ -3269,13 +3267,8 @@ ipcMain.handle('project:load-from-path', async (_, filePath) => {
       return { success: false, message: 'File not found' };
     }
     const content = fs.readFileSync(filePath, 'utf-8');
-    let project = JSON.parse(content);
+    const project = normalizeProjectPayload(JSON.parse(content));
     currentProjectPath = filePath;
-
-    if (filePath.endsWith('.openscreen') || (project.version && project.version === 1)) {
-      const { migrateProjectData } = require('./src/shared/editor/projectFactory.js');
-      project = migrateProjectData(project);
-    }
 
     return { success: true, path: filePath, project };
   } catch (error) {
