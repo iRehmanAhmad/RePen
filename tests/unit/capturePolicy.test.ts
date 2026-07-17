@@ -15,12 +15,12 @@ const { createRecordingProject, migrateProjectData } = require('../../src/shared
 describe('RePen capture policy', () => {
   it('excludes every control role while allowing the presentation overlay in baked display recordings', () => {
     expect(shouldExcludeFromCapture(WindowRole.PRESENTATION_OVERLAY)).toBe(false);
+    expect(shouldExcludeFromCapture(WindowRole.EDITOR)).toBe(false);
     for (const role of [
       WindowRole.TOOLBAR,
       WindowRole.SELECTOR,
       WindowRole.COUNTDOWN,
       WindowRole.SETTINGS,
-      WindowRole.EDITOR,
       WindowRole.DIALOG,
       WindowRole.RECOVERY,
       WindowRole.WEBCAM_PREVIEW,

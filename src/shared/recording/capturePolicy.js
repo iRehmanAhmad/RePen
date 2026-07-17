@@ -17,7 +17,6 @@ const CONTROL_WINDOW_ROLES = new Set([
   WindowRole.SELECTOR,
   WindowRole.COUNTDOWN,
   WindowRole.SETTINGS,
-  WindowRole.EDITOR,
   WindowRole.DIALOG,
   WindowRole.RECOVERY,
   WindowRole.WEBCAM_PREVIEW,
