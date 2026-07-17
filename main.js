@@ -2697,7 +2697,38 @@ async function handleStartRecording(options) {
   const sessionId = `recording-${Date.now()}-${Math.random().toString(16).slice(2)}`;
   activeRecordingSessionId = sessionId;
   processedRecordingCommandIds.clear();
-  await recorderService.start(normalized.recorder);
+
+  let startError = null;
+  try {
+    await recorderService.start(normalized.recorder);
+  } catch (error) {
+    const errorMsg = error.message || String(error);
+    if (normalized.recorder.webcamEnabled &&
+        (errorMsg.includes('Failed to initialize native webcam capture') ||
+         errorMsg.includes('webcam') ||
+         errorMsg.includes('webcam capture'))) {
+      console.warn('Webcam initialization failed. Retrying recording start without webcam...');
+      normalized.recorder.webcamEnabled = false;
+      normalized.recorder.webcamOutputPath = null;
+
+      try {
+        await recorderService.start(normalized.recorder);
+        if (lastStartEvent && !lastStartEvent.sender.isDestroyed()) {
+          lastStartEvent.sender.send('recording:webcam-failed-fallback', {
+            message: 'Webcam failed to initialize. Screen recording started without webcam.'
+          });
+        }
+      } catch (retryError) {
+        startError = retryError;
+      }
+    } else {
+      startError = error;
+    }
+  }
+
+  if (startError) {
+    throw startError;
+  }
 
   if (presentationTrackService) {
     presentationTrackService.startTrack(normalized.recorder.outputPath, {
