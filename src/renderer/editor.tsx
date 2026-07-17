@@ -331,6 +331,7 @@ const EditorApp: React.FC = () => {
         const timeMs = Math.round(timeSec * 1000);
         setCurrentTimeMs(timeMs);
         coordinatorRef.current.updatePlaybackRate();
+        coordinatorRef.current.syncWebcamAndAudio();
         drawAnnotations(timeMs);
       }
       animId = requestAnimationFrame(tick);

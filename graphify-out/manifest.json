@@ -820,8 +820,8 @@
     "semantic_hash": ""
   },
   "tests/unit/playbackCoordinator.test.ts": {
-    "mtime": 1784118660.5743399,
-    "ast_hash": "0139aeb96ff08ca4572b072eb0f5a354",
+    "mtime": 1784282056.5748944,
+    "ast_hash": "796e3a747afe77f02b7e9550cb21f36b",
     "semantic_hash": ""
   },
   "scratch/find_ffmpeg_openscreen.js": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784281921.2918098,
-    "ast_hash": "026e14db2bdd4a65a765d172901159e2",
+    "mtime": 1784282056.5718157,
+    "ast_hash": "4350c11605f302c3ed180954bd14d6a0",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {

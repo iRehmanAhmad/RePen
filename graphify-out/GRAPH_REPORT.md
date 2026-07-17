@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 223 files · ~155,256 words
+- 223 files · ~155,395 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2432 nodes · 3572 edges · 215 communities (200 shown, 15 thin omitted)
+- 2432 nodes · 3572 edges · 217 communities (202 shown, 15 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `abe034b3`
+- Built from commit: `cf35180f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -212,10 +212,12 @@
 - [[_COMMUNITY_Phase 5 — Shared Layout and Visual Compositor|Phase 5 — Shared Layout and Visual Compositor]]
 - [[_COMMUNITY_stateMachine.js|stateMachine.js]]
 - [[_COMMUNITY_Capture Policy Decision|Capture Policy Decision]]
+- [[_COMMUNITY_WgcSession|WgcSession]]
 - [[_COMMUNITY_phaseCompletionAudit.test.ts|phaseCompletionAudit.test.ts]]
 - [[_COMMUNITY_Phase 3 Package Inspection|Phase 3 Package Inspection]]
 - [[_COMMUNITY_missingMediaRecovery.test.ts|missingMediaRecovery.test.ts]]
 - [[_COMMUNITY_FileHandlePresentationTrackWriter|FileHandlePresentationTrackWriter]]
+- [[_COMMUNITY_getAppState|getAppState]]
 - [[_COMMUNITY_clone|clone]]
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
 - [[_COMMUNITY_previewCropContract.test.ts|previewCropContract.test.ts]]
@@ -248,7 +250,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (215 total, 15 thin omitted)
+## Communities (217 total, 15 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -319,8 +321,8 @@ Cohesion: 0.17
 Nodes (11): Acceptance Checks, Constraints, Context Read, Current Phase, Goal, Handoff Notes, Owners, Plan (+3 more)
 
 ### Community 17 - "Screen Annotation App Technical Architecture"
-Cohesion: 0.17
-Nodes (11): 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview, Conceptual architecture (+3 more)
+Cohesion: 0.13
+Nodes (14): 19. Security Model, 1. Purpose, 20.1 Automated Knowledge Graph Sync, 20. Project Structure, 23. Recommended First Implementation Target, 24. Open Decisions, 2. Product Objectives, 5. System Overview (+6 more)
 
 ### Community 18 - "verify-ipc-contract.js"
 Cohesion: 0.18
@@ -575,8 +577,8 @@ Cohesion: 0.10
 Nodes (18): ccw(), eraseStrokeSegments(), pointDistance(), segmentDistance(), segmentsIntersect(), segmentToSegmentDistance(), strokeHitsEraserPath(), HistoryManager (+10 more)
 
 ### Community 86 - "applyHotkeys"
-Cohesion: 0.27
-Nodes (11): applyHotkeys(), applySettingsPayload(), deepClone(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), pushUndoSnapshot() (+3 more)
+Cohesion: 0.43
+Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
 
 ### Community 87 - "createToolbarWindow"
 Cohesion: 0.17
@@ -607,8 +609,8 @@ Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.06
-Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
+Cohesion: 0.08
+Nodes (32): IDXGIDevice, IInspectable, fps, height, width, main(), initializeSystemLoopback, inputFormat_ (+24 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -699,8 +701,8 @@ Cohesion: 0.16
 Nodes (19): clamp(), DEFAULT_TIMELINE_TRACKS, fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor(), normalizeBlurType(), normalizeCursorThemeId() (+11 more)
 
 ### Community 117 - "getAppState"
-Cohesion: 0.10
-Nodes (41): autoArchiveCurrentSession(), broadcastScene(), broadcastState(), captureMagnifierBackground(), clearScene(), cycleBackgroundMode(), exportPdf(), getAppState() (+33 more)
+Cohesion: 0.15
+Nodes (27): autoArchiveCurrentSession(), broadcastScene(), clearScene(), cycleBackgroundMode(), deepClone(), exportPdf(), getShortcutActions(), loadSession() (+19 more)
 
 ### Community 118 - "ipc.ts"
 Cohesion: 0.40
@@ -711,8 +713,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.14
-Nodes (27): fps, height, width, BYTE, HWND, string, vector, wstring (+19 more)
+Cohesion: 0.31
+Nodes (14): HWND, string, wstring, findBool(), findDouble(), findInt(), findInt64(), findString() (+6 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -787,8 +789,8 @@ Cohesion: 0.13
 Nodes (20): DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS, ExportFormat (+12 more)
 
 ### Community 144 - "projectPersistence.ts"
-Cohesion: 0.20
-Nodes (10): ensureToolbarWindowCapacity(), getStateFilePath(), getToolbarWindowBounds(), loadState(), quitApp(), readPersistedState(), setShapeType(), setTextMode() (+2 more)
+Cohesion: 0.15
+Nodes (16): broadcastState(), captureMagnifierBackground(), ensureToolbarWindowCapacity(), getToolbarWindowBounds(), quitApp(), setBoardColor(), setClickHalo(), setColor() (+8 more)
 
 ### Community 145 - "syncPageStore"
 Cohesion: 0.29
@@ -990,6 +992,10 @@ Nodes (7): validateActiveRecordingCommand(), canRunRecordingCommand(), COMMAND_P
 Cohesion: 0.67
 Nodes (3): Always excluded from capture, Capture Policy Decision, Presentation content
 
+### Community 206 - "WgcSession"
+Cohesion: 0.08
+Nodes (25): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ComPtr, Direct3D11CaptureFramePool, FrameCallback, ID3D11Device (+17 more)
+
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
 Nodes (4): Command, Inspected package contents, Limits, Phase 3 Package Inspection
@@ -1002,13 +1008,17 @@ Nodes (4): editorSource, mainSource, preloadSource, repositoryRoot
 Cohesion: 0.15
 Nodes (8): createProjectForCompletedRecording(), assertNonEmptyFile(), validateFinalizedRecordingMedia(), fs, path, writeProjectFileAtomically(), { validateFinalizedRecordingMedia }, { writeProjectFileAtomically }
 
+### Community 212 - "getAppState"
+Cohesion: 0.23
+Nodes (12): getAppState(), getBootstrapData(), getDockSide(), getSceneState(), getStateFilePath(), loadState(), nextPage(), normalizeBoardViewport() (+4 more)
+
 ### Community 213 - "clone"
 Cohesion: 0.53
 Nodes (4): atomic, mutex, thread, vector
 
 ### Community 214 - "19. Security Model"
 Cohesion: 0.67
-Nodes (3): 19. Security Model, Network posture, Required security decisions
+Nodes (3): BYTE, vector, hasVisibleBgraContent()
 
 ## Knowledge Gaps
 - **1172 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1167 more)

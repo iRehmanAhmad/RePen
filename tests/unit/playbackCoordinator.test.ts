@@ -42,6 +42,31 @@ describe('PlaybackCoordinator Unit Test', () => {
     expect(hit).toBe(true);
     expect(seekedTime).toBe(2000);
   });
+
+  it('seeks and applies the active rate to screen, webcam, and audio together', () => {
+    const coordinator = new PlaybackCoordinator();
+    const makeMedia = (currentTime = 0) => ({ currentTime, playbackRate: 1, play: () => Promise.resolve(), pause: () => {} }) as any;
+    const screen = makeMedia(1.5);
+    const webcam = makeMedia();
+    const audio = makeMedia();
+    coordinator.setElements(screen, webcam, audio);
+    coordinator.setRegions([{ id: 'fast', startMs: 1000, endMs: 2000, speed: 1.5 }], []);
+    coordinator.seek(1750);
+    coordinator.updatePlaybackRate();
+    expect([screen.currentTime, webcam.currentTime, audio.currentTime]).toEqual([1.75, 1.75, 1.75]);
+    expect([screen.playbackRate, webcam.playbackRate, audio.playbackRate]).toEqual([1.5, 1.5, 1.5]);
+  });
+
+  it('corrects only webcam and audio drift beyond the tolerance', () => {
+    const coordinator = new PlaybackCoordinator();
+    const screen = { currentTime: 10, playbackRate: 1 } as any;
+    const webcam = { currentTime: 9.7, playbackRate: 1 } as any;
+    const audio = { currentTime: 9.9, playbackRate: 1 } as any;
+    coordinator.setElements(screen, webcam, audio);
+    coordinator.syncWebcamAndAudio();
+    expect(webcam.currentTime).toBe(10);
+    expect(audio.currentTime).toBe(9.9);
+  });
 });
 
 describe('CursorTelemetryRenderer Unit Test', () => {
