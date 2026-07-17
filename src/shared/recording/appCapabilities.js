@@ -20,7 +20,7 @@ function recorderFailureReason(recorder) {
  * licensed/compositor implementation remain explicitly unavailable instead of
  * exposing an enabled control that cannot fulfill its promise.
  */
-function createAppCapabilities({ recorder = null, whisperInstalled = false } = {}) {
+function createAppCapabilities({ recorder = null, whisperInstalled = false, ffmpegInstalled = false } = {}) {
   const recorderReady = Boolean(recorder?.available && recorder?.supported);
   const recorderReason = recorderFailureReason(recorder);
   const optionalRecorderCapability = (enabled, unavailableReason) => (
@@ -35,13 +35,13 @@ function createAppCapabilities({ recorder = null, whisperInstalled = false } = {
     webcam: optionalRecorderCapability(recorder?.webcam, 'Webcam capture was not reported by the native recorder.'),
     presentationReplay: unavailable('Presentation-track replay is not yet implemented in the production editor.'),
     captions: whisperInstalled ? available() : unavailable('Offline transcription is not installed. No caption model is bundled with this build.'),
-    mp4Export: unavailable('MP4 export is disabled until the licensed compositor/export pipeline is packaged and verified.'),
-    gifExport: unavailable('GIF export is disabled until the licensed compositor/export pipeline is packaged and verified.'),
+    mp4Export: ffmpegInstalled ? available() : unavailable('Video export is unavailable because a licensed FFmpeg executable is not bundled with this build.'),
+    gifExport: ffmpegInstalled ? available() : unavailable('Video export is unavailable because a licensed FFmpeg executable is not bundled with this build.'),
   };
 }
 
-function getProjectExportAvailability() {
-  return unavailable('Video export is disabled until the licensed compositor/export pipeline is packaged and verified.');
+function getProjectExportAvailability(ffmpegInstalled = false) {
+  return ffmpegInstalled ? available() : unavailable('Video export is unavailable because a licensed FFmpeg executable is not bundled with this build.');
 }
 
 module.exports = {

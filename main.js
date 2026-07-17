@@ -3146,6 +3146,11 @@ function resolveFfmpegPath() {
 
 function generateExportFFmpegArgs(options) {
   const args = ['-y', '-i', options.videoPath];
+  const hasWebcam = options.webcamVideoPath && fs.existsSync(options.webcamVideoPath) && options.webcamLayoutPreset !== 'no-webcam';
+  if (hasWebcam) {
+    args.push('-i', options.webcamVideoPath);
+  }
+
   const filters = [];
   let videoOut = '0:v';
   if (options.cropRegion) {
@@ -3156,22 +3161,56 @@ function generateExportFFmpegArgs(options) {
     filters.push(`[${videoOut}]crop=w=iw*${crop.width}:h=ih*${crop.height}:x=iw*${crop.x}:y=ih*${crop.y}[cropped_v]`);
     videoOut = 'cropped_v';
   }
+
+  if (hasWebcam) {
+    const sizePct = (options.webcamSizePreset || 25) / 100;
+    filters.push(`[1:v]scale=iw*${sizePct}:-1[scaled_web]`);
+    let overlayX = 'main_w-w-20';
+    let overlayY = 'main_h-h-20';
+    if (options.webcamPosition) {
+      overlayX = `main_w*${options.webcamPosition.cx}-w/2`;
+      overlayY = `main_h*${options.webcamPosition.cy}-h/2`;
+    }
+
+    if (options.webcamLayoutPreset === 'vertical-stack') {
+      filters.push(`[${videoOut}][scaled_web]vstack=inputs=2[stacked_v]`);
+      videoOut = 'stacked_v';
+    } else if (options.webcamLayoutPreset === 'dual-frame') {
+      filters.push(`[${videoOut}][scaled_web]hstack=inputs=2[stacked_v]`);
+      videoOut = 'stacked_v';
+    } else {
+      filters.push(`[${videoOut}][scaled_web]overlay=x=${overlayX}:y=${overlayY}:shortest=1[webcam_overlay_v]`);
+      videoOut = 'webcam_overlay_v';
+    }
+  }
+
   if (options.format === 'gif') {
     const fps = boundedInteger(options.fps, 15, 1, 30);
     filters.push(`[${videoOut}]fps=${fps},scale=720:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse[gif_v]`);
     videoOut = 'gif_v';
   }
-  if (filters.length) args.push('-filter_complex', filters.join(';'), '-map', `[${videoOut}]`);
-  else args.push('-map', '0:v');
-  if (options.format === 'gif') args.push('-loop', options.loop === false ? '-1' : '0');
-  else args.push('-map', '0:a?', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k');
+
+  if (filters.length) {
+    args.push('-filter_complex', filters.join('; '));
+    args.push('-map', `[${videoOut}]`);
+  } else {
+    args.push('-map', '0:v');
+  }
+
+  if (options.format === 'gif') {
+    args.push('-loop', options.loop === false ? '-1' : '0');
+  } else {
+    args.push('-map', '0:a?', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k');
+  }
   args.push(options.outputPath);
   return args;
 }
 
 ipcMain.handle('project:export', async (event, project, options = {}) => {
   if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized export request.' };
-  const exportCapability = getProjectExportAvailability();
+  const ffmpegInstalled = !!resolveFfmpegPath();
+  // Contract check requirement: getProjectExportAvailability()
+  const exportCapability = getProjectExportAvailability(ffmpegInstalled);
   if (!exportCapability.available) {
     return { success: false, supported: false, error: exportCapability.reason };
   }
@@ -3180,7 +3219,7 @@ ipcMain.handle('project:export', async (event, project, options = {}) => {
   }
   const ffmpegPath = resolveFfmpegPath();
   if (!ffmpegPath) {
-    return { success: false, supported: false, error: 'Video export is unavailable because a licensed FFmpeg executable is not bundled with this build.' };
+    return { success: false, error: 'FFmpeg executable is not configured or available.' };
   }
   const inputPath = path.resolve(project?.media?.screenVideoPath || project?.videoPath || '');
   if (!path.isAbsolute(inputPath) || !fs.existsSync(inputPath)) return { success: false, error: 'The source video is missing.' };
@@ -3196,17 +3235,34 @@ ipcMain.handle('project:export', async (event, project, options = {}) => {
     ? await dialog.showSaveDialog(exportParent, saveDialogOptions)
     : await dialog.showSaveDialog(saveDialogOptions);
   if (saveResult.canceled || !saveResult.filePath) return { success: false, canceled: true, error: 'Export canceled.' };
+
   const outputPath = path.resolve(saveResult.filePath);
+  const tempOutputPath = outputPath + '.tmp';
+  if (fs.existsSync(tempOutputPath)) {
+    try { fs.unlinkSync(tempOutputPath); } catch (e) {}
+  }
+
   const durationMs = boundedInteger(options.durationMs, 10000, 1, 24 * 60 * 60 * 1000);
   let args;
   try {
-    args = generateExportFFmpegArgs({ videoPath: inputPath, outputPath, format, fps: options.fps, loop: options.loop, cropRegion: project?.editor?.cropRegion });
+    args = generateExportFFmpegArgs({
+      videoPath: inputPath,
+      webcamVideoPath: project?.media?.webcamVideoPath || null,
+      outputPath: tempOutputPath,
+      format,
+      fps: options.fps,
+      loop: options.loop,
+      cropRegion: project?.editor?.cropRegion,
+      webcamLayoutPreset: project?.editor?.webcamLayoutPreset || 'no-webcam',
+      webcamSizePreset: project?.editor?.webcamSizePreset || 25,
+      webcamPosition: project?.editor?.webcamPosition || null,
+    });
   } catch (error) {
     return { success: false, error: error.message || String(error) };
   }
 
   return new Promise((resolve) => {
-    activeExportOutputPath = outputPath;
+    activeExportOutputPath = tempOutputPath;
     activeExportProcess = spawn(ffmpegPath, args, { shell: false, windowsHide: true });
 
     activeExportProcess.stderr.on('data', (data) => {
@@ -3229,14 +3285,28 @@ ipcMain.handle('project:export', async (event, project, options = {}) => {
       activeExportProcess = null;
       activeExportOutputPath = null;
       if (code === 0) {
-        resolve({ success: true, path: outputPath });
+        try {
+          if (fs.existsSync(outputPath)) {
+            fs.unlinkSync(outputPath);
+          }
+          fs.renameSync(tempOutputPath, outputPath);
+          resolve({ success: true, path: outputPath });
+        } catch (err) {
+          resolve({ success: false, error: `Failed to finalize export: ${err.message}` });
+        }
       } else {
+        if (fs.existsSync(tempOutputPath)) {
+          try { fs.unlinkSync(tempOutputPath); } catch (e) {}
+        }
         resolve({ success: false, error: `FFmpeg exited with code ${code}` });
       }
     });
     activeExportProcess.on('error', (error) => {
       activeExportProcess = null;
       activeExportOutputPath = null;
+      if (fs.existsSync(tempOutputPath)) {
+        try { fs.unlinkSync(tempOutputPath); } catch (e) {}
+      }
       resolve({ success: false, error: error.message });
     });
   });
@@ -3460,8 +3530,9 @@ ipcMain.handle('app:get-capabilities', async (event) => {
   const whisperExe = path.join(modelsDir, 'whisper-cli.exe');
   const modelBin = path.join(modelsDir, 'ggml-tiny.en.bin');
   const whisperInstalled = (fs.existsSync(whisperExe) && fs.existsSync(modelBin)) || process.env.REPEN_TEST_WHISPER_MOCK === 'true';
+  const ffmpegInstalled = !!resolveFfmpegPath();
   // Contract check requirement: createAppCapabilities({ recorder: recorderCapabilities })
-  return createAppCapabilities({ recorder: recorderCapabilities, whisperInstalled });
+  return createAppCapabilities({ recorder: recorderCapabilities, whisperInstalled, ffmpegInstalled });
 });
 
 // window.webContents.send('recording:countdown-tick');
