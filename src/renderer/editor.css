@@ -19,6 +19,11 @@
   box-sizing: border-box;
 }
 
+:focus-visible {
+  outline: 3px solid var(--warning);
+  outline-offset: 2px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -291,6 +296,15 @@ html, body {
 
 .track-controls { position: absolute; right: 6px; top: 6px; z-index: 20; }
 .track-control { background: transparent; border: 0; color: var(--text); cursor: pointer; padding: 2px 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 .timeline-playhead {
   position: absolute;
