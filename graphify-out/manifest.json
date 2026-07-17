@@ -1060,8 +1060,8 @@
     "semantic_hash": ""
   },
   "profile_readme_proposal.md": {
-    "mtime": 1784273378.7772827,
-    "ast_hash": "681a345ab68ae7452a5e173be40fdf1e",
+    "mtime": 1784282560.3760967,
+    "ast_hash": "4a358fb16e6da54f406ebea447e5b37f",
     "semantic_hash": ""
   },
   "tests/unit/recordingStateMachine.test.ts": {
