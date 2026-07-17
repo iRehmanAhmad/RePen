@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-17)
 
 ## Corpus Check
-- 225 files · ~156,426 words
+- 225 files · ~156,560 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2445 nodes · 3585 edges · 216 communities (200 shown, 16 thin omitted)
+- 2446 nodes · 3586 edges · 218 communities (202 shown, 16 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 77 edges (avg confidence: 0.72)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0d8e55ef`
+- Built from commit: `efe6efb0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -191,6 +191,7 @@
 - [[_COMMUNITY_Phase 8 — Product completeness|Phase 8 — Product completeness]]
 - [[_COMMUNITY_native-recorder-helper.test.ts|native-recorder-helper.test.ts]]
 - [[_COMMUNITY_broadcastScene|broadcastScene]]
+- [[_COMMUNITY_wasapi_loopback_capture.cpp|wasapi_loopback_capture.cpp]]
 - [[_COMMUNITY_editorExport.test.ts|editorExport.test.ts]]
 - [[_COMMUNITY_Third-Party Notices & SBOM|Third-Party Notices & SBOM]]
 - [[_COMMUNITY_Hi there, I'm Rehman Ahmad Chaudhry 👋|Hi there, I'm Rehman Ahmad Chaudhry 👋]]
@@ -217,6 +218,7 @@
 - [[_COMMUNITY_missingMediaRecovery.test.ts|missingMediaRecovery.test.ts]]
 - [[_COMMUNITY_FileHandlePresentationTrackWriter|FileHandlePresentationTrackWriter]]
 - [[_COMMUNITY_getAppState|getAppState]]
+- [[_COMMUNITY_main|main]]
 - [[_COMMUNITY_previewCropContract.test.ts|previewCropContract.test.ts]]
 - [[_COMMUNITY_webcamPreview.test.ts|webcamPreview.test.ts]]
 - [[_COMMUNITY_audio_sample_utils.h|audio_sample_utils.h]]
@@ -249,7 +251,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (216 total, 16 thin omitted)
+## Communities (218 total, 16 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.06
@@ -609,7 +611,7 @@ Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, com
 
 ### Community 94 - "WgcSession"
 Cohesion: 0.06
-Nodes (45): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+37 more)
+Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -621,11 +623,11 @@ Nodes (12): booleanOption(), createWaiter(), finiteInteger(), NativeEvent, Recor
 
 ### Community 97 - "WebcamCapture"
 Cohesion: 0.07
-Nodes (43): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+35 more)
+Nodes (42): IMFActivate, IMFMediaSource, IMFSourceReader, REFGUID, containsInsensitive(), HRESULT, vector, wstring (+34 more)
 
 ### Community 98 - "WasapiLoopbackCapture"
-Cohesion: 0.06
-Nodes (47): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice (+39 more)
+Cohesion: 0.08
+Nodes (26): IAudioCaptureClient, IAudioClient, IMMDeviceEnumerator, atomic, AudioCallback, BYTE, ComPtr, IMMDevice (+18 more)
 
 ### Community 99 - "CaptureConfig"
 Cohesion: 0.08
@@ -712,8 +714,8 @@ Cohesion: 0.50
 Nodes (3): Adapted Subsystems, License Text, Third-Party Source Notice: OpenScreen
 
 ### Community 120 - "resolveInputFormat"
-Cohesion: 0.18
-Nodes (23): fps, height, width, BYTE, HWND, string, vector, wstring (+15 more)
+Cohesion: 0.31
+Nodes (14): HWND, string, wstring, findBool(), findDouble(), findInt(), findInt64(), findString() (+6 more)
 
 ### Community 121 - "repository"
 Cohesion: 0.67
@@ -907,6 +909,10 @@ Nodes (3): Exit gate, Implementation, Phase 8 — Product completeness
 Cohesion: 0.13
 Nodes (14): Correct Recorder Capture and Deliver the Production OpenScreen-Style Editor, Cross-Phase Test and Evidence Policy, Current Phase, Definition of the Target Product, Final Acceptance Checklist, Forbidden Completion Shortcuts, Goal, Handoff Notes (+6 more)
 
+### Community 184 - "wasapi_loopback_capture.cpp"
+Cohesion: 0.22
+Nodes (17): audioSubtypeFromFormat(), AudioCallback, GUID, HRESULT, IMMDevice, WAVEFORMATEX, wstring, getDeviceFriendlyName() (+9 more)
+
 ### Community 185 - "editorExport.test.ts"
 Cohesion: 0.18
 Nodes (10): Assets To Attach, Checksum Command, Checksums, Download, Final Pre-Publish Checklist, Known Notes, RePen Release Template, Short Summary (+2 more)
@@ -1003,16 +1009,20 @@ Nodes (4): editorSource, mainSource, preloadSource, repositoryRoot
 Cohesion: 0.20
 Nodes (13): getRepenOwnedWindowHandleCandidates(), createDefaultEditorState(), createRecordingProject(), migrateProjectData(), CONTROL_WINDOW_ROLES, filterRepenOwnedSources(), nativeWindowHandleCandidates(), shouldExcludeFromCapture() (+5 more)
 
+### Community 213 - "main"
+Cohesion: 0.17
+Nodes (12): fps, height, width, BYTE, vector, hasVisibleBgraContent(), main(), initializeSystemLoopback (+4 more)
+
 ### Community 218 - "audio_sample_utils.h"
 Cohesion: 0.44
 Nodes (5): atomic, condition_variable, mutex, thread, vector
 
 ### Community 219 - "RePen Release-Readiness Gates"
-Cohesion: 0.29
-Nodes (6): Automated evidence available in this branch, Capability-bound features, Known open release blockers, Packaging and publication gates, RePen Release-Readiness Gates, Required manual Windows QA before a release
+Cohesion: 0.25
+Nodes (7): Automated evidence available in this branch, Capability-bound features, Continuous integration, Known open release blockers, Packaging and publication gates, RePen Release-Readiness Gates, Required manual Windows QA before a release
 
 ## Knowledge Gaps
-- **1180 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1175 more)
+- **1181 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1176 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -1028,7 +1038,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
-  _1180 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1181 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05505279034690799 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

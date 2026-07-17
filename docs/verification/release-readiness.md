@@ -48,11 +48,15 @@ Do not publish a release until all applicable items are complete:
 - Diagnostic logs and packaged configuration are inspected for private paths, recordings, thumbnails, device identifiers, or secrets.
 - The manual Windows QA above is recorded as passed, failed, or explicitly excluded for capability-gated features.
 
+## Continuous integration
+
+`.github/workflows/ci.yml` defines a Windows code/build verification job for pushes and pull requests. It installs the locked dependencies, runs `npm test`, and runs `npm run build:all`. The workflow intentionally does not create, sign, upload, or publish release artifacts. Its first remote execution must pass before it can be treated as CI evidence.
+
 ## Known open release blockers
 
 1. Capture exclusion has automated policy coverage but still needs real captured-frame proof on the supported Windows configurations.
 2. Native capture/finalization, audio, and camera behavior require manual hardware testing.
 3. Advanced timeline edits, waveform generation, long-media performance, compositor parity, replay effects, captions, and production export are not complete release claims.
-4. Localization, screen-reader validation, CI release automation, code signing, and clean-machine installer validation remain open.
+4. Localization, screen-reader validation, CI release packaging automation, code signing, and clean-machine installer validation remain open. The source/build CI workflow is configured but requires a successful remote run.
 
 Until these items are closed with evidence, this branch is suitable for continued development and controlled manual QA only—not a production release.

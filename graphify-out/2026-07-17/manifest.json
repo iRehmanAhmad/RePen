@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784282715.2442102,
-    "ast_hash": "c5383da12bc59a895586734ebbd52dfc",
+    "mtime": 1784283079.342235,
+    "ast_hash": "a1dacb380948bb4df4beac5c4d2a4a9c",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1060,8 +1060,8 @@
     "semantic_hash": ""
   },
   "profile_readme_proposal.md": {
-    "mtime": 1784282807.6207452,
-    "ast_hash": "41130669e2af6699624a9afbabeb1239",
+    "mtime": 1784283053.7637122,
+    "ast_hash": "8d09f85f22f0d2c8fc29754de892081f",
     "semantic_hash": ""
   },
   "tests/unit/recordingStateMachine.test.ts": {
@@ -1185,8 +1185,8 @@
     "semantic_hash": ""
   },
   "tests/unit/editorAccessibility.test.ts": {
-    "mtime": 1784282726.4408135,
-    "ast_hash": "f78f7522bcab9c97c921c7fa7acafc05",
+    "mtime": 1784282999.6459813,
+    "ast_hash": "1284d0a699b6dd8344c7eaad6d35d030",
     "semantic_hash": ""
   },
   "docs/verification/release-readiness.md": {
