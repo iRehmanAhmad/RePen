@@ -374,16 +374,33 @@ const EditorApp: React.FC = () => {
 
   // Missing media relink
   const handleRelink = async () => {
-    if ((window as any).appBridge?.selectDirectory) {
-      const folder = await (window as any).appBridge.selectDirectory();
-      if (folder && project) {
+    if ((window as any).appBridge?.relinkProjectMedia && project) {
+      const result = await (window as any).appBridge.relinkProjectMedia(project.media?.screenVideoPath || project.videoPath || null);
+      if (result?.success && result.path) {
         const updated = JSON.parse(JSON.stringify(project));
-        if (!updated.media) updated.media = {};
-        updated.media.screenVideoPath = `${folder}/recording.mp4`;
+        updated.media = { ...(updated.media || {}), screenVideoPath: result.path };
         updateProject(updated);
         setMediaMissing(false);
+      } else if (!result?.canceled) {
+        alert(`Unable to relink media: ${result?.error || 'Unknown error'}`);
       }
     }
+  };
+
+  const handleRevealMissingMedia = async () => {
+    const mediaPath = project?.media?.screenVideoPath || project?.videoPath;
+    if (!mediaPath || !(window as any).appBridge?.revealProjectMedia) return;
+    const result = await (window as any).appBridge.revealProjectMedia(mediaPath);
+    if (!result?.success) alert(result?.error || 'Unable to reveal the media file.');
+  };
+
+  const handleRemoveMissingMedia = () => {
+    if (!project || !confirm('Remove the missing recording reference from this project?')) return;
+    const updated = JSON.parse(JSON.stringify(project));
+    delete updated.media;
+    delete updated.videoPath;
+    updateProject(updated);
+    setMediaMissing(true);
   };
 
   // Prompt confirm before exit if dirty
@@ -763,7 +780,9 @@ const EditorApp: React.FC = () => {
             <div className="missing-media-overlay">
               <h2>Missing Recording File</h2>
               <p>RePen cannot locate the video assets for this project.</p>
-              <button className="btn-primary" onClick={handleRelink}>Relink Media Folder</button>
+              <button className="btn-primary" onClick={handleRelink}>Relink Recording File</button>
+              <button className="btn-secondary" onClick={handleRevealMissingMedia}>Reveal in Explorer</button>
+              <button className="btn-secondary" onClick={handleRemoveMissingMedia}>Remove Media Reference</button>
             </div>
           ) : (
             <div style={getAspectStyle()}>

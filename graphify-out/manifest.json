@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "main.js": {
-    "mtime": 1784273889.1610944,
-    "ast_hash": "7e4379074736ab3d7f1be8fc2cb3f646",
+    "mtime": 1784274420.1848726,
+    "ast_hash": "c3bc2183271570ae9270aed82d7d122f",
     "semantic_hash": ""
   },
   "package.json": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/preload.js": {
-    "mtime": 1784273485.1569986,
-    "ast_hash": "a2b479c596281c9e2d2a1b560ddfe102",
+    "mtime": 1784274420.1848726,
+    "ast_hash": "2567c8766e98deb1ba6431713bf55a05",
     "semantic_hash": ""
   },
   "src/renderer/overlay.js": {
@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784271837.8107498,
-    "ast_hash": "b3a10d14042a52a821de525ccdb19799",
+    "mtime": 1784274521.0041587,
+    "ast_hash": "36310edbfdf984098a186f8fa4c3b831",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1097,6 +1097,11 @@
   "docs/verification/phase-3-package-inspection.md": {
     "mtime": 1784274191.0039828,
     "ast_hash": "cee13162e3b86bb51ace676de05fda18",
+    "semantic_hash": ""
+  },
+  "tests/unit/missingMediaRecovery.test.ts": {
+    "mtime": 1784274521.0072966,
+    "ast_hash": "f63ada4ee07706d7b7b8ea0f1e391d46",
     "semantic_hash": ""
   }
 }

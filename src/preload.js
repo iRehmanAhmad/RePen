@@ -86,6 +86,8 @@ contextBridge.exposeInMainWorld('appBridge', {
   saveProjectFile: (projectData, suggestedName, existingProjectPath) => ipcRenderer.invoke('project:save', projectData, suggestedName, existingProjectPath),
   loadProjectFile: (projectFolder) => ipcRenderer.invoke('project:load', projectFolder),
   loadProjectFileFromPath: (filePath) => ipcRenderer.invoke('project:load-from-path', filePath),
+  relinkProjectMedia: (currentMediaPath) => ipcRenderer.invoke('project:relink-media', currentMediaPath),
+  revealProjectMedia: (mediaPath) => ipcRenderer.invoke('project:reveal-media', mediaPath),
   getCurrentProjectPath: () => ipcRenderer.invoke('project:get-current-path'),
   getAppCapabilities: () => ipcRenderer.invoke('app:get-capabilities'),
 });

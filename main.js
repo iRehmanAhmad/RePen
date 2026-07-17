@@ -3957,6 +3957,35 @@ app.on('before-quit', (event) => {
   }
 });
 
+ipcMain.handle('project:relink-media', async (event, currentMediaPath = null) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized project request.' };
+  const defaultPath = typeof currentMediaPath === 'string' && currentMediaPath
+    ? path.dirname(currentMediaPath)
+    : app.getPath('videos');
+  const result = await dialog.showOpenDialog(editorWindow && !editorWindow.isDestroyed() ? editorWindow : undefined, {
+    title: 'Relink RePen Recording Media',
+    defaultPath,
+    properties: ['openFile'],
+    filters: [{ name: 'MP4 Video', extensions: ['mp4'] }],
+  });
+  if (result.canceled || !result.filePaths[0]) return { success: false, canceled: true };
+  try {
+    validateFinalizedRecordingMedia({ screenVideoPath: result.filePaths[0] });
+    return { success: true, path: result.filePaths[0] };
+  } catch (error) {
+    return { success: false, error: error.message || String(error) };
+  }
+});
+
+ipcMain.handle('project:reveal-media', async (event, mediaPath) => {
+  if (!isTrustedRecordingSender(event)) return { success: false, error: 'Unauthorized project request.' };
+  if (typeof mediaPath !== 'string' || !mediaPath || !fs.existsSync(mediaPath)) {
+    return { success: false, error: 'The media file is no longer available to reveal.' };
+  }
+  shell.showItemInFolder(mediaPath);
+  return { success: true };
+});
+
 app.on('window-all-closed', (event) => {
   if (!app.isQuitting) {
     event.preventDefault();
