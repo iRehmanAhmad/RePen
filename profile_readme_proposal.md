@@ -21,17 +21,15 @@ I am a passionate software developer and engineer specializing in **Machine Lear
 
 ---
 
-### 📊 GitHub Activity & Contribution Graph
-
-*Here is a visualization of my contributions and commit activity over the last year:*
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=iRehmanAhmad&theme=react-dark&bg_color=0D1117&color=2e90fa&line=2e90fa&point=58a6ff&area=true&hide_border=true" alt="Rehman's Contribution Graph" width="100%">
-</p>
+### 📊 GitHub Stats & Metrics
 
 <p align="center">
   <a href="https://github.com/iRehmanAhmad">
-    <img src="https://github-readme-streak-stats.herokuapp.com/?user=iRehmanAhmad&theme=radical&border_color=2e90fa&hide_border=false" alt="GitHub Streak" width="98%">
+    <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=iRehmanAhmad&show_icons=true&theme=radical&border_color=2e90fa&hide_border=false" alt="Rehman's GitHub Stats" width="48%">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/iRehmanAhmad">
+    <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=iRehmanAhmad&layout=compact&theme=radical&border_color=2e90fa&hide_border=false" alt="Top Languages" width="48%">
   </a>
 </p>
 
@@ -104,19 +102,7 @@ I am a passionate software developer and engineer specializing in **Machine Lear
   </tr>
 </table>
 
----
 
-### 📊 Account Stats
-
-<p align="center">
-  <a href="https://github.com/iRehmanAhmad">
-    <img src="https://github-readme-stats.vercel.app/api?username=iRehmanAhmad&show_icons=true&theme=radical&border_color=2e90fa&hide_border=false" alt="Rehman's GitHub Stats" width="48%">
-  </a>
-  &nbsp;&nbsp;
-  <a href="https://github.com/iRehmanAhmad">
-    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=iRehmanAhmad&layout=compact&theme=radical&border_color=2e90fa&hide_border=false" alt="Top Languages" width="48%">
-  </a>
-</p>
 
 ---
 
