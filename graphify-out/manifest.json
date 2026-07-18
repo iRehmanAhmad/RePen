@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784372456.0369225,
-    "ast_hash": "28cb900702e32194307d77c84dbb9bff",
+    "mtime": 1784372721.4821236,
+    "ast_hash": "1b05f1ce3559d3df23504411360cf167",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1255,13 +1255,13 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/AnnotationsPanel.tsx": {
-    "mtime": 1784309882.593959,
-    "ast_hash": "51700804f248ddc3f42ff6dd4d0f13e2",
+    "mtime": 1784372649.8532515,
+    "ast_hash": "7657c2fdaea550b8979b535cbda3006a",
     "semantic_hash": ""
   },
   "src/renderer/editor/CaptionsPanel.tsx": {
-    "mtime": 1784372024.6625211,
-    "ast_hash": "ce2622d4c88b6440059c000352eca810",
+    "mtime": 1784372657.8622763,
+    "ast_hash": "f3a7c8f804c26641a559fa5b4de43315",
     "semantic_hash": ""
   },
   "src/renderer/editor/CompositorPreview.tsx": {
@@ -1270,8 +1270,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorHeader.tsx": {
-    "mtime": 1784372014.6464486,
-    "ast_hash": "81be59b35bf442dd769ca7b908916b9e",
+    "mtime": 1784372745.2058666,
+    "ast_hash": "3c735f0a6c6545b214918f9c47f59038",
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorTimelineToolbar.tsx": {
@@ -1290,13 +1290,13 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/LayoutPanel.tsx": {
-    "mtime": 1784309827.1010468,
-    "ast_hash": "33d3776a0431bb808754495005507ca9",
+    "mtime": 1784372622.0687954,
+    "ast_hash": "f1be6cbbe0393f7037a110cca765d33e",
     "semantic_hash": ""
   },
   "src/renderer/editor/MotionPanel.tsx": {
-    "mtime": 1784309847.6223822,
-    "ast_hash": "ef255e4f56b12a802fd9e6eb85b667cd",
+    "mtime": 1784372765.6737294,
+    "ast_hash": "387d8d23fbea5c2af1c2f6419bbbe556",
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelinePanel.tsx": {
@@ -1315,13 +1315,13 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/WebcamPanel.tsx": {
-    "mtime": 1784309860.8686452,
-    "ast_hash": "f2cb2be4fbf55b7d9d5ab7bad05ba629",
+    "mtime": 1784372640.3567367,
+    "ast_hash": "eed812b7ee3bffd15455be85f0a198ad",
     "semantic_hash": ""
   },
   "src/renderer/editor/index.ts": {
-    "mtime": 1784372195.950452,
-    "ast_hash": "0efe45a45679fb120183362556d5b590",
+    "mtime": 1784372615.1370902,
+    "ast_hash": "2b11b925a6e8cd9ad6ee867eff05c87e",
     "semantic_hash": ""
   },
   "src/renderer/editor/useAppBridge.ts": {
@@ -1357,6 +1357,11 @@
   "tests/unit/usePreviewViewport.test.ts": {
     "mtime": 1784372273.7539127,
     "ast_hash": "d3dfed1280018485e1ce49e149fa137d",
+    "semantic_hash": ""
+  },
+  "src/renderer/editor/PropertyCard.tsx": {
+    "mtime": 1784372605.7333822,
+    "ast_hash": "e921f6677c1fa3c2086ab03ada4e3fb6",
     "semantic_hash": ""
   }
 }

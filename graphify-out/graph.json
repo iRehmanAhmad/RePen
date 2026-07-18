@@ -6927,7 +6927,7 @@
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1377",
+      "source_location": "L1404",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 190,
@@ -6947,7 +6947,7 @@
       "label": "AnnotationsPanelProps",
       "file_type": "code",
       "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "src_renderer_editor_annotationspanel_annotationspanelprops",
       "community": 207,
@@ -6957,7 +6957,7 @@
       "label": "AnnotationsPanel()",
       "file_type": "code",
       "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "src_renderer_editor_annotationspanel_annotationspanel",
       "community": 207,
@@ -6970,27 +6970,27 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_captionspanel",
-      "community": 118,
+      "community": 207,
       "norm_label": "captionspanel.tsx"
     },
     {
       "label": "CaptionsPanelProps",
       "file_type": "code",
       "source_file": "src/renderer/editor/CaptionsPanel.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "src_renderer_editor_captionspanel_captionspanelprops",
-      "community": 118,
+      "community": 207,
       "norm_label": "captionspanelprops"
     },
     {
       "label": "CaptionsPanel()",
       "file_type": "code",
       "source_file": "src/renderer/editor/CaptionsPanel.tsx",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "src_renderer_editor_captionspanel_captionspanel",
-      "community": 118,
+      "community": 207,
       "norm_label": "captionspanel()"
     },
     {
@@ -7010,7 +7010,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_renderer_editor_compositorpreview_compositorpreviewprops",
-      "community": 210,
+      "community": 207,
       "norm_label": "compositorpreviewprops"
     },
     {
@@ -7080,7 +7080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader",
-      "community": 215,
+      "community": 118,
       "norm_label": "editorheader.tsx"
     },
     {
@@ -7090,67 +7090,77 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_editorheaderprops",
-      "community": 215,
+      "community": 118,
       "norm_label": "editorheaderprops"
     },
     {
       "label": "UndoIcon()",
       "file_type": "code",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L23",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_undoicon",
-      "community": 215,
+      "community": 118,
       "norm_label": "undoicon()"
     },
     {
       "label": "RedoIcon()",
       "file_type": "code",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L27",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_redoicon",
-      "community": 215,
+      "community": 118,
       "norm_label": "redoicon()"
     },
     {
       "label": "SaveIcon()",
       "file_type": "code",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L31",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_saveicon",
-      "community": 215,
+      "community": 118,
       "norm_label": "saveicon()"
     },
     {
       "label": "ExportIcon()",
       "file_type": "code",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L35",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_exporticon",
-      "community": 215,
+      "community": 118,
       "norm_label": "exporticon()"
     },
     {
       "label": "MoreIcon()",
       "file_type": "code",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L39",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_moreicon",
-      "community": 215,
+      "community": 118,
       "norm_label": "moreicon()"
+    },
+    {
+      "label": "BrandIcon()",
+      "file_type": "code",
+      "source_file": "src/renderer/editor/EditorHeader.tsx",
+      "source_location": "L46",
+      "_origin": "ast",
+      "id": "src_renderer_editor_editorheader_brandicon",
+      "community": 118,
+      "norm_label": "brandicon()"
     },
     {
       "label": "EditorHeader()",
       "file_type": "code",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L43",
+      "source_location": "L65",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_editorheader",
-      "community": 215,
+      "community": 118,
       "norm_label": "editorheader()"
     },
     {
@@ -7457,7 +7467,7 @@
       "label": "LayoutPanelProps",
       "file_type": "code",
       "source_file": "src/renderer/editor/LayoutPanel.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "_origin": "ast",
       "id": "src_renderer_editor_layoutpanel_layoutpanelprops",
       "community": 207,
@@ -7467,7 +7477,7 @@
       "label": "LayoutPanel()",
       "file_type": "code",
       "source_file": "src/renderer/editor/LayoutPanel.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_renderer_editor_layoutpanel_layoutpanel",
       "community": 207,
@@ -7487,7 +7497,7 @@
       "label": "MotionPanelProps",
       "file_type": "code",
       "source_file": "src/renderer/editor/MotionPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "src_renderer_editor_motionpanel_motionpanelprops",
       "community": 207,
@@ -7497,11 +7507,41 @@
       "label": "MotionPanel()",
       "file_type": "code",
       "source_file": "src/renderer/editor/MotionPanel.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "src_renderer_editor_motionpanel_motionpanel",
       "community": 207,
       "norm_label": "motionpanel()"
+    },
+    {
+      "label": "PropertyCard.tsx",
+      "file_type": "code",
+      "source_file": "src/renderer/editor/PropertyCard.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_renderer_editor_propertycard",
+      "community": 207,
+      "norm_label": "propertycard.tsx"
+    },
+    {
+      "label": "PropertyCardProps",
+      "file_type": "code",
+      "source_file": "src/renderer/editor/PropertyCard.tsx",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_renderer_editor_propertycard_propertycardprops",
+      "community": 207,
+      "norm_label": "propertycardprops"
+    },
+    {
+      "label": "PropertyCard()",
+      "file_type": "code",
+      "source_file": "src/renderer/editor/PropertyCard.tsx",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "src_renderer_editor_propertycard_propertycard",
+      "community": 207,
+      "norm_label": "propertycard()"
     },
     {
       "label": "TimelinePanel.tsx",
@@ -7510,7 +7550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinepanel",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinepanel.tsx"
     },
     {
@@ -7520,7 +7560,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinepanel_draggingregion",
-      "community": 207,
+      "community": 215,
       "norm_label": "draggingregion"
     },
     {
@@ -7530,7 +7570,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinepanel_timelinepanelprops",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinepanelprops"
     },
     {
@@ -7540,7 +7580,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinepanel_timelinepanel",
-      "community": 190,
+      "community": 215,
       "norm_label": "timelinepanel()"
     },
     {
@@ -7550,7 +7590,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinetracks.tsx"
     },
     {
@@ -7560,7 +7600,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks_draggingregion",
-      "community": 207,
+      "community": 215,
       "norm_label": "draggingregion"
     },
     {
@@ -7570,7 +7610,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks_timelinetracksprops",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinetracksprops"
     },
     {
@@ -7580,7 +7620,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks_timelinepercent",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinepercent()"
     },
     {
@@ -7590,7 +7630,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks_timeattimelineposition",
-      "community": 207,
+      "community": 215,
       "norm_label": "timeattimelineposition()"
     },
     {
@@ -7600,7 +7640,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks_formattimelinetime",
-      "community": 207,
+      "community": 215,
       "norm_label": "formattimelinetime()"
     },
     {
@@ -7610,7 +7650,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_renderer_editor_timelinetracks_timelinetracks",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinetracks()"
     },
     {
@@ -7620,7 +7660,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_trackcontrols",
-      "community": 207,
+      "community": 215,
       "norm_label": "trackcontrols.tsx"
     },
     {
@@ -7630,7 +7670,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_renderer_editor_trackcontrols_trackcontrolsprops",
-      "community": 207,
+      "community": 215,
       "norm_label": "trackcontrolsprops"
     },
     {
@@ -7640,7 +7680,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_renderer_editor_trackcontrols_trackcontrols",
-      "community": 207,
+      "community": 215,
       "norm_label": "trackcontrols()"
     },
     {
@@ -7657,7 +7697,7 @@
       "label": "WebcamPanelProps",
       "file_type": "code",
       "source_file": "src/renderer/editor/WebcamPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "src_renderer_editor_webcampanel_webcampanelprops",
       "community": 207,
@@ -7667,7 +7707,7 @@
       "label": "WebcamPanel()",
       "file_type": "code",
       "source_file": "src/renderer/editor/WebcamPanel.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_renderer_editor_webcampanel_webcampanel",
       "community": 207,
@@ -7710,7 +7750,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_renderer_editor_useappbridge_getbridge",
-      "community": 118,
+      "community": 207,
       "norm_label": "getbridge()"
     },
     {
@@ -7720,7 +7760,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_renderer_editor_useappbridge_useappbridge",
-      "community": 118,
+      "community": 207,
       "norm_label": "useappbridge()"
     },
     {
@@ -7730,7 +7770,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_usecapabilities",
-      "community": 118,
+      "community": 207,
       "norm_label": "usecapabilities.ts"
     },
     {
@@ -7740,7 +7780,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_renderer_editor_usecapabilities_unavailablecapabilities",
-      "community": 118,
+      "community": 207,
       "norm_label": "unavailablecapabilities()"
     },
     {
@@ -7750,7 +7790,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_renderer_editor_usecapabilities_usecapabilities",
-      "community": 118,
+      "community": 207,
       "norm_label": "usecapabilities()"
     },
     {
@@ -7760,7 +7800,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_useplaybackstate",
-      "community": 207,
+      "community": 151,
       "norm_label": "useplaybackstate.ts"
     },
     {
@@ -7770,7 +7810,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_renderer_editor_useplaybackstate_playbackstateresult",
-      "community": 207,
+      "community": 151,
       "norm_label": "playbackstateresult"
     },
     {
@@ -7780,7 +7820,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_renderer_editor_useplaybackstate_useplaybackstate",
-      "community": 207,
+      "community": 151,
       "norm_label": "useplaybackstate()"
     },
     {
@@ -7830,7 +7870,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_useprojectmanager",
-      "community": 139,
+      "community": 207,
       "norm_label": "useprojectmanager.ts"
     },
     {
@@ -7850,7 +7890,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_renderer_editor_useprojectmanager_useprojectmanager",
-      "community": 139,
+      "community": 207,
       "norm_label": "useprojectmanager()"
     },
     {
@@ -7860,7 +7900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_useresizableeditorlayout",
-      "community": 207,
+      "community": 217,
       "norm_label": "useresizableeditorlayout.ts"
     },
     {
@@ -7870,7 +7910,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_renderer_editor_useresizableeditorlayout_useresizableeditorlayout",
-      "community": 207,
+      "community": 217,
       "norm_label": "useresizableeditorlayout()"
     },
     {
@@ -10630,7 +10670,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_shared_editor_projectpersistence_timelinetrackid",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinetrackid"
     },
     {
@@ -10640,7 +10680,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_shared_editor_projectpersistence_timelinetrackstate",
-      "community": 207,
+      "community": 215,
       "norm_label": "timelinetrackstate"
     },
     {
@@ -11040,7 +11080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath",
-      "community": 217,
+      "community": 190,
       "norm_label": "timelinemath.ts"
     },
     {
@@ -11050,7 +11090,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_clamptimelinezoom",
-      "community": 217,
+      "community": 190,
       "norm_label": "clamptimelinezoom()"
     },
     {
@@ -11060,7 +11100,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_timelinepercent",
-      "community": 217,
+      "community": 190,
       "norm_label": "timelinepercent()"
     },
     {
@@ -11070,7 +11110,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_timeattimelineposition",
-      "community": 217,
+      "community": 190,
       "norm_label": "timeattimelineposition()"
     },
     {
@@ -11080,7 +11120,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_formattimelinetime",
-      "community": 217,
+      "community": 190,
       "norm_label": "formattimelinetime()"
     },
     {
@@ -11090,7 +11130,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_createtimelineticks",
-      "community": 217,
+      "community": 190,
       "norm_label": "createtimelineticks()"
     },
     {
@@ -11110,7 +11150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_types_zoomdepth",
-      "community": 142,
+      "community": 207,
       "norm_label": "zoomdepth"
     },
     {
@@ -11470,7 +11510,7 @@
       "source_location": "L290",
       "_origin": "ast",
       "id": "src_shared_editor_types_default_annotation_style",
-      "community": 142,
+      "community": 116,
       "norm_label": "default_annotation_style"
     },
     {
@@ -11500,7 +11540,7 @@
       "source_location": "L320",
       "_origin": "ast",
       "id": "src_shared_editor_types_default_blur_data",
-      "community": 142,
+      "community": 116,
       "norm_label": "default_blur_data"
     },
     {
@@ -12110,7 +12150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_editorsaveclose_test",
-      "community": 215,
+      "community": 118,
       "norm_label": "editorsaveclose.test.ts"
     },
     {
@@ -12250,7 +12290,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_phasecompletionaudit_test",
-      "community": 207,
+      "community": 217,
       "norm_label": "phasecompletionaudit.test.ts"
     },
     {
@@ -12260,7 +12300,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "tests_unit_phasecompletionaudit_test_root",
-      "community": 207,
+      "community": 217,
       "norm_label": "root"
     },
     {
@@ -12270,7 +12310,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "tests_unit_phasecompletionaudit_test_read",
-      "community": 207,
+      "community": 217,
       "norm_label": "read()"
     },
     {
@@ -12580,7 +12620,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage",
-      "community": 220,
+      "community": 139,
       "norm_label": "memorystorage"
     },
     {
@@ -12590,7 +12630,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_length",
-      "community": 220,
+      "community": 139,
       "norm_label": ".length()"
     },
     {
@@ -12600,7 +12640,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_key",
-      "community": 220,
+      "community": 139,
       "norm_label": ".key()"
     },
     {
@@ -12610,7 +12650,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_getitem",
-      "community": 220,
+      "community": 139,
       "norm_label": ".getitem()"
     },
     {
@@ -12620,7 +12660,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_setitem",
-      "community": 220,
+      "community": 139,
       "norm_label": ".setitem()"
     },
     {
@@ -12630,7 +12670,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_removeitem",
-      "community": 220,
+      "community": 139,
       "norm_label": ".removeitem()"
     },
     {
@@ -12700,7 +12740,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_timelinemath_test",
-      "community": 217,
+      "community": 190,
       "norm_label": "timelinemath.test.ts"
     },
     {
@@ -26437,7 +26477,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L189",
+      "source_location": "L190",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "electron_main_bootstrap"
@@ -38559,7 +38599,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1377",
+      "source_location": "L1404",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
@@ -38955,7 +38995,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L223",
+      "source_location": "L224",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_presenter_presentationtrackreplay_seekpresentationtrack"
@@ -38966,7 +39006,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L240",
+      "source_location": "L241",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_renderer_presenter_presenterrenderer_presenterrenderer_drawstroke"
@@ -38977,7 +39017,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1207",
+      "source_location": "L1188",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_addspeedrange"
@@ -38988,7 +39028,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1183",
+      "source_location": "L1164",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_addtrimrange"
@@ -38999,7 +39039,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L533",
+      "source_location": "L534",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_addzoomrange"
@@ -39010,7 +39050,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L766",
+      "source_location": "L767",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_resizespeedrange"
@@ -39021,7 +39061,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L758",
+      "source_location": "L759",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_resizetrimrange"
@@ -39032,7 +39072,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1197",
+      "source_location": "L1178",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_splittrimrange"
@@ -39043,7 +39083,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1225",
+      "source_location": "L1206",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_clamptimelinezoom"
@@ -39054,7 +39094,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L864",
+      "source_location": "L865",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_createtimelineticks"
@@ -39063,7 +39103,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "src_renderer_editor_annotationspanel",
       "target": "src_renderer_editor_annotationspanel_annotationspanel",
@@ -39073,10 +39113,32 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_renderer_editor_annotationspanel",
       "target": "src_renderer_editor_annotationspanel_annotationspanelprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_editor_annotationspanel",
+      "target": "src_renderer_editor_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_editor_annotationspanel",
+      "target": "src_renderer_editor_propertycard_propertycard",
       "confidence_score": 1.0
     },
     {
@@ -39139,7 +39201,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/AnnotationsPanel.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "src_renderer_editor_annotationspanel_annotationspanelprops",
       "target": "src_shared_editor_projectpersistence_editorprojectdata",
@@ -39160,7 +39222,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/CaptionsPanel.tsx",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0,
       "source": "src_renderer_editor_captionspanel",
       "target": "src_renderer_editor_captionspanel_captionspanel",
@@ -39170,10 +39232,32 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/CaptionsPanel.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "src_renderer_editor_captionspanel",
       "target": "src_renderer_editor_captionspanel_captionspanelprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/CaptionsPanel.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_renderer_editor_captionspanel",
+      "target": "src_renderer_editor_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/CaptionsPanel.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "src_renderer_editor_captionspanel",
+      "target": "src_renderer_editor_propertycard_propertycard",
       "confidence_score": 1.0
     },
     {
@@ -39258,7 +39342,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/CaptionsPanel.tsx",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "src_renderer_editor_captionspanel_captionspanelprops",
       "target": "src_shared_contracts_ipc_appcapabilities",
@@ -39269,7 +39353,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/CaptionsPanel.tsx",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_renderer_editor_captionspanel_captionspanelprops",
       "target": "src_shared_editor_projectpersistence_editorprojectdata",
@@ -39569,7 +39653,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L43",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "src_renderer_editor_editorheader",
+      "target": "src_renderer_editor_editorheader_brandicon",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/EditorHeader.tsx",
+      "source_location": "L65",
       "weight": 1.0,
       "source": "src_renderer_editor_editorheader",
       "target": "src_renderer_editor_editorheader_editorheader",
@@ -39589,7 +39683,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L35",
+      "source_location": "L38",
       "weight": 1.0,
       "source": "src_renderer_editor_editorheader",
       "target": "src_renderer_editor_editorheader_exporticon",
@@ -39599,7 +39693,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L39",
+      "source_location": "L42",
       "weight": 1.0,
       "source": "src_renderer_editor_editorheader",
       "target": "src_renderer_editor_editorheader_moreicon",
@@ -39609,7 +39703,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L27",
+      "source_location": "L30",
       "weight": 1.0,
       "source": "src_renderer_editor_editorheader",
       "target": "src_renderer_editor_editorheader_redoicon",
@@ -39619,7 +39713,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L31",
+      "source_location": "L34",
       "weight": 1.0,
       "source": "src_renderer_editor_editorheader",
       "target": "src_renderer_editor_editorheader_saveicon",
@@ -39629,7 +39723,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/EditorHeader.tsx",
-      "source_location": "L23",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "src_renderer_editor_editorheader",
       "target": "src_renderer_editor_editorheader_undoicon",
@@ -40168,7 +40262,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/LayoutPanel.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "source": "src_renderer_editor_layoutpanel",
       "target": "src_renderer_editor_layoutpanel_layoutpanel",
@@ -40178,10 +40272,32 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/LayoutPanel.tsx",
-      "source_location": "L4",
+      "source_location": "L5",
       "weight": 1.0,
       "source": "src_renderer_editor_layoutpanel",
       "target": "src_renderer_editor_layoutpanel_layoutpanelprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/LayoutPanel.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_editor_layoutpanel",
+      "target": "src_renderer_editor_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/LayoutPanel.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_editor_layoutpanel",
+      "target": "src_renderer_editor_propertycard_propertycard",
       "confidence_score": 1.0
     },
     {
@@ -40211,7 +40327,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/LayoutPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_renderer_editor_layoutpanel_layoutpanelprops",
       "target": "src_shared_editor_projectpersistence_editorprojectdata",
@@ -40243,7 +40359,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/MotionPanel.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "src_renderer_editor_motionpanel",
       "target": "src_renderer_editor_motionpanel_motionpanel",
@@ -40253,10 +40369,32 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/MotionPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_renderer_editor_motionpanel",
       "target": "src_renderer_editor_motionpanel_motionpanelprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/MotionPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_editor_motionpanel",
+      "target": "src_renderer_editor_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/MotionPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_editor_motionpanel",
+      "target": "src_renderer_editor_propertycard_propertycard",
       "confidence_score": 1.0
     },
     {
@@ -40300,6 +40438,17 @@
       "source_location": "L3",
       "weight": 1.0,
       "source": "src_renderer_editor_motionpanel",
+      "target": "src_shared_editor_types_zoomdepth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/MotionPanel.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_editor_motionpanel",
       "target": "src_shared_editor_types_zoomregion",
       "confidence_score": 1.0
     },
@@ -40308,7 +40457,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/MotionPanel.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "src_renderer_editor_motionpanel_motionpanelprops",
       "target": "src_shared_editor_projectpersistence_editorprojectdata",
@@ -40323,6 +40472,70 @@
       "weight": 1.0,
       "source": "src_renderer_editor_index",
       "target": "src_renderer_editor_motionpanel_motionpanel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/index.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "src_renderer_editor_index",
+      "target": "src_renderer_editor_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/PropertyCard.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_renderer_editor_propertycard",
+      "target": "src_renderer_editor_propertycard_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/PropertyCard.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_renderer_editor_propertycard",
+      "target": "src_renderer_editor_propertycard_propertycardprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/WebcamPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_editor_webcampanel",
+      "target": "src_renderer_editor_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "re_exports",
+      "context": "re-export",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/index.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "src_renderer_editor_index",
+      "target": "src_renderer_editor_propertycard_propertycard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/renderer/editor/WebcamPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_renderer_editor_webcampanel",
+      "target": "src_renderer_editor_propertycard_propertycard",
       "confidence_score": 1.0
     },
     {
@@ -40824,7 +41037,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/WebcamPanel.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "source": "src_renderer_editor_webcampanel",
       "target": "src_renderer_editor_webcampanel_webcampanel",
@@ -40834,7 +41047,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/WebcamPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_renderer_editor_webcampanel",
       "target": "src_renderer_editor_webcampanel_webcampanelprops",
@@ -40889,7 +41102,7 @@
       "context": "field",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor/WebcamPanel.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "src_renderer_editor_webcampanel_webcampanelprops",
       "target": "src_shared_editor_projectpersistence_editorprojectdata",
@@ -67418,5 +67631,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "86b9fd149dfc269175369c8e50ca5e167f9e2d8e"
+  "built_at_commit": "ef8d2b6f0f496c5d00bfc03a3417ca85b0f5f8eb"
 }

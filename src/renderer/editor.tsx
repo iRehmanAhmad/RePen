@@ -150,6 +150,7 @@ const EditorApp: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportOutputPath, setExportOutputPath] = useState('');
   const [updateInfo, setUpdateInfo] = useState<{ available: boolean; version?: string; url?: string } | null>(null);
+  const [showShortcutsModal, setShowShortcutsModal] = useState(false);
 
   // Tutorial overlay
   const [showTutorialStep, setShowTutorialStep] = useState<number | null>(() => {
@@ -898,6 +899,9 @@ const EditorApp: React.FC = () => {
           }
         }}
         onResetLayout={layout.resetLayout}
+        recentProjects={pm.recentProjects}
+        onLoadRecent={(path) => void pm.loadProject(path)}
+        onShowShortcuts={() => setShowShortcutsModal(true)}
         t={t}
       />
 
@@ -1102,29 +1106,6 @@ const EditorApp: React.FC = () => {
               )}
             </InspectorSection>
           </div>
-
-          {pm.recentProjects.length > 0 && layout.inspectorWidth >= 340 && (
-            <div className="property-group" style={{ marginTop: 'auto', borderTop: '1px solid var(--line)', paddingTop: 10 }}>
-              <span className="property-label">Recent Projects</span>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {pm.recentProjects.slice(0, 3).map((p: string, idx: number) => (
-                  <li key={idx} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    <a
-                      href="#"
-                      style={{ color: '#a3a8b1', fontSize: 11 }}
-                      aria-label={`Open recent project ${p.split('/').pop()?.split('\\').pop() || 'project'}`}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        void pm.loadProject(p);
-                      }}
-                    >
-                      {p.split('/').pop()?.split('\\').pop()}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </aside>
       </div>
 
@@ -1322,6 +1303,52 @@ const EditorApp: React.FC = () => {
             <button className="btn-primary" style={{ background: 'var(--danger)' }} onClick={handleCancelExport}>
               Cancel Render
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Keyboard Shortcuts Modal */}
+      {showShortcutsModal && (
+        <div className="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title" style={{ zIndex: 1100 }}>
+          <div className="dialog-container" style={{ maxWidth: 380, padding: '20px' }}>
+            <h2 id="shortcuts-title" className="dialog-title" style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '0 0 16px 0' }}>
+              <span>⌨️</span> Keyboard Shortcuts
+            </h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, fontSize: 13 }}>
+              {[
+                { keys: ['Space'], action: 'Play / Pause video playback' },
+                { keys: ['Ctrl', 'S'], action: 'Save current editor project changes' },
+                { keys: ['Ctrl', 'Z'], action: 'Undo last timeline or parameter action' },
+                { keys: ['Ctrl', 'Shift', 'Z'], action: 'Redo last undone action' },
+                { keys: ['Left Arrow'], action: 'Seek backwards 100ms on active playhead' },
+                { keys: ['Right Arrow'], action: 'Seek forwards 100ms on active playhead' },
+                { keys: ['Shift', 'Left Arrow'], action: 'Step exactly 1 frame backward' },
+                { keys: ['Shift', 'Right Arrow'], action: 'Step exactly 1 frame forward' },
+                { keys: ['Home'], action: 'Seek to start of video presentation' },
+                { keys: ['End'], action: 'Seek to end of video presentation' }
+              ].map((item, idx) => (
+                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--line)', paddingBottom: 6 }}>
+                  <span style={{ color: 'var(--text-muted)' }}>{item.action}</span>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    {item.keys.map((k, kIdx) => (
+                      <kbd key={kIdx} style={{
+                        background: 'var(--surface-3)',
+                        border: '1px solid var(--line-strong)',
+                        borderRadius: 4,
+                        padding: '2px 6px',
+                        fontSize: 11,
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                        color: 'var(--text)'
+                      }}>{k}</kbd>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="dialog-footer" style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+              <button className="btn-primary" onClick={() => setShowShortcutsModal(false)}>Got it</button>
+            </div>
           </div>
         </div>
       )}

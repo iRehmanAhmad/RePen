@@ -3,7 +3,7 @@ import type { AppCapabilities } from '../../shared/contracts/ipc';
 
 interface EditorHeaderProps {
   projectPath: string | null;
-  saveStatus: string;
+  saveStatus: 'saved' | 'saving' | 'unsaved' | 'error' | 'idle';
   isSaving: boolean;
   canUndo: boolean;
   canRedo: boolean;
@@ -18,6 +18,9 @@ interface EditorHeaderProps {
   onExportDiagnostics: () => void;
   onLocaleChange: (loc: 'en' | 'es') => void;
   onResetLayout: () => void;
+  recentProjects: string[];
+  onLoadRecent: (path: string) => void;
+  onShowShortcuts: () => void;
 }
 
 const UndoIcon = () => (
@@ -40,6 +43,25 @@ const MoreIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
 );
 
+const BrandIcon = () => (
+  <svg style={{ width: 22, height: 22, flexShrink: 0 }} viewBox="0 0 512 512" aria-hidden="true">
+    <polygon fill="#111827" points="255.999,109.533 235.1,193.394 296.848,172.495"/>
+    <polygon fill="#64748B" points="215.15,172.495 255.999,193.394 255.999,109.533"/>
+    <path fill="#22D3EE" d="M296.848,172.495h-40.849L235.1,289.387c60.398,0,109.776-42.862,109.778-42.863L296.848,172.495z"/>
+    <path fill="#F8FAFC" d="M215.15,172.495l-48.03,74.03c0.001,0.001,28.481,42.863,88.879,42.863V172.495H215.15z"/>
+    <path fill="#111827" d="M285.625,266.588c-8.852,1.176-18.71,1.9-29.626,1.9L235.1,389.293l20.899,122.706h29.626l20.899-122.706L285.625,266.588z"/>
+    <path fill="#0EA5E9" d="M344.877,246.524c-0.001,0.001-19.132,14.735-59.253,20.063v245.412h59.253V246.524z"/>
+    <path fill="#64748B" d="M226.373,266.588l-20.899,122.706L226.373,512h29.626V268.488c-10.917,0-20.775-0.724-29.626-1.9z"/>
+    <path fill="#F8FAFC" d="M167.12,246.524v265.475h59.253V266.588c-40.121-5.329-59.252-20.063-59.253-20.064z"/>
+    <polygon fill="#FDE68A" points="271.673,0 255.999,0 245.55,29.546 255.999,59.091 271.673,59.091"/>
+    <rect x="310.673" y="29.136" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 515.6158 330.9375)" fill="#67E8F9" width="31.348" height="59.091"/>
+    <rect x="126.96" y="113.366" fill="#FDE68A" width="59.092" height="31.348"/>
+    <rect x="325.949" y="113.366" fill="#67E8F9" width="59.092" height="31.348"/>
+    <rect x="156.105" y="43.008" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 275.4308 231.4505)" fill="#FDE68A" width="59.091" height="31.348"/>
+    <rect x="240.326" fill="#67E8F9" width="15.674" height="59.092"/>
+  </svg>
+);
+
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
   projectPath,
   saveStatus,
@@ -57,6 +79,9 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   onExportDiagnostics,
   onLocaleChange,
   onResetLayout,
+  recentProjects,
+  onLoadRecent,
+  onShowShortcuts,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -96,31 +121,31 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
     : 'Export engine unavailable: FFmpeg or transcription packages are not installed';
 
   return (
-    <header className="editor-header" role="banner">
+    <header className="editor-header" role="banner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', boxSizing: 'border-box' }}>
       {/* Title & Path */}
-      <div className="editor-title" style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-        <span style={{ fontSize: 18, userSelect: 'none' }} role="img" aria-label="Editor icon">{"\uD83C\uDFAC"}</span>
-        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontWeight: 700, fontSize: 14 }}>{t('title')}</span>
+      <div className="editor-title" style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flexShrink: 1 }}>
+        <BrandIcon />
+        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, flexShrink: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+            <span style={{ fontWeight: 700, fontSize: 14, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t('title')}</span>
             {hasUnsavedChanges && (
               <span className="dirty-indicator" title="Unsaved Changes" role="status" aria-label="Unsaved progress" />
             )}
           </div>
           <span 
-            style={{ fontSize: 11, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 280 }}
+            style={{ fontSize: 11, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200 }}
             title={projectPath || ''}
           >
             {fileName}
           </span>
         </div>
         {saveStatus === 'saving' && (
-          <span className="save-status" role="status">{"Saving\u2026"}</span>
+          <span className="save-status" role="status" style={{ flexShrink: 0 }}>{"Saving\u2026"}</span>
         )}
       </div>
 
       {/* Control Actions */}
-      <div className="menu-bar">
+      <div className="menu-bar" style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
         {/* Undo/Redo Buttons */}
         <button
           className="menu-btn"
@@ -204,6 +229,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                 padding: 8,
                 zIndex: 1000,
                 display: 'flex',
+                boxSizing: 'border-box',
                 flexDirection: 'column',
                 gap: 4,
                 boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
@@ -235,6 +261,19 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
 
               <div style={{ height: 1, background: 'var(--line)', margin: '4px 0' }} />
 
+              {/* Keyboard Shortcuts */}
+              <button
+                role="menuitem"
+                className="menu-btn"
+                style={{ justifyContent: 'flex-start', background: 'transparent', border: 'none', width: '100%', padding: '8px 12px', fontSize: 12.5 }}
+                onClick={() => {
+                  setMenuOpen(false);
+                  onShowShortcuts();
+                }}
+              >
+                Keyboard Shortcuts
+              </button>
+
               {/* Export Diagnostics */}
               <button
                 role="menuitem"
@@ -261,20 +300,42 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                 {t('resetSettings')}
               </button>
 
-              <div style={{ height: 1, background: 'var(--line)', margin: '4px 0' }} />
-
-              {/* Close Editor button */}
-              <button
-                role="menuitem"
-                className="menu-btn"
-                style={{ justifyContent: 'flex-start', background: 'transparent', border: 'none', width: '100%', padding: '8px 12px', color: 'var(--danger)', fontSize: 12.5 }}
-                onClick={() => {
-                  setMenuOpen(false);
-                  onClose();
-                }}
-              >
-                {t('close')}
-              </button>
+              {/* Recent Projects */}
+              {recentProjects && recentProjects.length > 0 && (
+                <>
+                  <div style={{ height: 1, background: 'var(--line)', margin: '4px 0' }} />
+                  <div style={{ padding: '6px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <span className="property-label" style={{ fontSize: 10, color: 'var(--text-muted)' }}>Recent Projects</span>
+                    {recentProjects.slice(0, 3).map((p, idx) => (
+                      <button
+                        key={idx}
+                        role="menuitem"
+                        className="menu-btn"
+                        style={{
+                          justifyContent: 'flex-start',
+                          background: 'transparent',
+                          border: 'none',
+                          width: '100%',
+                          padding: '4px 0',
+                          fontSize: 11,
+                          textAlign: 'left',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          display: 'block'
+                        }}
+                        onClick={() => {
+                          setMenuOpen(false);
+                          onLoadRecent(p);
+                        }}
+                        title={p}
+                      >
+                        {p.split('/').pop()?.split('\\').pop() || p}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>

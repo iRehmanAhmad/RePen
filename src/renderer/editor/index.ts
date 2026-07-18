@@ -35,3 +35,4 @@ export { useResizableEditorLayout } from './useResizableEditorLayout';
 export { EditorHeader } from './EditorHeader';
 export { InspectorTabs } from './InspectorTabs';
 export { InspectorSection } from './InspectorSection';
+export { PropertyCard } from './PropertyCard';

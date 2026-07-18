@@ -8,6 +8,7 @@ import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { AnnotationRegion } from '../../shared/editor/types';
 import type { AppCapabilities } from '../../shared/contracts/ipc';
+import { PropertyCard } from './PropertyCard';
 
 interface CaptionsPanelProps {
   project: EditorProjectData;
@@ -63,65 +64,80 @@ export const CaptionsPanel: React.FC<CaptionsPanelProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {!capabilities.captions?.available ? (
-        <div style={{ padding: 12, borderRadius: 8, border: '1px dashed var(--line)', background: 'var(--surface-2)', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <span style={{ fontSize: 13, color: 'var(--muted)' }}>{"\u26A0\uFE0F"} {capabilities.captions?.reason || 'Offline transcription is not installed.'}</span>
-          {downloadingModel ? (
-            <div style={{ padding: '8px 0', width: '100%' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
-                <span>{downloadTask}</span>
-                <span>{downloadProgress}%</span>
+      {/* Transcription Engine Status */}
+      <PropertyCard title="Transcription Model" description="Offline local Whisper transcription model">
+        {!capabilities.captions?.available ? (
+          <div style={{ padding: 10, borderRadius: 6, border: '1px dashed var(--line)', background: 'var(--surface-3)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <span style={{ fontSize: 11.5, color: 'var(--muted)' }}>{"\u26A0\uFE0F"} {capabilities.captions?.reason || 'Offline transcription is not installed.'}</span>
+            {downloadingModel ? (
+              <div style={{ padding: '4px 0', width: '100%' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
+                  <span>{downloadTask}</span>
+                  <span>{downloadProgress}%</span>
+                </div>
+                <div style={{ width: '100%', height: 6, background: 'var(--surface-2)', borderRadius: 3, overflow: 'hidden' }}>
+                  <div style={{ width: `${downloadProgress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.1s' }} />
+                </div>
+                <button className="btn-secondary" style={{ marginTop: 8, width: '100%', fontSize: 11, padding: '4px 0' }} onClick={onCancelDownload}>
+                  Cancel Download
+                </button>
               </div>
-              <div style={{ width: '100%', height: 6, background: 'var(--surface-3)', borderRadius: 3, overflow: 'hidden' }}>
-                <div style={{ width: `${downloadProgress}%`, height: '100%', background: 'var(--accent)', transition: 'width 0.1s' }} />
-              </div>
-              <button className="btn-secondary" style={{ marginTop: 10, width: '100%' }} onClick={onCancelDownload}>
-                Cancel Download
-              </button>
-            </div>
-          ) : (
-            <button className="btn-primary" onClick={onDownloadModel}>Download Whisper-Tiny Model (~78MB)</button>
-          )}
-        </div>
-      ) : (
-        <button className="btn-primary" onClick={onTranscribe} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
-      )}
+            ) : (
+              <button className="btn-primary" style={{ fontSize: 11.5, padding: '6px 0' }} onClick={onDownloadModel}>Download Whisper-Tiny (~78MB)</button>
+            )}
+          </div>
+        ) : (
+          <button className="btn-primary" style={{ width: '100%' }} onClick={onTranscribe} aria-label={t('autoTranscribe')}>{t('autoTranscribe')}</button>
+        )}
+      </PropertyCard>
 
-      {/* Split/Merge Controls */}
-      <div style={{ display: 'flex', gap: 6 }}>
-        <button className="btn-secondary" style={{ flex: 1 }} onClick={onSplitCaption} disabled={!selectedCaptionId}>{t('split')}</button>
-        <button className="btn-secondary" style={{ flex: 1 }} onClick={onMergeCaption} disabled={!selectedCaptionId}>{t('merge')}</button>
-      </div>
+      {/* Editing Actions */}
+      <PropertyCard title="Caption Segmentation" description="Split or merge selected caption segments">
+        <div style={{ display: 'flex', gap: 6 }}>
+          <button className="btn-secondary" style={{ flex: 1, padding: '6px 0', fontSize: 11.5 }} onClick={onSplitCaption} disabled={!selectedCaptionId}>{t('split')}</button>
+          <button className="btn-secondary" style={{ flex: 1, padding: '6px 0', fontSize: 11.5 }} onClick={onMergeCaption} disabled={!selectedCaptionId}>{t('merge')}</button>
+        </div>
+      </PropertyCard>
 
       {/* Caption List */}
-      <div style={{ maxHeight: 220, overflowY: 'auto', border: '1px solid var(--line)', padding: 6, borderRadius: 6 }}>
-        {autoCaptions.length === 0 && (
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>No captions yet. Run auto-transcription above.</span>
-        )}
-        {autoCaptions.map((ann: AnnotationRegion) => (
-          <div
-            key={ann.id}
-            style={{ display: 'flex', flexDirection: 'column', padding: 8, borderBottom: '1px solid var(--line)', cursor: 'pointer', background: selectedCaptionId === ann.id ? 'var(--surface-3)' : 'transparent' }}
-            onClick={() => onSelectCaption(ann.id)}
-          >
-            <span style={{ fontSize: 10, color: 'var(--muted)' }}>{Math.round(ann.startMs / 1000)}s – {Math.round(ann.endMs / 1000)}s</span>
-            <input
-              type="text"
-              style={{ background: 'transparent', border: 'none', color: 'var(--text)', outline: 'none', fontSize: 13, marginTop: 4 }}
-              value={ann.content}
-              onChange={(e) => {
-                const updated = JSON.parse(JSON.stringify(project)) as EditorProjectData;
-                const idx = updated.editor.annotationRegions.findIndex((a: AnnotationRegion) => a.id === ann.id);
-                if (idx !== -1) {
-                  updated.editor.annotationRegions[idx].content = e.target.value;
-                  onUpdate(updated);
-                }
+      <PropertyCard title="Transcribed Segments" description="Click a segment below to edit its text inline">
+        <div style={{ maxHeight: 200, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {autoCaptions.length === 0 && (
+            <span style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'center', padding: 8 }}>No captions generated yet</span>
+          )}
+          {autoCaptions.map((ann: AnnotationRegion) => (
+            <div
+              key={ann.id}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '6px 8px',
+                borderRadius: 4,
+                cursor: 'pointer',
+                background: selectedCaptionId === ann.id ? 'var(--surface-3)' : 'transparent',
+                border: '1px solid ' + (selectedCaptionId === ann.id ? 'var(--accent)' : 'var(--line)'),
               }}
-              aria-label="Caption segment text"
-            />
-          </div>
-        ))}
-      </div>
+              onClick={() => onSelectCaption(ann.id)}
+            >
+              <span style={{ fontSize: 10, color: 'var(--muted)' }}>{Math.round(ann.startMs / 1000)}s – {Math.round(ann.endMs / 1000)}s</span>
+              <input
+                type="text"
+                style={{ background: 'transparent', border: 'none', color: 'var(--text)', outline: 'none', fontSize: 12, marginTop: 4, padding: 0, width: '100%' }}
+                value={ann.content}
+                onChange={(e) => {
+                  const updated = JSON.parse(JSON.stringify(project)) as EditorProjectData;
+                  const idx = updated.editor.annotationRegions.findIndex((a: AnnotationRegion) => a.id === ann.id);
+                  if (idx !== -1) {
+                    updated.editor.annotationRegions[idx].content = e.target.value;
+                    onUpdate(updated);
+                  }
+                }}
+                aria-label="Caption segment text"
+              />
+            </div>
+          ))}
+        </div>
+      </PropertyCard>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
+import { PropertyCard } from './PropertyCard';
 
 interface LayoutPanelProps {
   project: EditorProjectData;
@@ -26,14 +27,17 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {/* Canvas Aspect Ratio */}
-      <div className="property-group">
-        <span className="property-label">{t('aspectRatio')}</span>
+      <PropertyCard
+        title={t('aspectRatio')}
+        description="Dimensions of the export video viewport"
+        onReset={() => patch((ed) => { ed.aspectRatio = '16:9'; })}
+      >
         <select
           className="property-control"
           value={editor.aspectRatio || '16:9'}
-          onChange={(e) => patch((ed) => { (ed as any).aspectRatio = e.target.value; })}
+          onChange={(e) => patch((ed) => { ed.aspectRatio = e.target.value as any; })}
         >
           <option value="source">Original Source Ratio</option>
           <option value="16:9">Widescreen 16:9</option>
@@ -42,64 +46,78 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
           <option value="9:16">Vertical 9:16</option>
           <option value="21:9">Ultrawide 21:9</option>
         </select>
-      </div>
+      </PropertyCard>
 
       {/* Padding */}
-      <div className="property-group">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span className="property-label">{t('padding')}</span>
+      <PropertyCard
+        title={t('padding')}
+        description="Margin between recording canvas and backdrop"
+        onReset={() => patch((ed) => { ed.padding = 0; })}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <input
+            type="range" min={0} max={100} style={{ flex: 1 }}
+            value={editor.padding || 0}
+            onChange={(e) => patch((ed) => { ed.padding = parseInt(e.target.value); })}
+          />
           <input
             type="number"
             className="property-control"
-            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            style={{ width: 50, padding: '2px 4px', fontSize: 11, textAlign: 'right', height: 20 }}
             value={editor.padding || 0}
             min={0} max={100}
             aria-label="Padding value input"
             onChange={(e) => {
               const val = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
-              patch((ed) => { (ed as any).padding = val; });
+              patch((ed) => { ed.padding = val; });
             }}
           />
         </div>
-        <input
-          type="range" min={0} max={100}
-          value={editor.padding || 0}
-          onChange={(e) => patch((ed) => { (ed as any).padding = parseInt(e.target.value); })}
-        />
-      </div>
+      </PropertyCard>
 
       {/* Border Radius */}
-      <div className="property-group">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span className="property-label">{t('borderRadius')}</span>
+      <PropertyCard
+        title={t('borderRadius')}
+        description="Corner rounding of the recording canvas"
+        onReset={() => patch((ed) => { ed.borderRadius = 0; })}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <input
+            type="range" min={0} max={30} style={{ flex: 1 }}
+            value={editor.borderRadius || 0}
+            onChange={(e) => patch((ed) => { ed.borderRadius = parseInt(e.target.value); })}
+          />
           <input
             type="number"
             className="property-control"
-            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            style={{ width: 50, padding: '2px 4px', fontSize: 11, textAlign: 'right', height: 20 }}
             value={editor.borderRadius || 0}
             min={0} max={30}
             aria-label="Border radius value input"
             onChange={(e) => {
               const val = Math.max(0, Math.min(30, parseInt(e.target.value) || 0));
-              patch((ed) => { (ed as any).borderRadius = val; });
+              patch((ed) => { ed.borderRadius = val; });
             }}
           />
         </div>
-        <input
-          type="range" min={0} max={30}
-          value={editor.borderRadius || 0}
-          onChange={(e) => patch((ed) => { (ed as any).borderRadius = parseInt(e.target.value); })}
-        />
-      </div>
+      </PropertyCard>
 
       {/* Shadow Intensity */}
-      <div className="property-group">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span className="property-label">Shadow Intensity</span>
+      <PropertyCard
+        title="Shadow Intensity"
+        description="Glow intensity of the backdrop drop shadow"
+        onReset={() => patch((ed) => { (ed as any).shadowIntensity = 0.3; })}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <input
+            type="range" min={0} max={1} step={0.05} style={{ flex: 1 }}
+            value={(editor as any).shadowIntensity ?? 0.3}
+            onChange={(e) => patch((ed) => { (ed as any).shadowIntensity = parseFloat(e.target.value); })}
+          />
           <input
             type="number"
             className="property-control"
-            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            style={{ width: 50, padding: '2px 4px', fontSize: 11, textAlign: 'right', height: 20 }}
             value={Math.round(((editor as any).shadowIntensity ?? 0.3) * 100)}
             min={0} max={100}
             aria-label="Shadow intensity percentage input"
@@ -109,16 +127,14 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
             }}
           />
         </div>
-        <input
-          type="range" min={0} max={1} step={0.05}
-          value={(editor as any).shadowIntensity ?? 0.3}
-          onChange={(e) => patch((ed) => { (ed as any).shadowIntensity = parseFloat(e.target.value); })}
-        />
-      </div>
+      </PropertyCard>
 
       {/* Wallpaper */}
-      <div className="property-group">
-        <span className="property-label">{t('wallpaper')}</span>
+      <PropertyCard
+        title={t('wallpaper')}
+        description="Backdrop canvas background pattern"
+        onReset={() => patch((ed) => { (ed as any).wallpaper = '#0b0c0e'; })}
+      >
         <select
           className="property-control"
           value={PRESET_WALLPAPERS.includes((editor as any).wallpaper) ? (editor as any).wallpaper : 'custom'}
@@ -137,17 +153,20 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
         <input
           type="text"
           className="property-control"
-          style={{ marginTop: 6 }}
-          placeholder="e.g. #000000, linear-gradient(...), url(...)"
+          style={{ marginTop: 4 }}
+          placeholder="e.g. #000000, linear-gradient(...)"
           value={(editor as any).wallpaper || ''}
           onChange={(e) => patch((ed) => { (ed as any).wallpaper = e.target.value; })}
           aria-label="Custom background CSS value"
         />
-      </div>
+      </PropertyCard>
 
-      {/* Output Resolution */}
-      <div className="property-group">
-        <span className="property-label">Target Export Resolution</span>
+      {/* Target Export Resolution */}
+      <PropertyCard
+        title="Target Resolution"
+        description="Scaling dimensions of the final export render"
+        onReset={() => patch((ed) => { (ed as any).outputResolution = '1080p'; })}
+      >
         <select
           className="property-control"
           value={(editor as any).outputResolution || '1080p'}
@@ -159,7 +178,7 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
           <option value="2160p">2160p 4K UHD</option>
           <option value="source">Source Resolution</option>
         </select>
-      </div>
+      </PropertyCard>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { WebcamMaskShape } from '../../shared/editor/types';
+import { PropertyCard } from './PropertyCard';
 
 interface WebcamPanelProps {
   project: EditorProjectData;
@@ -17,10 +18,13 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {/* Layout Preset */}
-      <div className="property-group">
-        <span className="property-label">Webcam Layout Preset</span>
+      <PropertyCard
+        title="Webcam Layout Preset"
+        description="Positioning of the speaker webcam frame"
+        onReset={() => patch((ed) => { ed.webcamLayoutPreset = 'picture-in-picture'; })}
+      >
         <select
           className="property-control"
           value={editor.webcamLayoutPreset || 'picture-in-picture'}
@@ -31,11 +35,14 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
           <option value="dual-frame">Horizontal Dual Frame</option>
           <option value="no-webcam">No Webcam (Hidden)</option>
         </select>
-      </div>
+      </PropertyCard>
 
       {/* Mask Shape */}
-      <div className="property-group">
-        <span className="property-label">Webcam Mask Shape</span>
+      <PropertyCard
+        title="Webcam Mask Shape"
+        description="Clipping shape of the picture-in-picture track"
+        onReset={() => patch((ed) => { ed.webcamMaskShape = 'rectangle'; })}
+      >
         <select
           className="property-control"
           value={editor.webcamMaskShape || 'rectangle'}
@@ -46,16 +53,24 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
           <option value="rounded">Rounded Corners</option>
           <option value="square">Square</option>
         </select>
-      </div>
+      </PropertyCard>
 
       {/* Size */}
-      <div className="property-group">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span className="property-label">Size</span>
+      <PropertyCard
+        title="Webcam Size Preset"
+        description="Width scale percentage of picture-in-picture frame"
+        onReset={() => patch((ed) => { ed.webcamSizePreset = 25 as any; })}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <input
+            type="range" min={10} max={50} style={{ flex: 1 }}
+            value={editor.webcamSizePreset || 25}
+            onChange={(e) => patch((ed) => { ed.webcamSizePreset = parseInt(e.target.value) as any; })}
+          />
           <input
             type="number"
             className="property-control"
-            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            style={{ width: 50, padding: '2px 4px', fontSize: 11, textAlign: 'right', height: 20 }}
             value={editor.webcamSizePreset || 25}
             min={10} max={50}
             aria-label="Webcam size preset percentage input"
@@ -65,32 +80,27 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
             }}
           />
         </div>
-        <input
-          type="range" min={10} max={50}
-          value={editor.webcamSizePreset || 25}
-          onChange={(e) => patch((ed) => { ed.webcamSizePreset = parseInt(e.target.value) as any; })}
-        />
-      </div>
+      </PropertyCard>
 
-      {/* Mirror */}
-      <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13 }}>
-        <input
-          type="checkbox"
-          checked={editor.webcamMirrored || false}
-          onChange={(e) => patch((ed) => { ed.webcamMirrored = e.target.checked; })}
-        />
-        Mirror Webcam Output
-      </label>
-
-      {/* Reactive Zoom */}
-      <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 13 }}>
-        <input
-          type="checkbox"
-          checked={(editor as any).webcamReactiveZoom !== false}
-          onChange={(e) => patch((ed) => { (ed as any).webcamReactiveZoom = e.target.checked; })}
-        />
-        Reactive Zoom (follow screen zoom regions)
-      </label>
+      {/* Mirror & Zoom Options */}
+      <PropertyCard title="Interactive Modes" description="Refine overlay behaviors">
+        <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={editor.webcamMirrored || false}
+            onChange={(e) => patch((ed) => { ed.webcamMirrored = e.target.checked; })}
+          />
+          Mirror Webcam Output
+        </label>
+        <label style={{ display: 'flex', gap: 8, alignItems: 'center', fontSize: 12, cursor: 'pointer', marginTop: 4 }}>
+          <input
+            type="checkbox"
+            checked={(editor as any).webcamReactiveZoom !== false}
+            onChange={(e) => patch((ed) => { (ed as any).webcamReactiveZoom = e.target.checked; })}
+          />
+          Reactive Zoom (Follow screen zoom areas)
+        </label>
+      </PropertyCard>
     </div>
   );
 };
