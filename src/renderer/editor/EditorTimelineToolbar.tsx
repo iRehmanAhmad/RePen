@@ -358,11 +358,12 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
           )}
 
           {editMode === 'zoom' && (
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Zoom effects apply dynamic skews and focus paths. Double click timeline or use Layout options to adjust.</span>
+            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Click the Effects track to add a five-second zoom, then select it to refine the focus in Motion.</span>
           )}
 
           {editMode === 'caption' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Click the Captions track to place a new caption.</span>
               <button 
                 className="btn-secondary" 
                 style={{ padding: '4px 12px', fontSize: 11.5 }} 

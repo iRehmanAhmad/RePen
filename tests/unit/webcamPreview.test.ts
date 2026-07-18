@@ -40,6 +40,9 @@ describe('webcam preview overlay component', () => {
     document.body.appendChild(container);
 
     const project = createMockProject('C:\\camera.mp4', 'picture-in-picture');
+    const videoRef = React.createRef<HTMLVideoElement>();
+    const webcamVideoRef = React.createRef<HTMLVideoElement>();
+    const canvasRef = React.createRef<HTMLCanvasElement>();
 
     const root = ReactDOM.createRoot(container);
     root.render(
@@ -62,6 +65,9 @@ describe('webcam preview overlay component', () => {
         isPlaying: false,
         onTogglePlay: vi.fn(),
         onUpdateProject: vi.fn(),
+        videoRef,
+        webcamVideoRef,
+        canvasRef,
       })
     );
 
@@ -71,6 +77,9 @@ describe('webcam preview overlay component', () => {
     // Verify webcam video is rendered
     const webcamVideo = container.querySelector('video.webcam-video');
     expect(webcamVideo).not.toBeNull();
+    expect(videoRef.current).toBe(container.querySelector('video.video-element'));
+    expect(webcamVideoRef.current).toBe(webcamVideo);
+    expect(canvasRef.current).toBe(container.querySelector('canvas.annotation-canvas'));
 
     // Clean up
     root.unmount();
@@ -82,6 +91,9 @@ describe('webcam preview overlay component', () => {
     document.body.appendChild(container);
 
     const project = createMockProject('C:\\camera.mp4', 'no-webcam');
+    const videoRef = React.createRef<HTMLVideoElement>();
+    const webcamVideoRef = React.createRef<HTMLVideoElement>();
+    const canvasRef = React.createRef<HTMLCanvasElement>();
 
     const root = ReactDOM.createRoot(container);
     root.render(
@@ -104,6 +116,9 @@ describe('webcam preview overlay component', () => {
         isPlaying: false,
         onTogglePlay: vi.fn(),
         onUpdateProject: vi.fn(),
+        videoRef,
+        webcamVideoRef,
+        canvasRef,
       })
     );
 
@@ -113,6 +128,8 @@ describe('webcam preview overlay component', () => {
     // Verify webcam video is NOT rendered
     const webcamVideo = container.querySelector('video.webcam-video');
     expect(webcamVideo).toBeNull();
+    expect(videoRef.current).toBe(container.querySelector('video.video-element'));
+    expect(webcamVideoRef.current).toBeNull();
 
     // Clean up
     root.unmount();

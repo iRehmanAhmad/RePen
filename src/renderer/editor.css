@@ -217,6 +217,43 @@ html, body, #root {
   height: 100%;
 }
 
+.preview-empty-state {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 32px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 45%, rgba(59, 130, 246, 0.11), transparent 42%), #040507;
+}
+
+.preview-empty-state h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.preview-empty-state p {
+  max-width: 360px;
+  margin: 0 0 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.preview-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding-left: 2px;
+  color: white;
+  background: var(--accent-gradient);
+  box-shadow: 0 10px 30px var(--accent-glow);
+}
+
 .crop-viewport {
   width: 100%;
   height: 100%;
@@ -333,6 +370,57 @@ html, body, #root {
 .property-control:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.inspector-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 13px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  transition: border-color 150ms var(--ease-out), background 150ms var(--ease-out), transform 150ms var(--ease-out);
+}
+
+.inspector-card:hover {
+  border-color: var(--line-strong);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+}
+
+.inspector-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.inspector-card__heading,
+.inspector-card__body {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inspector-card__body {
+  gap: 8px;
+}
+
+.inspector-card__title {
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.inspector-card__description {
+  color: var(--text-muted);
+  font-size: 10.5px;
+  line-height: 1.35;
 }
 
 input[type="range"] {

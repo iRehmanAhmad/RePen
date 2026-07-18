@@ -65,6 +65,9 @@ describe('missing recording media recovery component', () => {
         isPlaying: false,
         onTogglePlay: vi.fn(),
         onUpdateProject: vi.fn(),
+        videoRef: React.createRef<HTMLVideoElement>(),
+        webcamVideoRef: React.createRef<HTMLVideoElement>(),
+        canvasRef: React.createRef<HTMLCanvasElement>(),
       })
     );
 

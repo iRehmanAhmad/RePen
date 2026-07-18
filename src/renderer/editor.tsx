@@ -442,6 +442,21 @@ const EditorApp: React.FC = () => {
       } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
         e.preventDefault();
         pm.handleRedo();
+      } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 'v') {
+        e.preventDefault();
+        setEditMode('select');
+      } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 'c') {
+        e.preventDefault();
+        setEditMode('cut');
+      } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        setEditMode('speed');
+      } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        setEditMode('zoom');
+      } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        setEditMode('caption');
       } else if (e.code === 'Space') {
         e.preventDefault();
         pb.togglePlay();
@@ -1102,8 +1117,8 @@ const EditorApp: React.FC = () => {
             reducedMotion={pb.reducedMotion}
             mediaMissing={pm.mediaMissing}
             onMetadataLoaded={pb.handleMetadataLoaded}
-            onIsPlayingChange={() => {}}
-            onVolumeChange={() => {}}
+            onIsPlayingChange={pb.setIsPlaying}
+            onVolumeChange={(volume) => pb.handleVolume(volume)}
             onRelink={pm.handleRelinkMedia}
             onRevealMedia={pm.handleRevealMissingMedia}
             onRemoveMedia={pm.handleRemoveMissingMedia}
@@ -1112,6 +1127,9 @@ const EditorApp: React.FC = () => {
             isPlaying={pb.isPlaying}
             onTogglePlay={pb.togglePlay}
             onUpdateProject={pm.updateProject}
+            videoRef={pb.videoRef}
+            webcamVideoRef={pb.webcamVideoRef}
+            canvasRef={pb.canvasRef}
           />
         </div>
 

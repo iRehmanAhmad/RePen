@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784373371.5370438,
-    "ast_hash": "78802a0810c2a173929dc49fb27bedea",
+    "mtime": 1784374858.9847226,
+    "ast_hash": "6bcf34f0e67cb09c71f462b6b65a050e",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1275,8 +1275,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorTimelineToolbar.tsx": {
-    "mtime": 1784310286.4444337,
-    "ast_hash": "8d4930f53d579f2a3b5f2c0c00d0d1ea",
+    "mtime": 1784373899.2068944,
+    "ast_hash": "a1f313d46cd737f2c1cbda02ef22f0ca",
     "semantic_hash": ""
   },
   "src/renderer/editor/InspectorSection.tsx": {
@@ -1300,18 +1300,18 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelinePanel.tsx": {
-    "mtime": 1784373137.172152,
-    "ast_hash": "aa4dbb238c0ccde3651feac71d546c2d",
+    "mtime": 1784374858.9935355,
+    "ast_hash": "5d1bb111f844b58deb5175bb7873f34e",
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelineTracks.tsx": {
-    "mtime": 1784373404.340979,
-    "ast_hash": "5b8b146736755f86ab3f16ab194189dd",
+    "mtime": 1784374898.886865,
+    "ast_hash": "ab15d6302091fd8e15b7e302f25d1a6a",
     "semantic_hash": ""
   },
   "src/renderer/editor/TrackControls.tsx": {
-    "mtime": 1784306181.3487184,
-    "ast_hash": "47d8e214a7b45bc7a28d1e31e48327d5",
+    "mtime": 1784373878.064911,
+    "ast_hash": "beab0de2604d5c4a190bc89050777409",
     "semantic_hash": ""
   },
   "src/renderer/editor/WebcamPanel.tsx": {
@@ -1345,8 +1345,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/useResizableEditorLayout.ts": {
-    "mtime": 1784372403.088023,
-    "ast_hash": "a7a1810273f943887b0093c8f8595329",
+    "mtime": 1784375054.551821,
+    "ast_hash": "d857ca60cc8d335963b9de6ba50a4f7c",
     "semantic_hash": ""
   },
   "src/renderer/editor/usePreviewViewport.ts": {
@@ -1362,6 +1362,21 @@
   "src/renderer/editor/PropertyCard.tsx": {
     "mtime": 1784372605.7333822,
     "ast_hash": "e921f6677c1fa3c2086ab03ada4e3fb6",
+    "semantic_hash": ""
+  },
+  "tests/unit/overhaul-a11y-regression.test.ts": {
+    "mtime": 1784374956.2419138,
+    "ast_hash": "81558cd6c76b28c33e7e7da694d1b254",
+    "semantic_hash": ""
+  },
+  "tests/unit/overhaul-layout-constraints.test.ts": {
+    "mtime": 1784374969.633338,
+    "ast_hash": "50c64cd6fe747b33b52d5f522fa760b1",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260718-164000-editor-overhaul-corrections.md": {
+    "mtime": 1784375066.4503503,
+    "ast_hash": "b7b6f5b04d7af952d5fe47d4de1e66fa",
     "semantic_hash": ""
   }
 }

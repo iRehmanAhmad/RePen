@@ -27,6 +27,7 @@ export interface PlaybackStateResult {
   coordinatorRef: React.RefObject<PlaybackCoordinator>;
   // State
   isPlaying: boolean;
+  setIsPlaying: (playing: boolean) => void;
   currentTimeMs: number;
   setCurrentTimeMs: (ms: number) => void;
   durationMs: number;
@@ -146,6 +147,7 @@ export function usePlaybackState(): PlaybackStateResult {
     canvasRef,
     coordinatorRef,
     isPlaying,
+    setIsPlaying,
     currentTimeMs,
     setCurrentTimeMs,
     durationMs,

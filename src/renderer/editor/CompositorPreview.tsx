@@ -23,6 +23,9 @@ interface CompositorPreviewProps {
   isPlaying: boolean;
   onTogglePlay: () => void;
   onUpdateProject: (next: EditorProjectData) => void;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+  webcamVideoRef: React.RefObject<HTMLVideoElement | null>;
+  canvasRef: React.RefObject<HTMLCanvasElement | null>;
 }
 
 function toFileUrl(filePath: string): string {
@@ -72,8 +75,10 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   isPlaying,
   onTogglePlay,
   onUpdateProject,
+  videoRef,
+  webcamVideoRef,
+  canvasRef,
 }) => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const compositorRef = useRef<HTMLDivElement | null>(null);
 
   const hasProject = project !== null;
@@ -153,6 +158,17 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
           <button className="btn-secondary" onClick={onRevealMedia}>Reveal in Explorer</button>
           <button className="btn-secondary" onClick={onRemoveMedia}>Remove Media Reference</button>
         </div>
+      </div>
+    );
+  }
+
+  if (!activeVideoSrc) {
+    return (
+      <div className="preview-empty-state" role="status">
+        <div className="preview-empty-icon" aria-hidden="true">▶</div>
+        <h2>Recording not available</h2>
+        <p>Reconnect the recording file to edit it, or return to RePen and create a new recording.</p>
+        <button className="btn-primary" onClick={onRelink}>Relink Recording File</button>
       </div>
     );
   }
@@ -251,20 +267,20 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
               {/* Webcam Overlay video */}
               {webcamVideoSrc && editor.webcamLayoutPreset !== 'no-webcam' && (
                 <video
+                  ref={webcamVideoRef}
                   src={toFileUrl(webcamVideoSrc)}
                   className="webcam-video"
                   style={{
                     ...(styles.webcamStyle as React.CSSProperties),
                     opacity: timelineTracks.webcam?.visible !== false ? 1 : 0,
                   }}
-                  autoPlay
-                  loop
                   muted
+                  playsInline
                 />
               )}
 
               {/* Canvas Draw layer */}
-              <canvas className="annotation-canvas" />
+              <canvas ref={canvasRef} className="annotation-canvas" />
 
             </div>
           </div>
