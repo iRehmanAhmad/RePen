@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
+const MIN_TIMELINE_HEIGHT = 230;
+const DEFAULT_TIMELINE_HEIGHT = 300;
+
+function maxTimelineHeightFor(viewportHeight: number): number {
+  return Math.max(MIN_TIMELINE_HEIGHT, Math.floor(Math.min(viewportHeight * 0.55, viewportHeight - 56 - 280)));
+}
+
+function clampTimelineHeight(value: number, viewportHeight: number): number {
+  return Math.max(MIN_TIMELINE_HEIGHT, Math.min(maxTimelineHeightFor(viewportHeight), value));
+}
+
 export function useResizableEditorLayout() {
   const [inspectorWidth, setInspectorWidth] = useState<number>(() => {
     const saved = localStorage.getItem('repen.editor.layout.v1.inspectorWidth');
@@ -10,7 +21,10 @@ export function useResizableEditorLayout() {
   const [timelineHeight, setTimelineHeight] = useState<number>(() => {
     const saved = localStorage.getItem('repen.editor.layout.v1.timelineHeight');
     const parsed = saved ? parseInt(saved, 10) : 300;
-    return parsed >= 230 ? parsed : 300;
+    const initialViewportHeight = typeof window !== 'undefined' ? window.innerHeight : 768;
+    return Number.isFinite(parsed) && parsed >= MIN_TIMELINE_HEIGHT
+      ? clampTimelineHeight(parsed, initialViewportHeight)
+      : clampTimelineHeight(DEFAULT_TIMELINE_HEIGHT, initialViewportHeight);
   });
 
   const [viewportHeight, setViewportHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 768);
@@ -20,15 +34,13 @@ export function useResizableEditorLayout() {
     const handleResize = () => {
       setViewportHeight(window.innerHeight);
       setViewportWidth(window.innerWidth);
+      setTimelineHeight((current) => clampTimelineHeight(current, window.innerHeight));
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const maxTimelineHeight = Math.floor(Math.min(
-    viewportHeight * 0.55,
-    viewportHeight - 56 - 280
-  ));
+  const maxTimelineHeight = maxTimelineHeightFor(viewportHeight);
 
   const [isResizingInspector, setIsResizingInspector] = useState(false);
   const [isResizingTimeline, setIsResizingTimeline] = useState(false);
@@ -79,7 +91,7 @@ export function useResizableEditorLayout() {
 
   const handleTimelineResizeMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isResizingTimeline) return;
-    const nextHeight = Math.max(230, Math.min(maxTimelineHeight, viewportHeight - e.clientY));
+    const nextHeight = clampTimelineHeight(viewportHeight - e.clientY, viewportHeight);
     setTimelineHeight(nextHeight);
   };
 
@@ -106,7 +118,7 @@ export function useResizableEditorLayout() {
     else return;
 
     e.preventDefault();
-    const nextHeight = Math.max(230, Math.min(maxTimelineHeight, timelineHeight + step));
+    const nextHeight = clampTimelineHeight(timelineHeight + step, viewportHeight);
     setTimelineHeight(nextHeight);
     localStorage.setItem('repen.editor.layout.v1.timelineHeight', nextHeight.toString());
   };

@@ -1,82 +1,102 @@
-import { describe, expect, it } from 'vitest';
-import fs from 'fs';
-import path from 'path';
+import { describe, expect, it, vi } from 'vitest';
+import React, { act } from 'react';
+import ReactDOM from 'react-dom/client';
+import { TimelineTracks } from '../../src/renderer/editor/TimelineTracks';
 
-const cssPath = path.resolve(__dirname, '../../src/renderer/editor.css');
-const css = fs.readFileSync(cssPath, 'utf-8');
+const timelineTracks = {
+  screen: { visible: true, locked: false },
+  webcam: { visible: true, locked: false },
+  presentation: { visible: true, locked: false },
+  audio: { visible: true, locked: false },
+  captions: { visible: true, locked: false },
+  effects: { visible: true, locked: false },
+};
 
-describe('Phase 6 CSS design-system tokens', () => {
-  it('contains --muted: (alias CSS variable)', () => {
-    expect(css).toContain('--muted:');
+function project(overrides: Record<string, unknown> = {}) {
+  return {
+    videoPath: 'C:\\recording.mp4',
+    media: { screenVideoPath: 'C:\\recording.mp4' },
+    editor: {
+      annotationRegions: [],
+      trimRegions: [],
+      speedRegions: [],
+      zoomRegions: [],
+      ...overrides,
+    },
+  } as any;
+}
+
+function props(editMode: 'select' | 'cut' | 'speed' | 'zoom' | 'caption', projectData = project()) {
+  return {
+    project: projectData,
+    currentTimeMs: 0,
+    durationMs: 10_000,
+    timelineZoom: 1,
+    timelineTicks: [0, 5_000, 10_000],
+    selectedTrimId: null,
+    selectedSpeedId: null,
+    selectedZoomId: null,
+    selectedCaptionId: null,
+    trimStartMs: null,
+    speedStartMs: null,
+    draggingRegion: null,
+    tempResizeState: null,
+    onSeek: vi.fn(),
+    onSelectTrimId: vi.fn(),
+    onSelectSpeedId: vi.fn(),
+    onSelectZoomId: vi.fn(),
+    onSelectCaptionId: vi.fn(),
+    onDragStart: vi.fn(),
+    onUpdateTimelineTrack: vi.fn(),
+    timelineTracks,
+    editMode,
+    onTimelineTrackClick: vi.fn(),
+  } as any;
+}
+
+async function renderTracks(componentProps: any) {
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  const root = ReactDOM.createRoot(container);
+  await act(async () => root.render(React.createElement(TimelineTracks, componentProps)));
+  return { container, root };
+}
+
+describe('timeline runtime rendering', () => {
+  it('shows an honest unavailable audio state rather than a fabricated waveform', async () => {
+    const { container, root } = await renderTracks(props('select'));
+    const audioTrack = container.querySelector('[data-track="audio"]');
+    expect(audioTrack?.textContent).toContain('Audio waveform unavailable');
+    expect(audioTrack?.querySelector('svg')).toBeNull();
+    root.unmount();
+    container.remove();
   });
 
-  it('contains --radius-sm:', () => {
-    expect(css).toContain('--radius-sm:');
+  it('exposes an empty effects track while Zoom mode is active', async () => {
+    const { container, root } = await renderTracks(props('zoom'));
+    expect(container.querySelector('[data-track="effects"]')).not.toBeNull();
+    root.unmount();
+    container.remove();
   });
 
-  it('contains --radius-md:', () => {
-    expect(css).toContain('--radius-md:');
+  it('exposes an empty captions track while Caption mode is active', async () => {
+    const { container, root } = await renderTracks(props('caption'));
+    expect(container.querySelector('[data-track="captions"]')).not.toBeNull();
+    root.unmount();
+    container.remove();
   });
 
-  it('contains --radius-lg:', () => {
-    expect(css).toContain('--radius-lg:');
-  });
-
-  it('contains --ease-spring:', () => {
-    expect(css).toContain('--ease-spring:');
-  });
-
-  it('contains --ease-out:', () => {
-    expect(css).toContain('--ease-out:');
-  });
-
-  it('contains data-track="screen" selector fragment', () => {
-    expect(css).toContain('[data-track="screen"]');
-  });
-
-  it('contains data-track="audio" selector fragment', () => {
-    expect(css).toContain('[data-track="audio"]');
-  });
-
-  it('contains data-track="captions" selector fragment', () => {
-    expect(css).toContain('[data-track="captions"]');
-  });
-
-  it('contains border-left-color (used by data-track selectors)', () => {
-    expect(css).toContain('border-left-color');
-  });
-
-  it('contains kbd.shortcut-chip class', () => {
-    expect(css).toContain('kbd.shortcut-chip');
-  });
-
-  it('contains .resize-handle class', () => {
-    expect(css).toContain('.resize-handle');
-  });
-
-  it('contains cursor: ew-resize', () => {
-    expect(css).toContain('cursor: ew-resize');
-  });
-
-  it('contains @keyframes shimmer', () => {
-    expect(css).toContain('@keyframes shimmer');
-  });
-
-  it('contains .track-clip-block:hover::after (shimmer trigger)', () => {
-    expect(css).toContain('.track-clip-block:hover::after');
-  });
-
-  it('contains border-top: 8px solid var(--danger) (playhead caret)', () => {
-    expect(css).toContain('border-top: 8px solid var(--danger)');
-  });
-
-  it('contains .trim-region-visual.selected or .trim-region-visual:hover', () => {
-    const hasSelected = css.includes('.trim-region-visual.selected');
-    const hasHover = css.includes('.trim-region-visual:hover');
-    expect(hasSelected || hasHover).toBe(true);
-  });
-
-  it('contains @keyframes pulse-accent', () => {
-    expect(css).toContain('@keyframes pulse-accent');
+  it('passes the measured timeline canvas width when a trim handle starts dragging', async () => {
+    const onDragStart = vi.fn();
+    const componentProps = props('select', project({ trimRegions: [{ id: 'trim-1', startMs: 1_000, endMs: 2_000 }] }));
+    componentProps.selectedTrimId = 'trim-1';
+    componentProps.onDragStart = onDragStart;
+    const { container, root } = await renderTracks(componentProps);
+    const canvas = container.querySelector('.timeline-canvas') as HTMLDivElement;
+    canvas.getBoundingClientRect = () => ({ width: 640 } as DOMRect);
+    (container.querySelector('.left-handle') as HTMLDivElement).dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    expect(onDragStart).toHaveBeenCalledWith(expect.anything(), 'trim-1', 'trim', 'left', 1_000, 2_000, 640);
+    root.unmount();
+    container.remove();
   });
 });

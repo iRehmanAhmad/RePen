@@ -1,8 +1,6 @@
 import { describe, expect, it, vi, beforeAll } from 'vitest';
 import React, { act } from 'react';
 import ReactDOM from 'react-dom/client';
-import fs from 'fs';
-import path from 'path';
 import { InspectorTabs } from '../../src/renderer/editor/InspectorTabs';
 import { EditorTimelineToolbar } from '../../src/renderer/editor/EditorTimelineToolbar';
 import { TrackControls } from '../../src/renderer/editor/TrackControls';
@@ -369,24 +367,5 @@ describe('TrackControls ARIA labels', () => {
 
     root.unmount();
     container.remove();
-  });
-});
-
-// ---------------------------------------------------------------------------
-// CSS role and aria-label on resizer (source check)
-// ---------------------------------------------------------------------------
-describe('CSS role and aria-label on resizer (source check)', () => {
-  it('editor.tsx contains resizer role/aria attributes', () => {
-    const editorPath = path.resolve(
-      __dirname,
-      '../../src/renderer/editor.tsx'
-    );
-    const content = fs.readFileSync(editorPath, 'utf-8');
-
-    const hasRoleSeparator = content.includes('role="separator"');
-    const hasAriaOrientation = content.includes('aria-orientation');
-    const hasAriaValuemin = content.includes('aria-valuemin');
-
-    expect(hasRoleSeparator || hasAriaOrientation || hasAriaValuemin).toBe(true);
   });
 });

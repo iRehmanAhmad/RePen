@@ -118,6 +118,19 @@ describe('useResizableEditorLayout - height minimum clamping', () => {
 
     await unmountHook(root, container);
   });
+
+  it('clamps a persisted timeline height to the live viewport maximum on startup', async () => {
+    const originalHeight = window.innerHeight;
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 720 });
+    localStorage.setItem('repen.editor.layout.v1.timelineHeight', '700');
+
+    const { root, container } = await mountHook();
+    const div = container.querySelector('[data-timeline-height]');
+    expect(div!.getAttribute('data-timeline-height')).toBe('384');
+
+    await unmountHook(root, container);
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalHeight });
+  });
 });
 
 // ---------------------------------------------------------------------------

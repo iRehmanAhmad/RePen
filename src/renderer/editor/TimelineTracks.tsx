@@ -9,6 +9,7 @@ interface DraggingRegion {
   type: 'trim' | 'speed';
   side: 'left' | 'right';
   initialX: number;
+  timelineCanvasWidth: number;
   initialStartMs: number;
   initialEndMs: number;
 }
@@ -32,7 +33,7 @@ interface TimelineTracksProps {
   onSelectSpeedId: (id: string | null) => void;
   onSelectZoomId: (id: string | null) => void;
   onSelectCaptionId: (id: string | null) => void;
-  onDragStart: (event: React.MouseEvent, id: string, type: 'trim' | 'speed', side: 'left' | 'right', startMs: number, endMs: number) => void;
+  onDragStart: (event: React.MouseEvent, id: string, type: 'trim' | 'speed', side: 'left' | 'right', startMs: number, endMs: number, timelineCanvasWidth: number) => void;
   onUpdateTimelineTrack: (trackId: TimelineTrackId, property: 'visible' | 'locked') => void;
   timelineTracks: Record<TimelineTrackId, TimelineTrackState>;
   editMode: EditMode;
@@ -85,8 +86,8 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
   const showWebcam = Boolean(project?.media?.webcamVideoPath);
   const showPresentation = project?.media?.presentationMode === 'sidecar';
   const showAudio = Boolean(project?.media?.screenVideoPath);
-  const showCaptions = Boolean(project?.editor?.annotationRegions?.some((a: any) => a.annotationSource === 'auto-caption'));
-  const showEffects = Boolean(
+  const showCaptions = editMode === 'caption' || Boolean(project?.editor?.annotationRegions?.some((a: any) => a.annotationSource === 'auto-caption'));
+  const showEffects = editMode === 'zoom' || Boolean(
     (project?.editor?.trimRegions?.length ?? 0) > 0 ||
     (project?.editor?.speedRegions?.length ?? 0) > 0 ||
     (project?.editor?.zoomRegions?.length ?? 0) > 0 ||
@@ -150,6 +151,11 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
     }
   };
 
+  const canvasWidthFor = (element: HTMLElement): number => {
+    const canvas = element.closest('.timeline-canvas');
+    return Math.max(1, canvas?.getBoundingClientRect().width ?? 1);
+  };
+
   return (
     <div className="timeline-content-layout" style={{ display: 'flex', width: '100%', height: '100%', minHeight: 0 }}>
       {/* Left: Fixed track headers */}
@@ -189,6 +195,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
         }}
       >
         <div
+          className="timeline-canvas"
           style={{ minWidth: `${timelineZoom * 100}%`, position: 'relative', height: '100%' }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -345,7 +352,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                     </div>
                   )}
 
-                  {/* Synthesized waveform for Audio track */}
+                  {/* Audio analysis is not available until real media analysis is implemented. */}
                   {isAudio && (
                     <div
                       className="track-clip-block"
@@ -364,33 +371,8 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                         cursor: 'default',
                       }}
                     >
-                      {/* Bar-graph waveform — deterministically seeded from durationMs */}
-                      <svg
-                        style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}
-                        preserveAspectRatio="none"
-                        viewBox="0 0 100 34"
-                        aria-hidden="true"
-                      >
-                        {Array.from({ length: 50 }).map((_, i) => {
-                          // Deterministic pseudo-random seeded by index + durationMs
-                          const seed = (i * 37 + Math.round(durationMs / 100)) % 100;
-                          const h = 4 + (Math.sin(seed * 0.8) * 0.5 + 0.5) * 22;
-                          const y = (34 - h) / 2;
-                          return (
-                            <rect
-                              key={i}
-                              x={i * 2 + 0.5}
-                              y={y}
-                              width="1"
-                              height={h}
-                              rx="0.5"
-                              fill="rgba(245, 158, 11, 0.7)"
-                            />
-                          );
-                        })}
-                      </svg>
-                      <span style={{ position: 'relative', zIndex: 1, fontSize: 9, fontWeight: 600, color: 'var(--warning)', paddingLeft: 6, opacity: 0.8 }}>
-                        AUDIO
+                      <span style={{ position: 'relative', zIndex: 1, fontSize: 10, fontWeight: 600, color: 'var(--warning)', paddingLeft: 8 }}>
+                        Audio waveform unavailable
                       </span>
                     </div>
                   )}
@@ -440,8 +422,8 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                             aria-label={`Cut from ${formatTimelineTime(start)} to ${formatTimelineTime(end)}`}
                             title="Cut range"
                           >
-                            {isSelected && <div className="resize-handle left-handle" onMouseDown={(e) => onDragStart(e, t.id, 'trim', 'left', t.startMs, t.endMs)} aria-hidden="true" />}
-                            {isSelected && <div className="resize-handle right-handle" onMouseDown={(e) => onDragStart(e, t.id, 'trim', 'right', t.startMs, t.endMs)} aria-hidden="true" />}
+                            {isSelected && <div className="resize-handle left-handle" onMouseDown={(e) => onDragStart(e, t.id, 'trim', 'left', t.startMs, t.endMs, canvasWidthFor(e.currentTarget))} aria-hidden="true" />}
+                            {isSelected && <div className="resize-handle right-handle" onMouseDown={(e) => onDragStart(e, t.id, 'trim', 'right', t.startMs, t.endMs, canvasWidthFor(e.currentTarget))} aria-hidden="true" />}
                           </div>
                         );
                       })}
@@ -470,9 +452,9 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                             aria-label={`${region.speed} times speed from ${formatTimelineTime(start)} to ${formatTimelineTime(end)}`}
                             title={`${region.speed}× speed range`}
                           >
-                            {isSelected && <div className="resize-handle left-handle" onMouseDown={(e) => onDragStart(e, region.id, 'speed', 'left', region.startMs, region.endMs)} aria-hidden="true" />}
+                            {isSelected && <div className="resize-handle left-handle" onMouseDown={(e) => onDragStart(e, region.id, 'speed', 'left', region.startMs, region.endMs, canvasWidthFor(e.currentTarget))} aria-hidden="true" />}
                             <span className="speed-label">{region.speed}×</span>
-                            {isSelected && <div className="resize-handle right-handle" onMouseDown={(e) => onDragStart(e, region.id, 'speed', 'right', region.startMs, region.endMs)} aria-hidden="true" />}
+                            {isSelected && <div className="resize-handle right-handle" onMouseDown={(e) => onDragStart(e, region.id, 'speed', 'right', region.startMs, region.endMs, canvasWidthFor(e.currentTarget))} aria-hidden="true" />}
                           </div>
                         );
                       })}

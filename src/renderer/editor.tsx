@@ -131,6 +131,7 @@ const EditorApp: React.FC = () => {
     type: 'trim' | 'speed';
     side: 'left' | 'right';
     initialX: number;
+    timelineCanvasWidth: number;
     initialStartMs: number;
     initialEndMs: number;
   } | null>(null);
@@ -728,6 +729,7 @@ const EditorApp: React.FC = () => {
     side: 'left' | 'right',
     startMs: number,
     endMs: number,
+    timelineCanvasWidth: number,
   ) => {
     event.stopPropagation();
     event.preventDefault();
@@ -736,6 +738,7 @@ const EditorApp: React.FC = () => {
       type,
       side,
       initialX: event.clientX,
+      timelineCanvasWidth,
       initialStartMs: startMs,
       initialEndMs: endMs,
     });
@@ -746,11 +749,8 @@ const EditorApp: React.FC = () => {
     if (!draggingRegion) return;
 
     const handleMouseMove = (event: MouseEvent) => {
-      const timelineTracksEl = document.querySelector('.timeline-tracks');
-      if (!timelineTracksEl) return;
-      const rect = timelineTracksEl.getBoundingClientRect();
       const deltaX = event.clientX - draggingRegion.initialX;
-      const deltaMs = (deltaX / rect.width) * pb.durationMs;
+      const deltaMs = (deltaX / draggingRegion.timelineCanvasWidth) * pb.durationMs;
 
       let newStartMs = draggingRegion.initialStartMs;
       let newEndMs = draggingRegion.initialEndMs;
@@ -812,7 +812,7 @@ const EditorApp: React.FC = () => {
     // Seek playhead to clicked time first
     pb.handleSeek(timeMs, pm.project);
 
-    if (mode === 'cut') {
+    if (mode === 'cut' && trackId === 'screen') {
       if (trimStartMs === null) {
         setTrimStartMs(timeMs);
       } else {
@@ -828,7 +828,7 @@ const EditorApp: React.FC = () => {
         pm.updateProject(updated);
         setTrimStartMs(null);
       }
-    } else if (mode === 'speed') {
+    } else if (mode === 'speed' && trackId === 'screen') {
       if (speedStartMs === null) {
         setSpeedStartMs(timeMs);
       } else {

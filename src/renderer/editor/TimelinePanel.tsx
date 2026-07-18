@@ -8,6 +8,7 @@ interface DraggingRegion {
   type: 'trim' | 'speed';
   side: 'left' | 'right';
   initialX: number;
+  timelineCanvasWidth: number;
   initialStartMs: number;
   initialEndMs: number;
 }
@@ -54,7 +55,7 @@ interface TimelinePanelProps {
   onSelectCaptionId: (id: string | null) => void;
   onTimelineZoomChange: (v: number) => void;
   onPendingSpeedChange: (v: number) => void;
-  onDragStart: (event: React.MouseEvent, id: string, type: 'trim' | 'speed', side: 'left' | 'right', startMs: number, endMs: number) => void;
+  onDragStart: (event: React.MouseEvent, id: string, type: 'trim' | 'speed', side: 'left' | 'right', startMs: number, endMs: number, timelineCanvasWidth: number) => void;
   onUpdateTimelineTrack: (trackId: TimelineTrackId, property: 'visible' | 'locked') => void;
   timelineTracks: Record<TimelineTrackId, TimelineTrackState>;
 
