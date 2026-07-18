@@ -64,10 +64,9 @@ export function computeCompositorStyles(input: CompositorSceneInput): Compositor
     ratioStr = aspectRatioCss(aspectRatio);
   }
 
-  const isVertical = aspectRatio === '9:16';
-  const aspectStyle: Record<string, string | number> = isVertical
-    ? { aspectRatio: ratioStr, height: '100%', width: 'auto' }
-    : { aspectRatio: ratioStr, width: '100%', height: 'auto' };
+  const aspectStyle: Record<string, string | number> = {
+    aspectRatio: ratioStr,
+  };
 
   // 2. Compositor Style (padding, borders, shadow, backgrounds, zooms)
   const shadowValue = previewQualityMode === 'performance'

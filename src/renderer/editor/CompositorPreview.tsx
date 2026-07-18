@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { WebcamMaskShape } from '../../shared/editor/types';
 import { computeCompositorStyles } from '../../shared/editor/visualCompositor';
-import { fitCompositionToBounds } from '../../shared/editor/layoutGeometry';
+import { usePreviewViewport } from './usePreviewViewport';
 
 interface CompositorPreviewProps {
   project: EditorProjectData | null;
@@ -74,33 +74,25 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   onUpdateProject,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const stageRef = useRef<HTMLDivElement | null>(null);
   const compositorRef = useRef<HTMLDivElement | null>(null);
 
-  // Responsive stage state
-  const [stageWidth, setStageWidth] = useState(800);
-  const [stageHeight, setStageHeight] = useState(450);
-
-  // ResizeObserver to calculate available stage bounds
-  useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        setStageWidth(width || 800);
-        setStageHeight(height || 450);
-      }
-    });
-    observer.observe(stage);
-    return () => observer.disconnect();
-  }, []);
-
-  // Handle webcam missing notifications
   const hasProject = project !== null;
   const webcamVideoSrcPrimitive = project?.media?.webcamVideoPath || '';
   const layoutPresetPrimitive = project?.editor?.webcamLayoutPreset || 'picture-in-picture';
 
+  const {
+    stageRef,
+    zoomMode,
+    setZoomMode,
+    width: previewWidth,
+    height: previewHeight,
+  } = usePreviewViewport({
+    aspectRatio: project?.editor?.aspectRatio || '16:9',
+    sourceWidth: sourceVideoWidth,
+    sourceHeight: sourceVideoHeight,
+  });
+
+  // Handle webcam missing notifications
   useEffect(() => {
     if (!hasProject) {
       onWebcamNoticeChange(null);
@@ -124,16 +116,6 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   }
 
   const editor = project.editor;
-
-  // Fit composition bounds
-  const fitResult = fitCompositionToBounds(
-    stageWidth,
-    stageHeight,
-    editor.aspectRatio,
-    sourceVideoWidth,
-    sourceVideoHeight,
-    32
-  );
 
   const styles = editor
     ? computeCompositorStyles({
@@ -205,7 +187,7 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+        overflow: zoomMode === '100%' ? 'auto' : 'hidden',
         padding: 32,
         boxSizing: 'border-box'
       }}
@@ -217,10 +199,10 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
           className="compositor-composition-container"
           style={{
             ...(styles.aspectStyle as React.CSSProperties),
-            width: fitResult.width,
-            height: fitResult.height,
-            maxWidth: '100%',
-            maxHeight: '100%',
+            width: previewWidth,
+            height: previewHeight,
+            maxWidth: zoomMode === '100%' ? 'none' : '100%',
+            maxHeight: zoomMode === '100%' ? 'none' : '100%',
           }}
         >
           <div style={{ ...(styles.compositorStyle as React.CSSProperties), width: '100%', height: '100%' }}>
@@ -326,27 +308,19 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
 
         {/* Fit / 100% scale */}
         <button
-          className="timeline-control"
-          style={{ padding: '3px 8px', fontSize: 10 }}
-          onClick={() => {
-            const nextProject = JSON.parse(JSON.stringify(project)) as EditorProjectData;
-            nextProject.editor.padding = 0;
-            onUpdateProject(nextProject);
-          }}
+          className={`timeline-control ${zoomMode === 'fit' ? 'active' : ''}`}
+          style={{ padding: '3px 8px', fontSize: 10, background: zoomMode === 'fit' ? 'var(--surface-3)' : 'transparent' }}
+          onClick={() => setZoomMode('fit')}
           title="Fit view composition"
         >
           Fit
         </button>
 
         <button
-          className="timeline-control"
-          style={{ padding: '3px 8px', fontSize: 10 }}
-          onClick={() => {
-            const nextProject = JSON.parse(JSON.stringify(project)) as EditorProjectData;
-            nextProject.editor.padding = 16;
-            onUpdateProject(nextProject);
-          }}
-          title="Zoom to scale margin"
+          className={`timeline-control ${zoomMode === '100%' ? 'active' : ''}`}
+          style={{ padding: '3px 8px', fontSize: 10, background: zoomMode === '100%' ? 'var(--surface-3)' : 'transparent' }}
+          onClick={() => setZoomMode('100%')}
+          title="Zoom to true pixel-perfect scale"
         >
           100%
         </button>

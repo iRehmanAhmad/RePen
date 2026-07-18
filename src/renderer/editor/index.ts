@@ -22,6 +22,7 @@ export { CaptionsPanel } from './CaptionsPanel';
 
 // ── Preview ───────────────────────────────────────────────────────────────
 export { CompositorPreview } from './CompositorPreview';
+export { usePreviewViewport } from './usePreviewViewport';
 
 // ── Timeline ──────────────────────────────────────────────────────────────
 export { TrackControls } from './TrackControls';

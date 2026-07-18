@@ -9,8 +9,6 @@ describe('shared visual compositor', () => {
     });
     expect(out169.aspectStyle).toEqual({
       aspectRatio: '16 / 9',
-      width: '100%',
-      height: 'auto',
     });
 
     const out916 = computeCompositorStyles({
@@ -19,8 +17,6 @@ describe('shared visual compositor', () => {
     });
     expect(out916.aspectStyle).toEqual({
       aspectRatio: '9 / 16',
-      height: '100%',
-      width: 'auto',
     });
   });
 
@@ -33,8 +29,6 @@ describe('shared visual compositor', () => {
     });
     expect(outSource.aspectStyle).toEqual({
       aspectRatio: '800 / 600',
-      width: '100%',
-      height: 'auto',
     });
   });
 
