@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784376038.9099035,
-    "ast_hash": "bbaf0e16b1fbc42d1a2bcc05b82b5411",
+    "mtime": 1784376999.7763002,
+    "ast_hash": "3775675e2838a13f876df3b2d80d8247",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1265,8 +1265,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/CompositorPreview.tsx": {
-    "mtime": 1784375597.4711735,
-    "ast_hash": "1c24a0d9195088c3a17b2b5ae9f88a4c",
+    "mtime": 1784376824.7202027,
+    "ast_hash": "8d80daa0b5a09e511e8e56c44c90fd46",
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorHeader.tsx": {
@@ -1275,8 +1275,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorTimelineToolbar.tsx": {
-    "mtime": 1784375635.4613533,
-    "ast_hash": "c62e057d7b1dbcfa88bc1c91bcb3856c",
+    "mtime": 1784376999.7763002,
+    "ast_hash": "8aae5a01b1aebbf2d0a07c3ef4b5c458",
     "semantic_hash": ""
   },
   "src/renderer/editor/InspectorSection.tsx": {
@@ -1290,8 +1290,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/LayoutPanel.tsx": {
-    "mtime": 1784372622.0687954,
-    "ast_hash": "f1be6cbbe0393f7037a110cca765d33e",
+    "mtime": 1784376892.4525588,
+    "ast_hash": "48ae29cf60fae4222ec52b106a3927ae",
     "semantic_hash": ""
   },
   "src/renderer/editor/MotionPanel.tsx": {
@@ -1300,13 +1300,13 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelinePanel.tsx": {
-    "mtime": 1784374858.9935355,
-    "ast_hash": "5d1bb111f844b58deb5175bb7873f34e",
+    "mtime": 1784376999.7763002,
+    "ast_hash": "990c19440f3d3e9acbe00928f398eb0a",
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelineTracks.tsx": {
-    "mtime": 1784374898.886865,
-    "ast_hash": "ab15d6302091fd8e15b7e302f25d1a6a",
+    "mtime": 1784376824.72297,
+    "ast_hash": "3221b79410688a9f73f91e1593b836e9",
     "semantic_hash": ""
   },
   "src/renderer/editor/TrackControls.tsx": {
@@ -1350,8 +1350,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/usePreviewViewport.ts": {
-    "mtime": 1784372186.0915637,
-    "ast_hash": "d2bb9b3328a16fd0b16a7359af49dbcb",
+    "mtime": 1784376824.7129493,
+    "ast_hash": "962043617102b58e98a39f262bd9c9a4",
     "semantic_hash": ""
   },
   "tests/unit/usePreviewViewport.test.ts": {
@@ -1382,6 +1382,11 @@
   ".agent-hub/tasks/20260718-171500-editor-playback-and-workspace.md": {
     "mtime": 1784376111.5174184,
     "ast_hash": "a54575b40955374eae5b2b7db8016a46",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260718-180500-editor-workspace-density.md": {
+    "mtime": 1784377082.2677002,
+    "ast_hash": "12a32238e66baae30b73369c55f73cd9",
     "semantic_hash": ""
   }
 }

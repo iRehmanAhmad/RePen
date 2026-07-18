@@ -262,10 +262,17 @@ html, body, #root {
   border-radius: 6px;
 }
 
+.screen-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
 .video-element {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  display: block;
+  object-fit: cover;
 }
 
 .annotation-canvas {
@@ -400,6 +407,24 @@ html, body, #root {
   display: none;
 }
 
+.inspector-card--collapsible .inspector-card__header {
+  cursor: pointer;
+}
+
+.inspector-card--collapsible .inspector-card__header:hover .inspector-card__title {
+  color: #ffffff;
+}
+
+.inspector-card__chevron {
+  display: inline-block;
+  width: 14px;
+  color: var(--accent-hover);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 0.7;
+  vertical-align: -1px;
+}
+
 .layout-field-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -504,7 +529,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-rows: 44px 1fr;
-  padding: 10px 20px;
+  padding: 8px 16px;
   user-select: none;
   z-index: 10;
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
@@ -579,13 +604,13 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .timeline-scroll {
   min-width: 0;
   overflow-x: auto;
-  overflow-y: auto;
-  margin-top: 8px;
+  overflow-y: hidden;
+  margin-top: 4px;
   height: 100%;
 }
 
 .timeline-ruler {
-  height: 24px;
+  height: 20px;
   position: relative;
   border-bottom: 1px solid var(--line);
   min-width: 100%;
@@ -607,7 +632,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   height: 6px;
   left: 50%;
   position: absolute;
-  top: 16px;
+  top: 13px;
   width: 1px;
 }
 

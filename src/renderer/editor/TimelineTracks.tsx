@@ -160,9 +160,9 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
       <div 
         className="timeline-headers-column" 
         style={{ 
-          width: 150, 
-          minWidth: 150, 
-          maxWidth: 150, 
+          width: 132,
+          minWidth: 132,
+          maxWidth: 132,
           display: 'flex', 
           flexDirection: 'column', 
           borderRight: '1px solid var(--line)',
@@ -170,11 +170,11 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
           zIndex: 5
         }}
       >
-        <div style={{ height: 24, borderBottom: '1px solid var(--line)' }} />
+        <div style={{ height: 20, borderBottom: '1px solid var(--line)' }} />
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }}>
           {activeTracksList.map(t => (
-            <div key={t.id} className="track-header-row" style={{ height: 38, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px' }}>
+            <div key={t.id} className="track-header-row" style={{ height: 30, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 9px' }}>
               <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.label}</span>
               <TrackControls trackId={t.id} state={timelineTracks[t.id]} onToggle={onUpdateTimelineTrack} />
             </div>
@@ -203,7 +203,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
           <div 
             className="timeline-ruler" 
             style={{ 
-              height: 24, 
+              height: 20,
               position: 'relative', 
               borderBottom: '1px solid var(--line)', 
               background: 'rgba(0,0,0,0.1)' 
@@ -217,7 +217,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
           </div>
 
           {/* Track Bands */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }} className="track-band-content">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }} className="track-band-content">
             {activeTracksList.map((track) => {
               const trackId = track.id;
               const isScreen = trackId === 'screen';
@@ -234,7 +234,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                   data-track={trackId}
                   onClick={(e) => handleTrackClick(trackId, e)}
                   style={{
-                    height: 38,
+                    height: 30,
                     position: 'relative',
                     overflow: 'hidden',
                     cursor: editMode === 'cut' ? 'crosshair'

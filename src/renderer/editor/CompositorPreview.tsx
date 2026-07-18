@@ -225,13 +225,29 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
             <div className="crop-viewport" style={styles.viewportStyle as React.CSSProperties}>
 
               {/* Main Screen Video */}
-              <div className="screen-container" style={styles.mediaStyle as React.CSSProperties}>
+              <div
+                className="screen-container"
+                style={{
+                  ...(styles.mediaStyle as React.CSSProperties),
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                }}
+              >
                 <video
                   ref={videoRef}
                   src={activeVideoSrc ? toFileUrl(activeVideoSrc) : undefined}
                   className="video-element"
                   style={{
                     ...(styles.cropMediaStyle as React.CSSProperties),
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    minWidth: '100%',
+                    minHeight: '100%',
+                    objectFit: 'cover',
                     opacity: timelineTracks.screen?.visible !== false ? 1 : 0,
                   }}
                   onLoadedMetadata={onMetadataLoaded}

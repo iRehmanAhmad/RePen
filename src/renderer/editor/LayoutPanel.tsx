@@ -70,7 +70,7 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }
 
   return (
     <div className="layout-panel">
-      <PropertyCard title="Canvas" description="Output frame and export resolution">
+      <PropertyCard title="Canvas" description="Output frame and export resolution" collapsible defaultOpen>
         <div className="layout-field-grid">
           <div className="property-group">
             <label className="property-label" htmlFor="layout-aspect">{t('aspectRatio')}</label>
@@ -106,7 +106,7 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }
         </div>
       </PropertyCard>
 
-      <PropertyCard title="Frame" description="Spacing, rounding, and depth">
+      <PropertyCard title="Frame" description="Spacing, rounding, and depth" collapsible defaultOpen={false}>
         <CompactRangeRow
           label={t('padding')}
           value={editor.padding || 0}
@@ -135,7 +135,7 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }
         />
       </PropertyCard>
 
-      <PropertyCard title={t('wallpaper')} description="Backdrop behind the recording">
+      <PropertyCard title={t('wallpaper')} description="Backdrop behind the recording" collapsible defaultOpen={false}>
         <div className="layout-field-grid">
           <div className="property-group">
             <label className="property-label" htmlFor="layout-wallpaper">Preset</label>

@@ -1045,8 +1045,8 @@
     "semantic_hash": ""
   },
   "tests/unit/phaseCompletionAudit.test.ts": {
-    "mtime": 1784371973.0646632,
-    "ast_hash": "d2ce57fe33ca419ee6dbe8c4606d458f",
+    "mtime": 1784378229.1555476,
+    "ast_hash": "70b3776114d7f2425ce4bf191aa15186",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260716-172849-correct-recorder-capture-and-deliver-production-.md": {
@@ -1265,8 +1265,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/CompositorPreview.tsx": {
-    "mtime": 1784376824.7202027,
-    "ast_hash": "8d80daa0b5a09e511e8e56c44c90fd46",
+    "mtime": 1784378113.7192004,
+    "ast_hash": "b83d601647eb8f6615b79b256685dfca",
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorHeader.tsx": {
@@ -1290,8 +1290,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/LayoutPanel.tsx": {
-    "mtime": 1784376892.4525588,
-    "ast_hash": "48ae29cf60fae4222ec52b106a3927ae",
+    "mtime": 1784378113.714746,
+    "ast_hash": "ea3c6a85e2b1b6656ac6e6a28e17dda7",
     "semantic_hash": ""
   },
   "src/renderer/editor/MotionPanel.tsx": {
@@ -1305,8 +1305,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelineTracks.tsx": {
-    "mtime": 1784376824.72297,
-    "ast_hash": "3221b79410688a9f73f91e1593b836e9",
+    "mtime": 1784378215.537286,
+    "ast_hash": "1c9db9d2377a2be7bdcd4308416185c1",
     "semantic_hash": ""
   },
   "src/renderer/editor/TrackControls.tsx": {
@@ -1345,8 +1345,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/useResizableEditorLayout.ts": {
-    "mtime": 1784375054.551821,
-    "ast_hash": "d857ca60cc8d335963b9de6ba50a4f7c",
+    "mtime": 1784378215.5336347,
+    "ast_hash": "9c9e4911e1e1fd6cc2a2ffe23c33d077",
     "semantic_hash": ""
   },
   "src/renderer/editor/usePreviewViewport.ts": {
@@ -1360,8 +1360,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/PropertyCard.tsx": {
-    "mtime": 1784376038.9130645,
-    "ast_hash": "a0bb4f3c0513de84f4ce7dcc1ecd8309",
+    "mtime": 1784378113.7086692,
+    "ast_hash": "7455f7f73fa67f9c4df83890534eec52",
     "semantic_hash": ""
   },
   "tests/unit/overhaul-a11y-regression.test.ts": {
@@ -1370,8 +1370,8 @@
     "semantic_hash": ""
   },
   "tests/unit/overhaul-layout-constraints.test.ts": {
-    "mtime": 1784374969.633338,
-    "ast_hash": "50c64cd6fe747b33b52d5f522fa760b1",
+    "mtime": 1784378283.2016926,
+    "ast_hash": "92418f0e272fcb131b3e5e3381a0c7b5",
     "semantic_hash": ""
   },
   ".agent-hub/tasks/20260718-164000-editor-overhaul-corrections.md": {
@@ -1387,6 +1387,11 @@
   ".agent-hub/tasks/20260718-180500-editor-workspace-density.md": {
     "mtime": 1784377082.2677002,
     "ast_hash": "12a32238e66baae30b73369c55f73cd9",
+    "semantic_hash": ""
+  },
+  ".agent-hub/tasks/20260718-184500-editor-stage-and-density-correction.md": {
+    "mtime": 1784378350.477558,
+    "ast_hash": "096b026a414e5b903e5d13f43bac80ca",
     "semantic_hash": ""
   }
 }

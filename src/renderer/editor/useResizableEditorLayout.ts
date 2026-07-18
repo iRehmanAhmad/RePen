@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const MIN_TIMELINE_HEIGHT = 230;
-const DEFAULT_TIMELINE_HEIGHT = 300;
+const MIN_TIMELINE_HEIGHT = 250;
+const DEFAULT_TIMELINE_HEIGHT = 280;
 
 function maxTimelineHeightFor(viewportHeight: number): number {
-  return Math.max(MIN_TIMELINE_HEIGHT, Math.floor(Math.min(viewportHeight * 0.55, viewportHeight - 56 - 280)));
+  return Math.max(MIN_TIMELINE_HEIGHT, Math.floor(Math.min(340, viewportHeight * 0.4, viewportHeight - 56 - 360)));
 }
 
 function clampTimelineHeight(value: number, viewportHeight: number): number {
@@ -20,7 +20,7 @@ export function useResizableEditorLayout() {
 
   const [timelineHeight, setTimelineHeight] = useState<number>(() => {
     const saved = localStorage.getItem('repen.editor.layout.v1.timelineHeight');
-    const parsed = saved ? parseInt(saved, 10) : 300;
+    const parsed = saved ? parseInt(saved, 10) : DEFAULT_TIMELINE_HEIGHT;
     const initialViewportHeight = typeof window !== 'undefined' ? window.innerHeight : 768;
     return Number.isFinite(parsed) && parsed >= MIN_TIMELINE_HEIGHT
       ? clampTimelineHeight(parsed, initialViewportHeight)
@@ -107,8 +107,8 @@ export function useResizableEditorLayout() {
   };
 
   const handleTimelineDoubleClick = () => {
-    setTimelineHeight(300);
-    localStorage.setItem('repen.editor.layout.v1.timelineHeight', '300');
+    setTimelineHeight(DEFAULT_TIMELINE_HEIGHT);
+    localStorage.setItem('repen.editor.layout.v1.timelineHeight', DEFAULT_TIMELINE_HEIGHT.toString());
   };
 
   const handleTimelineKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -125,7 +125,7 @@ export function useResizableEditorLayout() {
 
   const resetLayout = () => {
     setInspectorWidth(340);
-    setTimelineHeight(300);
+    setTimelineHeight(DEFAULT_TIMELINE_HEIGHT);
     localStorage.removeItem('repen.editor.layout.v1.inspectorWidth');
     localStorage.removeItem('repen.editor.layout.v1.timelineHeight');
   };
