@@ -111,7 +111,7 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
   onTimelineTrackClick,
 }) => {
   return (
-    <footer className="timeline-panel" role="contentinfo" style={{ display: 'flex', flexDirection: 'column', gap: 10, minHeight: 0 }}>
+    <footer className="timeline-panel" role="contentinfo">
       {/* Editor Timeline Toolbar */}
       <EditorTimelineToolbar
         isPlaying={isPlaying}

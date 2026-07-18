@@ -78,11 +78,11 @@ describe('useResizableEditorLayout - default fallback values', () => {
     await unmountHook(root, container);
   });
 
-  it('timelineHeight defaults to the compact 280px workspace height when localStorage is empty', async () => {
+  it('timelineHeight defaults to the compact 240px workspace height when localStorage is empty', async () => {
     const { root, container } = await mountHook();
 
     const div = container.querySelector('[data-timeline-height]');
-    expect(div!.getAttribute('data-timeline-height')).toBe('280');
+    expect(div!.getAttribute('data-timeline-height')).toBe('240');
 
     await unmountHook(root, container);
   });
@@ -114,7 +114,7 @@ describe('useResizableEditorLayout - height minimum clamping', () => {
     const { root, container } = await mountHook();
 
     const div = container.querySelector('[data-timeline-height]');
-    expect(div!.getAttribute('data-timeline-height')).toBe('280');
+    expect(div!.getAttribute('data-timeline-height')).toBe('240');
 
     await unmountHook(root, container);
   });
@@ -126,7 +126,7 @@ describe('useResizableEditorLayout - height minimum clamping', () => {
 
     const { root, container } = await mountHook();
     const div = container.querySelector('[data-timeline-height]');
-    expect(div!.getAttribute('data-timeline-height')).toBe('288');
+    expect(div!.getAttribute('data-timeline-height')).toBe('244');
 
     await unmountHook(root, container);
     Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalHeight });
@@ -153,7 +153,7 @@ describe('useResizableEditorLayout - resetLayout', () => {
 
     const div = container.querySelector('[data-inspector-width]');
     expect(div!.getAttribute('data-inspector-width')).toBe('340');
-    expect(div!.getAttribute('data-timeline-height')).toBe('280');
+    expect(div!.getAttribute('data-timeline-height')).toBe('240');
 
     // localStorage should be cleared
     expect(localStorage.getItem('repen.editor.layout.v1.inspectorWidth')).toBeNull();
@@ -197,7 +197,7 @@ describe('useResizableEditorLayout - keyboard step for timeline', () => {
   it('ArrowUp increases the compact timeline height within the viewport bound', async () => {
     const { root, container } = await mountHook();
 
-    // The compact default is 280; ArrowUp adds 10px while staying within the viewport bound.
+    // The compact default is 240; ArrowUp adds 10px while staying within the viewport bound.
     const syntheticEvent = {
       key: 'ArrowUp',
       preventDefault: vi.fn(),
@@ -209,7 +209,7 @@ describe('useResizableEditorLayout - keyboard step for timeline', () => {
     await new Promise((r) => setTimeout(r, 50));
 
     const div = container.querySelector('[data-timeline-height]');
-    expect(div!.getAttribute('data-timeline-height')).toBe('290');
+    expect(div!.getAttribute('data-timeline-height')).toBe('250');
 
     await unmountHook(root, container);
   });

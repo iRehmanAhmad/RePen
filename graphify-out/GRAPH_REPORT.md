@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-18)
 
 ## Corpus Check
-- 264 files · ~181,423 words
+- 265 files · ~180,921 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2646 nodes · 4025 edges · 228 communities (215 shown, 13 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 89 edges (avg confidence: 0.7)
+- 2652 nodes · 4024 edges · 227 communities (214 shown, 13 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 84 edges (avg confidence: 0.71)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b97380ab`
+- Built from commit: `aa1baa66`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -228,7 +228,6 @@
 - [[_COMMUNITY_EditorHeader.tsx|EditorHeader.tsx]]
 - [[_COMMUNITY_timelineMath.ts|timelineMath.ts]]
 - [[_COMMUNITY_Editor stage and density correction|Editor stage and density correction]]
-- [[_COMMUNITY_MemoryStorage|MemoryStorage]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `main()` - 39 edges
@@ -257,7 +256,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (228 total, 13 thin omitted)
+## Communities (227 total, 13 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.05
@@ -604,16 +603,16 @@ Cohesion: 0.12
 Nodes (16): Acceptance Checks, Complete OpenScreen integration after recorder foundation, Completed Baseline, Constraints, Cross-Phase Test Policy, Current Phase, Delivery Strategy, Feature Parity Definition (+8 more)
 
 ### Community 92 - "AudioMixer"
-Cohesion: 0.05
-Nodes (79): CLSID, HCURSOR, LPARAM, LRESULT, T, AudioMixer, append, beginTimeline (+71 more)
+Cohesion: 0.07
+Nodes (56): T, AudioMixer, append, beginTimeline, cv_, emittedFrames_, format_, gainBuffer_ (+48 more)
 
 ### Community 93 - "MFEncoder"
 Cohesion: 0.07
 Nodes (51): IMFMediaType, IMFSinkWriter, BgraFrameView, data, height, width, compositeWebcam(), BYTE (+43 more)
 
 ### Community 94 - "WgcSession"
-Cohesion: 0.07
-Nodes (29): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, ID3D11Device, ID3D11DeviceContext, ComPtr, Direct3D11CaptureFramePool (+21 more)
+Cohesion: 0.06
+Nodes (47): event_token, GraphicsCaptureItem, GraphicsCaptureSession, IDirect3DDevice, IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback (+39 more)
 
 ### Community 95 - "Integrate full OpenScreen feature set into RePen"
 Cohesion: 0.04
@@ -700,16 +699,16 @@ Cohesion: 0.20
 Nodes (10): copyLatestFrame, BYTE, vector, WebcamFrameSnapshot, data, height, sequence, timestampHns (+2 more)
 
 ### Community 116 - "main"
-Cohesion: 0.15
-Nodes (20): clamp(), DEFAULT_TIMELINE_TRACKS, fromFileUrl(), isFiniteNumber(), migrateProjectData(), normalizeBlurColor(), normalizeBlurType(), normalizeCursorThemeId() (+12 more)
+Cohesion: 0.11
+Nodes (32): DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS, ExportFormat (+24 more)
 
 ### Community 117 - "getAppState"
 Cohesion: 0.12
 Nodes (32): autoArchiveCurrentSession(), broadcastScene(), clearScene(), deepClone(), exportPdf(), getAppState(), getBootstrapData(), getDockSide() (+24 more)
 
 ### Community 118 - "ipc.ts"
-Cohesion: 0.20
-Nodes (19): getBridge(), RawBridge, useAppBridge(), unavailableCapabilities(), useCapabilities(), AppCapabilities, BootstrapData, CapabilityStatus (+11 more)
+Cohesion: 0.12
+Nodes (22): CaptionsPanelProps, EditorHeader(), EditorHeaderProps, getBridge(), RawBridge, useAppBridge(), unavailableCapabilities(), useCapabilities() (+14 more)
 
 ### Community 119 - "Third-Party Source Notice: OpenScreen"
 Cohesion: 0.50
@@ -764,8 +763,8 @@ Cohesion: 0.50
 Nodes (3): content, fs, lines
 
 ### Community 135 - "PresentationTrackService"
-Cohesion: 0.05
-Nodes (33): annotationId(), applyPresentationEvent(), BoardSnapshot, BoardViewport, clone(), defaultWriterFactory, FileHandlePresentationTrackWriter, parsePresentationTrackJsonl() (+25 more)
+Cohesion: 0.07
+Nodes (26): BoardSnapshot, BoardViewport, defaultWriterFactory, parsePresentationTrackJsonl(), Point, PRESENTATION_TRACK_SCHEMA_VERSION, PresentationBounds, PresentationCanvasMetadata (+18 more)
 
 ### Community 136 - "main.ts"
 Cohesion: 0.07
@@ -775,13 +774,9 @@ Nodes (22): initializeSingleInstanceLock(), approvedRecordingDirectories, bootst
 Cohesion: 0.43
 Nodes (7): applyHotkeys(), applySettingsPayload(), normalizeBrushDefaults(), normalizeExportDefaults(), normalizeHotkeys(), normalizeSettingsPayload(), registerShortcuts()
 
-### Community 138 - "DisplayManager"
-Cohesion: 0.19
-Nodes (8): CaptionIcon(), CutIcon(), EditorTimelineToolbar(), EditorTimelineToolbarProps, formatTimecode(), SelectIcon(), SpeedIcon(), ZoomIcon()
-
 ### Community 139 - "PresentationTrackService"
-Cohesion: 0.18
-Nodes (7): CompositorPreview(), CompositorPreviewProps, formatTimecode(), toFileUrl(), usePreviewViewport(), UsePreviewViewportProps, ZoomMode
+Cohesion: 0.21
+Nodes (18): CLSID, HCURSOR, LPARAM, LRESULT, base64Encode(), buildAssetJson(), HWND, string (+10 more)
 
 ### Community 140 - "find_main_js_handlers.js"
 Cohesion: 0.50
@@ -789,7 +784,7 @@ Nodes (3): content, fs, lines
 
 ### Community 142 - "types.ts"
 Cohesion: 0.06
-Nodes (26): AnnotationPosition, AnnotationSize, AnnotationTextAnimation, AnnotationTextStyle, AnnotationType, ArrowDirection, BlurColor, BlurData (+18 more)
+Nodes (29): AnnotationPosition, AnnotationSize, AnnotationTextAnimation, AnnotationTextStyle, AnnotationType, ArrowDirection, BlurColor, BlurData (+21 more)
 
 ### Community 143 - "projectFile.test.ts"
 Cohesion: 0.20
@@ -936,8 +931,8 @@ Cohesion: 0.18
 Nodes (10): Build & Package, ✨ Features, 🤝 Feedback & Support, 🛠️ Installation & Running from Source, ⌨️ Keyboard Shortcuts, 🚀 Overview, Prerequisites, Run Locally (+2 more)
 
 ### Community 190 - "editor.tsx"
-Cohesion: 0.21
-Nodes (20): EDITOR_TABS, EditorApp(), EditorLocale, EditorTab, isEditorLocale(), rootEl, TimelinePanel(), TRANSLATIONS (+12 more)
+Cohesion: 0.16
+Nodes (25): EDITOR_TABS, EditorApp(), EditorLocale, EditorTab, isEditorLocale(), rootEl, TRANSLATIONS, addSpeedRange() (+17 more)
 
 ### Community 191 - "Phase 6 — Presentation Replay, Cursor, Zoom, Webcam, and Annotations"
 Cohesion: 0.22
@@ -1005,7 +1000,7 @@ Nodes (10): 1. Recording State Transition Matrix, 2. Unit Testing Verification E
 
 ### Community 207 - "phaseCompletionAudit.test.ts"
 Cohesion: 0.16
-Nodes (17): AnnotationsPanel(), AnnotationsPanelProps, CaptionsPanel(), CaptionsPanelProps, CompactRangeRowProps, LayoutPanel(), LayoutPanelProps, MotionPanel() (+9 more)
+Nodes (17): AnnotationsPanel(), AnnotationsPanelProps, CaptionsPanel(), CompositorPreviewProps, CompactRangeRowProps, LayoutPanel(), LayoutPanelProps, MotionPanel() (+9 more)
 
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
@@ -1016,24 +1011,20 @@ Cohesion: 0.67
 Nodes (3): 19. Security Model, Network posture, Required security decisions
 
 ### Community 211 - "TimelineTracks.tsx"
-Cohesion: 0.16
-Nodes (13): EditMode, DraggingRegion, TimelinePanelProps, DraggingRegion, formatTimelineTime(), timeAtTimelinePosition(), timelinePercent(), TimelineTracks() (+5 more)
+Cohesion: 0.08
+Nodes (17): EditMode, EditorTimelineToolbar(), EditorTimelineToolbarProps, formatTimecode(), DraggingRegion, TimelinePanel(), TimelinePanelProps, DraggingRegion (+9 more)
 
 ### Community 212 - "getAppState"
 Cohesion: 0.19
 Nodes (6): InspectorSection(), InspectorSectionProps, InspectorTabId, InspectorTabs(), InspectorTabsProps, TABS
 
 ### Community 214 - "wgc_session.cpp"
-Cohesion: 0.13
-Nodes (18): IDXGIDevice, IInspectable, Direct3D11CaptureFramePool, FrameCallback, HMONITOR, HRESULT, HWND, CreateDirect3D11DeviceFromDXGIDevice() (+10 more)
+Cohesion: 0.38
+Nodes (5): atomic, condition_variable, mutex, thread, vector
 
 ### Community 215 - "EditorHeader.tsx"
 Cohesion: 0.26
 Nodes (8): react, react-dom, clampTimelineHeight(), maxTimelineHeightFor(), useResizableEditorLayout(), mountHook(), TestHook(), root
-
-### Community 217 - "editorDefaults.ts"
-Cohesion: 0.15
-Nodes (17): DEFAULT_CURSOR_SETTINGS, DEFAULT_EDITOR_APPEARANCE_SETTINGS, DEFAULT_EDITOR_LAYOUT_SETTINGS, DEFAULT_EXPORT_SETTINGS, DEFAULT_GIF_OUTPUT_DIMENSIONS, DEFAULT_GIF_SETTINGS, DEFAULT_SOURCE_DIMENSIONS, ExportFormat (+9 more)
 
 ### Community 219 - "RePen Release-Readiness Gates"
 Cohesion: 0.25
@@ -1044,43 +1035,47 @@ Cohesion: 0.33
 Nodes (5): Editor overhaul corrections, Intake, Plan, Result, Verification
 
 ### Community 221 - "visualCompositor.ts"
-Cohesion: 0.25
-Nodes (11): AspectRatio, ASPECT_RATIO_CSS, aspectRatioCss(), fitCompositionToBounds(), FitResult, normalizeCropForRender(), CropRegion, WebcamMaskShape (+3 more)
+Cohesion: 0.14
+Nodes (17): CompositorPreview(), toFileUrl(), usePreviewViewport(), UsePreviewViewportProps, ZoomMode, AspectRatio, ASPECT_RATIO_CSS, aspectRatioCss() (+9 more)
 
 ### Community 222 - "useProjectManager.ts"
-Cohesion: 0.34
-Nodes (7): useProjectManager(), clearRecoverySnapshot(), readRecoverySnapshot(), recoveryKey(), RecoverySnapshot, RecoveryStorage, saveRecoverySnapshot()
+Cohesion: 0.19
+Nodes (8): useProjectManager(), clearRecoverySnapshot(), readRecoverySnapshot(), recoveryKey(), RecoverySnapshot, RecoveryStorage, saveRecoverySnapshot(), MemoryStorage
 
 ### Community 223 - "Editor playback and workspace upgrade"
 Cohesion: 0.33
 Nodes (5): Editor playback and workspace upgrade, Intake, Plan, Result, Verification
 
+### Community 224 - "EditorHeader.tsx"
+Cohesion: 0.25
+Nodes (7): Acceptance criteria, Analysis, Editor workspace rearchitecture, Intake, Plan, Status, Verification
+
 ### Community 225 - "timelineMath.ts"
-Cohesion: 0.57
-Nodes (5): clampTimelineZoom(), createTimelineTicks(), formatTimelineTime(), timeAtTimelinePosition(), timelinePercent()
+Cohesion: 0.47
+Nodes (4): annotationId(), applyPresentationEvent(), clone(), replayPresentationTrack()
 
 ### Community 226 - "Editor stage and density correction"
 Cohesion: 0.33
 Nodes (5): Editor stage and density correction, Implementation, Intake, Result, Root causes
 
 ## Knowledge Gaps
-- **1216 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1211 more)
+- **1222 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1217 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `EditorApp()` connect `editor.tsx` to `timelineMath.ts`, `main.ts`, `project.ts`, `init`, `ipc.ts`, `EditorHeader.tsx`, `PlaybackCoordinator`, `useProjectManager.ts`?**
-  _High betweenness centrality (0.044) - this node is a cross-community bridge._
+- **Why does `EditorApp()` connect `editor.tsx` to `main.ts`, `project.ts`, `init`, `ipc.ts`, `EditorHeader.tsx`, `PlaybackCoordinator`, `useProjectManager.ts`?**
+  _High betweenness centrality (0.046) - this node is a cross-community bridge._
 - **Why does `bootstrap()` connect `main.ts` to `broadcastState`, `editor.tsx`?**
-  _High betweenness centrality (0.041) - this node is a cross-community bridge._
+  _High betweenness centrality (0.043) - this node is a cross-community bridge._
 - **Why does `useResizableEditorLayout()` connect `EditorHeader.tsx` to `editor.tsx`, `phaseCompletionAudit.test.ts`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 26 inferred relationships involving `main()` (e.g. with `makeAacCompatibleAudioFormat()` and `finalize`) actually correct?**
   _`main()` has 26 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories` to the rest of the system?**
-  _1216 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1222 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `main.js` be split into smaller, more focused modules?**
   _Cohesion score 0.05117845117845118 - nodes in this community are weakly interconnected._
 - **Should `settings.js` be split into smaller, more focused modules?**

@@ -36,25 +36,9 @@ function toFileUrl(filePath: string): string {
   return `file://${normalized}`;
 }
 
-const PlayIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/></svg>
-);
-
-const PauseIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-);
-
 const FullscreenIcon = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
 );
-
-function formatTimecode(ms: number): string {
-  const totalSec = Math.floor(ms / 1000);
-  const m = Math.floor(totalSec / 60);
-  const s = totalSec % 60;
-  const tenths = Math.floor((ms % 1000) / 100);
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${tenths}`;
-}
 
 export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   project,
@@ -72,7 +56,6 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   onRemoveMedia,
   onWebcamNoticeChange,
   timelineTracks,
-  isPlaying,
   onTogglePlay,
   onUpdateProject,
   videoRef,
@@ -195,18 +178,7 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
   return (
     <div
       ref={stageRef}
-      className="preview-panel"
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: zoomMode === '100%' ? 'auto' : 'hidden',
-        padding: 16,
-        boxSizing: 'border-box'
-      }}
+      className={`preview-stage${zoomMode === '100%' ? ' preview-stage--pixel-zoom' : ''}`}
     >
       {/* Compositor Preview Box */}
       {styles && (
@@ -245,9 +217,10 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    minWidth: '100%',
-                    minHeight: '100%',
-                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    background: '#000',
                     opacity: timelineTracks.screen?.visible !== false ? 1 : 0,
                   }}
                   onLoadedMetadata={onMetadataLoaded}
@@ -303,94 +276,12 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
         </div>
       )}
 
-      {/* Floating control overlay at bottom center */}
-      <div
-        className="preview-floating-bar"
-        style={{
-          position: 'absolute',
-          bottom: 16,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          padding: '6px 16px',
-          borderRadius: 24,
-          background: 'rgba(15, 17, 26, 0.75)',
-          backdropFilter: 'blur(16px)',
-          border: '1px solid var(--line-strong)',
-          zIndex: 100,
-          boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-          userSelect: 'none'
-        }}
-      >
-        <button
-          className="timeline-control"
-          onClick={onTogglePlay}
-          style={{ width: 24, height: 24, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}
-          title={isPlaying ? 'Pause' : 'Play'}
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
-        </button>
-
-        <span style={{ fontSize: 11, fontFamily: 'monospace', color: 'var(--text)' }}>
-          {formatTimecode(currentTimeMs)}
-        </span>
-
-        <div style={{ width: 1, height: 12, background: 'var(--line)' }} />
-
-        {/* Fit / 100% scale */}
-        <button
-          className={`timeline-control ${zoomMode === 'fit' ? 'active' : ''}`}
-          style={{ padding: '3px 8px', fontSize: 10, background: zoomMode === 'fit' ? 'var(--surface-3)' : 'transparent' }}
-          onClick={() => setZoomMode('fit')}
-          title="Fit view composition"
-        >
-          Fit
-        </button>
-
-        <button
-          className={`timeline-control ${zoomMode === '100%' ? 'active' : ''}`}
-          style={{ padding: '3px 8px', fontSize: 10, background: zoomMode === '100%' ? 'var(--surface-3)' : 'transparent' }}
-          onClick={() => setZoomMode('100%')}
-          title="Zoom to true pixel-perfect scale"
-        >
-          100%
-        </button>
-
-        <div style={{ width: 1, height: 12, background: 'var(--line)' }} />
-
-        {/* Quality Mode */}
-        <button
-          className="timeline-control"
-          style={{ padding: '3px 8px', fontSize: 10 }}
-          onClick={handleToggleQuality}
-          title="Toggle preview rendering quality"
-        >
-          {editor.previewQualityMode === 'performance' ? 'Perf' : 'HQ'}
-        </button>
-
-        {/* Safe Area */}
-        <button
-          className={`timeline-control ${editor.showSafeArea ? 'active' : ''}`}
-          style={{ padding: '3px 8px', fontSize: 10, background: editor.showSafeArea ? 'var(--surface-3)' : 'transparent' }}
-          onClick={handleToggleSafeArea}
-          title="Toggle Title Safe Guide"
-        >
-          Safe
-        </button>
-
-        <div style={{ width: 1, height: 12, background: 'var(--line)' }} />
-
-        {/* Fullscreen */}
-        <button
-          className="timeline-control"
-          onClick={handleFullscreen}
-          style={{ width: 24, height: 24, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}
-          title="Fullscreen preview"
-          aria-label="Fullscreen"
-        >
-          <FullscreenIcon />
-        </button>
+      <div className="preview-stage-actions" aria-label="Preview actions">
+        <button className={`preview-action${zoomMode === 'fit' ? ' active' : ''}`} onClick={() => setZoomMode('fit')} title="Fit preview">Fit</button>
+        <button className={`preview-action${zoomMode === '100%' ? ' active' : ''}`} onClick={() => setZoomMode('100%')} title="Preview at source size">100%</button>
+        <button className={`preview-action${editor.previewQualityMode === 'performance' ? ' active' : ''}`} onClick={handleToggleQuality} title="Toggle preview quality">HQ</button>
+        <button className={`preview-action${editor.showSafeArea ? ' active' : ''}`} onClick={handleToggleSafeArea} title="Toggle title safe guide">Safe</button>
+        <button className="preview-action preview-action--icon" onClick={handleFullscreen} title="Fullscreen preview" aria-label="Fullscreen preview"><FullscreenIcon /></button>
       </div>
     </div>
   );

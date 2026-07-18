@@ -23,12 +23,8 @@ export function usePreviewViewport({
     const stage = stageRef.current;
     if (!stage) return;
 
-    // The stage has padded children. Measure its stable workspace parent rather
-    // than the nested composition container so a grid resize cannot feed a
-    // collapsed composition size back into the fit calculation.
-    const boundsTarget = stage.parentElement || stage;
     const measure = () => {
-      const { width, height } = boundsTarget.getBoundingClientRect();
+      const { width, height } = stage.getBoundingClientRect();
       if (width > 0 && height > 0) {
         setStageWidth(width);
         setStageHeight(height);
@@ -37,7 +33,7 @@ export function usePreviewViewport({
 
     measure();
     const observer = new ResizeObserver(measure);
-    observer.observe(boundsTarget);
+    observer.observe(stage);
     return () => observer.disconnect();
   }, []);
 

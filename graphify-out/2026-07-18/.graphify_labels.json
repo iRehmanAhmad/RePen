@@ -210,12 +210,21 @@
   "208": "vite-env.d.ts",
   "209": "Phase 3 Package Inspection",
   "210": "19. Security Model",
+  "211": "TimelineTracks.tsx",
   "212": "getAppState",
   "213": "getAppState",
+  "214": "wgc_session.cpp",
   "215": "EditorHeader.tsx",
   "216": "capture.py",
+  "217": "editorDefaults.ts",
   "218": "audio_sample_utils.h",
   "219": "RePen Release-Readiness Gates",
   "220": "clampTo",
-  "223": "Editor playback and workspace upgrade"
+  "221": "visualCompositor.ts",
+  "222": "useProjectManager.ts",
+  "223": "Editor playback and workspace upgrade",
+  "224": "EditorHeader.tsx",
+  "225": "timelineMath.ts",
+  "226": "Editor stage and density correction",
+  "227": "MemoryStorage"
 }

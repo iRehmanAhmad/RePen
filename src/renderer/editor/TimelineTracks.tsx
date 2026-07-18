@@ -86,11 +86,8 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
   const showWebcam = Boolean(project?.media?.webcamVideoPath);
   const showPresentation = project?.media?.presentationMode === 'sidecar';
   const showAudio = Boolean(project?.media?.screenVideoPath);
-  // These are creation lanes, not merely result lanes. Keeping them visible
-  // makes it clear where a user can add captions and effects before any item
-  // exists, and removes the hidden-mode discovery problem.
-  const showCaptions = true;
-  const showEffects = true;
+  const showCaptions = editMode === 'caption' || Boolean(project?.editor?.annotationRegions?.some((region: any) => region.annotationSource === 'auto-caption'));
+  const showEffects = editMode === 'zoom' || Boolean(project?.editor?.zoomRegions?.length);
 
   const activeTracksList: { id: TimelineTrackId; label: string }[] = [
     { id: 'screen', label: 'Screen' },
@@ -160,9 +157,9 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
       <div 
         className="timeline-headers-column" 
         style={{ 
-          width: 132,
-          minWidth: 132,
-          maxWidth: 132,
+          width: 108,
+          minWidth: 108,
+          maxWidth: 108,
           display: 'flex', 
           flexDirection: 'column', 
           borderRight: '1px solid var(--line)',
@@ -172,9 +169,9 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
       >
         <div style={{ height: 20, borderBottom: '1px solid var(--line)' }} />
         
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 5 }}>
           {activeTracksList.map(t => (
-            <div key={t.id} className="track-header-row" style={{ height: 30, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 9px' }}>
+            <div key={t.id} className="track-header-row" style={{ height: 28, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 7px' }}>
               <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t.label}</span>
               <TrackControls trackId={t.id} state={timelineTracks[t.id]} onToggle={onUpdateTimelineTrack} />
             </div>
@@ -217,7 +214,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
           </div>
 
           {/* Track Bands */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }} className="track-band-content">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3, marginTop: 5 }} className="track-band-content">
             {activeTracksList.map((track) => {
               const trackId = track.id;
               const isScreen = trackId === 'screen';
@@ -234,7 +231,7 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                   data-track={trackId}
                   onClick={(e) => handleTrackClick(trackId, e)}
                   style={{
-                    height: 30,
+                  height: 28,
                     position: 'relative',
                     overflow: 'hidden',
                     cursor: editMode === 'cut' ? 'crosshair'

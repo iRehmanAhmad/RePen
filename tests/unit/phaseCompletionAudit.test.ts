@@ -154,7 +154,7 @@ describe('post-phase integration audit', () => {
     const h = parseInt(element?.getAttribute('data-timeline-height') || '0', 10);
 
     expect(w).toBe(340);
-    expect(h).toBe(280);
+    expect(h).toBe(240);
 
     root.unmount();
     container.remove();

@@ -6,6 +6,8 @@ interface PropertyCardProps {
   onReset?: () => void;
   collapsible?: boolean;
   defaultOpen?: boolean;
+  isOpen?: boolean;
+  onToggle?: () => void;
   children: React.ReactNode;
 }
 
@@ -15,11 +17,19 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   onReset,
   collapsible = false,
   defaultOpen = true,
+  isOpen: controlledIsOpen,
+  onToggle,
   children,
 }) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(defaultOpen);
+  const isOpen = controlledIsOpen ?? uncontrolledIsOpen;
   const toggle = () => {
-    if (collapsible) setIsOpen((open) => !open);
+    if (!collapsible) return;
+    if (onToggle) {
+      onToggle();
+    } else {
+      setUncontrolledIsOpen((open) => !open);
+    }
   };
 
   return (

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const MIN_TIMELINE_HEIGHT = 250;
-const DEFAULT_TIMELINE_HEIGHT = 280;
+const MIN_TIMELINE_HEIGHT = 210;
+const DEFAULT_TIMELINE_HEIGHT = 240;
 
 function maxTimelineHeightFor(viewportHeight: number): number {
-  return Math.max(MIN_TIMELINE_HEIGHT, Math.floor(Math.min(340, viewportHeight * 0.4, viewportHeight - 56 - 360)));
+  return Math.max(MIN_TIMELINE_HEIGHT, Math.floor(Math.min(300, viewportHeight * 0.34, viewportHeight - 56 - 390)));
 }
 
 function clampTimelineHeight(value: number, viewportHeight: number): number {

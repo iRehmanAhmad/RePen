@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import { PropertyCard } from './PropertyCard';
 
@@ -53,6 +53,7 @@ const CompactRangeRow: React.FC<CompactRangeRowProps> = ({ label, value, min, ma
 
 export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }) => {
   const editor = project.editor;
+  const [openSection, setOpenSection] = useState<'canvas' | 'frame' | 'background' | null>('canvas');
   const wallpapers = [
     { value: '#0b0c0e', label: 'Midnight' },
     { value: 'linear-gradient(135deg, #1f2937, #111827)', label: 'Slate' },
@@ -70,7 +71,13 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }
 
   return (
     <div className="layout-panel">
-      <PropertyCard title="Canvas" description="Output frame and export resolution" collapsible defaultOpen>
+      <PropertyCard
+        title="Canvas"
+        description="Output frame and export resolution"
+        collapsible
+        isOpen={openSection === 'canvas'}
+        onToggle={() => setOpenSection((current) => current === 'canvas' ? null : 'canvas')}
+      >
         <div className="layout-field-grid">
           <div className="property-group">
             <label className="property-label" htmlFor="layout-aspect">{t('aspectRatio')}</label>
@@ -106,7 +113,13 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }
         </div>
       </PropertyCard>
 
-      <PropertyCard title="Frame" description="Spacing, rounding, and depth" collapsible defaultOpen={false}>
+      <PropertyCard
+        title="Frame"
+        description="Spacing, rounding, and depth"
+        collapsible
+        isOpen={openSection === 'frame'}
+        onToggle={() => setOpenSection((current) => current === 'frame' ? null : 'frame')}
+      >
         <CompactRangeRow
           label={t('padding')}
           value={editor.padding || 0}
@@ -135,7 +148,13 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({ project, t, onUpdate }
         />
       </PropertyCard>
 
-      <PropertyCard title={t('wallpaper')} description="Backdrop behind the recording" collapsible defaultOpen={false}>
+      <PropertyCard
+        title={t('wallpaper')}
+        description="Backdrop behind the recording"
+        collapsible
+        isOpen={openSection === 'background'}
+        onToggle={() => setOpenSection((current) => current === 'background' ? null : 'background')}
+      >
         <div className="layout-field-grid">
           <div className="property-group">
             <label className="property-label" htmlFor="layout-wallpaper">Preset</label>
