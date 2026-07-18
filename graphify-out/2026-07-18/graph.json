@@ -7080,7 +7080,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader",
-      "community": 217,
+      "community": 118,
       "norm_label": "editorheader.tsx"
     },
     {
@@ -7090,7 +7090,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_editorheaderprops",
-      "community": 217,
+      "community": 118,
       "norm_label": "editorheaderprops"
     },
     {
@@ -7100,7 +7100,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_undoicon",
-      "community": 217,
+      "community": 118,
       "norm_label": "undoicon()"
     },
     {
@@ -7110,7 +7110,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_redoicon",
-      "community": 217,
+      "community": 118,
       "norm_label": "redoicon()"
     },
     {
@@ -7120,7 +7120,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_saveicon",
-      "community": 217,
+      "community": 118,
       "norm_label": "saveicon()"
     },
     {
@@ -7130,7 +7130,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_exporticon",
-      "community": 217,
+      "community": 118,
       "norm_label": "exporticon()"
     },
     {
@@ -7140,7 +7140,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_moreicon",
-      "community": 217,
+      "community": 118,
       "norm_label": "moreicon()"
     },
     {
@@ -7150,7 +7150,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_brandicon",
-      "community": 217,
+      "community": 118,
       "norm_label": "brandicon()"
     },
     {
@@ -7160,7 +7160,7 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_renderer_editor_editorheader_editorheader",
-      "community": 217,
+      "community": 118,
       "norm_label": "editorheader()"
     },
     {
@@ -7170,7 +7170,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar",
-      "community": 211,
+      "community": 138,
       "norm_label": "editortimelinetoolbar.tsx"
     },
     {
@@ -7190,7 +7190,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_editortimelinetoolbarprops",
-      "community": 211,
+      "community": 138,
       "norm_label": "editortimelinetoolbarprops"
     },
     {
@@ -7200,7 +7200,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_playicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "playicon()"
     },
     {
@@ -7210,7 +7210,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_pauseicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "pauseicon()"
     },
     {
@@ -7220,7 +7220,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_stepbackicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "stepbackicon()"
     },
     {
@@ -7230,7 +7230,7 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_stepforwardicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "stepforwardicon()"
     },
     {
@@ -7240,7 +7240,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_volumeicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "volumeicon()"
     },
     {
@@ -7250,7 +7250,7 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_muteicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "muteicon()"
     },
     {
@@ -7260,7 +7260,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_selecticon",
-      "community": 211,
+      "community": 138,
       "norm_label": "selecticon()"
     },
     {
@@ -7270,7 +7270,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_cuticon",
-      "community": 211,
+      "community": 138,
       "norm_label": "cuticon()"
     },
     {
@@ -7280,7 +7280,7 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_speedicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "speedicon()"
     },
     {
@@ -7290,7 +7290,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_zoomicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "zoomicon()"
     },
     {
@@ -7300,7 +7300,7 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_captionicon",
-      "community": 211,
+      "community": 138,
       "norm_label": "captionicon()"
     },
     {
@@ -7310,7 +7310,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_formattimecode",
-      "community": 211,
+      "community": 138,
       "norm_label": "formattimecode()"
     },
     {
@@ -7320,7 +7320,7 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "src_renderer_editor_editortimelinetoolbar_editortimelinetoolbar",
-      "community": 211,
+      "community": 138,
       "norm_label": "editortimelinetoolbar()"
     },
     {
@@ -11140,7 +11140,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath",
-      "community": 222,
+      "community": 190,
       "norm_label": "timelinemath.ts"
     },
     {
@@ -11150,7 +11150,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_clamptimelinezoom",
-      "community": 222,
+      "community": 190,
       "norm_label": "clamptimelinezoom()"
     },
     {
@@ -11160,7 +11160,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_timelinepercent",
-      "community": 222,
+      "community": 190,
       "norm_label": "timelinepercent()"
     },
     {
@@ -11170,7 +11170,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_timeattimelineposition",
-      "community": 222,
+      "community": 190,
       "norm_label": "timeattimelineposition()"
     },
     {
@@ -11180,7 +11180,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_formattimelinetime",
-      "community": 222,
+      "community": 190,
       "norm_label": "formattimelinetime()"
     },
     {
@@ -11190,7 +11190,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_shared_editor_timelinemath_createtimelineticks",
-      "community": 222,
+      "community": 190,
       "norm_label": "createtimelineticks()"
     },
     {
@@ -11210,7 +11210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_shared_editor_types_zoomdepth",
-      "community": 142,
+      "community": 207,
       "norm_label": "zoomdepth"
     },
     {
@@ -11540,7 +11540,7 @@
       "source_location": "L263",
       "_origin": "ast",
       "id": "src_shared_editor_types_annotationregion",
-      "community": 142,
+      "community": 116,
       "norm_label": "annotationregion"
     },
     {
@@ -11550,7 +11550,7 @@
       "source_location": "L280",
       "_origin": "ast",
       "id": "src_shared_editor_types_default_annotation_position",
-      "community": 116,
+      "community": 142,
       "norm_label": "default_annotation_position"
     },
     {
@@ -11560,7 +11560,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "src_shared_editor_types_default_annotation_size",
-      "community": 116,
+      "community": 142,
       "norm_label": "default_annotation_size"
     },
     {
@@ -11570,7 +11570,7 @@
       "source_location": "L290",
       "_origin": "ast",
       "id": "src_shared_editor_types_default_annotation_style",
-      "community": 116,
+      "community": 142,
       "norm_label": "default_annotation_style"
     },
     {
@@ -11640,7 +11640,7 @@
       "source_location": "L348",
       "_origin": "ast",
       "id": "src_shared_editor_types_clampplaybackspeed",
-      "community": 116,
+      "community": 190,
       "norm_label": "clampplaybackspeed()"
     },
     {
@@ -12210,7 +12210,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_editorsaveclose_test",
-      "community": 217,
+      "community": 118,
       "norm_label": "editorsaveclose.test.ts"
     },
     {
@@ -12740,7 +12740,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage",
-      "community": 221,
+      "community": 214,
       "norm_label": "memorystorage"
     },
     {
@@ -12750,7 +12750,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_length",
-      "community": 221,
+      "community": 214,
       "norm_label": ".length()"
     },
     {
@@ -12760,7 +12760,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_key",
-      "community": 221,
+      "community": 214,
       "norm_label": ".key()"
     },
     {
@@ -12770,7 +12770,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_getitem",
-      "community": 221,
+      "community": 214,
       "norm_label": ".getitem()"
     },
     {
@@ -12780,7 +12780,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_setitem",
-      "community": 221,
+      "community": 214,
       "norm_label": ".setitem()"
     },
     {
@@ -12790,7 +12790,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "tests_unit_recoverystore_test_memorystorage_removeitem",
-      "community": 221,
+      "community": 214,
       "norm_label": ".removeitem()"
     },
     {
@@ -12860,7 +12860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_timelinemath_test",
-      "community": 222,
+      "community": 190,
       "norm_label": "timelinemath.test.ts"
     },
     {
@@ -13190,7 +13190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_third_party_openscreen_wgc_capture_src_audio_sample_utils",
-      "community": 210,
+      "community": 92,
       "norm_label": "audio_sample_utils.h"
     },
     {
@@ -13390,7 +13390,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_mutex",
-      "community": 210,
+      "community": 92,
       "norm_label": "mutex"
     },
     {
@@ -13430,7 +13430,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_vector",
-      "community": 210,
+      "community": 92,
       "norm_label": "vector"
     },
     {
@@ -13480,7 +13480,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_thread",
-      "community": 210,
+      "community": 92,
       "norm_label": "thread"
     },
     {
@@ -13500,7 +13500,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_audio_sample_utils_h_atomic",
-      "community": 210,
+      "community": 92,
       "norm_label": "atomic"
     },
     {
@@ -13550,7 +13550,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler",
-      "community": 121,
+      "community": 92,
       "norm_label": "cursor-sampler.cpp"
     },
     {
@@ -13560,7 +13560,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_lowlevelmouseproc",
-      "community": 121,
+      "community": 92,
       "norm_label": "lowlevelmouseproc()"
     },
     {
@@ -13570,7 +13570,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lresult",
-      "community": 121,
+      "community": 92,
       "norm_label": "lresult"
     },
     {
@@ -13580,7 +13580,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "wparam",
-      "community": 121,
+      "community": 92,
       "norm_label": "wparam"
     },
     {
@@ -13590,7 +13590,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "lparam",
-      "community": 121,
+      "community": 92,
       "norm_label": "lparam"
     },
     {
@@ -13600,7 +13600,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_nowms",
-      "community": 121,
+      "community": 92,
       "norm_label": "nowms()"
     },
     {
@@ -13610,7 +13610,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_writejsonline",
-      "community": 121,
+      "community": 92,
       "norm_label": "writejsonline()"
     },
     {
@@ -13620,7 +13620,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_string",
-      "community": 121,
+      "community": 92,
       "norm_label": "string"
     },
     {
@@ -13630,7 +13630,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_jsonescape",
-      "community": 121,
+      "community": 92,
       "norm_label": "jsonescape()"
     },
     {
@@ -13640,7 +13640,7 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_base64encode",
-      "community": 121,
+      "community": 92,
       "norm_label": "base64encode()"
     },
     {
@@ -13650,7 +13650,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_getpngclsid",
-      "community": 121,
+      "community": 92,
       "norm_label": "getpngclsid()"
     },
     {
@@ -13660,7 +13660,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "clsid",
-      "community": 121,
+      "community": 92,
       "norm_label": "clsid"
     },
     {
@@ -13670,7 +13670,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_standardcursortype",
-      "community": 121,
+      "community": 92,
       "norm_label": "standardcursortype()"
     },
     {
@@ -13680,7 +13680,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hcursor",
-      "community": 121,
+      "community": 92,
       "norm_label": "hcursor"
     },
     {
@@ -13690,7 +13690,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_detectcustomcursortype",
-      "community": 121,
+      "community": 92,
       "norm_label": "detectcustomcursortype()"
     },
     {
@@ -13700,7 +13700,7 @@
       "source_location": "L185",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_buildassetjson",
-      "community": 121,
+      "community": 92,
       "norm_label": "buildassetjson()"
     },
     {
@@ -13710,7 +13710,7 @@
       "source_location": "L315",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_runsamplingloop",
-      "community": 121,
+      "community": 92,
       "norm_label": "runsamplingloop()"
     },
     {
@@ -13720,7 +13720,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_cpp_hwnd",
-      "community": 121,
+      "community": 92,
       "norm_label": "hwnd"
     },
     {
@@ -13730,7 +13730,7 @@
       "source_location": "L412",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_cursor_sampler_main",
-      "community": 121,
+      "community": 92,
       "norm_label": "main()"
     },
     {
@@ -14020,7 +14020,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_dshow_webcam_capture_h_third_party_openscreen_wgc_capture_src_dshow_webcam_capture",
-      "community": 210,
+      "community": 92,
       "norm_label": "dshow_webcam_capture.h"
     },
     {
@@ -15190,7 +15190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_mf_encoder_h_third_party_openscreen_wgc_capture_src_mf_encoder",
-      "community": 210,
+      "community": 92,
       "norm_label": "mf_encoder.h"
     },
     {
@@ -15920,7 +15920,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_wasapi_loopback_capture_h_third_party_openscreen_wgc_capture_src_wasapi_loopback_capture",
-      "community": 210,
+      "community": 92,
       "norm_label": "wasapi_loopback_capture.h"
     },
     {
@@ -16410,7 +16410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "third_party_openscreen_wgc_capture_src_webcam_capture_h_third_party_openscreen_wgc_capture_src_webcam_capture",
-      "community": 210,
+      "community": 92,
       "norm_label": "webcam_capture.h"
     },
     {
@@ -23694,6 +23694,16 @@
       "norm_label": "verification"
     },
     {
+      "label": "Result",
+      "file_type": "document",
+      "source_file": ".agent-hub/tasks/20260718-171500-editor-playback-and-workspace.md",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "agent_hub_tasks_20260718_171500_editor_playback_and_workspace_result",
+      "community": 223,
+      "norm_label": "result"
+    },
+    {
       "label": "task.md",
       "file_type": "document",
       "source_file": ".agent-hub/templates/task.md",
@@ -24440,7 +24450,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "docs_technical_architecture_2_product_objectives",
-      "community": 224,
+      "community": 17,
       "norm_label": "2. product objectives"
     },
     {
@@ -24450,7 +24460,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "docs_technical_architecture_primary_objectives",
-      "community": 224,
+      "community": 17,
       "norm_label": "primary objectives"
     },
     {
@@ -24460,7 +24470,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "docs_technical_architecture_non_objectives_for_the_first_release",
-      "community": 224,
+      "community": 17,
       "norm_label": "non-objectives for the first release"
     },
     {
@@ -65924,6 +65934,16 @@
       "weight": 1.0,
       "source": "agent_hub_tasks_20260718_171500_editor_playback_and_workspace_editor_playback_and_workspace_upgrade",
       "target": "agent_hub_tasks_20260718_171500_editor_playback_and_workspace_plan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agent-hub/tasks/20260718-171500-editor-playback-and-workspace.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "agent_hub_tasks_20260718_171500_editor_playback_and_workspace_editor_playback_and_workspace_upgrade",
+      "target": "agent_hub_tasks_20260718_171500_editor_playback_and_workspace_result",
       "confidence_score": 1.0
     },
     {

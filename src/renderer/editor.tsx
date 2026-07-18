@@ -1177,7 +1177,7 @@ const EditorApp: React.FC = () => {
             activeTab={activeTab}
             onTabChange={setActiveTab}
             t={t}
-            isCompactMode={layout.inspectorWidth < 350}
+            isCompactMode={layout.inspectorWidth < 440}
           />
 
           <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
@@ -1311,13 +1311,6 @@ const EditorApp: React.FC = () => {
         onMute={pb.handleMute}
         onMarkTrimStart={() => setTrimStartMs(pb.currentTimeMs)}
         onCancelTrimMark={() => setTrimStartMs(null)}
-        onAddTrimRange={() => {
-          if (!pm.project || trimStartMs === null) return;
-          const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
-          updated.editor.trimRegions = addTrimRange(updated.editor.trimRegions || [], trimStartMs, pb.currentTimeMs, pb.durationMs);
-          pm.updateProject(updated);
-          setTrimStartMs(null);
-        }}
         onClearTrimRanges={() => {
           if (!pm.project) return;
           const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
@@ -1335,19 +1328,6 @@ const EditorApp: React.FC = () => {
         onSelectTrimId={setSelectedTrimId}
         onMarkSpeedStart={() => setSpeedStartMs(pb.currentTimeMs)}
         onCancelSpeedMark={() => setSpeedStartMs(null)}
-        onAddSpeedRange={() => {
-          if (!pm.project || speedStartMs === null) return;
-          const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
-          updated.editor.speedRegions = addSpeedRange(
-            updated.editor.speedRegions || [],
-            speedStartMs,
-            pb.currentTimeMs,
-            pendingSpeed,
-            pb.durationMs,
-          );
-          pm.updateProject(updated);
-          setSpeedStartMs(null);
-        }}
         onClearSpeedRanges={() => {
           if (!pm.project) return;
           const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;

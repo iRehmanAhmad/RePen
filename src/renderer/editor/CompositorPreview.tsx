@@ -204,7 +204,7 @@ export const CompositorPreview: React.FC<CompositorPreviewProps> = ({
         alignItems: 'center',
         justifyContent: 'center',
         overflow: zoomMode === '100%' ? 'auto' : 'hidden',
-        padding: 32,
+        padding: 16,
         boxSizing: 'border-box'
       }}
     >

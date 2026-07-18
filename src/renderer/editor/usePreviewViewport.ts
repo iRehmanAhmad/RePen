@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useLayoutEffect, useRef } from 'react';
 import { fitCompositionToBounds } from '../../shared/editor/layoutGeometry';
 
 export type ZoomMode = 'fit' | '100%';
@@ -19,19 +19,25 @@ export function usePreviewViewport({
   const [stageHeight, setStageHeight] = useState(450);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
 
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width, height } = entry.contentRect;
-        setStageWidth(width || 800);
-        setStageHeight(height || 450);
+    // The stage has padded children. Measure its stable workspace parent rather
+    // than the nested composition container so a grid resize cannot feed a
+    // collapsed composition size back into the fit calculation.
+    const boundsTarget = stage.parentElement || stage;
+    const measure = () => {
+      const { width, height } = boundsTarget.getBoundingClientRect();
+      if (width > 0 && height > 0) {
+        setStageWidth(width);
+        setStageHeight(height);
       }
-    });
+    };
 
-    observer.observe(stage);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(boundsTarget);
     return () => observer.disconnect();
   }, []);
 
@@ -50,7 +56,7 @@ export function usePreviewViewport({
       aspectRatio,
       sourceWidth,
       sourceHeight,
-      32
+      20
     );
     width = fitResult.width;
     height = fitResult.height;

@@ -23,7 +23,6 @@ interface EditorTimelineToolbarProps {
   trimStartMs: number | null;
   onMarkTrimStart: () => void;
   onCancelTrimMark: () => void;
-  onAddTrimRange: () => void;
   onClearTrimRanges: () => void;
   onSplitTrim: () => void;
   selectedTrimId: string | null;
@@ -33,7 +32,6 @@ interface EditorTimelineToolbarProps {
   pendingSpeed: number;
   onMarkSpeedStart: () => void;
   onCancelSpeedMark: () => void;
-  onAddSpeedRange: () => void;
   onClearSpeedRanges: () => void;
   onPendingSpeedChange: (v: number) => void;
 
@@ -115,7 +113,6 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
   trimStartMs,
   onMarkTrimStart,
   onCancelTrimMark,
-  onAddTrimRange,
   onClearTrimRanges,
   onSplitTrim,
   selectedTrimId,
@@ -124,7 +121,6 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
   pendingSpeed,
   onMarkSpeedStart,
   onCancelSpeedMark,
-  onAddSpeedRange,
   onClearSpeedRanges,
   onPendingSpeedChange,
 
@@ -289,30 +285,29 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
           
           {editMode === 'select' && (
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Select timed clips or annotations in the sidebar to configure options.</span>
+            <span className="timeline-mode-hint">Click a region to select it. Drag its handles to refine its timing.</span>
           )}
 
           {editMode === 'cut' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               {trimStartMs === null ? (
-                <button className="btn-primary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onMarkTrimStart}>
-                  Mark Cut Start
-                </button>
+                <>
+                  <span className="timeline-mode-hint">Click the Screen lane twice to mark a cut range.</span>
+                  <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onMarkTrimStart}>Use playhead</button>
+                </>
               ) : (
                 <>
-                  <button className="btn-primary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onAddTrimRange}>
-                    Apply Cut Range
-                  </button>
-                  <button className="btn-secondary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onCancelTrimMark} aria-label="Cancel pending cut range">
+                  <span className="timeline-mode-hint">Now click the Screen lane again to complete the cut.</span>
+                  <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onCancelTrimMark} aria-label="Cancel pending cut range">
                     Cancel
                   </button>
                 </>
               )}
-              <button className="btn-secondary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onClearTrimRanges}>
+              <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onClearTrimRanges}>
                 Clear Cuts
               </button>
               {selectedTrimId && (
-                <button className="btn-secondary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onSplitTrim}>
+                <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onSplitTrim}>
                   Split Trim
                 </button>
               )}
@@ -322,20 +317,19 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
           {editMode === 'speed' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               {speedStartMs === null ? (
-                <button className="btn-primary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onMarkSpeedStart}>
-                  Mark Speed Start
-                </button>
+                <>
+                  <span className="timeline-mode-hint">Choose a speed, then click the Screen lane twice to create a segment.</span>
+                  <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onMarkSpeedStart}>Use playhead</button>
+                </>
               ) : (
                 <>
-                  <button className="btn-primary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onAddSpeedRange}>
-                    Apply Speed Segment
-                  </button>
-                  <button className="btn-secondary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onCancelSpeedMark}>
+                  <span className="timeline-mode-hint">Now click the Screen lane again to complete the speed segment.</span>
+                  <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onCancelSpeedMark}>
                     Cancel
                   </button>
                 </>
               )}
-              <button className="btn-secondary" style={{ padding: '4px 12px', fontSize: 11.5 }} onClick={onClearSpeedRanges}>
+              <button className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }} onClick={onClearSpeedRanges}>
                 Clear Speeds
               </button>
               
@@ -358,12 +352,12 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
           )}
 
           {editMode === 'zoom' && (
-            <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Click the Effects track to add a five-second zoom, then select it to refine the focus in Motion.</span>
+            <span className="timeline-mode-hint">Click the Effects lane to add a five-second zoom. Select it to refine the focus in Motion.</span>
           )}
 
           {editMode === 'caption' && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Click the Captions track to place a new caption.</span>
+              <span className="timeline-mode-hint">Click the Captions lane to place a new caption.</span>
               <button 
                 className="btn-secondary" 
                 style={{ padding: '4px 12px', fontSize: 11.5 }} 

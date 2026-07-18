@@ -211,7 +211,7 @@ html, body, #root {
   background: #040507;
   position: relative;
   overflow: hidden;
-  padding: 32px;
+  padding: 16px;
   min-width: 0;
   min-height: 0;
   height: 100%;
@@ -295,11 +295,11 @@ html, body, #root {
   background: rgba(15, 17, 26, 0.95);
   backdrop-filter: blur(20px);
   border-left: 1px solid var(--line);
-  padding: 24px;
-  overflow-y: auto;
+  padding: 12px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 10px;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
   height: 100%;
   box-sizing: border-box;
@@ -318,7 +318,7 @@ html, body, #root {
 .tab-buttons .menu-btn {
   flex: 1;
   justify-content: center;
-  padding: 8px 4px;
+  padding: 7px 4px;
   font-size: 11px;
   font-weight: 700;
   border-radius: 6px;
@@ -383,6 +383,54 @@ html, body, #root {
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
   transition: border-color 150ms var(--ease-out), background 150ms var(--ease-out), transform 150ms var(--ease-out);
+}
+
+.layout-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.layout-panel .inspector-card {
+  gap: 9px;
+  padding: 11px;
+}
+
+.layout-panel .inspector-card__description {
+  display: none;
+}
+
+.layout-field-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.layout-field-grid .property-group {
+  gap: 5px;
+}
+
+.compact-range-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 50px;
+  align-items: center;
+  gap: 10px;
+}
+
+.compact-range-row input[type="number"] {
+  height: 26px !important;
+  padding: 3px 6px !important;
+}
+
+.compact-value-hint {
+  margin-top: -2px;
+  color: var(--text-muted);
+  font-size: 10px;
+  text-align: right;
+}
+
+.inspector-scrollable-content {
+  overscroll-behavior: contain;
 }
 
 .inspector-card:hover {
@@ -456,7 +504,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-top: 1px solid var(--line);
   display: grid;
   grid-template-rows: 44px 1fr;
-  padding: 12px 24px;
+  padding: 10px 20px;
   user-select: none;
   z-index: 10;
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
@@ -472,6 +520,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
   font-weight: 500;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   padding-bottom: 8px;
+}
+
+.timeline-toolbar > div:first-child {
+  min-height: 38px;
+}
+
+.timeline-toolbar > div:last-child {
+  min-height: 38px;
+}
+
+.timeline-mode-hint {
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.35;
 }
 
 .timeline-control {

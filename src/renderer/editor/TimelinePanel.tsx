@@ -42,13 +42,11 @@ interface TimelinePanelProps {
   onMute: () => void;
   onMarkTrimStart: () => void;
   onCancelTrimMark: () => void;
-  onAddTrimRange: () => void;
   onClearTrimRanges: () => void;
   onSplitTrim: () => void;
   onSelectTrimId: (id: string | null) => void;
   onMarkSpeedStart: () => void;
   onCancelSpeedMark: () => void;
-  onAddSpeedRange: () => void;
   onClearSpeedRanges: () => void;
   onSelectSpeedId: (id: string | null) => void;
   onSelectZoomId: (id: string | null) => void;
@@ -94,13 +92,11 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
   onMute,
   onMarkTrimStart,
   onCancelTrimMark,
-  onAddTrimRange,
   onClearTrimRanges,
   onSplitTrim,
   onSelectTrimId,
   onMarkSpeedStart,
   onCancelSpeedMark,
-  onAddSpeedRange,
   onClearSpeedRanges,
   onSelectSpeedId,
   onSelectZoomId,
@@ -136,7 +132,6 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
         trimStartMs={trimStartMs}
         onMarkTrimStart={onMarkTrimStart}
         onCancelTrimMark={onCancelTrimMark}
-        onAddTrimRange={onAddTrimRange}
         onClearTrimRanges={onClearTrimRanges}
         onSplitTrim={onSplitTrim}
         selectedTrimId={selectedTrimId}
@@ -144,7 +139,6 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
         pendingSpeed={pendingSpeed}
         onMarkSpeedStart={onMarkSpeedStart}
         onCancelSpeedMark={onCancelSpeedMark}
-        onAddSpeedRange={onAddSpeedRange}
         onClearSpeedRanges={onClearSpeedRanges}
         onPendingSpeedChange={onPendingSpeedChange}
         selectedCaptionId={selectedCaptionId}

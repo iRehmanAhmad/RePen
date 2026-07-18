@@ -86,13 +86,11 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
   const showWebcam = Boolean(project?.media?.webcamVideoPath);
   const showPresentation = project?.media?.presentationMode === 'sidecar';
   const showAudio = Boolean(project?.media?.screenVideoPath);
-  const showCaptions = editMode === 'caption' || Boolean(project?.editor?.annotationRegions?.some((a: any) => a.annotationSource === 'auto-caption'));
-  const showEffects = editMode === 'zoom' || Boolean(
-    (project?.editor?.trimRegions?.length ?? 0) > 0 ||
-    (project?.editor?.speedRegions?.length ?? 0) > 0 ||
-    (project?.editor?.zoomRegions?.length ?? 0) > 0 ||
-    project?.editor?.annotationRegions?.some((a: any) => a.annotationSource !== 'auto-caption')
-  );
+  // These are creation lanes, not merely result lanes. Keeping them visible
+  // makes it clear where a user can add captions and effects before any item
+  // exists, and removes the hidden-mode discovery problem.
+  const showCaptions = true;
+  const showEffects = true;
 
   const activeTracksList: { id: TimelineTrackId; label: string }[] = [
     { id: 'screen', label: 'Screen' },

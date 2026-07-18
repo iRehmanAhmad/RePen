@@ -120,7 +120,6 @@
   "118": "ipc.ts",
   "119": "Third-Party Source Notice: OpenScreen",
   "120": "resolveInputFormat",
-  "121": "repository",
   "122": "README.md",
   "123": "smoke.test.ts",
   "124": "vite.config.ts",
@@ -209,19 +208,13 @@
   "207": "phaseCompletionAudit.test.ts",
   "208": "vite-env.d.ts",
   "209": "Phase 3 Package Inspection",
-  "210": "missingMediaRecovery.test.ts",
-  "211": "cursor-sampler.cpp",
   "212": "getAppState",
   "213": "getAppState",
   "214": "audio_sample_utils.h",
   "215": "EditorHeader.tsx",
   "216": "capture.py",
-  "217": "timelineMath.ts",
   "218": "audio_sample_utils.h",
   "219": "RePen Release-Readiness Gates",
   "220": "clampTo",
-  "221": "MemoryStorage",
-  "222": "19. Security Model",
-  "223": "Editor playback and workspace upgrade",
-  "224": "2. Product Objectives"
+  "223": "Editor playback and workspace upgrade"
 }
