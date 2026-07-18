@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { EditorProjectData, TimelineTrackId, TimelineTrackState } from '../../shared/editor/projectPersistence';
 import { EditorTimelineToolbar, type EditMode } from './EditorTimelineToolbar';
 import { TimelineTracks } from './TimelineTracks';
@@ -24,11 +24,15 @@ interface TimelinePanelProps {
   timelineTicks: number[];
   selectedTrimId: string | null;
   selectedSpeedId: string | null;
+  selectedZoomId: string | null;
+  selectedCaptionId: string | null;
   trimStartMs: number | null;
   speedStartMs: number | null;
   pendingSpeed: number;
   draggingRegion: DraggingRegion | null;
   tempResizeState: { startMs: number; endMs: number } | null;
+  editMode: EditMode;
+  onEditModeChange: (mode: EditMode) => void;
   onTogglePlay: () => void;
   onFrameStep: (direction: -1 | 1) => void;
   onSeek: (ms: number) => void;
@@ -46,6 +50,8 @@ interface TimelinePanelProps {
   onAddSpeedRange: () => void;
   onClearSpeedRanges: () => void;
   onSelectSpeedId: (id: string | null) => void;
+  onSelectZoomId: (id: string | null) => void;
+  onSelectCaptionId: (id: string | null) => void;
   onTimelineZoomChange: (v: number) => void;
   onPendingSpeedChange: (v: number) => void;
   onDragStart: (event: React.MouseEvent, id: string, type: 'trim' | 'speed', side: 'left' | 'right', startMs: number, endMs: number) => void;
@@ -53,9 +59,9 @@ interface TimelinePanelProps {
   timelineTracks: Record<TimelineTrackId, TimelineTrackState>;
 
   // Additional callbacks for captions inside timeline mode
-  selectedCaptionId: string | null;
   onSplitCaption: () => void;
   onMergeCaption: () => void;
+  onTimelineTrackClick: (trackId: TimelineTrackId, timeMs: number, mode: EditMode) => void;
 }
 
 export const TimelinePanel: React.FC<TimelinePanelProps> = ({
@@ -70,11 +76,15 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
   timelineTicks,
   selectedTrimId,
   selectedSpeedId,
+  selectedZoomId,
+  selectedCaptionId,
   trimStartMs,
   speedStartMs,
   pendingSpeed,
   draggingRegion,
   tempResizeState,
+  editMode,
+  onEditModeChange,
   onTogglePlay,
   onFrameStep,
   onSeek,
@@ -92,17 +102,17 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
   onAddSpeedRange,
   onClearSpeedRanges,
   onSelectSpeedId,
+  onSelectZoomId,
+  onSelectCaptionId,
   onTimelineZoomChange,
   onPendingSpeedChange,
   onDragStart,
   onUpdateTimelineTrack,
   timelineTracks,
-  selectedCaptionId,
   onSplitCaption,
   onMergeCaption,
+  onTimelineTrackClick,
 }) => {
-  const [editMode, setEditMode] = useState<EditMode>('select');
-
   return (
     <footer className="timeline-panel" role="contentinfo" style={{ display: 'flex', flexDirection: 'column', gap: 10, minHeight: 0 }}>
       {/* Editor Timeline Toolbar */}
@@ -115,7 +125,7 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
         playbackRate={playbackRate}
         timelineZoom={timelineZoom}
         editMode={editMode}
-        onEditModeChange={setEditMode}
+        onEditModeChange={onEditModeChange}
         onTogglePlay={onTogglePlay}
         onFrameStep={onFrameStep}
         onMute={onMute}
@@ -151,6 +161,8 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
           timelineTicks={timelineTicks}
           selectedTrimId={selectedTrimId}
           selectedSpeedId={selectedSpeedId}
+          selectedZoomId={selectedZoomId}
+          selectedCaptionId={selectedCaptionId}
           trimStartMs={trimStartMs}
           speedStartMs={speedStartMs}
           draggingRegion={draggingRegion}
@@ -158,9 +170,13 @@ export const TimelinePanel: React.FC<TimelinePanelProps> = ({
           onSeek={onSeek}
           onSelectTrimId={onSelectTrimId}
           onSelectSpeedId={onSelectSpeedId}
+          onSelectZoomId={onSelectZoomId}
+          onSelectCaptionId={onSelectCaptionId}
           onDragStart={onDragStart}
           onUpdateTimelineTrack={onUpdateTimelineTrack}
           timelineTracks={timelineTracks}
+          editMode={editMode}
+          onTimelineTrackClick={onTimelineTrackClick}
         />
       </div>
     </footer>

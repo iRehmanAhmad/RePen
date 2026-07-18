@@ -25,6 +25,7 @@ import {
   EditorHeader,
   InspectorTabs,
   InspectorSection,
+  type EditMode,
 } from './editor/index';
 
 import './editor.css';
@@ -109,6 +110,7 @@ const EditorApp: React.FC = () => {
   });
 
   const [activeTab, setActiveTab] = useState<EditorTab>('layout');
+  const [editMode, setEditMode] = useState<EditMode>('select');
   const [selectedZoomId, setSelectedZoomId] = useState<string | null>(null);
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
   const [selectedCaptionId, setSelectedCaptionId] = useState<string | null>(null);
@@ -454,11 +456,21 @@ const EditorApp: React.FC = () => {
       } else if (e.code === 'End') {
         e.preventDefault();
         pb.handleSeek(pb.durationMs, pm.project);
+      } else if (e.key === 'Delete' || e.key === 'Backspace') {
+        e.preventDefault();
+        handleDeleteSelected();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        setEditMode('select');
+        setSelectedTrimId(null);
+        setSelectedSpeedId(null);
+        setSelectedZoomId(null);
+        setSelectedCaptionId(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [pb.isPlaying, pb.currentTimeMs, pb.durationMs, pm]);
+  }, [pb.isPlaying, pb.currentTimeMs, pb.durationMs, pm, selectedTrimId, selectedSpeedId, selectedZoomId, selectedCaptionId]);
 
   // Before unload confirmation
   useEffect(() => {
@@ -792,6 +804,125 @@ const EditorApp: React.FC = () => {
     const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
     updated.editor.timelineTracks[trackId][property] = !updated.editor.timelineTracks[trackId][property];
     pm.updateProject(updated);
+  };
+
+  const handleTimelineTrackClick = (trackId: TimelineTrackId, timeMs: number, mode: EditMode) => {
+    if (!pm.project) return;
+
+    // Seek playhead to clicked time first
+    pb.handleSeek(timeMs, pm.project);
+
+    if (mode === 'cut') {
+      if (trimStartMs === null) {
+        setTrimStartMs(timeMs);
+      } else {
+        const start = Math.min(trimStartMs, timeMs);
+        const end = Math.max(trimStartMs, timeMs);
+        const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
+        updated.editor.trimRegions = addTrimRange(
+          updated.editor.trimRegions || [],
+          start,
+          end,
+          pb.durationMs
+        );
+        pm.updateProject(updated);
+        setTrimStartMs(null);
+      }
+    } else if (mode === 'speed') {
+      if (speedStartMs === null) {
+        setSpeedStartMs(timeMs);
+      } else {
+        const start = Math.min(speedStartMs, timeMs);
+        const end = Math.max(speedStartMs, timeMs);
+        const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
+        updated.editor.speedRegions = addSpeedRange(
+          updated.editor.speedRegions || [],
+          start,
+          end,
+          pendingSpeed,
+          pb.durationMs
+        );
+        pm.updateProject(updated);
+        setSpeedStartMs(null);
+      }
+    } else if (mode === 'zoom' && trackId === 'effects') {
+      const zoomEnd = Math.min(pb.durationMs, timeMs + 5000);
+      const newZoom = {
+        id: `zoom-${Date.now()}`,
+        startMs: timeMs,
+        endMs: zoomEnd,
+        depth: 3 as const,
+        focus: { cx: 0.5, cy: 0.5 },
+        focusMode: 'manual' as const,
+        easingPreset: 'ease-in-out' as const
+      };
+      const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
+      updated.editor.zoomRegions = addZoomRange(
+        updated.editor.zoomRegions || [],
+        newZoom,
+        pb.durationMs
+      );
+      pm.updateProject(updated);
+      setSelectedZoomId(newZoom.id);
+      setActiveTab('motion');
+    } else if (mode === 'caption' && trackId === 'captions') {
+      const captionEnd = Math.min(pb.durationMs, timeMs + 3000);
+      const newCaption = {
+        id: `ann-caption-${Date.now()}`,
+        startMs: timeMs,
+        endMs: captionEnd,
+        type: 'text' as const,
+        content: 'New Caption Text',
+        annotationSource: 'auto-caption' as const,
+        position: { x: 50, y: 85 },
+        size: { width: 40, height: 10 },
+        style: {
+          color: '#ffffff',
+          backgroundColor: 'transparent',
+          fontSize: 24,
+          fontFamily: 'Inter',
+          fontWeight: 'bold' as const,
+          fontStyle: 'normal' as const,
+          textDecoration: 'none' as const,
+          textAlign: 'center' as const,
+          textAnimation: 'none' as const
+        },
+        zIndex: 1
+      };
+      const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
+      updated.editor.annotationRegions.push(newCaption);
+      pm.updateProject(updated);
+      setSelectedCaptionId(newCaption.id);
+      setActiveTab('captions');
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    if (!pm.project) return;
+    const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
+    let mutated = false;
+
+    if (selectedTrimId) {
+      updated.editor.trimRegions = (updated.editor.trimRegions || []).filter(r => r.id !== selectedTrimId);
+      setSelectedTrimId(null);
+      mutated = true;
+    } else if (selectedSpeedId) {
+      updated.editor.speedRegions = (updated.editor.speedRegions || []).filter(r => r.id !== selectedSpeedId);
+      setSelectedSpeedId(null);
+      mutated = true;
+    } else if (selectedZoomId) {
+      updated.editor.zoomRegions = (updated.editor.zoomRegions || []).filter(r => r.id !== selectedZoomId);
+      setSelectedZoomId(null);
+      mutated = true;
+    } else if (selectedCaptionId) {
+      updated.editor.annotationRegions = (updated.editor.annotationRegions || []).filter(r => r.id !== selectedCaptionId);
+      setSelectedCaptionId(null);
+      mutated = true;
+    }
+
+    if (mutated) {
+      pm.updateProject(updated);
+    }
   };
 
 
@@ -1145,11 +1276,15 @@ const EditorApp: React.FC = () => {
         timelineTicks={timelineTicks}
         selectedTrimId={selectedTrimId}
         selectedSpeedId={selectedSpeedId}
+        selectedZoomId={selectedZoomId}
+        selectedCaptionId={selectedCaptionId}
         trimStartMs={trimStartMs}
         speedStartMs={speedStartMs}
         pendingSpeed={pendingSpeed}
         draggingRegion={draggingRegion}
         tempResizeState={tempResizeState}
+        editMode={editMode}
+        onEditModeChange={setEditMode}
         onTogglePlay={pb.togglePlay}
         onFrameStep={pb.handleFrameStep}
         onSeek={(ms: number) => pb.handleSeek(ms, pm.project)}
@@ -1203,14 +1338,16 @@ const EditorApp: React.FC = () => {
           setSpeedStartMs(null);
         }}
         onSelectSpeedId={setSelectedSpeedId}
+        onSelectZoomId={setSelectedZoomId}
+        onSelectCaptionId={setSelectedCaptionId}
         onTimelineZoomChange={(zoomVal: number) => setTimelineZoom(clampTimelineZoom(zoomVal))}
         onPendingSpeedChange={setPendingSpeed}
         onDragStart={handleDragStart}
         onUpdateTimelineTrack={handleUpdateTimelineTrack}
         timelineTracks={timelineTracks}
-        selectedCaptionId={selectedCaptionId}
         onSplitCaption={handleSplitCaption}
         onMergeCaption={handleMergeCaption}
+        onTimelineTrackClick={handleTimelineTrackClick}
       />
 
       {/* Export Setup Modal Dialog */}

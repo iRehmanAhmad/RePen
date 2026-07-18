@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { EditorProjectData, TimelineTrackId, TimelineTrackState } from '../../shared/editor/projectPersistence';
 import type { TrimRegion, SpeedRegion, ZoomRegion } from '../../shared/editor/types';
 import { TrackControls } from './TrackControls';
+import { type EditMode } from './EditorTimelineToolbar';
 
 interface DraggingRegion {
   id: string;
@@ -20,6 +21,8 @@ interface TimelineTracksProps {
   timelineTicks: number[];
   selectedTrimId: string | null;
   selectedSpeedId: string | null;
+  selectedZoomId: string | null;
+  selectedCaptionId: string | null;
   trimStartMs: number | null;
   speedStartMs: number | null;
   draggingRegion: DraggingRegion | null;
@@ -27,9 +30,13 @@ interface TimelineTracksProps {
   onSeek: (ms: number) => void;
   onSelectTrimId: (id: string | null) => void;
   onSelectSpeedId: (id: string | null) => void;
+  onSelectZoomId: (id: string | null) => void;
+  onSelectCaptionId: (id: string | null) => void;
   onDragStart: (event: React.MouseEvent, id: string, type: 'trim' | 'speed', side: 'left' | 'right', startMs: number, endMs: number) => void;
   onUpdateTimelineTrack: (trackId: TimelineTrackId, property: 'visible' | 'locked') => void;
   timelineTracks: Record<TimelineTrackId, TimelineTrackState>;
+  editMode: EditMode;
+  onTimelineTrackClick: (trackId: TimelineTrackId, timeMs: number, mode: EditMode) => void;
 }
 
 function timelinePercent(ms: number, durationMs: number): number {
@@ -56,6 +63,8 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
   timelineTicks,
   selectedTrimId,
   selectedSpeedId,
+  selectedZoomId,
+  selectedCaptionId,
   trimStartMs,
   speedStartMs,
   draggingRegion,
@@ -63,10 +72,16 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
   onSeek,
   onSelectTrimId,
   onSelectSpeedId,
+  onSelectZoomId,
+  onSelectCaptionId,
   onDragStart,
   onUpdateTimelineTrack,
   timelineTracks,
+  editMode,
+  onTimelineTrackClick,
 }) => {
+  const [isScrubbing, setIsScrubbing] = useState(false);
+
   const showWebcam = Boolean(project?.media?.webcamVideoPath);
   const showPresentation = project?.media?.presentationMode === 'sidecar';
   const showAudio = Boolean(project?.media?.screenVideoPath);
@@ -86,6 +101,54 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
     ...(showCaptions ? [{ id: 'captions' as TimelineTrackId, label: 'Captions' }] : []),
     ...(showEffects ? [{ id: 'effects' as TimelineTrackId, label: 'Effects' }] : []),
   ];
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (
+      target.closest('button') ||
+      target.closest('.trim-region-visual') ||
+      target.closest('.playback-speed-region') ||
+      target.closest('.zoom-region-visual') ||
+      target.closest('.caption-region-visual')
+    ) {
+      return;
+    }
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setIsScrubbing(true);
+    const rect = e.currentTarget.getBoundingClientRect();
+    const seekMs = timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs);
+    onSeek(seekMs);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isScrubbing) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const seekMs = timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs);
+    onSeek(seekMs);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (isScrubbing) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+      setIsScrubbing(false);
+    }
+  };
+
+  const handleTrackClick = (trackId: TimelineTrackId, e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickMs = timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs);
+
+    if (editMode !== 'select') {
+      onTimelineTrackClick(trackId, clickMs, editMode);
+    } else {
+      onSeek(clickMs);
+      onSelectTrimId(null);
+      onSelectSpeedId(null);
+      onSelectZoomId(null);
+      onSelectCaptionId(null);
+    }
+  };
 
   return (
     <div className="timeline-content-layout" style={{ display: 'flex', width: '100%', height: '100%', minHeight: 0 }}>
@@ -119,21 +182,18 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
       <div 
         className="timeline-canvas-scroll" 
         style={{ 
-          flex: 1, 
-          overflowX: 'auto', 
-          overflowY: 'hidden', 
-          position: 'relative' 
-        }}
-        onClick={(e) => {
-          if (e.target === e.currentTarget || (e.target as HTMLElement).classList.contains('track-band-content')) {
-            const rect = e.currentTarget.getBoundingClientRect();
-            onSeek(timeAtTimelinePosition(e.clientX - rect.left, rect.width, durationMs));
-            onSelectTrimId(null);
-            onSelectSpeedId(null);
-          }
+          flex: 1,
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          position: 'relative'
         }}
       >
-        <div style={{ minWidth: `${timelineZoom * 100}%`, position: 'relative', height: '100%' }}>
+        <div
+          style={{ minWidth: `${timelineZoom * 100}%`, position: 'relative', height: '100%' }}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+        >
           {/* Ruler */}
           <div 
             className="timeline-ruler" 
@@ -163,112 +223,178 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
               const isEffects = trackId === 'effects';
 
               return (
-                <div 
-                  key={trackId} 
-                  className="timeline-track" 
-                  style={{ 
-                    height: 38, 
-                    position: 'relative', 
-                    background: 'rgba(255,255,255,0.015)',
-                    border: '1px solid var(--line)',
-                    borderRadius: 6,
-                    overflow: 'hidden'
+                <div
+                  key={trackId}
+                  className="timeline-track"
+                  data-track={trackId}
+                  onClick={(e) => handleTrackClick(trackId, e)}
+                  style={{
+                    height: 38,
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: editMode === 'cut' ? 'crosshair'
+                      : editMode === 'speed' ? 'col-resize'
+                      : editMode === 'zoom' ? 'zoom-in'
+                      : editMode === 'caption' ? 'text'
+                      : 'default',
                   }}
                 >
-                  {/* Media Clip Block */}
+                  {/* Filmstrip block for Screen track */}
                   {isScreen && (
-                    <div 
-                      className="track-clip-block" 
-                      style={{ 
-                        position: 'absolute', 
-                        left: 0, 
-                        right: 0, 
-                        top: 2, 
-                        bottom: 2, 
-                        background: 'rgba(59, 130, 246, 0.15)', 
+                    <div
+                      className="track-clip-block"
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 2,
+                        bottom: 2,
+                        background: 'rgba(59, 130, 246, 0.12)',
                         border: '1.5px solid var(--accent)',
                         borderRadius: 4,
-                        padding: '4px 8px',
+                        overflow: 'hidden',
+                        cursor: editMode === 'select' ? 'grab' : editMode === 'cut' ? 'crosshair' : 'default',
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: 10,
-                        color: 'var(--text-muted)'
                       }}
                     >
-                      Screen Clip ({project?.videoPath ? project.videoPath.split(/[/\\]/).pop() : 'recording.mp4'})
+                      {/* SVG filmstrip sprocket decoration */}
+                      <svg
+                        style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0.25 }}
+                        preserveAspectRatio="xMidYMid slice"
+                        viewBox="0 0 200 34"
+                        aria-hidden="true"
+                      >
+                        {Array.from({ length: 20 }).map((_, i) => (
+                          <g key={i} transform={`translate(${i * 10}, 0)`}>
+                            <rect x="0.5" y="2" width="4" height="5" rx="1" fill="var(--accent)" />
+                            <rect x="0.5" y="27" width="4" height="5" rx="1" fill="var(--accent)" />
+                          </g>
+                        ))}
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <rect key={`frame-${i}`} x={i * 42 + 6} y="9" width="34" height="16" rx="2" fill="none" stroke="var(--accent)" strokeWidth="1" />
+                        ))}
+                      </svg>
+                      <span style={{ position: 'relative', zIndex: 1, fontSize: 10, fontWeight: 600, color: 'var(--accent)', paddingLeft: 8, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {'\uD83D\uDCFB'} {project?.videoPath ? project.videoPath.split(/[/\\]/).pop() : 'recording.mp4'}
+                      </span>
                     </div>
                   )}
 
+                  {/* Filmstrip block for Webcam track */}
                   {isWebcam && (
-                    <div 
-                      className="track-clip-block" 
-                      style={{ 
-                        position: 'absolute', 
-                        left: 0, 
-                        right: 0, 
-                        top: 2, 
-                        bottom: 2, 
-                        background: 'rgba(139, 92, 246, 0.15)', 
+                    <div
+                      className="track-clip-block"
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 2,
+                        bottom: 2,
+                        background: 'rgba(139, 92, 246, 0.12)',
                         border: '1.5px solid #8b5cf6',
                         borderRadius: 4,
-                        padding: '4px 8px',
+                        overflow: 'hidden',
+                        cursor: editMode === 'select' ? 'grab' : 'default',
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: 10,
-                        color: 'var(--text-muted)'
                       }}
                     >
-                      Webcam Clip ({project?.media?.webcamVideoPath?.split(/[/\\]/).pop() || 'camera.mp4'})
+                      <svg
+                        style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: 0.2 }}
+                        preserveAspectRatio="xMidYMid slice"
+                        viewBox="0 0 200 34"
+                        aria-hidden="true"
+                      >
+                        {Array.from({ length: 20 }).map((_, i) => (
+                          <g key={i} transform={`translate(${i * 10}, 0)`}>
+                            <rect x="0.5" y="2" width="4" height="5" rx="1" fill="#8b5cf6" />
+                            <rect x="0.5" y="27" width="4" height="5" rx="1" fill="#8b5cf6" />
+                          </g>
+                        ))}
+                      </svg>
+                      <span style={{ position: 'relative', zIndex: 1, fontSize: 10, fontWeight: 600, color: '#a78bfa', paddingLeft: 8, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {'\uD83C\uDFA5'} {project?.media?.webcamVideoPath?.split(/[/\\]/).pop() || 'camera.mp4'}
+                      </span>
                     </div>
                   )}
 
+                  {/* Presentation track block */}
                   {isPresentation && (
-                    <div 
-                      className="track-clip-block" 
-                      style={{ 
-                        position: 'absolute', 
-                        left: 0, 
-                        right: 0, 
-                        top: 2, 
-                        bottom: 2, 
-                        background: 'rgba(16, 185, 129, 0.15)', 
+                    <div
+                      className="track-clip-block"
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 2,
+                        bottom: 2,
+                        background: 'rgba(16, 185, 129, 0.12)',
                         border: '1.5px solid var(--success)',
                         borderRadius: 4,
                         padding: '4px 8px',
                         display: 'flex',
                         alignItems: 'center',
                         fontSize: 10,
-                        color: 'var(--text-muted)'
+                        fontWeight: 600,
+                        color: 'var(--success)',
+                        cursor: 'default',
                       }}
                     >
-                      Presentation Replay (Sidecar Events)
+                      {'\uD83D\uDCCA'} Presentation Replay (Sidecar Events)
                     </div>
                   )}
 
+                  {/* Synthesized waveform for Audio track */}
                   {isAudio && (
-                    <div 
-                      className="track-clip-block" 
-                      style={{ 
-                        position: 'absolute', 
-                        left: 0, 
-                        right: 0, 
-                        top: 2, 
-                        bottom: 2, 
-                        background: 'rgba(245, 158, 11, 0.1)', 
-                        border: '1px dashed var(--warning)',
+                    <div
+                      className="track-clip-block"
+                      style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 2,
+                        bottom: 2,
+                        background: 'rgba(245, 158, 11, 0.08)',
+                        border: '1px solid rgba(245, 158, 11, 0.35)',
                         borderRadius: 4,
-                        padding: '4px 8px',
+                        overflow: 'hidden',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 10,
-                        color: 'var(--text-disabled)',
-                        letterSpacing: '0.05em'
+                        cursor: 'default',
                       }}
                     >
-                      Audio Waveform Unavailable
+                      {/* Bar-graph waveform — deterministically seeded from durationMs */}
+                      <svg
+                        style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%' }}
+                        preserveAspectRatio="none"
+                        viewBox="0 0 100 34"
+                        aria-hidden="true"
+                      >
+                        {Array.from({ length: 50 }).map((_, i) => {
+                          // Deterministic pseudo-random seeded by index + durationMs
+                          const seed = (i * 37 + Math.round(durationMs / 100)) % 100;
+                          const h = 4 + (Math.sin(seed * 0.8) * 0.5 + 0.5) * 22;
+                          const y = (34 - h) / 2;
+                          return (
+                            <rect
+                              key={i}
+                              x={i * 2 + 0.5}
+                              y={y}
+                              width="1"
+                              height={h}
+                              rx="0.5"
+                              fill="rgba(245, 158, 11, 0.7)"
+                            />
+                          );
+                        })}
+                      </svg>
+                      <span style={{ position: 'relative', zIndex: 1, fontSize: 9, fontWeight: 600, color: 'var(--warning)', paddingLeft: 6, opacity: 0.8 }}>
+                        AUDIO
+                      </span>
                     </div>
                   )}
+
 
                   {/* Cuts/trims and speeds on Screen Track */}
                   {isScreen && (
@@ -300,7 +426,15 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                           <div
                             key={t.id}
                             className={`trim-region-visual ${isSelected ? 'selected' : ''}`}
-                            onClick={(event) => { event.stopPropagation(); onSelectTrimId(t.id); onSelectSpeedId(null); }}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              if (editMode === 'select') {
+                                onSelectTrimId(t.id);
+                                onSelectSpeedId(null);
+                                onSelectZoomId(null);
+                                onSelectCaptionId(null);
+                              }
+                            }}
                             style={{ left: `${timelinePercent(start, durationMs)}%`, width: `${timelinePercent(end - start, durationMs)}%`, zIndex: 10 }}
                             role="button" tabIndex={0}
                             aria-label={`Cut from ${formatTimelineTime(start)} to ${formatTimelineTime(end)}`}
@@ -322,7 +456,15 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                           <div
                             key={region.id}
                             className={`playback-speed-region ${isSelected ? 'selected' : ''}`}
-                            onClick={(event) => { event.stopPropagation(); onSelectSpeedId(region.id); onSelectTrimId(null); }}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              if (editMode === 'select') {
+                                onSelectSpeedId(region.id);
+                                onSelectTrimId(null);
+                                onSelectZoomId(null);
+                                onSelectCaptionId(null);
+                              }
+                            }}
                             style={{ left: `${timelinePercent(start, durationMs)}%`, width: `${timelinePercent(end - start, durationMs)}%`, zIndex: 11 }}
                             role="button" tabIndex={0}
                             aria-label={`${region.speed} times speed from ${formatTimelineTime(start)} to ${formatTimelineTime(end)}`}
@@ -338,36 +480,88 @@ export const TimelineTracks: React.FC<TimelineTracksProps> = ({
                   )}
 
                   {/* Zoom regions on effects */}
-                  {isEffects && project?.editor?.zoomRegions?.map((z: ZoomRegion) => (
-                    <div
-                      key={z.id}
-                      className="speed-region-visual"
-                      style={{ 
-                        left: `${timelinePercent(z.startMs, durationMs)}%`, 
-                        width: `${timelinePercent(z.endMs - z.startMs, durationMs)}%`,
-                        background: 'rgba(59, 130, 246, 0.25)',
-                        borderLeft: '2px solid var(--accent)',
-                        borderRight: '2px solid var(--accent)'
-                      }}
-                      title="Zoom region effect"
-                    />
-                  ))}
+                  {isEffects && project?.editor?.zoomRegions?.map((z: ZoomRegion) => {
+                    const isSelected = selectedZoomId === z.id;
+                    return (
+                      <div
+                        key={z.id}
+                        className={`zoom-region-visual ${isSelected ? 'selected' : ''}`}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          if (editMode === 'select') {
+                            onSelectZoomId(z.id);
+                            onSelectTrimId(null);
+                            onSelectSpeedId(null);
+                            onSelectCaptionId(null);
+                          }
+                        }}
+                        style={{
+                          left: `${timelinePercent(z.startMs, durationMs)}%`,
+                          width: `${timelinePercent(z.endMs - z.startMs, durationMs)}%`,
+                          position: 'absolute',
+                          top: 2,
+                          bottom: 2,
+                          background: isSelected ? 'rgba(59, 130, 246, 0.45)' : 'rgba(59, 130, 246, 0.25)',
+                          border: isSelected ? '2px solid var(--accent)' : '1.5px solid var(--accent)',
+                          borderRadius: 4,
+                          cursor: 'pointer',
+                          zIndex: 12
+                        }}
+                        title="Zoom region effect"
+                      />
+                    );
+                  })}
 
-                  {/* Caption regions */}
-                  {isCaptions && project?.editor?.annotationRegions?.filter((a: any) => a.annotationSource === 'auto-caption').map((c: any) => (
-                    <div
-                      key={c.id}
-                      className="speed-region-visual"
-                      style={{
-                        left: `${timelinePercent(c.startMs, durationMs)}%`,
-                        width: `${timelinePercent(c.endMs - c.startMs, durationMs)}%`,
-                        background: 'rgba(255, 209, 102, 0.22)',
-                        borderLeft: '2px solid var(--warning)',
-                        borderRight: '2px solid var(--warning)',
-                      }}
-                      title={`Caption: "${c.content}"`}
-                    />
-                  ))}
+                  {/* Caption regions — with inline text */}
+                  {isCaptions && project?.editor?.annotationRegions?.filter((a: any) => a.annotationSource === 'auto-caption').map((c: any) => {
+                    const isSelected = selectedCaptionId === c.id;
+                    return (
+                      <div
+                        key={c.id}
+                        className={`caption-region-visual ${isSelected ? 'selected' : ''}`}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          if (editMode === 'select') {
+                            onSelectCaptionId(c.id);
+                            onSelectTrimId(null);
+                            onSelectSpeedId(null);
+                            onSelectZoomId(null);
+                          }
+                        }}
+                        style={{
+                          left: `${timelinePercent(c.startMs, durationMs)}%`,
+                          width: `${timelinePercent(c.endMs - c.startMs, durationMs)}%`,
+                          position: 'absolute',
+                          top: 2,
+                          bottom: 2,
+                          background: isSelected ? 'rgba(255, 209, 102, 0.42)' : 'rgba(255, 209, 102, 0.18)',
+                          border: isSelected ? '2px solid var(--warning)' : '1.5px dashed var(--warning)',
+                          borderRadius: 4,
+                          cursor: 'pointer',
+                          zIndex: 12,
+                          display: 'flex',
+                          alignItems: 'center',
+                          overflow: 'hidden',
+                        }}
+                        title={`Caption: "${c.content}"`}
+                      >
+                        <span style={{
+                          fontSize: 10,
+                          fontWeight: 600,
+                          color: isSelected ? 'var(--warning)' : 'rgba(255, 209, 102, 0.9)',
+                          paddingLeft: 5,
+                          paddingRight: 4,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          lineHeight: 1.2,
+                          userSelect: 'none',
+                        }}>
+                          {c.content}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               );
             })}

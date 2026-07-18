@@ -975,8 +975,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor.tsx": {
-    "mtime": 1784372721.4821236,
-    "ast_hash": "1b05f1ce3559d3df23504411360cf167",
+    "mtime": 1784373371.5370438,
+    "ast_hash": "78802a0810c2a173929dc49fb27bedea",
     "semantic_hash": ""
   },
   "tests/unit/editorWorkspace.test.ts": {
@@ -1300,13 +1300,13 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelinePanel.tsx": {
-    "mtime": 1784310442.3990717,
-    "ast_hash": "e2f6c651f6398090aefcab5a05381d78",
+    "mtime": 1784373137.172152,
+    "ast_hash": "aa4dbb238c0ccde3651feac71d546c2d",
     "semantic_hash": ""
   },
   "src/renderer/editor/TimelineTracks.tsx": {
-    "mtime": 1784309756.5316644,
-    "ast_hash": "7ba24a84f044d4387179561058d07370",
+    "mtime": 1784373404.340979,
+    "ast_hash": "5b8b146736755f86ab3f16ab194189dd",
     "semantic_hash": ""
   },
   "src/renderer/editor/TrackControls.tsx": {
@@ -1320,8 +1320,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/index.ts": {
-    "mtime": 1784372615.1370902,
-    "ast_hash": "2b11b925a6e8cd9ad6ee867eff05c87e",
+    "mtime": 1784373188.6320155,
+    "ast_hash": "2798cec7e21dfbb8e00a81ae004de7da",
     "semantic_hash": ""
   },
   "src/renderer/editor/useAppBridge.ts": {

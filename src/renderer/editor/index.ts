@@ -28,7 +28,7 @@ export { usePreviewViewport } from './usePreviewViewport';
 export { TrackControls } from './TrackControls';
 export { TimelinePanel } from './TimelinePanel';
 export { TimelineTracks } from './TimelineTracks';
-export { EditorTimelineToolbar } from './EditorTimelineToolbar';
+export { EditorTimelineToolbar, type EditMode } from './EditorTimelineToolbar';
 
 // ── Resizable Layout & Inspector Overhauls ────────────────────────────────
 export { useResizableEditorLayout } from './useResizableEditorLayout';

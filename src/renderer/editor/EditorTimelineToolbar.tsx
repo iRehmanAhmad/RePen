@@ -250,56 +250,36 @@ export const EditorTimelineToolbar: React.FC<EditorTimelineToolbarProps> = ({
       >
         {/* Edit mode selector */}
         <div style={{ display: 'flex', gap: 2, background: 'rgba(255,255,255,0.03)', padding: 2, borderRadius: 6 }}>
-          <button 
-            className={`timeline-control ${editMode === 'select' ? 'active' : ''}`}
-            onClick={() => onEditModeChange('select')}
-            title="Select Mode (V)"
-            aria-label="Select mode"
-            style={{ padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 6, border: 'none', background: editMode === 'select' ? 'var(--surface-3)' : 'transparent' }}
-          >
-            <SelectIcon />
-            <span style={{ fontSize: 11, fontWeight: 700 }}>Select</span>
-          </button>
-          <button 
-            className={`timeline-control ${editMode === 'cut' ? 'active' : ''}`}
-            onClick={() => onEditModeChange('cut')}
-            title="Cut Mode (C)"
-            aria-label="Cut mode"
-            style={{ padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 6, border: 'none', background: editMode === 'cut' ? 'var(--surface-3)' : 'transparent' }}
-          >
-            <CutIcon />
-            <span style={{ fontSize: 11, fontWeight: 700 }}>Cut</span>
-          </button>
-          <button 
-            className={`timeline-control ${editMode === 'speed' ? 'active' : ''}`}
-            onClick={() => onEditModeChange('speed')}
-            title="Speed Mode (S)"
-            aria-label="Speed mode"
-            style={{ padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 6, border: 'none', background: editMode === 'speed' ? 'var(--surface-3)' : 'transparent' }}
-          >
-            <SpeedIcon />
-            <span style={{ fontSize: 11, fontWeight: 700 }}>Speed</span>
-          </button>
-          <button 
-            className={`timeline-control ${editMode === 'zoom' ? 'active' : ''}`}
-            onClick={() => onEditModeChange('zoom')}
-            title="Zoom Mode (Z)"
-            aria-label="Zoom mode"
-            style={{ padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 6, border: 'none', background: editMode === 'zoom' ? 'var(--surface-3)' : 'transparent' }}
-          >
-            <ZoomIcon />
-            <span style={{ fontSize: 11, fontWeight: 700 }}>Zoom</span>
-          </button>
-          <button 
-            className={`timeline-control ${editMode === 'caption' ? 'active' : ''}`}
-            onClick={() => onEditModeChange('caption')}
-            title="Caption Mode (T)"
-            aria-label="Caption mode"
-            style={{ padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 6, border: 'none', background: editMode === 'caption' ? 'var(--surface-3)' : 'transparent' }}
-          >
-            <CaptionIcon />
-            <span style={{ fontSize: 11, fontWeight: 700 }}>Caption</span>
-          </button>
+          {(
+            [
+              { id: 'select',  label: 'Select',  key: 'V', Icon: SelectIcon },
+              { id: 'cut',     label: 'Cut',     key: 'C', Icon: CutIcon },
+              { id: 'speed',   label: 'Speed',   key: 'S', Icon: SpeedIcon },
+              { id: 'zoom',    label: 'Zoom',    key: 'Z', Icon: ZoomIcon },
+              { id: 'caption', label: 'Caption', key: 'T', Icon: CaptionIcon },
+            ] as const
+          ).map(({ id, label, key, Icon }) => (
+            <button
+              key={id}
+              className={`timeline-control${editMode === id ? ' active' : ''}`}
+              onClick={() => onEditModeChange(id as EditMode)}
+              title={`${label} Mode (${key})`}
+              aria-label={`${label} mode`}
+              aria-pressed={editMode === id}
+              style={{
+                padding: '4px 10px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                border: 'none',
+                background: editMode === id ? undefined : 'transparent',
+              }}
+            >
+              <Icon />
+              <span style={{ fontSize: 11, fontWeight: 700 }}>{label}</span>
+              <kbd className="shortcut-chip">{key}</kbd>
+            </button>
+          ))}
         </div>
 
         {/* Separator line */}
