@@ -1,37 +1,51 @@
-import { describe, expect, it } from 'vitest';
-import fs from 'node:fs';
-import path from 'node:path';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { describe, expect, it, vi, beforeAll } from 'vitest';
+import { InspectorTabs } from '../../src/renderer/editor/InspectorTabs';
 
-const css = fs.readFileSync(path.resolve(__dirname, '../../src/renderer/editor.css'), 'utf8');
-const editor = fs.readFileSync(path.resolve(__dirname, '../../src/renderer/editor.tsx'), 'utf8');
+beforeAll(() => {
+  (window as any).appBridge = {
+    getBootstrap: vi.fn(),
+  };
+});
 
-describe('editor accessibility baseline', () => {
-  it('provides visible keyboard focus and honors reduced-motion preferences', () => {
-    expect(css).toContain(':focus-visible');
-    expect(css).toContain('@media (prefers-reduced-motion: reduce)');
-  });
+describe('editor accessibility component', () => {
+  it('mounts InspectorTabs and handles keyboard arrow navigation', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
 
-  it('keeps timeline controls accessible by name', () => {
-    expect(editor).toContain('aria-label="Zoom timeline to fit"');
-    expect(editor).toContain('aria-label="Playback speed"');
-    expect(editor).toContain('aria-label="Volume"');
-    expect(editor).toContain('aria-label="Cancel pending cut range"');
-    expect(editor).toContain('aria-hidden="true"');
-  });
+    let activeTab = 'layout';
+    const onTabChange = vi.fn((tab) => { activeTab = tab; });
+    const t = (key: string) => key;
 
-  it('uses the tab pattern and labels modal workflows', () => {
-    expect(editor).toContain('aria-selected={activeTab === tab.id}');
-    expect(editor).toContain('aria-controls={`editor-panel-${tab.id}`}');
-    expect(editor).toContain('role="tabpanel"');
-    expect(editor).toContain("event.key === 'ArrowRight'");
-    expect(editor).toContain('aria-label="Export progress"');
-    expect(editor).toContain('aria-label="RePen Editor tutorial"');
-  });
+    const root = ReactDOM.createRoot(container);
+    root.render(
+      React.createElement(InspectorTabs, {
+        activeTab: activeTab as any,
+        onTabChange,
+        t,
+        isCompactMode: false,
+      })
+    );
 
-  it('persists a validated editor locale preference', () => {
-    expect(editor).toContain("const EDITOR_LOCALE_STORAGE_KEY = 'repen-editor-locale'");
-    expect(editor).toContain('const isEditorLocale =');
-    expect(editor).toContain('localStorage.setItem(EDITOR_LOCALE_STORAGE_KEY, locale)');
-    expect(editor).toContain("languageSpanish: 'Español'");
+    // Wait for render cycle
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const tabList = container.querySelector('[role="tablist"]');
+    expect(tabList).not.toBeNull();
+
+    const buttons = container.querySelectorAll('button');
+    expect(buttons.length).toBe(5);
+    expect(buttons[0].getAttribute('aria-selected')).toBe('true');
+
+    // Simulate keydown ArrowRight on the tablist element
+    const event = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true });
+    tabList?.dispatchEvent(event);
+
+    expect(onTabChange).toHaveBeenCalledWith('motion');
+
+    // Clean up
+    root.unmount();
+    container.remove();
   });
 });

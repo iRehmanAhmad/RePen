@@ -203,6 +203,9 @@ export class RecorderService extends EventEmitter {
     const temporaryPath = `${manifestPath}.tmp-${process.pid}-${Date.now()}`;
     try {
       fs.writeFileSync(temporaryPath, JSON.stringify(manifest, null, 2), 'utf8');
+      if (fs.existsSync(manifestPath)) {
+        try { fs.unlinkSync(manifestPath); } catch {}
+      }
       fs.renameSync(temporaryPath, manifestPath);
       this.writeDiagnosticsLog(`Session manifest written with status "${status}": ${manifestPath}`);
     } catch (e) {

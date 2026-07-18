@@ -65,7 +65,7 @@ export const CaptionsPanel: React.FC<CaptionsPanelProps> = ({
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       {!capabilities.captions?.available ? (
         <div style={{ padding: 12, borderRadius: 8, border: '1px dashed var(--line)', background: 'var(--surface-2)', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <span style={{ fontSize: 13, color: 'var(--muted)' }}>⚠️ {capabilities.captions?.reason || 'Offline transcription is not installed.'}</span>
+          <span style={{ fontSize: 13, color: 'var(--muted)' }}>{"\u26A0\uFE0F"} {capabilities.captions?.reason || 'Offline transcription is not installed.'}</span>
           {downloadingModel ? (
             <div style={{ padding: '8px 0', width: '100%' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>

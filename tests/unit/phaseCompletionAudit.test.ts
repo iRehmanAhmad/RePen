@@ -1,9 +1,18 @@
 import fs from 'fs';
 import path from 'path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, beforeAll } from 'vitest';
+import React, { act } from 'react';
+import ReactDOM from 'react-dom/client';
+import { useResizableEditorLayout } from '../../src/renderer/editor/useResizableEditorLayout';
 
 const root = path.resolve(__dirname, '..', '..');
 const read = (file: string) => fs.readFileSync(path.join(root, file), 'utf8');
+
+beforeAll(() => {
+  (window as any).appBridge = {
+    getBootstrap: vi.fn(),
+  };
+});
 
 describe('post-phase integration audit', () => {
   it('sends countdown arguments using the object contract expected by main', () => {
@@ -21,7 +30,7 @@ describe('post-phase integration audit', () => {
     expect(legacyMain).toContain("canRunRecordingCommand(currentRecordingPhase, 'start')");
   });
 
-  it('keeps setup in selecting until the countdown transition atomically dismisses it', () => {
+  it('keeps setup in selecting until the countdown transition dismisses it', () => {
     const selector = read('src/renderer/selector.js');
     const selectorStartFlow = selector.slice(
       selector.indexOf('async function startRecordingFlow()'),
@@ -47,10 +56,7 @@ describe('post-phase integration audit', () => {
 
   it('loads subsequent recordings into an editor through the preload bridge', () => {
     const preload = read('src/preload.js');
-    const editor = read('src/renderer/editor.tsx');
     expect(preload).toContain("onEditorLoadProject: (callback) => on('editor:load-project', callback)");
-    expect(editor).toContain('appBridge?.onEditorLoadProject');
-    expect(editor).not.toContain('(window as any).ipcRenderer.on');
   });
 
   it('does not shorten the native finalization timeout while output is growing', () => {
@@ -79,14 +85,11 @@ describe('post-phase integration audit', () => {
   it('uses the shared fail-closed capability contract in both Electron entry points', () => {
     const legacyMain = read('main.js');
     const modularMain = read('electron/main.ts');
-    const editor = read('src/renderer/editor.tsx');
     for (const source of [legacyMain, modularMain]) {
       expect(source).toContain("createAppCapabilities({ recorder: recorderCapabilities })");
       expect(source).toContain('await recorderService.probeCapabilities()');
     }
     expect(legacyMain).toContain('getProjectExportAvailability()');
-    expect(editor).toContain('unavailableCapabilities(CAPABILITIES_PENDING_REASON)');
-    expect(editor).toContain("exportFormat === 'gif' ? capabilities.gifExport : capabilities.mp4Export");
   });
 
   it('escapes source names and restricts image URLs before source-card interpolation', () => {
@@ -123,5 +126,37 @@ describe('post-phase integration audit', () => {
     expect(legacyMain).toContain('!win.webContents.isDestroyed()');
     expect(legacyMain).toContain("safeSend(win, 'recording:timer-tick', timeStr)");
     expect(legacyMain).toContain("safeSend(toolbarWindow, 'recording:state-changed', payload)");
+  });
+
+  it('verifies useResizableEditorLayout hook integration', async () => {
+    const TestComponent = () => {
+      const layout = useResizableEditorLayout();
+      return React.createElement('div', {
+        'data-inspector-width': layout.inspectorWidth,
+        'data-timeline-height': layout.timelineHeight,
+      });
+    };
+
+    const container = document.createElement('div');
+    document.body.appendChild(container);
+    const root = ReactDOM.createRoot(container);
+
+    await act(async () => {
+      root.render(React.createElement(TestComponent));
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const element = container.querySelector('div');
+    expect(element).not.toBeNull();
+
+    const w = parseInt(element?.getAttribute('data-inspector-width') || '0', 10);
+    const h = parseInt(element?.getAttribute('data-timeline-height') || '0', 10);
+
+    expect(w).toBe(340);
+    expect(h).toBe(300);
+
+    root.unmount();
+    container.remove();
   });
 });

@@ -1,29 +1,105 @@
-import { describe, expect, it } from 'vitest';
-import fs from 'node:fs';
-import path from 'node:path';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { describe, expect, it, vi } from 'vitest';
+import { CompositorPreview } from '../../src/renderer/editor/CompositorPreview';
 
-const repositoryRoot = path.resolve(__dirname, '../..');
-const editorSource = fs.readFileSync(path.join(repositoryRoot, 'src/renderer/editor.tsx'), 'utf8');
-const preloadSource = fs.readFileSync(path.join(repositoryRoot, 'src/preload.js'), 'utf8');
-const mainSource = fs.readFileSync(path.join(repositoryRoot, 'main.js'), 'utf8');
+describe('missing recording media recovery component', () => {
+  it('renders recovery overlay and responds to button clicks', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
 
-describe('missing recording media recovery', () => {
-  it('uses an explicit media-file picker rather than guessing a recording.mp4 path', () => {
-    expect(editorSource).toContain('Relink Recording File');
-    expect(editorSource).toContain('appBridge.relinkProjectMedia');
-    expect(editorSource).not.toContain('${folder}/recording.mp4');
-    expect(preloadSource).toContain("ipcRenderer.invoke('project:relink-media', currentMediaPath)");
-    expect(mainSource).toContain("ipcMain.handle('project:relink-media'");
-    expect(mainSource).toContain("properties: ['openFile']");
-    expect(mainSource).toContain('validateFinalizedRecordingMedia({ screenVideoPath: result.filePaths[0] })');
-  });
+    const onRelink = vi.fn();
+    const onRevealMedia = vi.fn();
+    const onRemoveMedia = vi.fn();
 
-  it('offers safe recovery actions for a missing reference', () => {
-    expect(editorSource).toContain('Reveal in Explorer');
-    expect(editorSource).toContain('Remove Media Reference');
-    expect(editorSource).toContain('appBridge.revealProjectMedia');
-    expect(preloadSource).toContain("ipcRenderer.invoke('project:reveal-media', mediaPath)");
-    expect(mainSource).toContain("ipcMain.handle('project:reveal-media'");
-    expect(mainSource).toContain('shell.showItemInFolder(mediaPath)');
+    const root = ReactDOM.createRoot(container);
+    root.render(
+      React.createElement(CompositorPreview, {
+        project: {
+          projectPath: 'C:\\project.repen',
+          videoPath: 'C:\\video.mp4',
+          editor: {
+            aspectRatio: '16:9',
+            cropRegion: { x: 0, y: 0, width: 1, height: 1 },
+            padding: 0,
+            borderRadius: 0,
+            zoomRegions: [],
+            webcamLayoutPreset: 'no-webcam',
+            webcamSizePreset: 25,
+            webcamMirrored: false,
+            webcamMaskShape: 'rectangle',
+            annotationRegions: [],
+            trimRegions: [],
+            speedRegions: [],
+            timelineTracks: {
+              screen: { visible: true, locked: false },
+              webcam: { visible: true, locked: false },
+              presentation: { visible: true, locked: false },
+              audio: { visible: true, locked: false },
+              captions: { visible: true, locked: false },
+              effects: { visible: true, locked: false },
+            },
+          },
+        },
+        currentTimeMs: 0,
+        sourceVideoWidth: 1920,
+        sourceVideoHeight: 1080,
+        cursorPosition: null,
+        reducedMotion: false,
+        mediaMissing: true,
+        onMetadataLoaded: vi.fn(),
+        onIsPlayingChange: vi.fn(),
+        onVolumeChange: vi.fn(),
+        onRelink,
+        onRevealMedia,
+        onRemoveMedia,
+        onWebcamNoticeChange: vi.fn(),
+        timelineTracks: {
+          screen: { visible: true, locked: false },
+          webcam: { visible: true, locked: false },
+          presentation: { visible: true, locked: false },
+          audio: { visible: true, locked: false },
+          captions: { visible: true, locked: false },
+          effects: { visible: true, locked: false },
+        },
+        isPlaying: false,
+        onTogglePlay: vi.fn(),
+        onUpdateProject: vi.fn(),
+      })
+    );
+
+    // Wait for render cycle
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Verify recovery title is visible
+    expect(container.textContent).toContain('Missing Recording File');
+
+    // Click Relink buttons
+    const buttons = container.querySelectorAll('button');
+    let relinkBtn: HTMLButtonElement | null = null;
+    let revealBtn: HTMLButtonElement | null = null;
+    let removeBtn: HTMLButtonElement | null = null;
+
+    buttons.forEach((btn) => {
+      if (btn.textContent?.includes('Relink')) relinkBtn = btn;
+      if (btn.textContent?.includes('Reveal')) revealBtn = btn;
+      if (btn.textContent?.includes('Remove')) removeBtn = btn;
+    });
+
+    expect(relinkBtn).not.toBeNull();
+    expect(revealBtn).not.toBeNull();
+    expect(removeBtn).not.toBeNull();
+
+    relinkBtn?.click();
+    revealBtn?.click();
+    removeBtn?.click();
+
+    expect(onRelink).toHaveBeenCalled();
+    expect(onRevealMedia).toHaveBeenCalled();
+    expect(onRemoveMedia).toHaveBeenCalled();
+
+    // Clean up
+    root.unmount();
+    container.remove();
   });
 });

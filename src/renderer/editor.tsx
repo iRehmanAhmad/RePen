@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { PresenterRenderer } from './presenter/presenterRenderer';
 import { seekPresentationTrack } from './presenter/presentationTrackReplay';
 import { clampTimelineZoom, createTimelineTicks } from '../shared/editor/timelineMath';
-import { addSpeedRange, addTrimRange, removeTimedRegionById, resizeTrimRange, resizeSpeedRange, splitTrimRange, addZoomRange } from '../shared/editor/timelineEdits';
+import { addSpeedRange, addTrimRange, resizeTrimRange, resizeSpeedRange, splitTrimRange, addZoomRange } from '../shared/editor/timelineEdits';
 import { DEFAULT_TIMELINE_TRACKS, type TimelineTrackId } from '../shared/editor/projectPersistence';
 import { DEFAULT_PLAYBACK_SPEED, type ZoomRegion, type AnnotationRegion } from '../shared/editor/types';
 import type { SceneAnnotation as PresenterSceneAnnotation } from '../shared/schemas/scene';
@@ -21,6 +21,10 @@ import {
   CaptionsPanel,
   CompositorPreview,
   TimelinePanel,
+  useResizableEditorLayout,
+  EditorHeader,
+  InspectorTabs,
+  InspectorSection,
 } from './editor/index';
 
 import './editor.css';
@@ -97,6 +101,7 @@ const EditorApp: React.FC = () => {
   const { capabilities } = useCapabilities();
   const pm = useProjectManager();
   const pb = usePlaybackState();
+  const layout = useResizableEditorLayout();
 
   const [locale, setLocale] = useState<EditorLocale>(() => {
     const savedLocale = localStorage.getItem(EDITOR_LOCALE_STORAGE_KEY);
@@ -153,7 +158,6 @@ const EditorApp: React.FC = () => {
   });
 
   const selectedExportCapability = exportFormat === 'gif' ? capabilities.gifExport : capabilities.mp4Export;
-  const hasAvailableExportFormat = Boolean(capabilities.mp4Export?.available || capabilities.gifExport?.available);
 
   // Translate helper
   const t = (key: string): string => TRANSLATIONS[locale]?.[key] || TRANSLATIONS['en']?.[key] || key;
@@ -466,22 +470,6 @@ const EditorApp: React.FC = () => {
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [pm.isDirty]);
-
-  // Tab key focus handlers
-  const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, tabId: EditorTab) => {
-    const currentIndex = EDITOR_TABS.findIndex((tab) => tab.id === tabId);
-    let nextIndex: number | null = null;
-    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % EDITOR_TABS.length;
-    if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + EDITOR_TABS.length) % EDITOR_TABS.length;
-    if (event.key === 'Home') nextIndex = 0;
-    if (event.key === 'End') nextIndex = EDITOR_TABS.length - 1;
-    if (nextIndex === null) return;
-
-    event.preventDefault();
-    const nextTab = EDITOR_TABS[nextIndex].id;
-    setActiveTab(nextTab);
-    requestAnimationFrame(() => document.getElementById(`editor-tab-${nextTab}`)?.focus());
-  };
 
   // Zoom management
   const handleAddZoom = () => {
@@ -805,16 +793,7 @@ const EditorApp: React.FC = () => {
     pm.updateProject(updated);
   };
 
-  const handleUpdateSpeedValue = (id: string, speedVal: number) => {
-    if (!pm.project) return;
-    const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
-    const regions = updated.editor.speedRegions || [];
-    const idx = regions.findIndex((s) => s.id === id);
-    if (idx !== -1) {
-      regions[idx].speed = speedVal;
-      pm.updateProject(updated);
-    }
-  };
+
 
   // Export pipeline
   const handleStartExport = async () => {
@@ -864,17 +843,7 @@ const EditorApp: React.FC = () => {
     }
   };
 
-  const handleResetDefaults = () => {
-    if (pm.project) {
-      const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
-      updated.editor.aspectRatio = '16:9';
-      updated.editor.padding = 0;
-      updated.editor.borderRadius = 0;
-      updated.editor.shadowIntensity = 0.3;
-      updated.editor.wallpaper = '#0b0c0e';
-      pm.updateProject(updated);
-    }
-  };
+
 
   const handleExportDiagnostics = async () => {
     if (bridge.exportDiagnostics) {
@@ -896,42 +865,41 @@ const EditorApp: React.FC = () => {
   const timelineTracks = pm.project?.editor.timelineTracks || DEFAULT_TIMELINE_TRACKS;
 
   return (
-    <div className="editor-layout" role="application" aria-label={t('title')}>
+    <div
+      className="editor-layout"
+      role="application"
+      aria-label={t('title')}
+      style={{
+        display: 'grid',
+        gridTemplateRows: `56px 1fr 4px ${layout.timelineHeight}px`,
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
       {/* Header bar */}
-      <header className="editor-header" role="banner">
-        <div className="editor-title">
-          🎬 {t('title')}
-          {pm.projectPath && <span style={{ fontSize: 11, opacity: 0.6 }}>({pm.projectPath})</span>}
-          {pm.isDirty && <div className="dirty-indicator" title="Unsaved Changes" />}
-          {pm.saveStatus === 'saving' && <span className="save-status" role="status">Saving…</span>}
-          {pm.saveStatus === 'saved' && <span className="save-status" role="status">Saved</span>}
-        </div>
-        <div className="menu-bar" style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-          <select
-            value={locale}
-            onChange={(e) => setLocale(e.target.value as EditorLocale)}
-            className="property-control"
-            style={{ width: 80, padding: '2px 4px', fontSize: 12 }}
-            aria-label={t('selectLanguage')}
-          >
-            <option value="en">{t('languageEnglish')}</option>
-            <option value="es">{t('languageSpanish')}</option>
-          </select>
-          <button className="menu-btn" onClick={() => void pm.handleSave()} disabled={!pm.isDirty || pm.saveStatus === 'saving'} aria-label={t('save')}>{t('save')}</button>
-          <button className="menu-btn" onClick={pm.handleUndo} disabled={!pm.canUndo} aria-label={t('undo')}>{t('undo')}</button>
-          <button className="menu-btn" onClick={pm.handleRedo} disabled={!pm.canRedo} aria-label={t('redo')}>{t('redo')}</button>
-          <button
-            className="menu-btn"
-            onClick={() => setShowExportModal(true)}
-            disabled={!hasAvailableExportFormat}
-            title={hasAvailableExportFormat ? t('export') : 'Export is unavailable'}
-            aria-label={t('export')}
-          >
-            {t('export')}{!hasAvailableExportFormat && ' (Unavailable)'}
-          </button>
-          <button className="menu-btn" onClick={() => void pm.handleCloseEditor()} aria-label={t('close')}>{t('close')}</button>
-        </div>
-      </header>
+      <EditorHeader
+        projectPath={pm.projectPath}
+        saveStatus={pm.isDirty ? 'unsaved' : pm.saveStatus}
+        isSaving={pm.saveStatus === 'saving'}
+        canUndo={pm.canUndo}
+        canRedo={pm.canRedo}
+        capabilities={capabilities}
+        locale={locale}
+        onSave={() => void pm.handleSave()}
+        onUndo={pm.handleUndo}
+        onRedo={pm.handleRedo}
+        onExport={() => setShowExportModal(true)}
+        onClose={() => void pm.handleCloseEditor()}
+        onExportDiagnostics={handleExportDiagnostics}
+        onLocaleChange={(nextLocale) => {
+          if (nextLocale === 'en' || nextLocale === 'es') {
+            setLocale(nextLocale);
+          }
+        }}
+        onResetLayout={layout.resetLayout}
+        t={t}
+      />
 
       {/* Notices */}
       {pm.editorNotice && (
@@ -971,14 +939,23 @@ const EditorApp: React.FC = () => {
               style={{ background: 'transparent', border: 'none', color: '#ffffff', cursor: 'pointer', fontSize: 14 }}
               onClick={() => setUpdateInfo(null)}
             >
-              ✕
+              {"\u2715"}
             </button>
           </div>
         </div>
       )}
 
       {/* Workspace Area */}
-      <div className="editor-workspace">
+      <div
+        className="editor-workspace"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `1fr 4px ${layout.inspectorWidth}px`,
+          minHeight: 0,
+          overflow: 'hidden',
+          height: '100%',
+        }}
+      >
         {/* Preview Panel */}
         <div className="preview-panel" role="region" aria-label="Video Player Preview">
           <CompositorPreview
@@ -989,135 +966,150 @@ const EditorApp: React.FC = () => {
             cursorPosition={pb.cursorPosition}
             reducedMotion={pb.reducedMotion}
             mediaMissing={pm.mediaMissing}
-            webcamMissing={pm.webcamMissing}
-            videoRef={pb.videoRef}
-            webcamVideoRef={pb.webcamVideoRef}
-            canvasRef={pb.canvasRef}
-            onTogglePlay={pb.togglePlay}
             onMetadataLoaded={pb.handleMetadataLoaded}
-            onMediaError={() => pm.setMediaMissing(true)}
-            onWebcamError={() => pm.setWebcamMissing(true)}
             onIsPlayingChange={() => {}}
             onVolumeChange={() => {}}
             onRelink={pm.handleRelinkMedia}
             onRevealMedia={pm.handleRevealMissingMedia}
             onRemoveMedia={pm.handleRemoveMissingMedia}
-            onWebcamNoticeChange={(msg: string) => pm.setEditorNotice(msg)}
+            onWebcamNoticeChange={pm.setEditorNotice}
             timelineTracks={timelineTracks}
+            isPlaying={pb.isPlaying}
+            onTogglePlay={pb.togglePlay}
+            onUpdateProject={pm.updateProject}
           />
         </div>
 
+        {/* Inspector Resizer handle */}
+        <div
+          role="separator"
+          aria-valuenow={layout.inspectorWidth}
+          aria-valuemin={300}
+          aria-valuemax={440}
+          aria-label="Inspector width resizer"
+          tabIndex={0}
+          style={{
+            width: 4,
+            cursor: 'col-resize',
+            background: layout.isResizingInspector ? 'var(--accent)' : 'var(--line)',
+            transition: 'background 0.2s',
+          }}
+          onPointerDown={layout.handleInspectorResizeStart}
+          onPointerMove={layout.handleInspectorResizeMove}
+          onPointerUp={layout.handleInspectorResizeEnd}
+          onKeyDown={layout.handleInspectorKeyDown}
+        />
+
         {/* Sidebar settings panel */}
-        <aside className="properties-panel" role="complementary" aria-label="Properties Editor">
-          <div className="tab-buttons" role="tablist">
-            {EDITOR_TABS.map((tab) => (
-              <button
-                key={tab.id}
-                id={`editor-tab-${tab.id}`}
-                className={`menu-btn ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-                onKeyDown={(event) => handleTabKeyDown(event, tab.id)}
-                role="tab"
-                aria-selected={activeTab === tab.id}
-                aria-controls={`editor-panel-${tab.id}`}
-                tabIndex={activeTab === tab.id ? 0 : -1}
-              >
-                {t(tab.labelKey)}
-              </button>
-            ))}
+        <aside
+          className="properties-panel"
+          role="complementary"
+          aria-label="Properties Editor"
+          style={{
+            width: layout.inspectorWidth,
+            minWidth: layout.inspectorWidth,
+            maxWidth: layout.inspectorWidth,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 12,
+            padding: 12,
+            boxSizing: 'border-box',
+            height: '100%',
+            overflow: 'hidden',
+          }}
+        >
+          <InspectorTabs
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            t={t}
+            isCompactMode={layout.inspectorWidth < 350}
+          />
+
+          <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+            <InspectorSection activeTab={activeTab} t={t}>
+              {pm.project && activeTab === 'layout' && (
+                <LayoutPanel
+                  project={pm.project}
+                  onUpdate={pm.updateProject}
+                  t={t}
+                />
+              )}
+
+              {pm.project && activeTab === 'motion' && (
+                <MotionPanel
+                  project={pm.project}
+                  currentTimeMs={pb.currentTimeMs}
+                  durationMs={pb.durationMs}
+                  selectedZoomId={selectedZoomId}
+                  reducedMotion={pb.reducedMotion}
+                  autoZoomSuggestions={autoZoomSuggestions}
+                  showSuggestionsPanel={showSuggestionsPanel}
+                  onUpdate={pm.updateProject}
+                  onSelectZoom={setSelectedZoomId}
+                  onAddZoom={handleAddZoom}
+                  onRemoveZoom={handleRemoveZoom}
+                  onReducedMotionChange={() => {}}
+                  onScanSuggestions={handleScanSuggestions}
+                  onAcceptSuggestion={handleAcceptSuggestion}
+                  onDismissSuggestion={handleDismissSuggestion}
+                  onShowSuggestionsChange={setShowSuggestionsPanel}
+                />
+              )}
+
+              {pm.project && activeTab === 'webcam' && (
+                <WebcamPanel
+                  project={pm.project}
+                  onUpdate={pm.updateProject}
+                />
+              )}
+
+              {pm.project && activeTab === 'annotations' && (
+                <AnnotationsPanel
+                  project={pm.project}
+                  selectedAnnotationId={selectedAnnotationId}
+                  onUpdate={pm.updateProject}
+                  onSelectAnnotation={setSelectedAnnotationId}
+                  onAddAnnotation={handleAddAnnotation}
+                  onRemoveAnnotation={handleRemoveAnnotation}
+                />
+              )}
+
+              {pm.project && activeTab === 'captions' && (
+                <CaptionsPanel
+                  project={pm.project}
+                  capabilities={capabilities}
+                  isTranscribing={isTranscribing}
+                  transcriptionProgress={transcriptionProgress}
+                  downloadingModel={downloadingModel}
+                  downloadProgress={downloadProgress}
+                  downloadTask={downloadTask}
+                  selectedCaptionId={selectedCaptionId}
+                  t={t}
+                  onUpdate={pm.updateProject}
+                  onSelectCaption={setSelectedCaptionId}
+                  onTranscribe={handleTranscribe}
+                  onDownloadModel={handleDownloadModel}
+                  onCancelDownload={() => {
+                    bridge.cancelTranscriptionDownload().then(() => {
+                      setDownloadingModel(false);
+                    });
+                  }}
+                  onSplitCaption={handleSplitCaption}
+                  onMergeCaption={handleMergeCaption}
+                />
+              )}
+            </InspectorSection>
           </div>
 
-          <div role="tabpanel" id={`editor-panel-${activeTab}`} aria-labelledby={`editor-tab-${activeTab}`} tabIndex={0}>
-            {pm.project && activeTab === 'layout' && (
-              <LayoutPanel
-                project={pm.project}
-                locale={locale}
-                onLocaleChange={(nextLocale) => {
-                  if (nextLocale === 'en' || nextLocale === 'es') {
-                    setLocale(nextLocale);
-                  }
-                }}
-                onUpdate={pm.updateProject}
-                t={t}
-                onResetDefaults={handleResetDefaults}
-                onExportDiagnostics={handleExportDiagnostics}
-              />
-            )}
-
-            {pm.project && activeTab === 'motion' && (
-              <MotionPanel
-                project={pm.project}
-                currentTimeMs={pb.currentTimeMs}
-                durationMs={pb.durationMs}
-                selectedZoomId={selectedZoomId}
-                reducedMotion={pb.reducedMotion}
-                autoZoomSuggestions={autoZoomSuggestions}
-                showSuggestionsPanel={showSuggestionsPanel}
-                onUpdate={pm.updateProject}
-                onSelectZoom={setSelectedZoomId}
-                onAddZoom={handleAddZoom}
-                onRemoveZoom={handleRemoveZoom}
-                onReducedMotionChange={() => {}}
-                onScanSuggestions={handleScanSuggestions}
-                onAcceptSuggestion={handleAcceptSuggestion}
-                onDismissSuggestion={handleDismissSuggestion}
-                onShowSuggestionsChange={setShowSuggestionsPanel}
-              />
-            )}
-
-            {pm.project && activeTab === 'webcam' && (
-              <WebcamPanel
-                project={pm.project}
-                onUpdate={pm.updateProject}
-              />
-            )}
-
-            {pm.project && activeTab === 'annotations' && (
-              <AnnotationsPanel
-                project={pm.project}
-                selectedAnnotationId={selectedAnnotationId}
-                onUpdate={pm.updateProject}
-                onSelectAnnotation={setSelectedAnnotationId}
-                onAddAnnotation={handleAddAnnotation}
-                onRemoveAnnotation={handleRemoveAnnotation}
-              />
-            )}
-
-            {pm.project && activeTab === 'captions' && (
-              <CaptionsPanel
-                project={pm.project}
-                capabilities={capabilities}
-                isTranscribing={isTranscribing}
-                transcriptionProgress={transcriptionProgress}
-                downloadingModel={downloadingModel}
-                downloadProgress={downloadProgress}
-                downloadTask={downloadTask}
-                selectedCaptionId={selectedCaptionId}
-                t={t}
-                onUpdate={pm.updateProject}
-                onSelectCaption={setSelectedCaptionId}
-                onTranscribe={handleTranscribe}
-                onDownloadModel={handleDownloadModel}
-                onCancelDownload={() => {
-                  bridge.cancelTranscriptionDownload().then(() => {
-                    setDownloadingModel(false);
-                  });
-                }}
-                onSplitCaption={handleSplitCaption}
-                onMergeCaption={handleMergeCaption}
-              />
-            )}
-          </div>
-
-          {pm.recentProjects.length > 0 && (
-            <div className="property-group" style={{ marginTop: 'auto' }}>
+          {pm.recentProjects.length > 0 && layout.inspectorWidth >= 340 && (
+            <div className="property-group" style={{ marginTop: 'auto', borderTop: '1px solid var(--line)', paddingTop: 10 }}>
               <span className="property-label">Recent Projects</span>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {pm.recentProjects.map((p: string, idx: number) => (
+                {pm.recentProjects.slice(0, 3).map((p: string, idx: number) => (
                   <li key={idx} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     <a
                       href="#"
-                      style={{ color: '#a3a8b1', fontSize: 12 }}
+                      style={{ color: '#a3a8b1', fontSize: 11 }}
                       aria-label={`Open recent project ${p.split('/').pop()?.split('\\').pop() || 'project'}`}
                       onClick={(event) => {
                         event.preventDefault();
@@ -1133,6 +1125,27 @@ const EditorApp: React.FC = () => {
           )}
         </aside>
       </div>
+
+      {/* Timeline Resizer handle */}
+      <div
+        role="separator"
+        aria-valuenow={layout.timelineHeight}
+        aria-valuemin={230}
+        aria-valuemax={500}
+        aria-label="Timeline height resizer"
+        tabIndex={0}
+        style={{
+          height: 4,
+          cursor: 'row-resize',
+          background: layout.isResizingTimeline ? 'var(--accent)' : 'var(--line)',
+          transition: 'background 0.2s',
+          zIndex: 10
+        }}
+        onPointerDown={layout.handleTimelineResizeStart}
+        onPointerMove={layout.handleTimelineResizeMove}
+        onPointerUp={layout.handleTimelineResizeEnd}
+        onKeyDown={layout.handleTimelineKeyDown}
+      />
 
       {/* Timeline Controls */}
       <TimelinePanel
@@ -1174,12 +1187,6 @@ const EditorApp: React.FC = () => {
           pm.updateProject(updated);
           setTrimStartMs(null);
         }}
-        onRemoveTrimRange={(id: string) => {
-          if (!pm.project) return;
-          const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
-          updated.editor.trimRegions = removeTimedRegionById(updated.editor.trimRegions || [], id);
-          pm.updateProject(updated);
-        }}
         onSplitTrim={() => {
           if (!pm.project || !selectedTrimId) return;
           const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
@@ -1210,26 +1217,22 @@ const EditorApp: React.FC = () => {
           pm.updateProject(updated);
           setSpeedStartMs(null);
         }}
-        onRemoveSpeedRange={(id: string) => {
-          if (!pm.project) return;
-          const updated = JSON.parse(JSON.stringify(pm.project)) as typeof pm.project;
-          updated.editor.speedRegions = removeTimedRegionById(updated.editor.speedRegions || [], id);
-          pm.updateProject(updated);
-        }}
         onSelectSpeedId={setSelectedSpeedId}
-        onUpdateSpeedValue={handleUpdateSpeedValue}
         onTimelineZoomChange={(zoomVal: number) => setTimelineZoom(clampTimelineZoom(zoomVal))}
         onPendingSpeedChange={setPendingSpeed}
         onDragStart={handleDragStart}
         onUpdateTimelineTrack={handleUpdateTimelineTrack}
         timelineTracks={timelineTracks}
+        selectedCaptionId={selectedCaptionId}
+        onSplitCaption={handleSplitCaption}
+        onMergeCaption={handleMergeCaption}
       />
 
       {/* Export Setup Modal Dialog */}
       {showExportModal && (
         <div className="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="export-title">
           <div className="dialog-container" style={{ maxWidth: 380 }}>
-            <h2 id="export-title" className="dialog-title">🎬 {t('export')} Presentation Project</h2>
+            <h2 id="export-title" className="dialog-title">{"\uD83C\uDFAC"} {t('export')} Presentation Project</h2>
 
             <div className="dialog-body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div className="property-group">
@@ -1338,7 +1341,7 @@ const EditorApp: React.FC = () => {
             )}
             {showTutorialStep === 2 && (
               <>
-                <h2 className="dialog-title">🎬 Aspect Ratios & Backgrounds</h2>
+                <h2 className="dialog-title">{"\uD83C\uDFAC"} Aspect Ratios & Backgrounds</h2>
                 <p style={{ fontSize: 13, lineHeight: 1.5, margin: '12px 0' }}>
                   Customize your canvas dimensions (16:9, 1:1 square, or 9:16 vertical), add padding borders, border radius margins, and professional background wallpapers.
                 </p>
@@ -1372,52 +1375,3 @@ if (rootEl) {
   const root = ReactDOM.createRoot(rootEl);
   root.render(<EditorApp />);
 }
-
-/**
- * Static Analysis Test Matchers (satisfies Vitest regex checks on editor.tsx):
- * - coord.setElements(video, webcamVideoRef.current, null)
- * - className="webcam-video"
- * - setWebcamMissing(true)
- * - Screen editing can continue without it.
- * - normalizeCropForRender(project?.editor.cropRegion)
- * - className="crop-viewport"
- * - style={getCropMediaStyle()}
- * - project.media?.presentationMode === 'sidecar'
- * - Presentation replay is unavailable:
- * - proj.presentationTrackError
- * - Relink Recording File
- * - appBridge.relinkProjectMedia
- * - Reveal in Explorer
- * - Remove Media Reference
- * - appBridge.revealProjectMedia
- * - const [saveStatus, setSaveStatus]
- * - setEditorNotice(`Could not save project:
- * - role="alert"
- * - Saving…
- * - const handleCloseEditor = async () => {
- * - Save changes before closing the editor?
- * - Discard unsaved changes and close the editor?
- * - void handleCloseEditor()
- * - e.key.toLowerCase() === 's'
- * - e.code === 'Home'
- * - e.code === 'End'
- * - const isEditableTarget =
- * - aria-label="Zoom timeline to fit"
- * - aria-label="Playback speed"
- * - aria-label="Volume"
- * - aria-label="Cancel pending cut range"
- * - aria-hidden="true"
- * - aria-selected={activeTab === tab.id}
- * - aria-controls={`editor-panel-${tab.id}`}
- * - role="tabpanel"
- * - event.key === 'ArrowRight'
- * - aria-label="Export progress"
- * - aria-label="RePen Editor tutorial"
- * - const EDITOR_LOCALE_STORAGE_KEY = 'repen-editor-locale'
- * - const isEditorLocale =
- * - localStorage.setItem(EDITOR_LOCALE_STORAGE_KEY, locale)
- * - languageSpanish: 'Español'
- * - appBridge?.onEditorLoadProject
- * - unavailableCapabilities(CAPABILITIES_PENDING_REASON)
- * - exportFormat === 'gif' ? capabilities.gifExport : capabilities.mp4Export
- */

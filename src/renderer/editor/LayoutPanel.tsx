@@ -1,8 +1,3 @@
-/**
- * LayoutPanel — sidebar panel for Layout tab.
- * Controls: aspect ratio, padding, border radius, shadow, wallpaper, output resolution.
- */
-
 import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 
@@ -10,14 +5,10 @@ interface LayoutPanelProps {
   project: EditorProjectData;
   t: (key: string) => string;
   onUpdate: (next: EditorProjectData) => void;
-  onResetDefaults: () => void;
-  onExportDiagnostics: () => void;
-  locale: string;
-  onLocaleChange: (locale: string) => void;
 }
 
 export const LayoutPanel: React.FC<LayoutPanelProps> = ({
-  project, t, onUpdate, onResetDefaults, onExportDiagnostics, locale, onLocaleChange,
+  project, t, onUpdate,
 }) => {
   const editor = project.editor;
 
@@ -35,8 +26,8 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-      {/* Aspect Ratio */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* Canvas Aspect Ratio */}
       <div className="property-group">
         <span className="property-label">{t('aspectRatio')}</span>
         <select
@@ -55,7 +46,21 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
 
       {/* Padding */}
       <div className="property-group">
-        <span className="property-label">{t('padding')}: {editor.padding || 0}px</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className="property-label">{t('padding')}</span>
+          <input
+            type="number"
+            className="property-control"
+            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            value={editor.padding || 0}
+            min={0} max={100}
+            aria-label="Padding value input"
+            onChange={(e) => {
+              const val = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+              patch((ed) => { (ed as any).padding = val; });
+            }}
+          />
+        </div>
         <input
           type="range" min={0} max={100}
           value={editor.padding || 0}
@@ -65,7 +70,21 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
 
       {/* Border Radius */}
       <div className="property-group">
-        <span className="property-label">{t('borderRadius')}: {editor.borderRadius || 0}px</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className="property-label">{t('borderRadius')}</span>
+          <input
+            type="number"
+            className="property-control"
+            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            value={editor.borderRadius || 0}
+            min={0} max={30}
+            aria-label="Border radius value input"
+            onChange={(e) => {
+              const val = Math.max(0, Math.min(30, parseInt(e.target.value) || 0));
+              patch((ed) => { (ed as any).borderRadius = val; });
+            }}
+          />
+        </div>
         <input
           type="range" min={0} max={30}
           value={editor.borderRadius || 0}
@@ -75,7 +94,21 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
 
       {/* Shadow Intensity */}
       <div className="property-group">
-        <span className="property-label">Shadow Intensity: {Math.round(((editor as any).shadowIntensity ?? 0.3) * 100)}%</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className="property-label">Shadow Intensity</span>
+          <input
+            type="number"
+            className="property-control"
+            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            value={Math.round(((editor as any).shadowIntensity ?? 0.3) * 100)}
+            min={0} max={100}
+            aria-label="Shadow intensity percentage input"
+            onChange={(e) => {
+              const pct = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+              patch((ed) => { (ed as any).shadowIntensity = pct / 100; });
+            }}
+          />
+        </div>
         <input
           type="range" min={0} max={1} step={0.05}
           value={(editor as any).shadowIntensity ?? 0.3}
@@ -126,29 +159,6 @@ export const LayoutPanel: React.FC<LayoutPanelProps> = ({
           <option value="2160p">2160p 4K UHD</option>
           <option value="source">Source Resolution</option>
         </select>
-      </div>
-
-      {/* Locale */}
-      <div className="property-group" style={{ borderTop: '1px solid var(--line)', paddingTop: 10 }}>
-        <span className="property-label">{t('selectLanguage')}</span>
-        <select
-          className="property-control"
-          value={locale}
-          onChange={(e) => onLocaleChange(e.target.value)}
-        >
-          <option value="en">{t('languageEnglish')}</option>
-          <option value="es">{t('languageSpanish')}</option>
-        </select>
-      </div>
-
-      {/* Actions */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-        <button className="menu-btn" onClick={onResetDefaults} style={{ width: '100%' }}>
-          {t('resetSettings')}
-        </button>
-        <button className="menu-btn" onClick={onExportDiagnostics} style={{ width: '100%' }}>
-          {t('exportLogs')}
-        </button>
       </div>
     </div>
   );

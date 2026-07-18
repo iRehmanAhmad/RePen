@@ -1,8 +1,3 @@
-/**
- * WebcamPanel — sidebar panel for Webcam tab.
- * Controls: layout preset, mask shape, size, mirror toggle.
- */
-
 import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { WebcamMaskShape } from '../../shared/editor/types';
@@ -22,7 +17,7 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Layout Preset */}
       <div className="property-group">
         <span className="property-label">Webcam Layout Preset</span>
@@ -31,7 +26,7 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
           value={editor.webcamLayoutPreset || 'picture-in-picture'}
           onChange={(e) => patch((ed) => { ed.webcamLayoutPreset = e.target.value as any; })}
         >
-          <option value="picture-in-picture">Picture in Picture (PiP)</option>
+          <option value="picture-in-picture">Picture in Picture</option>
           <option value="vertical-stack">Vertical Stacked Split</option>
           <option value="dual-frame">Horizontal Dual Frame</option>
           <option value="no-webcam">No Webcam (Hidden)</option>
@@ -55,7 +50,21 @@ export const WebcamPanel: React.FC<WebcamPanelProps> = ({ project, onUpdate }) =
 
       {/* Size */}
       <div className="property-group">
-        <span className="property-label">Size: {editor.webcamSizePreset || 25}%</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className="property-label">Size</span>
+          <input
+            type="number"
+            className="property-control"
+            style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+            value={editor.webcamSizePreset || 25}
+            min={10} max={50}
+            aria-label="Webcam size preset percentage input"
+            onChange={(e) => {
+              const val = Math.max(10, Math.min(50, parseInt(e.target.value) || 10));
+              patch((ed) => { ed.webcamSizePreset = val as any; });
+            }}
+          />
+        </div>
         <input
           type="range" min={10} max={50}
           value={editor.webcamSizePreset || 25}

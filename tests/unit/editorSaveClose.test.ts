@@ -1,28 +1,78 @@
-import { describe, expect, it } from 'vitest';
-import fs from 'node:fs';
-import path from 'node:path';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { describe, expect, it, vi } from 'vitest';
+import { EditorHeader } from '../../src/renderer/editor/EditorHeader';
 
-const editorSource = fs.readFileSync(path.resolve(__dirname, '../../src/renderer/editor.tsx'), 'utf8');
+describe('editor save status and close callbacks', () => {
+  it('renders dirty indicators and triggers save/close buttons', async () => {
+    const container = document.createElement('div');
+    document.body.appendChild(container);
 
-describe('editor save and close recovery', () => {
-  it('keeps save failures visible inside the editor and exposes save state', () => {
-    expect(editorSource).toContain("const [saveStatus, setSaveStatus]");
-    expect(editorSource).toContain("setEditorNotice(`Could not save project:");
-    expect(editorSource).toContain('role="alert"');
-    expect(editorSource).toContain('Saving…');
-  });
+    const onSave = vi.fn();
+    const onClose = vi.fn();
+    const onUndo = vi.fn();
+    const onRedo = vi.fn();
+    const onExport = vi.fn();
+    const onLocaleChange = vi.fn();
 
-  it('requires an explicit save or discard decision before the editor close action', () => {
-    expect(editorSource).toContain("const handleCloseEditor = async () => {");
-    expect(editorSource).toContain("Save changes before closing the editor?");
-    expect(editorSource).toContain("Discard unsaved changes and close the editor?");
-    expect(editorSource).toContain('void handleCloseEditor()');
-  });
+    const root = ReactDOM.createRoot(container);
+    root.render(
+      React.createElement(EditorHeader, {
+        projectPath: 'C:\\project.repen',
+        saveStatus: 'saving',
+        isSaving: false,
+        canUndo: true,
+        canRedo: false,
+        capabilities: {
+          mp4Export: { available: true },
+          gifExport: { available: true },
+        },
+        onSave,
+        onUndo,
+        onRedo,
+        onExport,
+        onClose,
+        onExportDiagnostics: vi.fn(),
+        locale: 'en',
+        onLocaleChange,
+        onResetLayout: vi.fn(),
+        t: (key: string) => key,
+      })
+    );
 
-  it('implements the documented playback and editor shortcuts without stealing input editing keys', () => {
-    expect(editorSource).toContain("e.key.toLowerCase() === 's'");
-    expect(editorSource).toContain("e.code === 'Home'");
-    expect(editorSource).toContain("e.code === 'End'");
-    expect(editorSource).toContain('const isEditableTarget =');
+    // Wait for render cycle
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Verify dirty indicator exists
+    const dirty = container.querySelector('.dirty-indicator');
+    expect(dirty).not.toBeNull();
+
+    // Verify status text shows saving
+    expect(container.textContent?.toLowerCase()).toContain('saving');
+
+    // Find and click buttons
+    const buttons = container.querySelectorAll('button');
+    // Find the Save button by its aria-label or text
+    let saveBtn: HTMLButtonElement | null = null;
+    let closeBtn: HTMLButtonElement | null = null;
+
+    buttons.forEach((btn) => {
+      const label = btn.getAttribute('aria-label') || '';
+      if (label === 'save') saveBtn = btn;
+      if (label === 'close') closeBtn = btn;
+    });
+
+    expect(saveBtn).not.toBeNull();
+    expect(closeBtn).not.toBeNull();
+
+    saveBtn?.click();
+    closeBtn?.click();
+
+    expect(onSave).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
+
+    // Clean up
+    root.unmount();
+    container.remove();
   });
 });

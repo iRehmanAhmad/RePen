@@ -26,3 +26,11 @@ export { CompositorPreview } from './CompositorPreview';
 // ── Timeline ──────────────────────────────────────────────────────────────
 export { TrackControls } from './TrackControls';
 export { TimelinePanel } from './TimelinePanel';
+export { TimelineTracks } from './TimelineTracks';
+export { EditorTimelineToolbar } from './EditorTimelineToolbar';
+
+// ── Resizable Layout & Inspector Overhauls ────────────────────────────────
+export { useResizableEditorLayout } from './useResizableEditorLayout';
+export { EditorHeader } from './EditorHeader';
+export { InspectorTabs } from './InspectorTabs';
+export { InspectorSection } from './InspectorSection';

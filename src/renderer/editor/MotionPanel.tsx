@@ -1,8 +1,3 @@
-/**
- * MotionPanel — sidebar panel for Motion tab.
- * Controls: zoom regions list, auto-zoom scanner, per-region depth/focus/easing/rotation.
- */
-
 import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { ZoomRegion } from '../../shared/editor/types';
@@ -102,32 +97,80 @@ export const MotionPanel: React.FC<MotionPanelProps> = ({
 
       {/* Selected Region Editor */}
       {selectedRegion && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, border: '1px solid var(--line)', padding: 8, borderRadius: 6 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, border: '1px solid var(--line)', padding: 10, borderRadius: 6 }}>
           <span className="property-label" style={{ color: 'var(--accent)' }}>Region Options</span>
 
-          <label style={{ fontSize: 12 }}>Depth: {(selectedRegion as any).depth}x
+          {/* Depth */}
+          <div className="property-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="property-label">Depth</span>
+              <input
+                type="number"
+                className="property-control"
+                style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                value={selectedRegion.depth}
+                min={1.0} max={4.0} step={0.1}
+                aria-label="Depth value input"
+                onChange={(e) => {
+                  const val = Math.max(1.0, Math.min(4.0, parseFloat(e.target.value) || 1.0));
+                  patchRegion((r) => { (r as any).depth = val; });
+                }}
+              />
+            </div>
             <input
               type="range" min={1.0} max={4.0} step={0.1}
-              value={(selectedRegion as any).depth}
+              value={selectedRegion.depth}
               onChange={(e) => patchRegion((r) => { (r as any).depth = parseFloat(e.target.value); })}
             />
-          </label>
+          </div>
 
-          <label style={{ fontSize: 12 }}>Focus X: {selectedRegion.focus?.cx ?? 0.5}
+          {/* Focus X */}
+          <div className="property-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="property-label">Focus X</span>
+              <input
+                type="number"
+                className="property-control"
+                style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                value={selectedRegion.focus?.cx ?? 0.5}
+                min={0.0} max={1.0} step={0.05}
+                aria-label="Focus X value input"
+                onChange={(e) => {
+                  const val = Math.max(0.0, Math.min(1.0, parseFloat(e.target.value) || 0.0));
+                  patchRegion((r) => { r.focus.cx = val; });
+                }}
+              />
+            </div>
             <input
               type="range" min={0.0} max={1.0} step={0.05}
               value={selectedRegion.focus?.cx ?? 0.5}
               onChange={(e) => patchRegion((r) => { r.focus.cx = parseFloat(e.target.value); })}
             />
-          </label>
+          </div>
 
-          <label style={{ fontSize: 12 }}>Focus Y: {selectedRegion.focus?.cy ?? 0.5}
+          {/* Focus Y */}
+          <div className="property-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="property-label">Focus Y</span>
+              <input
+                type="number"
+                className="property-control"
+                style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                value={selectedRegion.focus?.cy ?? 0.5}
+                min={0.0} max={1.0} step={0.05}
+                aria-label="Focus Y value input"
+                onChange={(e) => {
+                  const val = Math.max(0.0, Math.min(1.0, parseFloat(e.target.value) || 0.0));
+                  patchRegion((r) => { r.focus.cy = val; });
+                }}
+              />
+            </div>
             <input
               type="range" min={0.0} max={1.0} step={0.05}
               value={selectedRegion.focus?.cy ?? 0.5}
               onChange={(e) => patchRegion((r) => { r.focus.cy = parseFloat(e.target.value); })}
             />
-          </label>
+          </div>
 
           <div className="property-group">
             <span className="property-label">Focus Mode</span>

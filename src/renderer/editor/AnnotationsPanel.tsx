@@ -1,8 +1,3 @@
-/**
- * AnnotationsPanel — sidebar panel for the Annotations tab.
- * Controls: overlay region list (non-caption), per-region type/timing/style/position.
- */
-
 import React from 'react';
 import type { EditorProjectData } from '../../shared/editor/projectPersistence';
 import type { AnnotationRegion } from '../../shared/editor/types';
@@ -64,7 +59,7 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
 
       {/* Selected Region Editor */}
       {ann && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, border: '1px solid var(--line)', padding: 8, borderRadius: 6 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, border: '1px solid var(--line)', padding: 10, borderRadius: 6 }}>
           <span className="property-label" style={{ color: 'var(--accent)' }}>Overlay Settings</span>
 
           {/* Overlay Type */}
@@ -114,13 +109,29 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
                 />
               </label>
 
-              <label style={{ fontSize: 12 }}>Font Size: {(ann as any).style?.fontSize}px
+              {/* Font Size */}
+              <div className="property-group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="property-label">Font Size</span>
+                  <input
+                    type="number"
+                    className="property-control"
+                    style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                    value={(ann as any).style?.fontSize || 16}
+                    min={12} max={72}
+                    aria-label="Font size value input"
+                    onChange={(e) => {
+                      const val = Math.max(12, Math.min(72, parseInt(e.target.value) || 12));
+                      patchAnn((a) => { (a as any).style.fontSize = val; });
+                    }}
+                  />
+                </div>
                 <input
                   type="range" min={12} max={72}
-                  value={(ann as any).style?.fontSize}
+                  value={(ann as any).style?.fontSize || 16}
                   onChange={(e) => patchAnn((a) => { (a as any).style.fontSize = parseInt(e.target.value); })}
                 />
-              </label>
+              </div>
 
               <div className="property-group">
                 <span className="property-label">Animation Preset</span>
@@ -141,7 +152,26 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
           {/* Non-text position/size controls */}
           {ann.type !== 'text' && (
             <>
-              <label style={{ fontSize: 12 }}>X Position: {ann.position?.x ?? 50}%
+              {/* X Position */}
+              <div className="property-group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="property-label">X Position</span>
+                  <input
+                    type="number"
+                    className="property-control"
+                    style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                    value={ann.position?.x ?? 50}
+                    min={0} max={100}
+                    aria-label="X position percentage input"
+                    onChange={(e) => {
+                      const val = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+                      patchAnn((a) => {
+                        if (!a.position) a.position = { x: 50, y: 50 };
+                        a.position.x = val;
+                      });
+                    }}
+                  />
+                </div>
                 <input
                   type="range" min={0} max={100}
                   value={ann.position?.x ?? 50}
@@ -150,8 +180,28 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
                     a.position.x = parseInt(e.target.value);
                   })}
                 />
-              </label>
-              <label style={{ fontSize: 12 }}>Y Position: {ann.position?.y ?? 50}%
+              </div>
+
+              {/* Y Position */}
+              <div className="property-group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="property-label">Y Position</span>
+                  <input
+                    type="number"
+                    className="property-control"
+                    style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                    value={ann.position?.y ?? 50}
+                    min={0} max={100}
+                    aria-label="Y position percentage input"
+                    onChange={(e) => {
+                      const val = Math.max(0, Math.min(100, parseInt(e.target.value) || 0));
+                      patchAnn((a) => {
+                        if (!a.position) a.position = { x: 50, y: 50 };
+                        a.position.y = val;
+                      });
+                    }}
+                  />
+                </div>
                 <input
                   type="range" min={0} max={100}
                   value={ann.position?.y ?? 50}
@@ -160,8 +210,28 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
                     a.position.y = parseInt(e.target.value);
                   })}
                 />
-              </label>
-              <label style={{ fontSize: 12 }}>Width: {ann.size?.width ?? 20}%
+              </div>
+
+              {/* Width */}
+              <div className="property-group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="property-label">Width</span>
+                  <input
+                    type="number"
+                    className="property-control"
+                    style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                    value={ann.size?.width ?? 20}
+                    min={5} max={100}
+                    aria-label="Width percentage input"
+                    onChange={(e) => {
+                      const val = Math.max(5, Math.min(100, parseInt(e.target.value) || 5));
+                      patchAnn((a) => {
+                        if (!a.size) a.size = { width: 20, height: 20 };
+                        a.size.width = val;
+                      });
+                    }}
+                  />
+                </div>
                 <input
                   type="range" min={5} max={100}
                   value={ann.size?.width ?? 20}
@@ -170,8 +240,28 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
                     a.size.width = parseInt(e.target.value);
                   })}
                 />
-              </label>
-              <label style={{ fontSize: 12 }}>Height: {ann.size?.height ?? 20}%
+              </div>
+
+              {/* Height */}
+              <div className="property-group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="property-label">Height</span>
+                  <input
+                    type="number"
+                    className="property-control"
+                    style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                    value={ann.size?.height ?? 20}
+                    min={5} max={100}
+                    aria-label="Height percentage input"
+                    onChange={(e) => {
+                      const val = Math.max(5, Math.min(100, parseInt(e.target.value) || 5));
+                      patchAnn((a) => {
+                        if (!a.size) a.size = { width: 20, height: 20 };
+                        a.size.height = val;
+                      });
+                    }}
+                  />
+                </div>
                 <input
                   type="range" min={5} max={100}
                   value={ann.size?.height ?? 20}
@@ -180,7 +270,7 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
                     a.size.height = parseInt(e.target.value);
                   })}
                 />
-              </label>
+              </div>
             </>
           )}
 
@@ -197,13 +287,28 @@ export const AnnotationsPanel: React.FC<AnnotationsPanelProps> = ({
           )}
 
           {/* Z-Index */}
-          <label style={{ fontSize: 12 }}>Layer Order (zIndex): {(ann as any).zIndex ?? 1}
+          <div className="property-group">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span className="property-label">Layer Order (zIndex)</span>
+              <input
+                type="number"
+                className="property-control"
+                style={{ width: 64, padding: '4px 6px', fontSize: 11, textAlign: 'right', height: 22 }}
+                value={(ann as any).zIndex ?? 1}
+                min={1} max={50}
+                aria-label="Layer order zIndex input"
+                onChange={(e) => {
+                  const val = Math.max(1, Math.min(50, parseInt(e.target.value) || 1));
+                  patchAnn((a) => { (a as any).zIndex = val; });
+                }}
+              />
+            </div>
             <input
               type="range" min={1} max={50}
               value={(ann as any).zIndex ?? 1}
               onChange={(e) => patchAnn((a) => { (a as any).zIndex = parseInt(e.target.value); })}
             />
-          </label>
+          </div>
         </div>
       )}
     </div>
