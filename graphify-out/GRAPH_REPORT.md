@@ -1,16 +1,16 @@
 # Graph Report - epic-pen-clone  (2026-07-18)
 
 ## Corpus Check
-- 257 files · ~176,196 words
+- 257 files · ~176,272 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2603 nodes · 3949 edges · 223 communities (209 shown, 14 thin omitted)
+- 2603 nodes · 3949 edges · 222 communities (209 shown, 13 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 83 edges (avg confidence: 0.71)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `15df3c91`
+- Built from commit: `86b9fd14`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -222,7 +222,6 @@
 - [[_COMMUNITY_timelineMath.ts|timelineMath.ts]]
 - [[_COMMUNITY_RePen Release-Readiness Gates|RePen Release-Readiness Gates]]
 - [[_COMMUNITY_MemoryStorage|MemoryStorage]]
-- [[_COMMUNITY_useResizableEditorLayout|useResizableEditorLayout]]
 - [[_COMMUNITY_19. Security Model|19. Security Model]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -252,7 +251,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (223 total, 14 thin omitted)
+## Communities (222 total, 13 thin omitted)
 
 ### Community 0 - "main.js"
 Cohesion: 0.05
@@ -703,8 +702,8 @@ Cohesion: 0.12
 Nodes (32): autoArchiveCurrentSession(), broadcastScene(), clearScene(), deepClone(), exportPdf(), getAppState(), getBootstrapData(), getDockSide() (+24 more)
 
 ### Community 118 - "ipc.ts"
-Cohesion: 0.20
-Nodes (19): getBridge(), RawBridge, useAppBridge(), unavailableCapabilities(), useCapabilities(), AppCapabilities, BootstrapData, CapabilityStatus (+11 more)
+Cohesion: 0.17
+Nodes (21): CaptionsPanel(), CaptionsPanelProps, getBridge(), RawBridge, useAppBridge(), unavailableCapabilities(), useCapabilities(), AppCapabilities (+13 more)
 
 ### Community 119 - "Third-Party Source Notice: OpenScreen"
 Cohesion: 0.50
@@ -999,8 +998,8 @@ Cohesion: 0.18
 Nodes (10): 1. Recording State Transition Matrix, 2. Unit Testing Verification Evidence, 3. Manual Lifecycle Test Matrix (Windows 11), Case 2.1: Countdown Start & Cancellation, Case 2.2: Rapid Duplicate Clicks on Record/Stop/Pause, Case 2.3: Pause and Resume Lifecycle, Case 2.4: Stop and Handoff to Editor, Case 2.5: Crash Recovery & Manifest Scanning (+2 more)
 
 ### Community 207 - "phaseCompletionAudit.test.ts"
-Cohesion: 0.12
-Nodes (26): AnnotationsPanel(), AnnotationsPanelProps, CaptionsPanel(), CaptionsPanelProps, LayoutPanel(), LayoutPanelProps, MotionPanel(), MotionPanelProps (+18 more)
+Cohesion: 0.11
+Nodes (26): AnnotationsPanel(), AnnotationsPanelProps, LayoutPanel(), LayoutPanelProps, MotionPanel(), MotionPanelProps, DraggingRegion, TimelinePanelProps (+18 more)
 
 ### Community 209 - "Phase 3 Package Inspection"
 Cohesion: 0.40
@@ -1037,12 +1036,12 @@ Nodes (3): 19. Security Model, Network posture, Required security decisions
 ## Knowledge Gaps
 - **1200 isolated node(s):** `{ createAppCapabilities }`, `lastEnumeratedSources`, `approvedRecordingDirectories`, `writeQueue`, `PRESENTATION_TRACK_SCHEMA_VERSION` (+1195 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `EditorApp()` connect `editor.tsx` to `main.ts`, `PresentationTrackService`, `phaseCompletionAudit.test.ts`, `project.ts`, `init`, `ipc.ts`, `timelineMath.ts`, `useResizableEditorLayout`?**
+- **Why does `EditorApp()` connect `editor.tsx` to `main.ts`, `PresentationTrackService`, `project.ts`, `phaseCompletionAudit.test.ts`, `init`, `ipc.ts`, `timelineMath.ts`?**
   _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Why does `bootstrap()` connect `main.ts` to `broadcastState`, `editor.tsx`?**
   _High betweenness centrality (0.028) - this node is a cross-community bridge._

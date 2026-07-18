@@ -210,9 +210,16 @@
   "208": "vite-env.d.ts",
   "209": "Phase 3 Package Inspection",
   "210": "missingMediaRecovery.test.ts",
+  "211": "cursor-sampler.cpp",
   "212": "getAppState",
   "213": "getAppState",
+  "214": "audio_sample_utils.h",
+  "215": "EditorHeader.tsx",
   "216": "capture.py",
+  "217": "timelineMath.ts",
   "218": "audio_sample_utils.h",
-  "219": "RePen Release-Readiness Gates"
+  "219": "RePen Release-Readiness Gates",
+  "220": "MemoryStorage",
+  "221": "useResizableEditorLayout",
+  "222": "19. Security Model"
 }

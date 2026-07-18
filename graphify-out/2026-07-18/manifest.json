@@ -1215,13 +1215,13 @@
     "semantic_hash": ""
   },
   "src/shared/editor/visualCompositor.ts": {
-    "mtime": 1784308662.0825756,
-    "ast_hash": "b58658e7afba7479a8986187deadadf6",
+    "mtime": 1784372218.0407948,
+    "ast_hash": "8f6730926ff8968eed4513bee6d8d51f",
     "semantic_hash": ""
   },
   "tests/unit/visualCompositor.test.ts": {
-    "mtime": 1784287675.2702906,
-    "ast_hash": "707a983110b9e6f0a40682d0d8ac9902",
+    "mtime": 1784372317.7108815,
+    "ast_hash": "5b2f5f56b5b242f59eb62adaaade54a0",
     "semantic_hash": ""
   },
   "tests/unit/editorAnnotations.test.ts": {
@@ -1265,8 +1265,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/CompositorPreview.tsx": {
-    "mtime": 1784371973.0623956,
-    "ast_hash": "155e93826612a7a05e28c772c185098d",
+    "mtime": 1784372288.5046985,
+    "ast_hash": "2d800bf901d851aee2217cd06ff8b277",
     "semantic_hash": ""
   },
   "src/renderer/editor/EditorHeader.tsx": {
@@ -1320,8 +1320,8 @@
     "semantic_hash": ""
   },
   "src/renderer/editor/index.ts": {
-    "mtime": 1784309901.5475254,
-    "ast_hash": "1dca27081ce06e31362a101d4751df0a",
+    "mtime": 1784372195.950452,
+    "ast_hash": "0efe45a45679fb120183362556d5b590",
     "semantic_hash": ""
   },
   "src/renderer/editor/useAppBridge.ts": {
@@ -1347,6 +1347,16 @@
   "src/renderer/editor/useResizableEditorLayout.ts": {
     "mtime": 1784310305.8716886,
     "ast_hash": "882574d30e8154aa7cb117a103dd4f8f",
+    "semantic_hash": ""
+  },
+  "src/renderer/editor/usePreviewViewport.ts": {
+    "mtime": 1784372186.0915637,
+    "ast_hash": "d2bb9b3328a16fd0b16a7359af49dbcb",
+    "semantic_hash": ""
+  },
+  "tests/unit/usePreviewViewport.test.ts": {
+    "mtime": 1784372273.7539127,
+    "ast_hash": "d3dfed1280018485e1ce49e149fa137d",
     "semantic_hash": ""
   }
 }

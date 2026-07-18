@@ -6927,7 +6927,7 @@
       "label": "rootEl",
       "file_type": "code",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1373",
+      "source_location": "L1377",
       "_origin": "ast",
       "id": "src_renderer_editor_rootel",
       "community": 190,
@@ -6970,7 +6970,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_captionspanel",
-      "community": 207,
+      "community": 118,
       "norm_label": "captionspanel.tsx"
     },
     {
@@ -6980,7 +6980,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_renderer_editor_captionspanel_captionspanelprops",
-      "community": 207,
+      "community": 118,
       "norm_label": "captionspanelprops"
     },
     {
@@ -6990,7 +6990,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_renderer_editor_captionspanel_captionspanel",
-      "community": 207,
+      "community": 118,
       "norm_label": "captionspanel()"
     },
     {
@@ -7860,7 +7860,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_renderer_editor_useresizableeditorlayout",
-      "community": 221,
+      "community": 207,
       "norm_label": "useresizableeditorlayout.ts"
     },
     {
@@ -7870,7 +7870,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_renderer_editor_useresizableeditorlayout_useresizableeditorlayout",
-      "community": 221,
+      "community": 207,
       "norm_label": "useresizableeditorlayout()"
     },
     {
@@ -12250,7 +12250,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "tests_unit_phasecompletionaudit_test",
-      "community": 221,
+      "community": 207,
       "norm_label": "phasecompletionaudit.test.ts"
     },
     {
@@ -12260,7 +12260,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "tests_unit_phasecompletionaudit_test_root",
-      "community": 221,
+      "community": 207,
       "norm_label": "root"
     },
     {
@@ -12270,7 +12270,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "tests_unit_phasecompletionaudit_test_read",
-      "community": 221,
+      "community": 207,
       "norm_label": "read()"
     },
     {
@@ -38559,7 +38559,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1373",
+      "source_location": "L1377",
       "weight": 1.0,
       "source": "src_renderer_editor",
       "target": "src_renderer_editor_rootel",
@@ -38977,7 +38977,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1203",
+      "source_location": "L1207",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_addspeedrange"
@@ -38988,7 +38988,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1179",
+      "source_location": "L1183",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_addtrimrange"
@@ -39032,7 +39032,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1193",
+      "source_location": "L1197",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelineedits_splittrimrange"
@@ -39043,7 +39043,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/renderer/editor.tsx",
-      "source_location": "L1221",
+      "source_location": "L1225",
       "weight": 1.0,
       "source": "src_renderer_editor_editorapp",
       "target": "src_shared_editor_timelinemath_clamptimelinezoom"
@@ -67418,5 +67418,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "15df3c915309ccccbaddba9d2690841b261e108e"
+  "built_at_commit": "86b9fd149dfc269175369c8e50ca5e167f9e2d8e"
 }

@@ -957,7 +957,7 @@ const EditorApp: React.FC = () => {
         }}
       >
         {/* Preview Panel */}
-        <div className="preview-panel" role="region" aria-label="Video Player Preview">
+        <div className="preview-panel" role="region" aria-label="Video Player Preview" style={{ minWidth: 0, minHeight: 0 }}>
           <CompositorPreview
             project={pm.project}
             currentTimeMs={pb.currentTimeMs}
@@ -997,6 +997,8 @@ const EditorApp: React.FC = () => {
           onPointerDown={layout.handleInspectorResizeStart}
           onPointerMove={layout.handleInspectorResizeMove}
           onPointerUp={layout.handleInspectorResizeEnd}
+          onPointerCancel={layout.handleInspectorResizeCancel}
+          onDoubleClick={layout.handleInspectorDoubleClick}
           onKeyDown={layout.handleInspectorKeyDown}
         />
 
@@ -1007,7 +1009,7 @@ const EditorApp: React.FC = () => {
           aria-label="Properties Editor"
           style={{
             width: layout.inspectorWidth,
-            minWidth: layout.inspectorWidth,
+            minWidth: 0,
             maxWidth: layout.inspectorWidth,
             display: 'flex',
             flexDirection: 'column',
@@ -1131,7 +1133,7 @@ const EditorApp: React.FC = () => {
         role="separator"
         aria-valuenow={layout.timelineHeight}
         aria-valuemin={230}
-        aria-valuemax={500}
+        aria-valuemax={layout.maxTimelineHeight}
         aria-label="Timeline height resizer"
         tabIndex={0}
         style={{
@@ -1144,6 +1146,8 @@ const EditorApp: React.FC = () => {
         onPointerDown={layout.handleTimelineResizeStart}
         onPointerMove={layout.handleTimelineResizeMove}
         onPointerUp={layout.handleTimelineResizeEnd}
+        onPointerCancel={layout.handleTimelineResizeCancel}
+        onDoubleClick={layout.handleTimelineDoubleClick}
         onKeyDown={layout.handleTimelineKeyDown}
       />
 
