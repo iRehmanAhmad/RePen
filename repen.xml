@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XML_DIZ_INFO>
+  <MASTER_PAD_VERSION_INFO>
+    <PAD_VERSION>4.00</PAD_VERSION>
+    <PAD_EDITOR>PADGen 4.0</PAD_EDITOR>
+    <PAD_Program_Name>RePen</PAD_Program_Name>
+    <PAD_Program_Version>1.0.0</PAD_Program_Version>
+    <PAD_Program_Release_Month>07</PAD_Program_Release_Month>
+    <PAD_Program_Release_Day>12</PAD_Program_Release_Day>
+    <PAD_Program_Release_Year>2026</PAD_Program_Release_Year>
+    <PAD_Program_Cost_Dollars>0</PAD_Program_Cost_Dollars>
+    <PAD_Program_Cost_Other_Code>00</PAD_Program_Cost_Other_Code>
+    <PAD_Program_Type>Freeware</PAD_Program_Type>
+    <PAD_Program_Release_Status>New Release</PAD_Program_Release_Status>
+    <PAD_Program_License>Open Source</PAD_Program_License>
+    <PAD_Program_Uses_Install>Y</PAD_Program_Uses_Install>
+    <PAD_Program_Install_Support>Install and Uninstall</PAD_Program_Install_Support>
+    <PAD_Program_OS_Support>Win10,Win11</PAD_Program_OS_Support>
+    <PAD_Program_Language>English</PAD_Program_Language>
+    <PAD_Program_Change_Info>Initial public release.</PAD_Program_Change_Info>
+    <PAD_Program_Specific_Category>Desktop :: Presentation Tools</PAD_Program_Specific_Category>
+    <PAD_Program_Categories>Presentation Tools</PAD_Program_Categories>
+    <PAD_Program_File_Size_Bytes>102314628</PAD_Program_File_Size_Bytes>
+    <PAD_Program_File_Size_KB>99917</PAD_Program_File_Size_KB>
+    <PAD_Program_File_Size_MB>97.57</PAD_Program_File_Size_MB>
+    <PAD_Program_Expire_Info>Does not expire</PAD_Program_Expire_Info>
+    <PAD_Program_Export>None</PAD_Program_Export>
+  </MASTER_PAD_VERSION_INFO>
+  <COMPANY_INFO>
+    <Company_Name>Rehman Ahmad</Company_Name>
+    <Address_1></Address_1>
+    <Address_2></Address_2>
+    <City_Town>Bahawalpur</City_Town>
+    <State_Province>Punjab</State_Province>
+    <ZIP_Postal_Code></ZIP_Postal_Code>
+    <Country>Pakistan</Country>
+    <Company_WebSite>https://filecobra.com/app/repen-screen-annotation-pc/</Company_WebSite>
+    <Contact_First_Name>Rehman</Contact_First_Name>
+    <Contact_Last_Name>Ahmad</Contact_Last_Name>
+    <Contact_Email>thepublicinterface@gmail.com</Contact_Email>
+    <Company_Contact>thepublicinterface@gmail.com</Company_Contact>
+  </COMPANY_INFO>
+  <PROGRAM_INFO>
+    <Program_Name>RePen</Program_Name>
+    <Program_Version>1.0.0</Program_Version>
+    <Program_Release_Month>07</Program_Release_Month>
+    <Program_Release_Day>12</Program_Release_Day>
+    <Program_Release_Year>2026</Program_Release_Year>
+    <Program_Cost_Dollars>0</Program_Cost_Dollars>
+    <Program_Cost_Other_Code>00</Program_Cost_Other_Code>
+    <Program_Type>Freeware</Program_Type>
+    <Program_Release_Status>New Release</Program_Release_Status>
+    <Program_License>Open Source</Program_License>
+    <Program_Uses_Install>Y</Program_Uses_Install>
+    <Program_Install_Support>Install and Uninstall</Program_Install_Support>
+    <Program_OS_Support>Win10,Win11</Program_OS_Support>
+    <Program_Language>English</Program_Language>
+    <Program_Change_Info>Initial public release.</Program_Change_Info>
+    <Program_Specific_Category>Desktop :: Presentation Tools</Program_Specific_Category>
+    <Program_Categories>Presentation Tools</Program_Categories>
+    <Program_File_Size_Bytes>102314628</Program_File_Size_Bytes>
+    <Program_File_Size_KB>99917</Program_File_Size_KB>
+    <Program_File_Size_MB>97.57</Program_File_Size_MB>
+    <Program_Expire_Info>Does not expire</Program_Expire_Info>
+    <Program_Export>None</Program_Export>
+  </PROGRAM_INFO>
+  <PROGRAM_DESCRIPTIONS>
+    <English>
+      <Keywords>screen annotation, presentation overlay, live annotation, draw on screen, Windows presentation tool, whiteboard, spotlight, magnifier</Keywords>
+      <Char_Desc_45>Live screen annotation &amp; presentation overlay</Char_Desc_45>
+      <Char_Desc_80>Free live desktop screen annotation and presentation overlay for Windows.</Char_Desc_80>
+      <Char_Desc_250>RePen is a free, open-source live desktop screen annotation and presentation overlay for Windows 10 and 11. Annotate your screen in real time while presenting, teaching, or demonstrating software.</Char_Desc_250>
+      <Char_Desc_450>RePen is a free, open-source live desktop screen annotation and presentation overlay for Windows 10 and 11. It creates a transparent canvas over your live desktop so you can write, draw, highlight, stamp shapes, and sketch over any running application, document, slide deck, or video while you present, teach, or demonstrate software.</Char_Desc_450>
+      <Char_Desc_2000>RePen is a free, open-source live desktop screen annotation and presentation overlay for Windows 10 and 11, built for educators, remote team presenters, software demonstrators, content creators, and corporate instructors. It creates a transparent canvas overlay directly across your Windows desktop, so you can write, draw, highlight, stamp shapes, and sketch geometric diagrams over live applications, running code editors, PDF documents, PowerPoint slide decks, and video playback, without switching windows or capturing static screenshots first. Tools include a precision pen and calligraphy brush, a semi-transparent highlighter, smart geometric shape snapping with lines, arrows, rectangles, circles, and numbered step badges, a cursor spotlight, a magnifying loupe, whiteboard and blackboard board modes, one-key screen capture, and annotation export to PNG and WebP. RePen ships with zero telemetry, zero ads, and no watermark, and it is free for individual, educational, and commercial use. A portable build that needs no installation is available alongside the setup installer.</Char_Desc_2000>
+    </English>
+  </PROGRAM_DESCRIPTIONS>
+  <WEB_INFO>
+    <Application_URLs>
+      <Application_Info_URL>https://filecobra.com/app/repen-screen-annotation-pc/</Application_Info_URL>
+      <Application_Order_URL></Application_Order_URL>
+      <Application_Screenshot_URL>https://filecobra.com/screenshots/repen/repen-screen-annotation-toolbar-overlay.webp</Application_Screenshot_URL>
+      <Application_Icon_URL>https://filecobra.com/icons/repen.png</Application_Icon_URL>
+      <Application_XML_URL>https://raw.githubusercontent.com/iRehmanAhmad/RePen/main/repen.xml</Application_XML_URL>
+    </Application_URLs>
+    <Download_URLs>
+      <Primary_Download_URL>https://github.com/iRehmanAhmad/RePen/releases/download/v1.0.0/RePen.Setup.1.0.0.exe</Primary_Download_URL>
+      <Secondary_Download_URL>https://github.com/iRehmanAhmad/RePen/releases/download/v1.0.0/RePen.Portable.1.0.0.exe</Secondary_Download_URL>
+      <Additional_Download_URL_1></Additional_Download_URL_1>
+      <Additional_Download_URL_2></Additional_Download_URL_2>
+    </Download_URLs>
+  </WEB_INFO>
+  <PROGRAM_REQUIREMENTS>
+    <Install_Support>Install and Uninstall</Install_Support>
+    <OS_Support>Win10,Win11</OS_Support>
+    <Additional_Requirements>Windows 10 64-bit (Build 19041+) or Windows 11 64-bit; 2 GB RAM minimum</Additional_Requirements>
+  </PROGRAM_REQUIREMENTS>
+  <FILE_INFO>
+    <File_Size_Bytes>102314628</File_Size_Bytes>
+    <File_Size_KB>99917</File_Size_KB>
+    <File_Size_MB>97.57</File_Size_MB>
+    <Filename>RePen.Setup.1.0.0.exe</Filename>
+    <File_Version>1.0.0</File_Version>
+  </FILE_INFO>
+  <PERMISSIONS>
+    <Distribution_Permissions>RePen is free, open-source software. It may be freely distributed provided it is distributed unmodified, with this PAD file, and without charge.</Distribution_Permissions>
+  </PERMISSIONS>
+</XML_DIZ_INFO>
